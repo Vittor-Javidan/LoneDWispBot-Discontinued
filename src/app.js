@@ -1,25 +1,34 @@
 import tmi from 'tmi.js'
-import env from './enviroment';
+import env from './env'
+import chatCommand from './botCommand'
+import redeemsFunctions from './channelRedeems'
 
 const options = {
-  options: {
-    debug: true
-  },
-  connection: {
-    reconnect: true,
-    secure: true
-  },
-  identity: {
-    username: env.botName,
-    password: `oauth:${env.clientSecret}`
-  },
-  channels: [env.channelName]
-};
+	connection: {
+		reconnect: true,
+		secure: true,
+	},
+	identity: {
+		username: env.botName,
+		password: `oauth:${env.clientSecret}`,
+	},
+	channels: [env.channelName],
+}
+const client = new tmi.client(options)
 
-const client = new tmi.client(options);
+client.connect()
 
-client.connect();
+//Chat Listener
+client.on('message', (channel, userstate, message, self) => {
 
-client.on('chat', (channel, userstate, message, self) => {
-  console.log(`${userstate.username}: ${message}`);
-});
+	if(self) return
+	
+	chatCommand.fockYou(channel, userstate, message, client)
+	chatCommand.website(channel, userstate, message, client)
+})
+
+//Redeem Listener
+client.on('redeem', (channel, userstate, message, self) => {
+
+	redeemsFunctions.adicioneMinhaMusica(channel, self, client)
+})

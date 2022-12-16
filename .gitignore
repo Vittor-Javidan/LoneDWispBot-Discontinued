@@ -1,3 +1,4 @@
 node_modules
 package-lock.json
-enviroment.js
+env.js
+channelRewards.js
