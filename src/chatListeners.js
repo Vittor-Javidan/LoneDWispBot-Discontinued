@@ -1,8 +1,7 @@
 import website from './features_modules/Website/chatCommand'
-import leilaoChatCommand from './features_modules/Leilao/chatCommand'
+import leilaoChatListeners from './features_modules/Leilao/chatListeners'
 
 const chatCommands = {
     website,
-    leilaoChatCommand
 }
 export default chatCommands

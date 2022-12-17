@@ -21,4 +21,7 @@ function website(channel, userstate, message, client) {
     }
 }
 
-export default website
+const websiteChatListeners = {
+    website
+}
+export default websiteChatListeners

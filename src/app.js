@@ -1,31 +1,23 @@
-import tmi from 'tmi.js'
 import env from './env'
-import chatCommands from './botCommands'
-import features from './features'
+import client from './connect'
 
-const options = {
-	connection: {
-		reconnect: true,
-		secure: true,
-	},
-	identity: {
-		username: env.botName,
-		password: `oauth:${env.clientSecret}`,
-	},
-	channels: [env.channelName],
-}
-const client = new tmi.client(options)
+//Chat Listeners
+import websiteChatListeners from './features_modules/Website/chatCommand'
+import leilaoChatListeners from './features_modules/Leilao/chatListeners'
 
-client.connect()
+//Reward Listeners
+import musicaRewardListeners from './features_modules/Musica/rewardListeners'
+import leilaoRewardListeners from './features_modules/Leilao/rewardListeners'
 
 //Chat Listener
 client.on('message', (channelName, userstate, message, self) => {
 	
-	chatCommands.website(channelName, userstate, message, client)
+	websiteChatListeners.website(channelName, userstate, message, client)
 
 	//Broadcaster exclusive commands
 	if(userstate.username === env.channelName) {
-		chatCommands.leilaoChatCommand(channelName, message, self, client)
+		leilaoChatListeners.createAuction(channelName, message, self, client)
+		leilaoChatListeners.setAuctionTimeLeft(channelName, message, self, client)
 	}
 })
 
@@ -34,9 +26,9 @@ client.on('redeem', (channelName, userName, rewardIdentifier) => {
 
 	try {
 		console.log(rewardIdentifier)
-		features.adicioneMinhaMusica(channelName, userName, rewardIdentifier, client)
-		features.leilaoBid100(channelName, userName, rewardIdentifier, client)
-		features.leilaoRank(channelName, userName, rewardIdentifier, client)
+		musicaRewardListeners.adicioneMinhaMusica(channelName, userName, rewardIdentifier, client)
+		leilaoRewardListeners.leilaoBid100(channelName, userName, rewardIdentifier, client)
+		leilaoRewardListeners.leilaoRank(channelName, userName, rewardIdentifier, client)
 	} catch(err) {
 		client.say(channelName, `Ocorreu um erro na recompensa resgatada de @${userName}. Id da recompensa: ${rewardIdentifier} `)
 	}
