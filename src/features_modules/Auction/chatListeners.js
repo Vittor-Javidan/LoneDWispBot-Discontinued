@@ -46,7 +46,7 @@ function createAuction(channel, message) {
  */
 function setAuctionTimeLeft(channel, message) {
 
-	if (message.toLowerCase().includes('!leilão timeleft')) {
+	if (message.toLowerCase().startsWith('!leilão timeleft')) {
 
 		const minutes = Number(message.split(' ')[2])
 

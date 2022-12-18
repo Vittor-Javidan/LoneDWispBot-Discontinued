@@ -6,7 +6,7 @@ import client from '../../connect'
  */
 function website(channel, message) {
 
-	if (message.toLowerCase().includes('!website')) {
+	if (message.toLowerCase().startsWith('!website')) {
 
         client.say(channel, `
             --   https://vittor-javidan.github.io/   --  Esse é meu website pessoal, 
