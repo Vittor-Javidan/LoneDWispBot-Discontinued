@@ -13,19 +13,23 @@ function auctionRank(channelName, username, rewardIdentifie, client) {
 
     if(rewardIdentifie === rewardIdentifiersList['LEILÃO: Rank Atual']) {
 
-        if(Auction.auctions.length > 0) {
-            
-            let totalRank
-            let rankText = ''
-            totalRank = Auction.getInstance().getRank()
-            for(let i = 0; i < 5 && i < totalRank.length; i++) {
-                rankText += `<<  ${i + 1}. ${totalRank[i].name} : ${totalRank[i].score}  >>`
-            }
-            client.say(channelName, rankText)
-
-        } else {
+        if(Auction.auctions.length <= 0) {
             client.say(channelName, `Não há nenhum leilão em aberto no momento @${username}`)
+            return
         }
+
+        let totalRank
+        let rankText = ''
+        totalRank = Auction.getInstance().getRank()
+        for(let i = 0; i < 5 && i < totalRank.length; i++) {
+            rankText += `<<  ${i + 1}. ${totalRank[i].name} : ${totalRank[i].score}  >>`
+        }
+
+        if(rankText === '') {
+            client.say(channelName, `Ainda não há nenhum lance. O seu pode ser o primeiro @${username} ;)`)
+            return
+        }
+        client.say(channelName, rankText)
     }
 }
 
