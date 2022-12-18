@@ -1,5 +1,5 @@
 import tmi from 'tmi.js'
-import Leilao from './Leilao'
+import Auction from './Auction'
 
 /**
  * @param {string} channel 
@@ -19,7 +19,7 @@ function createAuction(channel, message, self, client) {
 
         const item = message.split(' ')[1]
         const minutes = Number(message.split(' ')[2])
-        Leilao.init({
+        Auction.init({
             item: item,
             minutes: minutes,
             channel: channel,
@@ -39,8 +39,8 @@ function setAuctionTimeLeft(channel, message, self, client) {
     if(message.toLowerCase().includes('!leilão timeleft')) {
         const minutes = Number(message.split(' ')[2])
         if(minutes !== NaN) {
-            Leilao.getInstance().minutes = minutes
-            client.say(channel, `Tempo restante do Leilão[${Leilao.getInstance().item}] modificado para ${minutes} minutos`)
+            Auction.getInstance().minutes = minutes
+            client.say(channel, `Tempo restante do Leilão[${Auction.getInstance().item}] modificado para ${minutes} minutos`)
         } else {
             client.say(channel, `Comando inválido!`)
         }
@@ -48,11 +48,11 @@ function setAuctionTimeLeft(channel, message, self, client) {
 
 }
 
-const leilaoChatListeners = {
+const auctionChatListeners = {
     createAuction,
     setAuctionTimeLeft
 }
-export default leilaoChatListeners
+export default auctionChatListeners
 
 /**
  * @param {string} message 

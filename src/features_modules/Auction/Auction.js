@@ -1,7 +1,7 @@
 import tmi from 'tmi.js'
 import env from '../../env'
 
-export default class Leilao {
+export default class Auction {
 	static auctions = []
 
 	item
@@ -33,12 +33,12 @@ export default class Leilao {
 	 * }} object
 	 */
 	static init({ item, minutes, channel, client }) {
-		if (Leilao.auctions.length > 1) {
+		if (Auction.auctions.length > 1) {
 			client.say(channel, `Já há um leilão em andamento`)
 			return
 		}
 
-		const auction = new Leilao(item, minutes, channel, client)
+		const auction = new Auction(item, minutes, channel, client)
 		this.auctions.push(auction)
 		auction.startAuction()
 	}
@@ -56,6 +56,7 @@ export default class Leilao {
 	startTimer() {
 		const timer = setInterval(() => {
 			timeAlert(this.item, this.minutes, this.channel, this.client)
+			//TODO: Convert the logics to seconds
 			if (this.minutes > 0) {
 				this.minutes--
 			} else {
@@ -65,7 +66,7 @@ export default class Leilao {
 					this.channel,
 					`THE WINNER IS ${winner.name} WITH ${winner.score} POINTS!!!`
 				)
-				Leilao.auctions = []
+				Auction.auctions = []
 			}
 		}, 60000) // runs every minute
 	}
@@ -115,10 +116,10 @@ export default class Leilao {
 	}
 
 	/**
-	 * @returns {Leilao}
+	 * @returns {Auction}
 	 */
 	static getInstance() {
-		return Leilao.auctions[0]
+		return Auction.auctions[0]
 	}
 }
 

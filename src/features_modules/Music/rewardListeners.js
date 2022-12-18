@@ -9,7 +9,7 @@ import rewardIdentifiersList from '../../channelRewards'
  * @param {string} reward_ID 
  * @param {tmi.Client} client
  */
-function adicioneMinhaMusica(channelName, username, reward_ID, client) {
+function playlistMusicSugestion(channelName, username, reward_ID, client) {
     if(reward_ID === rewardIdentifiersList['Adicione Minha Música']) {
         if(username !== env.channelName) {
             client.say(channelName, `/w ${username} Assim que possível eu pessoalmente irei escutar sua música em off.
@@ -19,8 +19,8 @@ function adicioneMinhaMusica(channelName, username, reward_ID, client) {
     }
 }
 
-const musicaRewardListeners = {
-    adicioneMinhaMusica
+const musicRewardListeners = {
+    playlistMusicSugestion
 }
 
-export default musicaRewardListeners
+export default musicRewardListeners
