@@ -11,7 +11,7 @@ import musicRewardListeners from './features_modules/Music/rewardListeners'
 import auctionRewardListeners from './features_modules/Auction/rewardListeners'
 
 //Chat Listener
-client.on('message', (channelName, userstate, message, self) => {
+client.on('message', (channelName, userstate, message) => {
 	
 	websiteChatListeners.website(channelName, message)
 
