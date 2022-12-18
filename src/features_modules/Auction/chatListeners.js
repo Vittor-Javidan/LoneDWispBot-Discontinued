@@ -9,7 +9,7 @@ import Auction from './Auction'
  */
 function createAuction(channel, message, self, client) {
 
-    if(message.toLowerCase().includes('!leilão')) {
+    if(message.toLowerCase().includes('!leilão') && !message.toLowerCase().includes('timeleft')) {
 
         //Error handler
         if(!stringValidation(message)) {

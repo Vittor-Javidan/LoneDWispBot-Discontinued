@@ -46,9 +46,7 @@ export default class Auction {
 	startAuction() {
 		this.client.say(
 			this.channel,
-			`LEILÃO DE UM ${this.item.toUpperCase()} COMEÇOU E ACABA EM ${String(
-				this.minutes
-			).toUpperCase()} MINUTOS!!! Dê lances usando as recompensas do canal (づ｡◕‿‿◕｡)づ ✧.`
+			`LEILÃO DE UM ${this.item.toUpperCase()} COMEÇOU E ACABA EM ${this.minutes} MINUTOS!!! Dê lances usando as recompensas do canal (づ｡◕‿‿◕｡)づ ✧.`
 		)
 		this.startTimer()
 	}
@@ -60,12 +58,12 @@ export default class Auction {
 			if (this.minutes > 0) {
 				this.minutes--
 			} else {
+				//Clears the timer
 				clearInterval(timer)
-				const winner = this.getRank()[0]
-				this.client.say(
-					this.channel,
-					`THE WINNER IS ${winner.name} WITH ${winner.score} POINTS!!!`
-				)
+
+				this.announceWinner()
+
+				//Removes instance
 				Auction.auctions = []
 			}
 		}, 60000) // runs every minute
@@ -88,14 +86,19 @@ export default class Auction {
 		//Adds 1 minute if it's about to finish
 		if (this.minutes === 1) {
 			this.minutes++
-			client.say(channel, `Mais 1 minuto adicionado ao Leilão (${this.item})`)
+			client.say(
+				channel,
+				`Mais 1 minuto adicionado ao Leilão (${this.item})`
+			)
 		}
 
 		//User feedback
 		if (username !== env.channelName) {
 			client.whisper(
 				username,
-				`${this.item} - Lance de ${bidValue} pontos em ${ this.item }, dia: ${this.date.getDate()}/${this.date.getMonth()}/${this.date.getFullYear()} ${this.date.getHours()}:${this.date.getMinutes()}`
+				`${this.item} - Lance de ${bidValue} pontos em ${
+					this.item
+				}, dia: ${this.date.getDate()}/${this.date.getMonth()}/${this.date.getFullYear()} ${this.date.getHours()}:${this.date.getMinutes()}`
 			)
 		}
 	}
@@ -113,6 +116,22 @@ export default class Auction {
 			return b.score - a.score
 		})
 		return sortedArray
+	}
+
+	announceWinner() {
+		//Get the winner
+		const podium = this.getRank()
+
+		if (podium.length > 0)
+			this.client.say(
+				this.channel,
+				`O GANHADOR DE UM ${this.item.toUpperCase()} É @${podium[0].name} COM ${podium[0].score} PONTOS!!!`
+			)
+		else
+			this.client.say(
+				this.channel,
+				`O leilão se encerrou com nenhum ganhador, já que ninguem participou T-T`
+			)
 	}
 
 	/**
