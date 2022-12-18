@@ -41,7 +41,11 @@ function auctionBid100(channelName, username, rewardIdentifie) {
     if(rewardIdentifie === rewardIdentifiersList['LEILÃO: Lance 100 pontos']) {
         if(Auction.auctions.length > 0) {
             const points = 100
-            Auction.auctions[0].bid(channelName, username, points)
+            Auction.auctions[0].bid({
+                channelName: channelName, 
+                username: username,
+                bidValue: points
+            })
         } else {
             client.say(channelName, `Não há nenhum leilão em aberto no momento @${username}`)
         }
@@ -52,7 +56,11 @@ function auctionBid500(channelName, username, rewardIdentifie) {
     if(rewardIdentifie === rewardIdentifiersList['LEILÃO: Lance 500 pontos']) {
         if(Auction.auctions.length > 0) {
             const points = 500
-            Auction.auctions[0].bid(channelName, username, points)
+            Auction.auctions[0].bid({
+                channelName: channelName, 
+                username: username,
+                bidValue: points
+            })
         } else {
             client.say(channelName, `Não há nenhum leilão em aberto no momento @${username}`)
         }
@@ -63,7 +71,11 @@ function auctionBid1000(channelName, username, rewardIdentifie) {
     if(rewardIdentifie === rewardIdentifiersList['LEILÃO: Lance 1000 pontos']) {
         if(Auction.auctions.length > 0) {
             const points = 1000
-            Auction.auctions[0].bid(channelName, username, points)
+            Auction.auctions[0].bid({
+                channelName: channelName, 
+                username: username,
+                bidValue: points
+            })
         } else {
             client.say(channelName, `Não há nenhum leilão em aberto no momento @${username}`)
         }
@@ -74,7 +86,11 @@ function auctionBid5000(channelName, username, rewardIdentifie) {
     if(rewardIdentifie === rewardIdentifiersList['LEILÃO: Lance 5000 pontos']) {
         if(Auction.auctions.length > 0) {
             const points = 5000
-            Auction.auctions[0].bid(channelName, username, points)
+            Auction.auctions[0].bid({
+                channelName: channelName, 
+                username: username,
+                bidValue: points
+            })
         } else {
             client.say(channelName, `Não há nenhum leilão em aberto no momento @${username}`)
         }
@@ -85,7 +101,11 @@ function auctionBid10000(channelName, username, rewardIdentifie) {
     if(rewardIdentifie === rewardIdentifiersList['LEILÃO: Lance 10000 pontos']) {
         if(Auction.auctions.length > 0) {
             const points = 10000
-            Auction.auctions[0].bid(channelName, username, points)
+            Auction.auctions[0].bid({
+                channelName: channelName, 
+                username: username,
+                bidValue: points
+            })
         } else {
             client.say(channelName, `Não há nenhum leilão em aberto no momento @${username}`)
         }

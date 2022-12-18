@@ -11,11 +11,13 @@ export default class Auction {
 	date = new Date()
 
 	/**
-	 * @param {string} item
-	 * @param {number} minutes
-	 * @param {string} channel
+	 * @param {{
+	 * 	   item: string,
+	 * 	   minutes: number,
+	 *     channel: string,
+	 * }} object
 	 */
-	constructor(item, minutes, channel) {
+	constructor({item, minutes, channel}) {
 		this.item = item
 		this.minutes = minutes
 		this.channel = channel
@@ -29,12 +31,17 @@ export default class Auction {
 	 * }} object
 	 */
 	static init({ item, minutes, channel }) {
+		
 		if (Auction.auctions.length > 1) {
 			client.say(channel, `Já há um leilão em andamento`)
 			return
 		}
 
-		const auction = new Auction(item, minutes, channel)
+		const auction = new Auction({
+			item: item, 
+			minutes: minutes, 
+			channel: channel
+		})
 		this.auctions.push(auction)
 		auction.startAuction()
 	}
@@ -49,7 +56,13 @@ export default class Auction {
 
 	startTimer() {
 		const timer = setInterval(() => {
-			timeAlert(this.item, this.minutes, this.channel)
+			
+			timeAlert({
+				item: this.item, 
+				minutes: this.minutes, 
+				channel: this.channel
+			})
+
 			//TODO: Convert the logics to seconds
 			if (this.minutes > 0) {
 				this.minutes--
@@ -66,11 +79,13 @@ export default class Auction {
 	}
 
 	/**
-	 * @param {string} channel
-	 * @param {string} username
-	 * @param {number} bidValue
+	 * @param {{
+	 * 		channel: string, 
+	 * 		username: string, 
+	 * 		bidValue: number,
+	 * }} object 
 	 */
-	bid(channel, username, bidValue) {
+	bid({channel, username, bidValue}) {
 		// User bid temporary database
 		if (this.participants.hasOwnProperty(username)) {
 			this.participants[username] += bidValue
@@ -138,11 +153,13 @@ export default class Auction {
 }
 
 /**
- * @param {string} item
- * @param {number} minutes
- * @param {string} channel
+ * @param {{
+ * 		item: string,
+ *		minutes: number, 
+ *  	channel: string,
+ * }} object
  */
-function timeAlert(item, minutes, channel) {
+function timeAlert({item, minutes, channel}) {
 	switch (minutes) {
 		case 50:
 			client.say(
