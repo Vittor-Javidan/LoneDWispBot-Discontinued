@@ -7,18 +7,31 @@ import Auction from './Auction'
  */
 function createAuction(channel, message) {
 	if (
-		message.toLowerCase().includes('!leilão') &&
-		!message.toLowerCase().includes('timeleft')
+		message.toLowerCase().startsWith('!leilão start')
 	) {
 		
-		//Error handler
-		if (!stringValidation(message)) {
-			client.say(channel, 'Commando inválido seu noob!')
+		const words = message.split(' ')
+
+		//Check if the string has lenght 4
+		if (words.length !== 4) {
+			client.say(channel, 'digite: !leilão start <item> <minutos>')
+			return
+		}
+	
+		//Verify if the last word is a valid number
+		if (isNaN(words[3])) {
+			client.say(channel, `o tempo precisa ser um número`)
 			return
 		}
 
-		const item = message.split(' ')[1]
-		const minutes = Number(message.split(' ')[2])
+		//Verify if the last word is a positive number
+		if(words[3] < 0) {
+			client.say(channel, `o tempo precisa ser maior que zero`)
+			return
+		}
+
+		const item = words[2]
+		const minutes = Number(words[3])
 		Auction.init({
 			item: item,
 			minutes: minutes,
@@ -62,19 +75,3 @@ const auctionChatListeners = {
 	setAuctionTimeLeft,
 }
 export default auctionChatListeners
-
-/**
- * @param {string} message
- * @returns {boolean}
- */
-function stringValidation(message) {
-	const messageWords = message.split(' ')
-
-	//Check if the string has lenght 4
-	if (messageWords.length !== 3) return false
-
-	//Verify if the last word is a valid number
-	if (isNaN(messageWords[2])) return false
-
-	return true
-}
