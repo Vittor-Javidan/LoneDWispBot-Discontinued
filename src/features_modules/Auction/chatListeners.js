@@ -37,12 +37,21 @@ function createAuction(channel, message, self, client) {
 function setAuctionTimeLeft(channel, message, self, client) {
 
     if(message.toLowerCase().includes('!leilão timeleft')) {
-        const minutes = Number(message.split(' ')[2])
-        if(minutes !== NaN) {
-            Auction.getInstance().minutes = minutes
-            client.say(channel, `Tempo restante do Leilão[${Auction.getInstance().item}] modificado para ${minutes} minutos`)
+
+        if(Auction.auctions.length > 0) {
+
+            const minutes = Number(message.split(' ')[2])
+            if(minutes !== NaN) {
+                Auction.getInstance().minutes = minutes
+                client.say(channel, `Tempo restante do Leilão[${Auction.getInstance().item}] modificado para ${minutes} minutos`)
+            } else {
+                client.say(channel, `Comando inválido!`)
+            }
+            
         } else {
-            client.say(channel, `Comando inválido!`)
+            client.say(channel,
+                `Não há nenhum leilão em andamento no momento`    
+            )
         }
     }
 
