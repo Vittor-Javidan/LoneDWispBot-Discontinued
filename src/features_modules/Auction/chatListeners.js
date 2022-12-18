@@ -1,13 +1,11 @@
-import tmi from 'tmi.js'
+import client from '../../connect'
 import Auction from './Auction'
 
 /**
  * @param {string} channel
  * @param {string} message
- * @param {boolean} self
- * @param {tmi.Client} client
  */
-function createAuction(channel, message, self, client) {
+function createAuction(channel, message) {
 	if (
 		message.toLowerCase().includes('!leilão') &&
 		!message.toLowerCase().includes('timeleft')
@@ -25,7 +23,6 @@ function createAuction(channel, message, self, client) {
 			item: item,
 			minutes: minutes,
 			channel: channel,
-			client: client,
 		})
 	}
 }
@@ -33,10 +30,8 @@ function createAuction(channel, message, self, client) {
 /**
  * @param {string} channel
  * @param {string} message
- * @param {boolean} self
- * @param {tmi.Client} client
  */
-function setAuctionTimeLeft(channel, message, self, client) {
+function setAuctionTimeLeft(channel, message) {
 
 	if (message.toLowerCase().includes('!leilão timeleft')) {
 

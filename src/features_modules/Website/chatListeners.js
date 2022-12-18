@@ -1,12 +1,10 @@
-import tmi from 'tmi.js'
+import client from '../../connect'
 
 /**
  * @param {string} channel 
- * @param {tmi.ChatUserstate} userstate 
  * @param {string} message 
- * @param {tmi.Client} client 
  */
-function website(channel, userstate, message, client) {
+function website(channel, message) {
 
 	if (message.toLowerCase().includes('!website')) {
 

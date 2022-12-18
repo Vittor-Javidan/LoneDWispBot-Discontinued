@@ -1,4 +1,4 @@
-import tmi from 'tmi.js'
+import client from '../../connect'
 import env from '../../env'
 
 export default class Auction {
@@ -7,7 +7,6 @@ export default class Auction {
 	item
 	minutes
 	channel
-	client
 	participants = {}
 	date = new Date()
 
@@ -15,13 +14,11 @@ export default class Auction {
 	 * @param {string} item
 	 * @param {number} minutes
 	 * @param {string} channel
-	 * @param {tmi.Client} client
 	 */
-	constructor(item, minutes, channel, client) {
+	constructor(item, minutes, channel) {
 		this.item = item
 		this.minutes = minutes
 		this.channel = channel
-		this.client = client
 	}
 
 	/**
@@ -29,22 +26,21 @@ export default class Auction {
 	 * 	   item: string,
 	 * 	   minutes: number,
 	 *     channel: string,
-	 *     client: tmi.Client
 	 * }} object
 	 */
-	static init({ item, minutes, channel, client }) {
+	static init({ item, minutes, channel }) {
 		if (Auction.auctions.length > 1) {
 			client.say(channel, `Já há um leilão em andamento`)
 			return
 		}
 
-		const auction = new Auction(item, minutes, channel, client)
+		const auction = new Auction(item, minutes, channel)
 		this.auctions.push(auction)
 		auction.startAuction()
 	}
 
 	startAuction() {
-		this.client.say(
+		client.say(
 			this.channel,
 			`LEILÃO DE UM ${this.item.toUpperCase()} COMEÇOU E ACABA EM ${this.minutes} MINUTOS!!! Dê lances usando as recompensas do canal (づ｡◕‿‿◕｡)づ ✧.`
 		)
@@ -53,7 +49,7 @@ export default class Auction {
 
 	startTimer() {
 		const timer = setInterval(() => {
-			timeAlert(this.item, this.minutes, this.channel, this.client)
+			timeAlert(this.item, this.minutes, this.channel)
 			//TODO: Convert the logics to seconds
 			if (this.minutes > 0) {
 				this.minutes--
@@ -72,10 +68,9 @@ export default class Auction {
 	/**
 	 * @param {string} channel
 	 * @param {string} username
-	 * @param {tmi.Client} client
 	 * @param {number} bidValue
 	 */
-	bid(channel, username, client, bidValue) {
+	bid(channel, username, bidValue) {
 		// User bid temporary database
 		if (this.participants.hasOwnProperty(username)) {
 			this.participants[username] += bidValue
@@ -123,12 +118,12 @@ export default class Auction {
 		const podium = this.getRank()
 
 		if (podium.length > 0)
-			this.client.say(
+			client.say(
 				this.channel,
 				`O GANHADOR DE UM ${this.item.toUpperCase()} É @${podium[0].name} COM ${podium[0].score} PONTOS!!!`
 			)
 		else
-			this.client.say(
+			client.say(
 				this.channel,
 				`O leilão se encerrou com nenhum ganhador, já que ninguem participou T-T`
 			)
@@ -146,9 +141,8 @@ export default class Auction {
  * @param {string} item
  * @param {number} minutes
  * @param {string} channel
- * @param {tmi.Client} client
  */
-function timeAlert(item, minutes, channel, client) {
+function timeAlert(item, minutes, channel) {
 	switch (minutes) {
 		case 50:
 			client.say(

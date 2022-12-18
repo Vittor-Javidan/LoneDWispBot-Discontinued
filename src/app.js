@@ -13,12 +13,12 @@ import auctionRewardListeners from './features_modules/Auction/rewardListeners'
 //Chat Listener
 client.on('message', (channelName, userstate, message, self) => {
 	
-	websiteChatListeners.website(channelName, userstate, message, client)
+	websiteChatListeners.website(channelName, message)
 
 	//Broadcaster exclusive commands
 	if(userstate.username === env.channelName) {
-		auctionChatListeners.createAuction(channelName, message, self, client)
-		auctionChatListeners.setAuctionTimeLeft(channelName, message, self, client)
+		auctionChatListeners.createAuction(channelName, message)
+		auctionChatListeners.setAuctionTimeLeft(channelName, message)
 	}
 })
 
@@ -27,14 +27,14 @@ client.on('redeem', (channelName, userName, rewardIdentifier) => {
 
 	try {
 		console.log(rewardIdentifier)
-		websiteRewardListeners.website(channelName, userName, rewardIdentifier, client)
-		musicRewardListeners.playlistMusicSugestion(channelName, userName, rewardIdentifier, client)
-		auctionRewardListeners.auctionRank(channelName, userName, rewardIdentifier, client)
-		auctionRewardListeners.auctionBid100(channelName, userName, rewardIdentifier, client)
-		auctionRewardListeners.auctionBid500(channelName, userName, rewardIdentifier, client)
-		auctionRewardListeners.auctionBid1000(channelName, userName, rewardIdentifier, client)
-		auctionRewardListeners.auctionBid5000(channelName, userName, rewardIdentifier, client)
-		auctionRewardListeners.auctionBid10000(channelName, userName, rewardIdentifier, client)
+		websiteRewardListeners.website(channelName, userName, rewardIdentifier)
+		musicRewardListeners.playlistMusicSugestion(channelName, userName, rewardIdentifier)
+		auctionRewardListeners.auctionRank(channelName, userName, rewardIdentifier)
+		auctionRewardListeners.auctionBid100(channelName, userName, rewardIdentifier)
+		auctionRewardListeners.auctionBid500(channelName, userName, rewardIdentifier)
+		auctionRewardListeners.auctionBid1000(channelName, userName, rewardIdentifier)
+		auctionRewardListeners.auctionBid5000(channelName, userName, rewardIdentifier)
+		auctionRewardListeners.auctionBid10000(channelName, userName, rewardIdentifier)
 	} catch(err) {
 		client.say(channelName, `Ocorreu um erro na recompensa resgatada de @${userName}. Id da recompensa: ${rewardIdentifier} `)
 	}
