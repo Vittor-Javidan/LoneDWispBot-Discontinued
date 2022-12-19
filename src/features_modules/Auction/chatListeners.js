@@ -70,8 +70,24 @@ function setAuctionTimeLeft(channel, message) {
 	}
 }
 
+/**
+ * @param {string} channel
+ * @param {string} message
+ */
+function endAuction(channel, message) {
+
+	if (message.toLowerCase().startsWith('!leilão end')) {
+
+		Auction.getInstance().deleteAuction()
+		client.say(channel,
+			`Leilão finalizado com sucesso. Qualquer ponto gasto irá ser reembolsado em breve`
+		)
+	}
+}
+
 const auctionChatListeners = {
 	createAuction,
 	setAuctionTimeLeft,
+	endAuction
 }
 export default auctionChatListeners

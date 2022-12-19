@@ -9,6 +9,7 @@ export default class Auction {
 	channel
 	participants = {}
 	date = new Date()
+	timer
 
 	/**
 	 * @param {{
@@ -55,26 +56,23 @@ export default class Auction {
 	}
 
 	startTimer() {
-		const timer = setInterval(() => {
+		
+		this.timer = setInterval(() => {
 			
+			if (this.minutes <= 0) {
+				this.announceWinner()
+				this.deleteAuction()
+				return
+			}
+
 			timeAlert({
 				item: this.item, 
 				minutes: this.minutes, 
 				channel: this.channel
 			})
 
-			//TODO: Convert the logics to seconds
-			if (this.minutes > 0) {
-				this.minutes--
-			} else {
-				//Clears the timer
-				clearInterval(timer)
+			this.minutes--
 
-				this.announceWinner()
-
-				//Removes instance
-				Auction.auctions = []
-			}
 		}, 60000) // runs every minute
 	}
 
@@ -142,6 +140,11 @@ export default class Auction {
 				this.channel,
 				`O leilão se encerrou com nenhum ganhador, já que ninguem participou T-T`
 			)
+	}
+
+	deleteAuction(){
+		clearInterval(this.timer)
+		Auction.auctions = []
 	}
 
 	/**

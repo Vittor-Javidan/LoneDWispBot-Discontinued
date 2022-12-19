@@ -19,6 +19,7 @@ client.on('message', (channelName, userstate, message) => {
 	if(userstate.username === env.channelName) {
 		auctionChatListeners.createAuction(channelName, message)
 		auctionChatListeners.setAuctionTimeLeft(channelName, message)
+		auctionChatListeners.endAuction(channelName, message)
 	}
 })
 
