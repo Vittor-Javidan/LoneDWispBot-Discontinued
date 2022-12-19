@@ -16,10 +16,10 @@ client.on('message', (channelName, userstate, message) => {
 	websiteChatListeners.website(channelName, message)
 
 	//Broadcaster exclusive commands
-	if(userstate.username === env.channelName) {
-		auctionChatListeners.createAuction(channelName, message)
-		auctionChatListeners.setAuctionTimeLeft(channelName, message)
-		auctionChatListeners.endAuction(channelName, message)
+	if(userstate.username === 'lonedwisp') {
+		auctionChatListeners.createAuction(message)
+		auctionChatListeners.setAuctionTimeLeft(message)
+		auctionChatListeners.endAuction(message)
 	}
 })
 
@@ -30,12 +30,12 @@ client.on('redeem', (channelName, userName, rewardIdentifier) => {
 		console.log(rewardIdentifier)
 		websiteRewardListeners.website(channelName, userName, rewardIdentifier)
 		musicRewardListeners.playlistMusicSugestion(channelName, userName, rewardIdentifier)
-		auctionRewardListeners.auctionRank(channelName, userName, rewardIdentifier)
-		auctionRewardListeners.auctionBid100(channelName, userName, rewardIdentifier)
-		auctionRewardListeners.auctionBid500(channelName, userName, rewardIdentifier)
-		auctionRewardListeners.auctionBid1000(channelName, userName, rewardIdentifier)
-		auctionRewardListeners.auctionBid5000(channelName, userName, rewardIdentifier)
-		auctionRewardListeners.auctionBid10000(channelName, userName, rewardIdentifier)
+		auctionRewardListeners.auctionRank(userName, rewardIdentifier)
+		auctionRewardListeners.auctionBid100(userName, rewardIdentifier)
+		auctionRewardListeners.auctionBid500(userName, rewardIdentifier)
+		auctionRewardListeners.auctionBid1000(userName, rewardIdentifier)
+		auctionRewardListeners.auctionBid5000(userName, rewardIdentifier)
+		auctionRewardListeners.auctionBid10000(userName, rewardIdentifier)
 	} catch(err) {
 		client.say(channelName, `Ocorreu um erro na recompensa resgatada de @${userName}. Id da recompensa: ${rewardIdentifier} `)
 	}
