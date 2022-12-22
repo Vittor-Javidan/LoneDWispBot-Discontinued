@@ -30,7 +30,7 @@ export default function createAuction(message) {
 		item: itemName,
 		minutes: minutes,
 	})
-	sendChatMessage(`LEILÃO DE UM ${itemName.toUpperCase()} COMEÇOU E ACABA EM ${minutes} MINUTOS!!! Dê lances usando as recompensas do canal (づ｡◕‿‿◕｡)づ ✧.`)
+	sendChatMessage(`LEILÃO DE UM ${itemName} COMEÇOU E ACABA EM ${minutes} MINUTOS!!! Dê lances usando as recompensas do canal (づ｡◕‿‿◕｡)づ ✧.`)
 }
 
 function isInvalidMessageLenght(words){
