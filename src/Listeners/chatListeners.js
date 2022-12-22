@@ -39,6 +39,7 @@ export default function chatListeners(data) {
 		if(message.startsWith(comands.AUCTION.CREATE_AUCTION)) auctionChatListeners.createAuction(data.message)
 		if(message.startsWith(comands.AUCTION.SET_AUCTION_TIME_LEFT)) auctionChatListeners.setAuctionTimeLeft(data.message)
 		if(message.startsWith(comands.AUCTION.END_ALL_AUCTIONS)) auctionChatListeners.endAllAuctions()
+		if(message.startsWith(comands.AUCTION.PIN_MESSAGE)) auctionChatListeners.pinMessage()
 		//
 	}
 }
