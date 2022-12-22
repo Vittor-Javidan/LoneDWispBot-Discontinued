@@ -16,7 +16,7 @@ export default function createManyAuctions(message) {
 	if(isEntryInvalid(words)) return
 
     //An array to store just items name to send a feedback message later
-    const itemNamesArray = []
+    let namesString = '|'
     
     //Creates a instace for each item. Starts at the first itemName on index 3
     const minutes = words[2]
@@ -26,12 +26,13 @@ export default function createManyAuctions(message) {
             item: itemName,
             minutes: minutes,
         })
-        itemNamesArray.push(itemName)
+        namesString += `| ${itemName} |`
     }
+    namesString += `|`
 	
 	//Initiate the auction instance and send a feedback message to twitch channel chat
 
-	sendChatMessage(`OS LEILÕES [ ${itemNamesArray} ] COMEÇARAM E ACABA EM ${minutes} MINUTOS!!! Dê lances usando as recompensas do canal (づ｡◕‿‿◕｡)づ ✧.`)
+	sendChatMessage(`OS LEILÕES: ${namesString} COMEÇARAM E ACABA EM ${minutes} MINUTOS!!! Dê lances usando as recompensas do canal (づ｡◕‿‿◕｡)づ ✧.`)
 }
 
 /**
