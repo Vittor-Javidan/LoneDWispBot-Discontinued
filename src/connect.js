@@ -1,5 +1,5 @@
 import tmi from 'tmi.js'
-import env from './env'
+import env from './secrets/env'
 
 const options = {
 	connection: {
@@ -7,10 +7,10 @@ const options = {
 		secure: true,
 	},
 	identity: {
-		username: env.botName,
-		password: `oauth:${env.clientSecret}`,
+		username: env.BOT_NAME,
+		password: `oauth:${env.CLIENT_SECRET}`,
 	},
-	channels: [env.channelName],
+	channels: [env.CHANNEL_NAME],
 }
 const client = new tmi.client(options)
 client.connect()

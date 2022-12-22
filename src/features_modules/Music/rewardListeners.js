@@ -1,25 +1,20 @@
-import client from '../../connect'
-import env from '../../env'
+import sendChatMessage from '../../../sendMessageHandler'
 
-import rewardIdentifiersList from '../../channelRewards'
-
-/**
- * @param {string} channel 
- * @param {string} username 
- * @param {string} reward_ID 
+/** ====================================================
+ * Sends a feedback whisper message to the viewer
+ * 
+ * @param {object} data
+ * @param {string} data.userName
  */
-function playlistMusicSugestion(channelName, username, reward_ID) {
-    if(reward_ID === rewardIdentifiersList['Adicione Minha Música']) {
-        if(username !== env.channelName) {
-            client.say(channelName, `/w ${username} Assim que possível eu pessoalmente irei escutar sua música em off.
-                Irei adiciona-la caso combine com a playlist do canal.
-            `)
-        }
-    }
+function viewerMusicSugestion(data) {
+	sendChatMessage(
+		`/w ${data.userName} Assim que possível eu pessoalmente irei escutar sua música em off.
+		Irei adiciona-la caso combine com a playlist do canal.`
+	)
 }
 
 const musicRewardListeners = {
-    playlistMusicSugestion
+	viewerMusicSugestion
 }
 
 export default musicRewardListeners
