@@ -35,6 +35,7 @@ export default function chatListeners(data) {
 	if(data.userName === env.BROADCASTER_NAME){
 
 		//AUCTION MODULE ====================================================
+		if(message.startsWith(comands.AUCTION.CREATE_MANY_AUCTIONS)) auctionChatListeners.createManyAuctions(data.message)
 		if(message.startsWith(comands.AUCTION.CREATE_AUCTION)) auctionChatListeners.createAuction(data.message)
 		if(message.startsWith(comands.AUCTION.SET_AUCTION_TIME_LEFT)) auctionChatListeners.setAuctionTimeLeft(data.message)
 		if(message.startsWith(comands.AUCTION.END_ALL_AUCTIONS)) auctionChatListeners.endAllAuctions()
