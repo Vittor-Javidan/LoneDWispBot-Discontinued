@@ -411,26 +411,16 @@ export default class Auction {
 	 * @param {number} bid.bidValue - The value of the bid.
 	 */
 	bid({userName, bidValue}) {
-
-		const itemName = this.getItemName()
-		const dateAndTime = Auction.getDateAndTime()
-
 		
 		if (!this.isParticipantRegistered(userName)) {
 
 			this.registerParticipant(userName, bidValue)
 			this.checkForNewWinner(userName)
-			sendChatMessage(
-				`/w @${userName} ${itemName} - Lance de ${bidValue} pontos. ${dateAndTime} `
-			)
 			return
 		}
 
 		this.addParticipantTotalBid(userName, bidValue)
 		this.checkForNewWinner(userName)
-		sendChatMessage(
-			`/w @${userName} ${itemName} - Lance de ${bidValue} pontos. ${dateAndTime} `
-		)
 	}
 	/** ====================================================
 	 * Retrieves the instance `key:value` pairs of participants and their points.
