@@ -627,7 +627,7 @@ export default class Auction {
 		
 		//Check for no bid result
 		if (podium.length <= 0) {
-			sendChatMessage(`RESULTADO Leilão[${itemName}], NENHUM LANCE: houve nenhum ganhador`)
+			sendChatMessage(`SEM LANCE: Leilão[${itemName}]`)
 			return
 		}
 
@@ -636,19 +636,19 @@ export default class Auction {
 
 		//Check for only 1 bid result
 		if (podium.length === 1) {
-			sendChatMessage(`RESULTADO Leilão[${itemName}: @${name} ganhou com ${score} pontos`)
-			sendChatMessage(`/w @${name} PARABÉNS!! Voce ganhou um ${itemName}. ${Auction.getDateAndTime()}`)
+			sendChatMessage(`GANHADOR Leilão[${itemName}: @${name} - ${score} pontos`)
+			sendChatMessage(`/w @${name} PARABÉNS!! Voce ganhou um ${itemName}. ${Auction.getDateAndTime()}.`)
 			return
 		}
 
 		//Check for Draw result
 		if(score === podium[1].score){
-			sendChatMessage(`RESULTADO Leilão[${itemName}, EMPATE: Não houve nenhum ganhador, a casa ganhou *-*`)
+			sendChatMessage(`EMPATE Leilão[${itemName}: sem ganhadores, a casa ganhou *-*`)
 			return
 		}
 
 		//Check for winner result
-		sendChatMessage(`RESULTADO Leilão[${itemName}: @${name} ganhou com ${score} pontos`)	
-		sendChatMessage(`/w @${name} PARABÉNS!! Voce ganhou um ${itemName}. ${Auction.getDateAndTime()}`)
+		sendChatMessage(`GANHADOR Leilão[${itemName}]: @${name} - ${score} pontos`)	
+		sendChatMessage(`/w @${name} PARABÉNS!! Você ganhou um ${itemName}. ${Auction.getDateAndTime()}. Você tem até o final da stream pra receber o prêmio!`)
 	}
 }
