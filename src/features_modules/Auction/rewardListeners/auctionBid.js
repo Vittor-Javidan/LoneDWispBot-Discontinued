@@ -10,7 +10,7 @@ import Auction from "../Auction"
  * @param {number} bidValue - The value of the bid.
  * @returns {void}
  */
-export default function auctionBid(data, bidValue) {
+export default function bid(data, bidValue) {
 
 	//Checks is there is no auction happening
 	if(Auction.getAuctionsAmount() <= 0){

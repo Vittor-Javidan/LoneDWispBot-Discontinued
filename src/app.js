@@ -11,6 +11,9 @@ client.on('message', (channelName, userstate, message) => {
 		message: message
 	}
 
+	//Uncomment this to see wich rewards is being selected
+	//console.log(data.rewardIdentifier)
+
 	try {
 		chatListeners(data)
 		rewardListeners(data)

@@ -2,25 +2,18 @@ import sendChatMessage from "../../../../sendMessageHandler"
 import Auction from "../Auction"
 
 /** ====================================================
- * Retrieves the rank of an item in an auction.
+ * Sends a chat message of the item rank in an auction.
  *
  * @param {Object} data - The data for the auction item.
- * @param {string} data.message - The message containing the item code and bid amount.
- * @param {string} data.userName - The name of the user placing the bid.
+ * @param {string} data.userName - The name of the user.
+ * @param {number} data.itemCode - The item code.
  * @returns {void}
  */
-export default function auctionItemRank(data) {
-
-	//Checks is there is no auction happening
-	if(Auction.getAuctionsAmount() <= 0){
-		sendChatMessage(`Não há nenhum leilão acontencendo no momento`)
-		return
-	}
+export default function itemRank(data) {
 
 	//Parse Viewer message to find the right auction instance
 	const userName = data.userName
-	const words = data.message.split(' ')
-	const itemCode = Number(words[0])
+	const itemCode = data.itemCode
 	const auctionInstance = Auction.getInstanceByCode(itemCode)
 	
 	//checks if auctionInstance is null

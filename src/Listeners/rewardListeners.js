@@ -42,13 +42,12 @@ export default function rewardListeners(data) {
 		//
 
 		//AUCTION MODULE ====================================================
-		case REWARD_IDENTIFIER_LIST['Avaible Auctions']: auctionRewardListeners.avaibleAuctions(data); break
-		case REWARD_IDENTIFIER_LIST['Auction Item Rank']: auctionRewardListeners.auctionItemRank(data); break
-		case REWARD_IDENTIFIER_LIST['Auction bid 100 points']: auctionRewardListeners.auctionBid(data, 100); break
-		case REWARD_IDENTIFIER_LIST['Auction bid 500 points']: auctionRewardListeners.auctionBid(data, 500); break
-		case REWARD_IDENTIFIER_LIST['Auction bid 1000 points']: auctionRewardListeners.auctionBid(data, 1000); break
-		case REWARD_IDENTIFIER_LIST['Auction bid 5000 points']: auctionRewardListeners.auctionBid(data, 5000); break
-		case REWARD_IDENTIFIER_LIST['Auction bid 10000 points']: auctionRewardListeners.auctionBid(data, 10000); break
+		case REWARD_IDENTIFIER_LIST['Auction: Ranks']: auctionRewardListeners.avaibleAuctions(data); break
+		case REWARD_IDENTIFIER_LIST['Auction bid 100 points']: auctionRewardListeners.bid(data, 100); break
+		case REWARD_IDENTIFIER_LIST['Auction bid 500 points']: auctionRewardListeners.bid(data, 500); break
+		case REWARD_IDENTIFIER_LIST['Auction bid 1000 points']: auctionRewardListeners.bid(data, 1000); break
+		case REWARD_IDENTIFIER_LIST['Auction bid 5000 points']: auctionRewardListeners.bid(data, 5000); break
+		case REWARD_IDENTIFIER_LIST['Auction bid 10000 points']: auctionRewardListeners.bid(data, 10000); break
 		//
 	}
 }
