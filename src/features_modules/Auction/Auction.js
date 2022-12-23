@@ -4,51 +4,74 @@ import sendChatMessage from '../../../sendMessageHandler'
 export default class Auction {
 
 	/**
-	 * This property stores every instance of the Auction class that has been created. 
+	 * This property stores every instance of the `Auction` class that has been created.
+	 * 
 	 * @type {Auction[]}
+	 * @static
 	 * @private
 	 */
 	static auctionsList = []
 
 	/**
-	 * The current date and time, used to provide feedback to users when they make a bid on the auctioned item
+	 * The current date and time, used to provide feedback to users when they make a bid on the auctioned item.
+	 * 
 	 * @type {Date}
+	 * @static
 	 * @private
 	 */
 	static date = new Date();
 
 	/**
-	 * The name of the item being auctioned
+	 * The list of all current timers, used to retrieve the remaining time for all auction items.
+	 * 
+	 * @type {Object.<string, number>}
+	 * @static
+	 * @private
+	 */
+	static itemName_TimeLeft_KVPairs = {}
+
+
+	/**
+	 * The main setInterval() timer that is running to handle auctions instances time remaining.
+	 * 
+	 * @type {NodeJS.Timer}
+	 * @static
+	 * @private
+	 */
+	static mainTimer
+
+	/**
+	 * The name of the item being auctioned.
+	 * 
 	 * @type {string}
 	 * @private
 	 */
-	itemName;
+	itemName
 
 	/**
-	 * The number of seconds remaining until the auction ends
+	 * The number of seconds remaining until the auction ends.
+	 * 
 	 * @type {number}
 	 * @private
 	 */
-	secondsLeft;
+	secondsLeft
 
 	/**
-	 * The timer object for the setInterval() function that is running for this auction instance
+	 * The setInterval() timer for this auction instance
+	 * 
 	 * @type {NodeJS.Timer}
 	 * @private
 	 */
-	regressiveTimer;
+	regressiveTimer
 
 	/**
-	 * A dictionary that stores participant names as keys and their corresponding total points as values. Example: { "michael": 1000, "maria": 500, ... }
-	 * @type {{
-	 * 		string: number; 
-	 * 		'partipant_1':pointsValue; 
-	 * 		'partipant_2':pointsValue; 
-	 * 		'partipant_n':pointsValue;
-	 * }}
+	 * A object that stores participant names as keys and their corresponding total points as values. 
+	 * Example: { "michael": 1000, "maria": 500, ... }
+	 * 
+	 * @type {Object.<string, number>}
 	 * @private
 	 */
-	participants = {}
+	participants_Bid_KVPairs = {}
 
 	/** ====================================================
 	 * Creates a new instance of the Auction class with the given item name and duration.
@@ -86,6 +109,7 @@ export default class Auction {
 	 * @param {string} auctionData.item - The name of the item being auctioned.
 	 * @param {number} auctionData.minutes - The duration of the auction in minutes.
 	 * @returns {void}
+	 * @static
 	 */
 	static init(auctionData) {
 		const auction = new Auction({ 
@@ -94,29 +118,45 @@ export default class Auction {
 		});
 		this.pushToAuctionList(auction);
 		auction.startRegressiveTimer();
+
+		//If its a first instance, start main timer
+		if(this.getAuctionsAmount() > 1) return
+		this.startMainTimer()
 	}
 	/** ====================================================
-	 * Return a list of all current auctions instances
+	 * Returns a list of all current auction instances.
 	 * 
 	 * @returns {Auction[]}
+	 * @static
 	 */
 	static getAuctionList(){
 		return this.auctionsList
 	}
 	/** ====================================================
-	 * Push a auction instance into the list of auctions
+	 * Pushes an auction instance into the list of auctions.
 	 * 
-	 * @param {Auction} auction
+	 * @param {Auction} auction - The auction instance to be added to the list.
 	 * @returns {void}
+	 * @static
 	 */
 	static pushToAuctionList(auction){
 		this.auctionsList.push(auction)
 	}
-	/** ==================================================== 
+	/** ====================================================
+	 * Clears the list of auctions.
 	 * 
+	 * @returns {void}
+	 * @static
+	 */
+	static clearAuctionList(){
+		this.auctionsList = []
+	}
+	/** ==================================================== 
 	 * Retrieves an instance of the class based on the item code. 
+	 * 
 	 * @param {number} itemCode - The code of the item to retrieve. Must be a finite positive number less than or equal to the total number of auctions.
 	 * @returns {Auction?} - An instance of the class if the itemCode is valid, otherwise null.
+	 * @static
 	 */
 	static getInstanceByCode(itemCode) {
 
@@ -131,8 +171,10 @@ export default class Auction {
 	}
 	/** ====================================================
 	 * Determines if an auction item with the given name already exists.
+	 * 
 	 * @param {string} itemName - The name of the auction item.
 	 * @returns {boolean} - True if an auction item with the given name already exists, false otherwise.
+	 * @static
 	 */
 	static isAuctionItemDuplicate(itemName) {
 		for(let i = 0; i < this.getAuctionsAmount(); i++){
@@ -144,22 +186,29 @@ export default class Auction {
 	}
 	/** ====================================================
 	 * Retrieves the number of auctions in the list.
+	 * 
 	 * @returns {number} - The number of auctions.
+	 * @static
 	 */
 	static getAuctionsAmount(){
 		return this.getAuctionList().length
 	}
 	/** ====================================================
 	 * Deletes all auctions from the list and clears any active timers.
+	 * 
+	 * @returns {void}
+	 * @static
 	 */
-	static clearAuctionList(){
+	static clearAuction(){
 		for(let i = 0; i < this.getAuctionsAmount(); i++){
 			const instance = this.getAuctionList()[i]
 			if(instance.getRegressiveTimer()){
 				clearInterval(instance.getRegressiveTimer())
 			}
 		}
-		this.auctionsList = []
+		this.clearMainTimer()
+		this.clearTimesLeft()
+		this.clearAuctionList()
 	}
 
 
@@ -200,6 +249,7 @@ export default class Auction {
 	 * Returns a string with the date and time in the format "Dia: DD/MM/YYYY, Hora: HH:MM".
 	 * 
 	 * @returns {string} The formatted date and time string.
+	 * @static
 	 */
 	static getDateAndTime(){
 		return (
@@ -207,12 +257,101 @@ export default class Auction {
 			Hora: ${this.date.getHours()}:${this.date.getMinutes()}`
 		)
 	}
+	/** ====================================================
+	 * Register the remaining time for items being auctiononed
+	 * 
+	 * @param {string} itemName 
+	 * @param {number} secondsLeft 
+	 * @returns {void}
+	 * @static
+	 */
+	static registerTimesLeft(itemName, secondsLeft){
+		this.itemName_TimeLeft_KVPairs[itemName] = secondsLeft
+	}
+	/** ====================================================
+	 * Returns an object with the remaining time for items being auctioned.
+	 * 
+	 * @returns {Object.<string, number>} - An object with the item names as keys and the remaining time in seconds as values.
+	 * @static
+	 */
+	static retrieveTimesLeft() {
+		return this.itemName_TimeLeft_KVPairs
+	}
+	/** ====================================================
+	 * Clears all registered remaining times for items being auctioned.
+	 * 
+	 * @returns {void}
+	 * @static
+	 */
+	static clearTimesLeft() {
+		this.itemName_TimeLeft_KVPairs = {}
+	}
+	/** ====================================================
+	 * Starts the main timer, which handles which auction should announce its remaining time to reduce chat spamming.
+	 * 
+	 * @returns {void}
+	 * @static
+	 */
+	static startMainTimer() {
+
+		const seconds = 10
+		setTimeout(()=>{
+			this.mainTimer = setInterval(() => {
+				this.mainTimeAlertMessage()
+			}, seconds * 1000)
+		}, 1000)
+	}
+	/** ====================================================
+	 * Clears the main timer after all auction instances have been deleted.
+	 * 
+	 * @returns {void}
+	 * @static
+	 */
+	static clearMainTimer(){
+		clearInterval(this.mainTimer)
+	}
+	/** ====================================================
+	 * Sends a message to the chat with the remaining time for each auction instance. 
+	 * The message is sent if the remaining time is 5 minutes or less, for each remaining minute, 
+	 * or if the remaining time is a multiple of 10 minutes.
+	 * 
+	 * @returns {void}
+	 * @static
+	 */
+	static mainTimeAlertMessage() {
+
+		let message = `Minutos restantes : |`
+		let count = 0
+
+		for (const item in this.itemName_TimeLeft_KVPairs) {
+
+			const timeLeft = this.itemName_TimeLeft_KVPairs[item]
+			const itemName = item
+
+			if(
+				((
+					timeLeft % (10 * 60) === 0	
+				) || (
+					timeLeft % (1 * 60) === 0 	&& 
+					timeLeft <= (5 * 60)
+				)) && timeLeft > 0
+			) {
+			   message += `| Leilão[${itemName}]: ${timeLeft/60} |`
+			   count++
+			}
+		}
+		message += `|`
+
+		if(count <= 0) return
+		sendChatMessage(message)
+	}
 
 
 	/** ====================================================
 	 * Returns the amount of seconds left to end the auction
+	 * 
 	 * @returns {number} seconds remaining
-	*/
+	 */
 	getSecondsLeft(){
 		return this.secondsLeft
 	}
@@ -221,7 +360,7 @@ export default class Auction {
 	 * 
 	 * @param {number} seconds how many seconds you want to add
 	 * @returns {void}
-	*/
+	 */
 	addSecondsLeft(seconds){
 		this.seconsdsLeft += seconds
 	}
@@ -230,7 +369,7 @@ export default class Auction {
 	 * 
 	 * @param {number} seconds how many seconds you want to set
 	 * @returns {void}
-	*/
+	 */
 	setSecondsLeft(seconds){
 		this.secondsLeft = seconds
 	}
@@ -239,12 +378,13 @@ export default class Auction {
 	 * 
 	 * @param {number} seconds how many seconds you want to decrease
 	 * @returns {void}
-	*/
+	 */
 	decreaseSecondsLeft(seconds){
 		this.secondsLeft -= seconds
 	}
 	/** ====================================================
 	 * Sets the number of minutes left for the auction.
+	 * 
 	 * @param {number} minutes - The number of minutes left for the auction.
 	 * @returns {void}
 	 */
@@ -253,7 +393,9 @@ export default class Auction {
 	}
 	/** ====================================================
 	 * Adds a specified number of minutes to the `timeLeft` property of the auction instance.
+	 * 
 	 * @param {number} minutes - The number of minutes to add to the `timeLeft` property.
+	 * @returns {void}
 	 */
 	addExtraMinutes(minutes){
 		this.secondsLeft += minutes * 60
@@ -262,13 +404,16 @@ export default class Auction {
 	 * returns the setInterval instance correlated with the auction instance
 	 * 
 	 * @returns {NodeJS.Timer}
-	*/
+	 */
 	getRegressiveTimer(){
 		return this.regressiveTimer
 	}
 	/** ====================================================
-	 * Starts a regressive timer for the auction instance and calls the `announceWinner` function when there is no time left. Additionally, the timer calls the `timeAlertMessage` function at every interval to provide feedback to viewers.
-	*/
+	 * Starts a regressive timer for the auction instance and calls the `announceWinner()` function when there is no time left. 
+	 * Additionally, the timer calls the `timeAlertMessage()` function at every interval to provide feedback to viewers.
+	 * 
+	 * @returns {void}
+	 */
 	startRegressiveTimer() {
 
 		//instantiate a 'setInterval' timer reference inside 'this.regressiveTimer' property
@@ -280,19 +425,23 @@ export default class Auction {
 				return
 			}
 			
-			this.timeAlertMessage()
+			//this.timeAlertMessage()
+			Auction.registerTimesLeft(this.getItemName(), this.getSecondsLeft())
 			this.decreaseSecondsLeft(10)
 			
 		}, 10000) // runs every 10 seconds
 	}
 	/** ==================================================== 
 	 * Clears the timer for the auction instance.
-	*/
+	 * 
+	 * @returns {void}
+	 */
 	clearTimer(){
 		clearInterval(this.getRegressiveTimer())
 	}
 	/** ====================================================
-	 *Check if an auction has finished.
+	 * Check if an auction has finished.
+	 * 
 	 * @returns {boolean} True if the auction has finished, false if it is still ongoing.
 	 */
 	isAuctionFinished(){
@@ -300,27 +449,9 @@ export default class Auction {
 		return false
 	}
 	/** ====================================================
-	 * Sends a message to the chat with the remaining time for the auction instance. The message is sent if the remaining time is 5 minutes or less, for each remaining minute, or if the remaining time is a multiple of 10 minutes.
-	 */
-	timeAlertMessage() {
-
-		const seconds = this.getSecondsLeft()
-		const minutes = Math.floor(seconds / 60)
-		const itemName = this.getItemName()
-
-		if(
-			((
-				seconds % (10 * 60) === 0	
-			) || (
-				seconds % (1 * 60) === 0 	&& 
-				seconds <= (5 * 60)
-			)) && seconds > 0
-		) {
-		   sendChatMessage(`${itemName.toUpperCase()}, minutos restantes: ${minutes} .`)
-		}
-	}
-	/** ====================================================
 	 * Add extra minutes if there is a new Rank_1, a Draw, or a first bid
+	 * 
+	 * @returns {void}
 	 */
 	checkForNewWinner(userName){
 
@@ -409,6 +540,7 @@ export default class Auction {
 	 * @param {Object} bid - An object containing the username and bid value.
 	 * @param {string} bid.userName - The username of the participant.
 	 * @param {number} bid.bidValue - The value of the bid.
+	 * @returns {void}
 	 */
 	bid({userName, bidValue}) {
 		
@@ -425,25 +557,20 @@ export default class Auction {
 	/** ====================================================
 	 * Retrieves the instance `key:value` pairs of participants and their points.
 	 * 
-	 * @returns {{
-	* 		string: number; 
-	* 		'partipant_1':pointsValue; 
-	* 		'partipant_2':pointsValue; 
-	* 		'partipant_n':pointsValue;
-	* }} The list of participants for the auction item.
-	*/
+	 * @returns {Object.<string, number>} The list of participants and their points for the auction item.
+	 */
 	getParticipants() {
-		return this.participants
+		return this.participants_Bid_KVPairs
 	}
 	/** ====================================================
-	 * sum the given bid value with total bid value for a specific participant
-	 * 
-	 * @param {string} userName 
-	 * @param {number} pointsValue 
+	 * Adds the given bid value to the total bid value for a specific participant.
+	 *
+	 * @param {string} userName - The name of the participant.
+	 * @param {number} bidValue - The value of the bid to add.
 	 * @returns {void}
-	*/
+	 */
 	addParticipantTotalBid(userName, bidValue){
-		this.participants[userName] += bidValue
+		this.participants_Bid_KVPairs[userName] += bidValue
 	}
 	/** ====================================================
 	 * Checks if a specific name already exist inside the Participants list
@@ -452,7 +579,7 @@ export default class Auction {
 	 * @returns {boolean} `True` is useName already exists, `false` otherwise
 	 */
 	isParticipantRegistered(userName){
-		return this.participants.hasOwnProperty(userName)
+		return this.participants_Bid_KVPairs.hasOwnProperty(userName)
 	}
 	/** ====================================================
 	 * Register a specific name with the initial bid value provided
@@ -462,7 +589,7 @@ export default class Auction {
 	 * @returns {void}
 	 */
 	registerParticipant(userName, bidValue) {
-		this.participants[userName] = bidValue
+		this.participants_Bid_KVPairs[userName] = bidValue
 	}
 	/** ====================================================
 	 * Returns an array of participants object, example: [{name: michael, score: 1200}, ...] descendent ordered by score
@@ -488,7 +615,10 @@ export default class Auction {
 		return itemRank
 	}
 	/** ====================================================
-	 * Announces the winner of the auction instance. If there are no participants, a message is sent to the chat indicating that the auction ended with no winner. Otherwise, a message is sent to the chat announcing the winner and their score.
+	 * Announces the winner of the auction instance. If there are no participants, a message is sent to the chat indicating that the auction ended with no winner.
+	 * Otherwise, a message is sent to the chat announcing the winner and their score. In case of a tie, a message is sent indicating that there was no winner and that the house won.
+	 * 
+	 * @returns {void}	 
 	 */
 	announceWinner() {
 

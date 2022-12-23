@@ -10,6 +10,6 @@ import Auction from "../Auction"
  */
 export default function endAllAuctions() {
 	
-	Auction.clearAuctionList()
-	sendChatMessage(`Leilão finalizado com sucesso. Qualquer histórico de ganhador foi deletado`)
+	Auction.clearAuction()
+	sendChatMessage(`Leilão finalizado com sucesso. Histórico de ganhadores deletado`)
 }
