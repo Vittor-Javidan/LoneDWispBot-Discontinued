@@ -13,7 +13,7 @@ module.exports = require('./src/chatBot.js')
 */
 
 const { app, BrowserWindow } = require('electron')
-const { default: env } = require('./src/secrets/env.js')
+const { default: env } = require('./src/env.js')
 
 let myWindow
 

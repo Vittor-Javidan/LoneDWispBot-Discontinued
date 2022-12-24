@@ -1,5 +1,5 @@
 import tmi from 'tmi.js'
-import env from './secrets/env'
+import env from './env'
 
 const options = {
 	connection: {

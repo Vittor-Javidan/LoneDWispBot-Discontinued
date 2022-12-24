@@ -1,4 +1,4 @@
-import env from "../secrets/env"
+import env from "../env"
 
 import musicRewardListeners from "../features_modules/Music/rewardListeners"
 import websiteRewardListeners from "../features_modules/Website/rewardListeners"
