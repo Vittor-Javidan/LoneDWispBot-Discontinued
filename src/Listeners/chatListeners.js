@@ -24,22 +24,26 @@ import env from "../secrets/env"
  */
 export default function chatListeners(data) {
 
-	const comands = env.MODULES_COMMANDS
 	const message = data.message.toLocaleLowerCase()
+	
+	//COMMAND IMPORTS
+	const modules = env.MODULES
+	const websiteCommands = modules.WEBSITE.COMMANDS
+	const auctionCommands = modules.AUCTION.COMMANDS
 
 	//WEBSITE MODULE ====================================================
-	if(message.startsWith(comands.WEBSITE.GIVE_WEBSITE_URL)) websiteChatListeners.giveURL()
+	if(message.startsWith(websiteCommands.GIVE_WEBSITE_URL)) websiteChatListeners.giveURL()
 	//
 
 	//Broadcaster exclusive chat commands area
 	if(data.userName === env.BROADCASTER_NAME){
 
 		//AUCTION MODULE ====================================================
-		if(message.startsWith(comands.AUCTION.CREATE_MANY_AUCTIONS)) auctionChatListeners.createManyAuctions(data.message)
-		if(message.startsWith(comands.AUCTION.CREATE_AUCTION)) auctionChatListeners.createAuction(data.message)
-		if(message.startsWith(comands.AUCTION.SET_AUCTION_TIME_LEFT)) auctionChatListeners.setAuctionTimeLeft(data.message)
-		if(message.startsWith(comands.AUCTION.END_ALL_AUCTIONS)) auctionChatListeners.endAllAuctions()
-		if(message.startsWith(comands.AUCTION.PIN_MESSAGE)) auctionChatListeners.pinMessage()
+		if(message.startsWith(auctionCommands.CREATE_MANY_AUCTIONS)) auctionChatListeners.createManyAuctions(data.message)
+		if(message.startsWith(auctionCommands.CREATE_AUCTION)) auctionChatListeners.createAuction(data.message)
+		if(message.startsWith(auctionCommands.SET_AUCTION_TIME_LEFT)) auctionChatListeners.setAuctionTimeLeft(data.message)
+		if(message.startsWith(auctionCommands.END_ALL_AUCTIONS)) auctionChatListeners.endAllAuctions()
+		if(message.startsWith(auctionCommands.PIN_MESSAGE)) auctionChatListeners.pinMessage()
 		//
 	}
 }

@@ -1,4 +1,4 @@
-import REWARD_IDENTIFIER_LIST from "../secrets/rewards_IDs"
+import env from "../secrets/env"
 
 import musicRewardListeners from "../features_modules/Music/rewardListeners"
 import websiteRewardListeners from "../features_modules/Website/rewardListeners"
@@ -30,24 +30,30 @@ export default function rewardListeners(data) {
 	const id = data.rewardIdentifier
 	if(!id) return
 
+	//REWARD IDs IMPORT
+	const modules = env.MODULES
+	const websiteRewardIds = modules.WEBSITE.REWARDS_IDs
+	const musicRewardIds = modules.MUSIC.REWARDS_IDs
+	const auctionRewardIds = modules.AUCTION.REWARDS_IDs
+
 	//switch statement to handle better intensive redeemer events
 	switch (id) {
 
 		//WEBSITE MODULE ====================================================
-		case REWARD_IDENTIFIER_LIST['Website']: websiteRewardListeners.giveURL(); break
+		case websiteRewardIds.GIVE_WEBSITE_URL: websiteRewardListeners.giveURL(); break
 		//
 
 		//MUSIC MODULE ======================================================
-		case REWARD_IDENTIFIER_LIST['Playlist Music Sugestion']: musicRewardListeners.viewerMusicSugestion(data); break
+		case musicRewardIds.PLAYLIST_MUSIC_SUGESTION: musicRewardListeners.viewerMusicSugestion(data); break
 		//
 
 		//AUCTION MODULE ====================================================
-		case REWARD_IDENTIFIER_LIST['Auction: Ranks']: auctionRewardListeners.avaibleAuctions(data); break
-		case REWARD_IDENTIFIER_LIST['Auction bid 100 points']: auctionRewardListeners.bid(data, 100); break
-		case REWARD_IDENTIFIER_LIST['Auction bid 500 points']: auctionRewardListeners.bid(data, 500); break
-		case REWARD_IDENTIFIER_LIST['Auction bid 1000 points']: auctionRewardListeners.bid(data, 1000); break
-		case REWARD_IDENTIFIER_LIST['Auction bid 5000 points']: auctionRewardListeners.bid(data, 5000); break
-		case REWARD_IDENTIFIER_LIST['Auction bid 10000 points']: auctionRewardListeners.bid(data, 10000); break
+		case auctionRewardIds.AUCTION_RANKS: auctionRewardListeners.auctionRanks(data); break
+		case auctionRewardIds.BID_100: auctionRewardListeners.bid(data, 100); break
+		case auctionRewardIds.BID_500: auctionRewardListeners.bid(data, 500); break
+		case auctionRewardIds.BID_1000: auctionRewardListeners.bid(data, 1000); break
+		case auctionRewardIds.BID_5000: auctionRewardListeners.bid(data, 5000); break
+		case auctionRewardIds.BID_10000: auctionRewardListeners.bid(data, 10000); break
 		//
 	}
 }

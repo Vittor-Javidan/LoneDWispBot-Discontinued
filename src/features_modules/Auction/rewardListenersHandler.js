@@ -1,9 +1,9 @@
-import avaibleAuctions from './rewardListeners/avaibleAuctions'
+import auctionRanks from './rewardListeners/auctionRanks'
 import bid from './rewardListeners/auctionBid'
 
 /** ==================================================== */
 const auctionRewardListeners = {
-	avaibleAuctions,
+	auctionRanks,
 	bid,
 }
 export default auctionRewardListeners

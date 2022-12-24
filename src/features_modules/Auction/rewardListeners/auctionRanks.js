@@ -12,7 +12,7 @@ import generalRank from "./generalRank"
  * @param {string} data.message - The message containing the item code and bid amount.
  * @return {void}
  */
-export default function avaibleAuctions(data){
+export default function auctionRanks(data){
 
 	//Checks is there is no auction happening
 	if(Auction.getAuctionsAmount() <= 0){
