@@ -228,7 +228,7 @@ export default class Auction {
 	 * @returns {void}
 	 */
 	setItemName(itemName){
-		this.itemName = itemName.toLowerCase()
+		this.itemName = itemName.toUpperCase()
 	}
 
 
@@ -340,7 +340,7 @@ export default class Auction {
 			   count++
 			}
 		}
-		message += `|`
+		message += `| Caso queira saber como o evento funciona, é só me perguntar!!! (づ｡◕‿‿◕｡)づ ✧`
 
 		if(count <= 0) return
 		sendChatMessage(message)

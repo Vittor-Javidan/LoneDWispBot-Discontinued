@@ -21,7 +21,7 @@ export default function createManyAuctions(message) {
     //Creates a instace for each item. Starts at the first itemName on index 3
     const minutes = words[2]
     for(let i = 3; i < words.length; i ++) {
-        const itemName = words[i].toUpperCase()
+        const itemName = words[i]
         Auction.init({
             item: itemName,
             minutes: minutes,
