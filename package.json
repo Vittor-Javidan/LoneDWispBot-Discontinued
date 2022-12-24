@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "electron ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "esm": "^3.2.25",
     "tmi": "^2.0.0"
+  },
+  "devDependencies": {
+    "electron": "^22.0.0"
   }
 }
