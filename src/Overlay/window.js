@@ -27,7 +27,10 @@ export default function createWindow() {
             width: 1920,
             height: 1040,
             frame: false,
-            transparent: true
+            transparent: true,
+
+            icon: `../assets/images/Lone_Wisp_Logo_1024.png`,
+            title: `Lone D Wisp Chatbot`,
         })
     
         /**
