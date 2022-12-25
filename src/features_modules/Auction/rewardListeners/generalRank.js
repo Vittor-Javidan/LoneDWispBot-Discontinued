@@ -61,7 +61,7 @@ function buildAndSendMessage(userName, auctionsArray) {
 		}
 
 	}
-	availableAuctions += `|`
+	availableAuctions += `| Lembrando que ao vencer um leilão, é necessário coletar o prêmio ANTES QUE A LIVE ACABE!!!`
 
 	sendTwitchChatMessage(`@${userName}, CÓDIGOS DOS LEILÕES SÃO: |${availableAuctions}`)
 }
