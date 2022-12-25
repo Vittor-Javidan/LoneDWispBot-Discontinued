@@ -1,4 +1,4 @@
-import sendChatMessage from '../../../sendMessageHandler'
+import sendTwitchChatMessage from "../../Twitch/sendMessageHandler"
 
 /** ====================================================
  * Sends a feedback whisper message to the viewer
@@ -7,7 +7,7 @@ import sendChatMessage from '../../../sendMessageHandler'
  * @param {string} data.userName
  */
 function viewerMusicSugestion(data) {
-	sendChatMessage(
+	sendTwitchChatMessage(
 		`/w ${data.userName} Assim que possível eu pessoalmente irei escutar sua música em off.
 		Irei adiciona-la caso combine com a playlist do canal.`
 	)

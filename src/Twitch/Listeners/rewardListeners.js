@@ -1,8 +1,8 @@
-import env from "../env"
+import env from "../../env"
 
-import musicRewardListeners from "../features_modules/Music/rewardListeners"
-import websiteRewardListeners from "../features_modules/Website/rewardListeners"
-import auctionRewardListeners from "../features_modules/Auction/rewardListenersHandler"
+import musicRewardListeners from "../../features_modules/Music/rewardListeners"
+import websiteRewardListeners from "../../features_modules/Website/rewardListeners"
+import auctionRewardListeners from "../../features_modules/Auction/rewardListenersHandler"
 
 /*
 	If this file gets bigger, that's not a problem. 

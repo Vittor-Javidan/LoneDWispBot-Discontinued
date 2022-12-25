@@ -1,4 +1,4 @@
-import sendChatMessage from "../../../../sendMessageHandler"
+import sendTwitchChatMessage from "../../../Twitch/sendMessageHandler"
 import Auction from "../Auction"
 
 /** ====================================================
@@ -63,5 +63,5 @@ function buildAndSendMessage(userName, auctionsArray) {
 	}
 	availableAuctions += `|`
 
-	sendChatMessage(`@${userName}, CÓDIGOS DOS LEILÕES SÃO: |${availableAuctions}`)
+	sendTwitchChatMessage(`@${userName}, CÓDIGOS DOS LEILÕES SÃO: |${availableAuctions}`)
 }

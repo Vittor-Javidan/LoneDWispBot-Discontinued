@@ -1,4 +1,4 @@
-import sendChatMessage from "../../../../sendMessageHandler"
+import sendTwitchChatMessage from "../../../Twitch/sendMessageHandler"
 import Auction from "../Auction"
 
 /** ====================================================
@@ -14,7 +14,7 @@ export default function bid(data, bidValue) {
 
 	//Checks is there is no auction happening
 	if(Auction.getAuctionsAmount() <= 0){
-		sendChatMessage(`Não há nenhum leilão acontencendo no momento`)
+		sendTwitchChatMessage(`Não há nenhum leilão acontencendo no momento`)
 		return
 	}
 	
@@ -28,13 +28,13 @@ export default function bid(data, bidValue) {
 	
 	//Is auctionInstance null?
 	if(!auctionInstance) {
-		sendChatMessage(`@${userName} O código ${itemCode} não existe`)
+		sendTwitchChatMessage(`@${userName} O código ${itemCode} não existe`)
 		return
 	}
 
 	//Is this auction finished already?
 	if(auctionInstance.isAuctionFinished()) {
-		sendChatMessage(`@${userName}, esse leilão já foi finalizado!`)
+		sendTwitchChatMessage(`@${userName}, esse leilão já foi finalizado!`)
 		return 
 	}
 

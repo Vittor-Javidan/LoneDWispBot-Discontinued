@@ -1,4 +1,4 @@
-import sendChatMessage from "../sendMessageHandler"
+import sendTwitchChatMessage from "./sendMessageHandler"
 
 /**
  * @param {any} err
@@ -12,10 +12,10 @@ import sendChatMessage from "../sendMessageHandler"
 function errorHandler(err, data) {
 	console.log(err)
 	if(data.rewardIdentifier){
-		sendChatMessage(`Ocorreu um erro na recompensa resgatada de @${data.userName}. Id da recompensa: ${data.rewardIdentifier} `)
+		sendTwitchChatMessage(`Ocorreu um erro na recompensa resgatada de @${data.userName}. Id da recompensa: ${data.rewardIdentifier} `)
 		return
 	}
-	sendChatMessage(`Ocorreu um erro com o comando "${data.message}"`)
+	sendTwitchChatMessage(`Ocorreu um erro com o comando "${data.message}"`)
 }
 
 export default errorHandler
