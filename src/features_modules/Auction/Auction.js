@@ -80,7 +80,9 @@ export default class Auction {
 	 * @param {string} options.itemName - The name of the item being auctioned.
 	 * @param {number} options.minutes - The duration of the auction in minutes.
 	 * @returns {Auction}
+	 * 
 	 * @private
+	 * @constructor
 	 */
 	constructor(options) {
 
