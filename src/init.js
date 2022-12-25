@@ -1,5 +1,8 @@
 import twitchClient from "./Twitch/twitchClient"
-import window from "./Overlay/window"
+import createWindow from "./Overlay/window"
 
+// Initialize the twitch client.
 twitchClient()
-window()
+
+// Create the overlay window.
+createWindow()

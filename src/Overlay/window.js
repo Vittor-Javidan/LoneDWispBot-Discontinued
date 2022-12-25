@@ -12,10 +12,12 @@ import { app, BrowserWindow } from 'electron'
     My personal preference will be to make my own html and css file, since i know how to make things draggable in html. So i can ajust in real time in any game.
 */
 
-/**
- * Initialize a electrum window
+/** ====================================================
+ * createWindow creates a new browser window with specified dimensions and transparency.
+ * 
+ * @returns {void}
  */
-export default function window() {
+export default function createWindow() {
 
     let myWindow
 
@@ -29,7 +31,8 @@ export default function window() {
         })
     
         /**
-         * Use your html url here, it can be a overlay link from streamelements for example, or a local directory.
+         * Use your html url here, it can be a overlay link from streamelements
+         * for example, or a local directory.
          */
         myWindow.loadURL(env.OVERLAY_URL) 
     })
