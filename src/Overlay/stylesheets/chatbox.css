@@ -1,0 +1,42 @@
+:root {
+    --chat-background: rgba(15, 15, 15, 0.3);
+    --chat-shadow: rgb(2, 4, 24);
+    --chat-border: rgba(15, 15, 15, 0.5)
+}
+
+.widget {
+    cursor: pointer;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+}
+
+#chatbox-widget {
+    top: 400px
+}
+
+#chatbox-widget .reference-div {
+    height: 252px;
+    width: 422px;
+    position: relative;
+
+    background: var(--chat-background);
+    border: 1px solid var(--chat-border);
+    border-radius: 5px;
+
+    backdrop-filter: blur(6px);
+    box-shadow: -3px 3px 5px var(--chat-shadow);
+}
+
+#chatbox-widget iframe {
+    height: 250px;
+    width: 420px;
+    padding-left: 10px;
+    position: absolute;
+}
+
+#chatbox-widget #front-div-chatbox {
+    height: 250px;
+    width: 420px;
+    position: absolute;
+}

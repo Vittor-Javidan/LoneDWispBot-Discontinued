@@ -5,8 +5,34 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>LoneDWispBot</title>
 
-		<link rel="stylesheet" href="stylesheets/styles.css" />
+		<link rel="stylesheet" href="stylesheets/general.css" />
+		<link rel="stylesheet" href="stylesheets/chatbox.css" />
+		<link rel="stylesheet" href="stylesheets/event.css" />
 	</head>
 	<body id="body">
+		
+		<div class="widget" id="chatbox-widget" >
+			<div class="reference-div">
+				<iframe
+					id="chatbox"
+					src="https://streamelements.com/overlay/63a75ea6045cce8ff28aa9b1/hoIkpXDjTpIgxzMaweBbq3p54IT_yXUaLlpQnPTM1ru7OPyO"
+					title="chatBox"
+				></iframe>
+				<div id="front-div-chatbox"></div>
+			</div>
+		</div>
+
+		<div class="widget" id="event-widget" >
+			<div class="reference-div">
+				<iframe
+					id="event"
+					src="https://streamelements.com/overlay/63a76e9baf96c77471860b44/hoIkpXDjTpIgxzMaweBbq3p54IT_yXUaLlpQnPTM1ru7OPyO"
+					title="event"
+				></iframe>
+				<div id="front-div-event"></div>
+			</div>
+		</div>
+
+		<script src="scripts/draggable.js"></script>
 	</body>
 </html>

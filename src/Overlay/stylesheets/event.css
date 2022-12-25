@@ -1,0 +1,39 @@
+:root {
+    --chat-background: rgba(15, 15, 15, 0.3);
+    --chat-shadow: rgb(2, 4, 24);
+    --chat-border: rgba(15, 15, 15, 0.5)
+}
+
+.widget {
+    cursor: pointer;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+}
+
+#event-widget {
+    right: 10px;
+    height: 67px;
+    width: 350px;
+    border: 1px solid red;
+    background: var(--chat-background);
+    border: 1px solid var(--chat-border);
+    border-radius: 3px;
+    backdrop-filter: blur(6px);
+    box-shadow: -3px 3px 5px var(--chat-shadow);
+}
+
+#event-widget iframe {
+    height: 67px;
+    width: 348px;
+    padding-left: 10px;
+    position: absolute;   
+
+    transition: 1s linear;
+}
+
+#event-widget #front-div-event {
+    width: 420px;
+    height: 67px;
+    position: absolute;
+}
