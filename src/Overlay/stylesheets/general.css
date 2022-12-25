@@ -16,12 +16,11 @@ html {
 	overflow-y: hidden;
 }
 
-/*
+
 body {
-    This background is just for teste purposes
 	background-image: url('../../assets/images/background.jpg');
 }
-*/
+
 
 .widget {
     cursor: pointer;

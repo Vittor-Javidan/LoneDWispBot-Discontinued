@@ -36,7 +36,11 @@
 		</div>
 
 		<div class="widget" id="webcam-widget">
-			<video autoplay="true" id="webcam"></video>
+			<div id="webcam-container">
+				<video autoplay="true" id="webcam"></video>
+			</div>
+			<button class="webcam-button" id="invert-button">Invert</button>
+			<button class="webcam-button" id="hide-button">Hide</button>
 		</div>
 
 		<script src="scripts/webcamAccess.js"></script>
