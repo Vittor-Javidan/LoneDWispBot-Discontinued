@@ -12,7 +12,8 @@ widgets.forEach(widget => {
  * @param {HTML_Element} child - The container element to make draggable.
  * @returns {void}
  * 
- * @warning If the container element does not have a direct "relative-absolute" position style relation with its parent element, it does not throws an error, but the draggable behavior will be weird.
+ * @warning 1 - If the container element does not have a direct "relative-absolute" position style relation with its parent element, it does not throws an error, but the draggable behavior will be weird.
+ * @warning 2 - The child can have weird behavior if margin is being apply to it.
  */
 function makeDraggable(child) {
 

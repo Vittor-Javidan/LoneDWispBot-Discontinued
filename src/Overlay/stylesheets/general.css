@@ -22,3 +22,10 @@ body {
 	background-image: url('../../assets/images/background.jpg');
 }
 */
+
+.widget {
+    cursor: pointer;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+}
