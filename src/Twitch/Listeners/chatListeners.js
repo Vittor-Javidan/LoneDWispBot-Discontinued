@@ -1,5 +1,5 @@
-import websiteChatListeners from "../../features_modules/Website/chatListeners"
-import auctionChatListeners from "../../features_modules/Auction/chatListenersHandler"
+import websiteChatListeners from "../../Modules/Website/chatListeners"
+import auctionChatListeners from "../../Modules/Auction/chatListenersHandler"
 import env from "../../env"
 
 /*
