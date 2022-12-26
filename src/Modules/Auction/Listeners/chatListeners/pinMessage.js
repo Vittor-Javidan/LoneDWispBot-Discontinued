@@ -1,5 +1,5 @@
-import sendMessage from "../../../Twitch/sendMessageHandler"
-import Auction from "../Auction"
+import sendMessage from "../../../../Twitch/sendMessageHandler"
+import Auction from "../../Auction"
 
 /** ====================================================
  * Sends a message on twitch channels chat already formated and ready to pin o chat

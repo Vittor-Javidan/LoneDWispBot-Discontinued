@@ -1,5 +1,5 @@
-import sendMessage from "../../../Twitch/sendMessageHandler"
-import Auction from "../Auction"
+import sendMessage from "../../../../Twitch/sendMessageHandler"
+import Auction from "../../Auction"
 
 /** ====================================================
  * Place a bid in an auction.

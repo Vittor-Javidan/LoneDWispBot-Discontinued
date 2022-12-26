@@ -1,6 +1,5 @@
-import sendMessage from "../../../Twitch/sendMessageHandler"
-import Auction from "../Auction"
-
+import sendMessage from "../../../../Twitch/sendMessageHandler"
+import Auction from "../../Auction"
 /** ==================================================== 
  * Deletes all available auction instances.
  * 

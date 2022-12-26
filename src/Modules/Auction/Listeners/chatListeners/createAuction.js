@@ -1,5 +1,5 @@
-import sendMessage from "../../../Twitch/sendMessageHandler"
-import Auction from "../Auction"
+import sendMessage from "../../../../Twitch/sendMessageHandler"
+import Auction from "../../Auction"
 
 /** ====================================================
  * Receives a string text sentence in the format of "!commandName subCommandName itemName minutes" as an argument, and creates an Auction instance with it.

@@ -1,8 +1,7 @@
 import env from "../../env"
-
+import auctionRewardListeners from "../../Modules/Auction/Listeners/rewardHandler"
 import musicRewardListeners from "../../Modules/Music/rewardListeners"
 import websiteRewardListeners from "../../Modules/Website/rewardListeners"
-import auctionRewardListeners from "../../Modules/Auction/rewardListenersHandler"
 
 /*
 	If this file gets bigger, that's not a problem. 

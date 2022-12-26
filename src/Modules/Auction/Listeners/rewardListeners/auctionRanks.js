@@ -1,8 +1,8 @@
-import sendMessage from "../../../Twitch/sendMessageHandler"
-import Auction from "../Auction"
+import sendMessage from "../../../../Twitch/sendMessageHandler"
+import Auction from "../../Auction"
 
-import itemRank from "./itemRank"
 import generalRank from "./generalRank"
+import itemRank from "./itemRank"
 
 /** ====================================================
  * Sends the item rank as a chat message of the selected item. Or the general rank if item code is '0'.

@@ -1,5 +1,5 @@
-import sendMessage from "../../../Twitch/sendMessageHandler"
-import Auction from "../Auction"
+import sendMessage from "../../../../Twitch/sendMessageHandler"
+import Auction from "../../Auction"
 
 /** ====================================================
  * Receives a string text sentence in the format of "!commandName subCommandName itemCode minutes" as an argument, and changes the remaining time of a specific Auction instance with it.

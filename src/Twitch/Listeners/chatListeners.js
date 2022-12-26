@@ -1,6 +1,6 @@
-import websiteChatListeners from "../../Modules/Website/chatListeners"
-import auctionChatListeners from "../../Modules/Auction/chatListenersHandler"
 import env from "../../env"
+import auctionChatListeners from "../../Modules/Auction/Listeners/chatHandler"
+import websiteChatListeners from "../../Modules/Website/chatListeners"
 
 /*
 	If this file gets bigger, that's not a problem. 
