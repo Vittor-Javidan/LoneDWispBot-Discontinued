@@ -1,5 +1,5 @@
-import env from '../env'
 import { app, BrowserWindow } from 'electron'
+import env from '../env'
 
 //OVERLAY ==========================================================================
 /* 
