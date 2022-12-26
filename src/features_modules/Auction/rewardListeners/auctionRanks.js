@@ -1,4 +1,4 @@
-import sendTwitchChatMessage from "../../../Twitch/sendMessageHandler"
+import sendMessage from "../../../Twitch/sendMessageHandler"
 import Auction from "../Auction"
 
 import itemRank from "./itemRank"
@@ -16,7 +16,7 @@ export default function auctionRanks(data){
 
 	//Checks is there is no auction happening
 	if(Auction.getAuctionsAmount() <= 0){
-		sendTwitchChatMessage(`Não há nenhum leilão acontencendo no momento`)
+		sendMessage(`Não há nenhum leilão acontencendo no momento`)
 		return
 	}
 
@@ -34,7 +34,7 @@ export default function auctionRanks(data){
 			itemCode: itemCode
 		})
 	} else {
-		sendTwitchChatMessage(`@${userName} O código ${itemCode} não existe`)
+		sendMessage(`@${userName} O código ${itemCode} não existe`)
 	}
 }
 

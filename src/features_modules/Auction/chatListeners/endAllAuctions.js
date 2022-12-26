@@ -1,4 +1,4 @@
-import sendTwitchChatMessage from "../../../Twitch/sendMessageHandler"
+import sendMessage from "../../../Twitch/sendMessageHandler"
 import Auction from "../Auction"
 
 /** ==================================================== 
@@ -11,5 +11,5 @@ import Auction from "../Auction"
 export default function endAllAuctions() {
 	
 	Auction.clearAuction()
-	sendTwitchChatMessage(`Leilão finalizado com sucesso. Histórico de ganhadores deletado`)
+	sendMessage(`Leilão finalizado com sucesso. Histórico de ganhadores deletado`)
 }

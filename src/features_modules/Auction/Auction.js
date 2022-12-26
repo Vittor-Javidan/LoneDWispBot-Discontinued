@@ -1,4 +1,4 @@
-import sendTwitchChatMessage from "../../Twitch/sendMessageHandler";
+import sendMessage from "../../Twitch/sendMessageHandler";
 
 
 export default class Auction {
@@ -345,7 +345,7 @@ export default class Auction {
 		message += `| Caso queira saber como o evento funciona, é só me perguntar!!! (づ｡◕‿‿◕｡)づ ✧`
 
 		if(count <= 0) return
-		sendTwitchChatMessage(message)
+		sendMessage(message)
 	}
 
 
@@ -470,14 +470,14 @@ export default class Auction {
 				if(secondsLeft > 60) return
 
 				this.addExtraMinutes(extraMinutes)
-				sendTwitchChatMessage(`Leilão[${itemName}] PRORROGAÇÃO: 2 minutos adicionados.`)
+				sendMessage(`Leilão[${itemName}] PRORROGAÇÃO: 2 minutos adicionados.`)
 
 			} else if (isNewWinner()) {
 
 				if(secondsLeft > 60) return
 					
 				this.addExtraMinutes(extraMinutes)
-				sendTwitchChatMessage(`Leilão[${itemName}] PRORROGAÇÃO: 2 minutos adicionados.`)
+				sendMessage(`Leilão[${itemName}] PRORROGAÇÃO: 2 minutos adicionados.`)
 			}
 
 		} else if (isFirstBid()) {
@@ -485,7 +485,7 @@ export default class Auction {
 			if(secondsLeft > 60) return
 
 			this.addExtraMinutes(extraMinutes)
-			sendTwitchChatMessage(`Leilão[${itemName}] PRORROGAÇÃO: 2 minutos adicionados.`)
+			sendMessage(`Leilão[${itemName}] PRORROGAÇÃO: 2 minutos adicionados.`)
 		}
 
 		function isDraw(){
@@ -496,7 +496,7 @@ export default class Auction {
 					userName === podium[1].name
 				)
 			){
-				sendTwitchChatMessage(`Leilão[${itemName}] EMPATE!!: @${podium[0].name} e ${podium[1].name} - ${podium[0].score} pontos. Em caso de item empatado, existe nenhum ganhador! BEM VINDO AO LEILÃO MUAHAHA *-*`)
+				sendMessage(`Leilão[${itemName}] EMPATE!!: @${podium[0].name} e ${podium[1].name} - ${podium[0].score} pontos. Em caso de item empatado, existe nenhum ganhador! BEM VINDO AO LEILÃO MUAHAHA *-*`)
 				return true
 			}
 			return false
@@ -505,7 +505,7 @@ export default class Auction {
 		function isNewWinner(){
 
 			if(userName === podium[0].name) {
-				sendTwitchChatMessage(`Leilão[${itemName}] Nova Melhor pontuação: @${podium[0].name} - ${podium[0].score} pontos.`)
+				sendMessage(`Leilão[${itemName}] Nova Melhor pontuação: @${podium[0].name} - ${podium[0].score} pontos.`)
 				return true
 			}
 			return false
@@ -514,7 +514,7 @@ export default class Auction {
 		function isFirstBid(){
 
 			if(userName === podium[0].name) {
-				sendTwitchChatMessage(`Leilão[${itemName}] Primeiro lance: @${podium[0].name} - ${podium[0].score} pontos.`)
+				sendMessage(`Leilão[${itemName}] Primeiro lance: @${podium[0].name} - ${podium[0].score} pontos.`)
 				return true
 			}
 			return false
@@ -629,7 +629,7 @@ export default class Auction {
 		
 		//Check for no bid result
 		if (podium.length <= 0) {
-			sendTwitchChatMessage(`SEM LANCE: Leilão[${itemName}]`)
+			sendMessage(`SEM LANCE: Leilão[${itemName}]`)
 			return
 		}
 
@@ -638,19 +638,19 @@ export default class Auction {
 
 		//Check for only 1 bid result
 		if (podium.length === 1) {
-			sendTwitchChatMessage(`GANHADOR Leilão[${itemName}: @${name} - ${score} pontos`)
-			sendTwitchChatMessage(`/w @${name} PARABÉNS!! Voce ganhou um ${itemName}. ${Auction.getDateAndTime()}.`)
+			sendMessage(`GANHADOR Leilão[${itemName}: @${name} - ${score} pontos`)
+			sendMessage(`/w @${name} PARABÉNS!! Voce ganhou um ${itemName}. ${Auction.getDateAndTime()}.`)
 			return
 		}
 
 		//Check for Draw result
 		if(score === podium[1].score){
-			sendTwitchChatMessage(`EMPATE Leilão[${itemName}: sem ganhadores, a casa ganhou *-*`)
+			sendMessage(`EMPATE Leilão[${itemName}: sem ganhadores, a casa ganhou *-*`)
 			return
 		}
 
 		//Check for winner result
-		sendTwitchChatMessage(`GANHADOR Leilão[${itemName}]: @${name} - ${score} pontos`)	
-		sendTwitchChatMessage(`/w @${name} PARABÉNS!! Você ganhou um ${itemName}. ${Auction.getDateAndTime()}. Você tem até o final da stream pra receber o prêmio!`)
+		sendMessage(`GANHADOR Leilão[${itemName}]: @${name} - ${score} pontos`)	
+		sendMessage(`/w @${name} PARABÉNS!! Você ganhou um ${itemName}. ${Auction.getDateAndTime()}. Você tem até o final da stream pra receber o prêmio!`)
 	}
 }

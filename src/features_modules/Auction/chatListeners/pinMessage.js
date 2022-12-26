@@ -1,4 +1,4 @@
-import sendTwitchChatMessage from "../../../Twitch/sendMessageHandler"
+import sendMessage from "../../../Twitch/sendMessageHandler"
 import Auction from "../Auction"
 
 /** ====================================================
@@ -9,7 +9,7 @@ export default function pinMessage(){
 
     const auctions = Auction.getAuctionList()
     if(auctions.length <= 0){
-        sendTwitchChatMessage(`Não há nenhum leilão ocorrendo no momento`)
+        sendMessage(`Não há nenhum leilão ocorrendo no momento`)
         return
     }
 
@@ -19,5 +19,5 @@ export default function pinMessage(){
     }
     message += `| Utilize os pontos do canal para fazer lances e consultar ranks e resultados!`
 
-    sendTwitchChatMessage(message)
+    sendMessage(message)
 }

@@ -1,4 +1,4 @@
-import sendTwitchChatMessage from "../../../Twitch/sendMessageHandler"
+import sendMessage from "../../../Twitch/sendMessageHandler"
 import Auction from "../Auction"
 
 /** ====================================================
@@ -63,5 +63,5 @@ function buildAndSendMessage(userName, auctionsArray) {
 	}
 	availableAuctions += `| Lembrando que ao vencer um leilão, é necessário coletar o prêmio ANTES QUE A LIVE ACABE!!!`
 
-	sendTwitchChatMessage(`@${userName}, CÓDIGOS DOS LEILÕES SÃO: |${availableAuctions}`)
+	sendMessage(`@${userName}, CÓDIGOS DOS LEILÕES SÃO: |${availableAuctions}`)
 }

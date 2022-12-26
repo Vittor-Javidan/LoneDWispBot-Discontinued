@@ -1,4 +1,4 @@
-import sendTwitchChatMessage from "../../../Twitch/sendMessageHandler"
+import sendMessage from "../../../Twitch/sendMessageHandler"
 import Auction from "../Auction"
 
 /** ====================================================
@@ -21,7 +21,7 @@ export default function setAuctionTimeLeft(message) {
 	
 	//Is instance null?
 	if(!instance){
-		sendTwitchChatMessage(`O leilão de código "${itemCode}" não existe`)
+		sendMessage(`O leilão de código "${itemCode}" não existe`)
 		return
 	}
 	
@@ -31,13 +31,13 @@ export default function setAuctionTimeLeft(message) {
 
 	//Sets the auction remaining minutes and send a feedback message in the twitch channels chat
 	instance.setMinutes(minutes)
-	sendTwitchChatMessage(`Tempo restante do Leilão[${instance.getItemName()}] foi modificado para ${minutes} minutos`)
+	sendMessage(`Tempo restante do Leilão[${instance.getItemName()}] foi modificado para ${minutes} minutos`)
 }
 
 function isInvalidMessageLenght(words){
 	
 	if(words.length !== 4){
-		sendTwitchChatMessage(`commando inválido.`)
+		sendMessage(`commando inválido.`)
 		return true
 	}
 	return false
@@ -49,7 +49,7 @@ function isMinutesValidNumber(minutes){
 		typeof minutes !== 'number' 		||
 		minutes < 0
 	) {
-		sendTwitchChatMessage(`o tempo precisa ser um número, e ser positivo`)
+		sendMessage(`o tempo precisa ser um número, e ser positivo`)
 		return false
 	}
 	return true

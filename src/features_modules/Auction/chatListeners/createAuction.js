@@ -1,4 +1,4 @@
-import sendTwitchChatMessage from "../../../Twitch/sendMessageHandler"
+import sendMessage from "../../../Twitch/sendMessageHandler"
 import Auction from "../Auction"
 
 /** ====================================================
@@ -30,13 +30,13 @@ export default function createAuction(message) {
 		item: itemName,
 		minutes: minutes,
 	})
-	sendTwitchChatMessage(`LEILÃO DE UM ${itemName} COMEÇOU E ACABA EM ${minutes} MINUTOS!!! Dê lances usando as recompensas do canal (づ｡◕‿‿◕｡)づ ✧.`)
+	sendMessage(`LEILÃO DE UM ${itemName} COMEÇOU E ACABA EM ${minutes} MINUTOS!!! Dê lances usando as recompensas do canal (づ｡◕‿‿◕｡)づ ✧.`)
 }
 
 function isInvalidMessageLenght(words){
 	
 	if(words.length !== 4){
-		sendTwitchChatMessage(`commando possui um número de argumentos diferente do esperado`)
+		sendMessage(`commando possui um número de argumentos diferente do esperado`)
 		return true
 	}
 	return false
@@ -45,7 +45,7 @@ function isInvalidMessageLenght(words){
 function isAuctionDuplicate(itemName) {
 
 	if(Auction.isAuctionItemDuplicate(itemName)) {
-		sendTwitchChatMessage(`O item de nome ${itemName} já está sendo leiloado`)
+		sendMessage(`O item de nome ${itemName} já está sendo leiloado`)
 		return true
 	}
 	return false
@@ -57,7 +57,7 @@ function isMinutesValid(minutes){
 		typeof minutes !== 'number' ||
 		minutes < 0
 	) {
-		sendTwitchChatMessage(`o tempo precisa ser um número, e ser positivo`)
+		sendMessage(`o tempo precisa ser um número, e ser positivo`)
 		return false
 	}
 	return true

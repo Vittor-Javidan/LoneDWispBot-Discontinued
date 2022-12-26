@@ -1,4 +1,4 @@
-import sendTwitchChatMessage from "../../../Twitch/sendMessageHandler"
+import sendMessage from "../../../Twitch/sendMessageHandler"
 import Auction from "../Auction"
 
 /** ====================================================
@@ -18,7 +18,7 @@ export default function itemRank(data) {
 	
 	//checks if auctionInstance is null
 	if(!auctionInstance) {
-		sendTwitchChatMessage(`@${userName} O código ${itemCode} não existe`)
+		sendMessage(`@${userName} O código ${itemCode} não existe`)
 		return
 	}
 	
@@ -26,7 +26,7 @@ export default function itemRank(data) {
 	const itemName = auctionInstance.getItemName()
 	const participantsArray = auctionInstance.getRank()
 	if(participantsArray.length === 0) {
-		sendTwitchChatMessage(`Ainda não há nenhum lance para ${itemName}`)
+		sendMessage(`Ainda não há nenhum lance para ${itemName}`)
 		return
 	}
 	
@@ -43,5 +43,5 @@ function buildAndSendMessage(itemName, participantsArray){
 		rankText += `| ${i + 1}. ${participantsArray[i].name} : ${participantsArray[i].score} pontos |`
 	}
 	rankText += '|'
-	sendTwitchChatMessage(`RANK ${itemName}: |${rankText}`)
+	sendMessage(`RANK ${itemName}: |${rankText}`)
 }
