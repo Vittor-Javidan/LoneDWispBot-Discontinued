@@ -1,3 +1,4 @@
+import env from "../../env"
 import sendMessage from "../../Twitch/sendMessageHandler"
 
 /** ==================================================== 
@@ -16,7 +17,16 @@ function giveURL() {
 	)
 }
 
-const websiteChatListeners = {
-	giveURL
+/**
+ * @param {Object} data - The data object passed to the function
+ * @param {string} data.userName - The username of the person who sent the message
+ * @param {string} data.message - The message that was sent
+ * @returns {void}
+ */
+export default function websiteChatListeners(data) {
+
+	const {userName, message} = data
+	const websiteCommands = env.MODULES.WEBSITE.COMMANDS
+
+	if(message.toLowerCase().startsWith(websiteCommands.GIVE_WEBSITE_URL)) giveURL()
 }
-export default websiteChatListeners
