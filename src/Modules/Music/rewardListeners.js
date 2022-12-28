@@ -24,7 +24,7 @@ function viewerMusicSugestion(userName) {
 export default function musicRewardListeners(data){
 
 	const {userName, message, rewardIdentifier} = data
-	const musicRewardIds = env.MODULES.MUSIC.REWARDS_IDs
+	const musicRewardIds = env.TWITCH.MODULES.MUSIC.REWARDS_IDs
 
 	switch (rewardIdentifier) {
 		case musicRewardIds.PLAYLIST_MUSIC_SUGESTION: viewerMusicSugestion(userName); break

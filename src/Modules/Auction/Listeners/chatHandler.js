@@ -14,10 +14,10 @@ import setAuctionTimeLeft from './chatListeners/setAuctionTimeLeft'
 export default function auctionChatListeners(data) {
 
 	const {userName, message} = data
-	const auctionCommands = env.MODULES.AUCTION.COMMANDS
+	const auctionCommands = env.TWITCH.MODULES.AUCTION.COMMANDS
 
 	//Broadcaster exclusive chat commands area
-	if(userName === env.BROADCASTER_NAME) {
+	if(userName === env.TWITCH.BROADCASTER_NAME) {
 
 		if(message.startsWith(auctionCommands.CREATE_MANY_AUCTIONS)) createManyAuctions(message)
 		if(message.startsWith(auctionCommands.CREATE_AUCTION)) createAuction(message)

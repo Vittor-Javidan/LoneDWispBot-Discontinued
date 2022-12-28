@@ -26,7 +26,7 @@ function giveURL() {
 export default function websiteChatListeners(data) {
 
 	const {userName, message} = data
-	const websiteCommands = env.MODULES.WEBSITE.COMMANDS
+	const websiteCommands = env.TWITCH.MODULES.WEBSITE.COMMANDS
 
 	if(message.toLowerCase().startsWith(websiteCommands.GIVE_WEBSITE_URL)) giveURL()
 }

@@ -13,7 +13,7 @@ import auctionRanks from './rewardListeners/auctionRanks'
 export default function auctionRewardListeners(data) {
 
 	const {userName, message, rewardIdentifier} = data
-	const auctionRewardIds = env.MODULES.AUCTION.REWARDS_IDs
+	const auctionRewardIds = env.TWITCH.MODULES.AUCTION.REWARDS_IDs
 
 	switch(rewardIdentifier) {
 		case auctionRewardIds.AUCTION_RANKS: auctionRanks(data); break

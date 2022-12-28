@@ -7,10 +7,10 @@ const options = {
 		secure: true,
 	},
 	identity: {
-		username: env.BOT_NAME,
-		password: `oauth:${env.CLIENT_SECRET}`,
+		username: env.TWITCH.BOT_NAME,
+		password: `oauth:${env.TWITCH.CLIENT_SECRET}`,
 	},
-	channels: [env.CHANNEL_NAME],
+	channels: [env.TWITCH.CHANNEL_NAME],
 }
 const client = new tmi.client(options)
 client.connect()

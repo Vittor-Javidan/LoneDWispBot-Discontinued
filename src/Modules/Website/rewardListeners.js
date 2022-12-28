@@ -28,7 +28,7 @@ function giveURL() {
 export default function websiteRewardListeners(data){
 
 	const {userName, message, rewardIdentifier} = data
-	const websiteRewardIds = env.MODULES.WEBSITE.REWARDS_IDs
+	const websiteRewardIds = env.TWITCH.MODULES.WEBSITE.REWARDS_IDs
 
 	switch (rewardIdentifier) {
 		case websiteRewardIds.GIVE_WEBSITE_URL: giveURL(); break
