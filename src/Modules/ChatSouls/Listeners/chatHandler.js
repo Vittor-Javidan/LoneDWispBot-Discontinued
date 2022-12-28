@@ -1,4 +1,4 @@
-import startGame from "./chatListeners/startGame"
+import startGame from "./chatListeners/startGame";
 
 /**
  * @param {Object} data - The data object passed to the function
@@ -11,5 +11,5 @@ export default function chatSoulsChatListener(data){
     const userName = data.userName
     const message = data.message.toLowerCase()
 
-    if(message.startsWith('!chatsouls start')) startGame(userName)
+    if(message.startsWith('!chatsouls start')) {startGame(userName); return}
 }

@@ -29,5 +29,5 @@ export default function websiteChatListeners(data) {
 	const message = data.message.toLowerCase()
 	const websiteCommands = env.TWITCH.MODULES.WEBSITE.COMMANDS
 
-	if(message.startsWith(websiteCommands.GIVE_WEBSITE_URL)) giveURL()
+	if(message.startsWith(websiteCommands.GIVE_WEBSITE_URL)) {giveURL(); return}
 }

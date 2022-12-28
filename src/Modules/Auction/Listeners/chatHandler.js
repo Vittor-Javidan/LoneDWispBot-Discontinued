@@ -20,10 +20,10 @@ export default function auctionChatListeners(data) {
 	//Broadcaster exclusive chat commands area
 	if(userName === env.TWITCH.BROADCASTER_NAME) {
 
-		if(message.startsWith(auctionCommands.CREATE_MANY_AUCTIONS)) createManyAuctions(message)
-		if(message.startsWith(auctionCommands.CREATE_AUCTION)) createAuction(message)
-		if(message.startsWith(auctionCommands.SET_AUCTION_TIME_LEFT)) setAuctionTimeLeft(message)
-		if(message.startsWith(auctionCommands.END_ALL_AUCTIONS)) endAllAuctions()
-		if(message.startsWith(auctionCommands.PIN_MESSAGE)) pinMessage()
+		if(message.startsWith(auctionCommands.CREATE_MANY_AUCTIONS)) {createManyAuctions(message); return}
+		if(message.startsWith(auctionCommands.CREATE_AUCTION)) {createAuction(message); return}
+		if(message.startsWith(auctionCommands.SET_AUCTION_TIME_LEFT)) {setAuctionTimeLeft(message); return}
+		if(message.startsWith(auctionCommands.END_ALL_AUCTIONS)) {endAllAuctions(); return}
+		if(message.startsWith(auctionCommands.PIN_MESSAGE)) {pinMessage(); return}
 	}
 }

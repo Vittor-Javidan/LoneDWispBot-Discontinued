@@ -18,6 +18,6 @@ export default function chatSoulsWhisperListeners(data){
     const playerInstance = Player.getPlayerInstance(userName)
     if(!playerInstance) return
 
-    if(message.startsWith('!cs help')) help(playerInstance)
-    if(message.startsWith('!cs souls')) checkSouls(playerInstance)
+    if(message.startsWith('!cs help')) {help(playerInstance); return}
+    if(message.startsWith('!cs souls')) {checkSouls(playerInstance); return}
 }
