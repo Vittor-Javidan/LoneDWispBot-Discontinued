@@ -1,3 +1,4 @@
+import env from "../../env"
 import sendMessage from "../../Twitch/sendMessageHandler"
 
 /** ==================================================== 
@@ -16,7 +17,20 @@ function giveURL() {
 	)
 }
 
-const websiteRewardListeners = {
-	giveURL
+/**
+ * Website module reward Handler
+ * 
+ * @param {Object} data - The data object passed to the function
+ * @param {string} data.userName - The username of the person who sent the message
+ * @param {string} data.message - The message that was sent
+ * @param {string} data.rewardIdentifier - The identifier for the reward that was redeemed
+ */
+export default function websiteRewardListeners(data){
+
+	const {userName, message, rewardIdentifier} = data
+	const websiteRewardIds = env.MODULES.WEBSITE.REWARDS_IDs
+
+	switch (rewardIdentifier) {
+		case websiteRewardIds.GIVE_WEBSITE_URL: giveURL(); break
+	}
 }
-export default websiteRewardListeners

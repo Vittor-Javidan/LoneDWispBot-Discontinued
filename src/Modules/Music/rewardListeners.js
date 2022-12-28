@@ -1,20 +1,32 @@
+import env from "../../env"
 import sendMessage from "../../Twitch/sendMessageHandler"
 
 /** ====================================================
  * Sends a feedback whisper message to the viewer
  * 
- * @param {object} data
- * @param {string} data.userName
+ * @param {string} userName
  */
-function viewerMusicSugestion(data) {
+function viewerMusicSugestion(userName) {
 	sendMessage(
-		`/w ${data.userName} Assim que possível eu pessoalmente irei escutar sua música em off.
+		`/w ${userName} Assim que possível eu pessoalmente irei escutar sua música em off.
 		Irei adiciona-la caso combine com a playlist do canal.`
 	)
 }
 
-const musicRewardListeners = {
-	viewerMusicSugestion
-}
+/**
+ * Music module reward handler
+ * 
+ * @param {Object} data - The data object passed to the function
+ * @param {string} data.userName - The username of the person who sent the message
+ * @param {string} data.message - The message that was sent
+ * @param {string} data.rewardIdentifier - The identifier for the reward that was redeemed
+ */
+export default function musicRewardListeners(data){
 
-export default musicRewardListeners
+	const {userName, message, rewardIdentifier} = data
+	const musicRewardIds = env.MODULES.MUSIC.REWARDS_IDs
+
+	switch (rewardIdentifier) {
+		case musicRewardIds.PLAYLIST_MUSIC_SUGESTION: viewerMusicSugestion(userName); break
+	}
+}
