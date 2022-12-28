@@ -13,7 +13,8 @@ import setAuctionTimeLeft from './chatListeners/setAuctionTimeLeft'
  */
 export default function auctionChatListeners(data) {
 
-	const {userName, message} = data
+	const userName = data.userName
+	const message = data.message.toLowerCase()
 	const auctionCommands = env.TWITCH.MODULES.AUCTION.COMMANDS
 
 	//Broadcaster exclusive chat commands area
