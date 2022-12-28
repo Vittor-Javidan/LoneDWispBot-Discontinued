@@ -1,4 +1,5 @@
 import auctionChatListeners from "../../Modules/Auction/Listeners/chatHandler"
+import chatSoulsChatListener from "../../Modules/ChatSouls/Listeners/chatHandler"
 import websiteChatListeners from "../../Modules/Website/chatListeners"
 
 /**
@@ -11,4 +12,5 @@ export default function chatListeners(data) {
 
 	websiteChatListeners(data)
 	auctionChatListeners(data)
+	chatSoulsChatListener(data)
 }
