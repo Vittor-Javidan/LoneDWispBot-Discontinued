@@ -2,6 +2,7 @@ import Player from "../Classes/Player"
 
 import checkSouls from "./whisperListeners/checkSouls"
 import help from "./whisperListeners/help"
+import play from "./whisperListeners/play"
 
 /**
  * @param {Object} data - The data object passed to the function
@@ -18,6 +19,14 @@ export default function chatSoulsWhisperListeners(data){
     const playerInstance = Player.getPlayerInstance(userName)
     if(!playerInstance) return
 
-    if(message.startsWith('!cs help')) {help(playerInstance); return}
-    if(message.startsWith('!cs souls')) {checkSouls(playerInstance); return}
+    //Formating a new data input, wich makes more sense with the game
+    const newData = {
+        playerInstance: playerInstance,
+        message: message
+    }
+
+    //Game commands
+    if(message.startsWith('!cs help')) {help(newData.playerInstance); return}
+    if(message.startsWith('!cs souls')) {checkSouls(newData.playerInstance); return}
+    if(message.startsWith('!cs play')) {play(newData); return}
 }

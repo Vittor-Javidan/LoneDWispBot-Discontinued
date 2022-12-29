@@ -1,5 +1,6 @@
 import sendMessage from "../../../Twitch/sendMessageHandler"
 import dbSystem from "../database/dbSystem"
+import ENUM from "./ENUM"
 
 /**
  * @typedef {Object<string, CS_PlayerData>} CS_Database x is playerName string
@@ -8,7 +9,25 @@ import dbSystem from "../database/dbSystem"
  * @property {number} souls - Currency of ChatSouls
 */
 
+/**
+ * @typedef {Object} playerState
+ * @property {string} primary
+ * @property {string} secondary
+ */
+
 export default class Player {
+
+    /**
+     * @type {CS_Database}
+     * @private
+     */
+    static database
+
+    /**
+     * @type {Player[]}
+     * @private
+     */
+    static onlinePlayers = []
 
     /**
      * @type {string}
@@ -22,18 +41,16 @@ export default class Player {
      */
     souls = 0
 
-
     /**
-     * @type {CS_Database}
+     * Player current state
+     * @type {playerState}
      * @private
      */
-    static database
+    playerState = {
+        primary: ENUM.RESTING.PRIMARY,
+        secondary: ENUM.RESTING.SECONDARY.JUST_RESTING
+    }
 
-    /**
-     * @type {Player[]}
-     * @private
-     */
-    static onlinePlayers = []
 
     /**
      * Create a instance of Player
@@ -59,7 +76,7 @@ export default class Player {
         }
 
         const playerInstance = new Player(userName)
-        playerInstance.load()
+        playerInstance.load(userName)
         this.onlinePlayers.push(playerInstance)
         return true
     }
@@ -93,14 +110,14 @@ export default class Player {
     // INSTANCE METHODS ===============================================================================
     //=================================================================================================
 
-    load(){
-        if(!Player.database[`${this.playerName}`]){
+    load(userName){
+        if(!Player.database[`${userName}`]){
             this.save()
-            sendMessage(`O jogador ${this.userName} acabou de se cadastrar em ChatSouls Muahaha *-*`)
+            sendMessage(`O jogador ${userName} acabou de se cadastrar em ChatSouls Muahaha *-*`)
         } else {
-            const playerData = Player.database[`${this.playerName}`]
+            const playerData = Player.database[`${userName}`]
             this.souls = playerData.souls
-            sendMessage(`/w ${this.playerName} Seu progresso foi restaurado com sucesso`)
+            sendMessage(`/w ${userName} Seu progresso foi restaurado com sucesso`)
         }
     }
     
@@ -114,6 +131,21 @@ export default class Player {
         
         Player.database[`${this.playerName}`] = playerData
         dbSystem.writeDb(Player.database)
+    }
+
+    /**
+     * @returns {playerState}
+     */
+    getPlayerState(){
+        return this.playerState
+    }
+
+    setPlayerState_Primary(ENUM_STATE) {
+        this.playerState.primary = ENUM_STATE
+    }
+
+    setPlayerState_Secondary(ENUM_STATE) {
+        this.playerState.secondary = ENUM_STATE
     }
 
     /**

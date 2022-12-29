@@ -13,8 +13,8 @@ export default function startGame(userName){
     }
     
     Player.init(userName)
-    sendMessage(`/w @${userName} você acabou de iniciar ChatSouls, meus pêsames, MUAHAHAHAH *-*`)
-    sendMessage(`/w @${userName} escreva "!cs help" para consultar opções sobre sua conta`)
-    sendMessage(`/w @${userName} Se lembre, para interagir com o game, sempre digite "!cs" antes de qualquer comando. Ex: "!cs souls"`)
-    sendMessage(`@${userName} acabou de entrar em ChatSouls *-*. Lembre-se sempre de verificar se está habilitado mensagens privadas com o canal`)
+    sendMessage(
+        `/w @${userName} você acabou de iniciar ChatSouls, MUAHAHAHAH *-*. Digitar: "!cs help" mostra opções sobre sua conta, "!cs play <opção>" escolhe opções dentro do game`
+    )
+    sendMessage(`@${userName} acabou de entrar em ChatSouls *-*. Lembre-se sempre de verificar se mensagens privadas com o canal está habilitada!`)
 }
