@@ -4,9 +4,18 @@ import ENUM from "./ENUM"
 
 /**
  * @typedef {Object<string, CS_PlayerData>} CS_Database x is playerName string
+ * 
  * @typedef {Object} CS_PlayerData
  * @property {string} playerName - player name
  * @property {number} souls - Currency of ChatSouls
+ * @property {number} level - Player level
+ * @property {CS_Attributes} attributes
+ * 
+ * @typedef {Object} CS_Attributes
+ * @property {number} vitality
+ * @property {number} agility
+ * @property {number} strenght
+ * @property {number} intelligence
 */
 
 /**
@@ -40,6 +49,23 @@ export default class Player {
      * @private
      */
     souls = 0
+
+    /**
+     * @type {number}
+     * @private
+     */
+    level = 1
+
+    /**
+     * @type {CS_Attributes}
+     * @private
+     */
+    attributes = {
+        vitality: 1,
+        agility: 1,
+        strenght: 1,
+        intelligence: 1
+    }
 
     /**
      * Player current state
@@ -111,14 +137,33 @@ export default class Player {
     //=================================================================================================
 
     load(userName){
+
+        //Check for register
         if(!Player.database[`${userName}`]){
             this.save()
             sendMessage(`O jogador ${userName} acabou de se cadastrar em ChatSouls Muahaha *-*`)
-        } else {
-            const playerData = Player.database[`${userName}`]
-            this.souls = playerData.souls
-            sendMessage(`/w ${userName} Seu progresso foi restaurado com sucesso`)
+            return
         }
+
+        //Load saved player data from database
+        this.checkMissingInfo()
+        const playerData = Player.database[`${userName}`]
+
+        //Replace default values for saved values
+        this.souls = playerData.souls
+        this.level = playerData.level
+        this.attributes = playerData.attributes
+        
+        sendMessage(`/w ${userName} Seu progresso foi restaurado com sucesso`)
+    }
+
+    checkMissingInfo(){
+
+        const playerData = Player.database[`${this.playerName}`]
+
+        if(!playerData.souls) Player.database[`${this.playerName}`].souls = this.souls
+        if(!playerData.level) Player.database[`${this.playerName}`].level = this.level
+        if(!playerData.attributes) Player.database[`${this.playerName}`].attributes = this.attributes
     }
     
     save(){
@@ -126,7 +171,9 @@ export default class Player {
         /** @type {CS_PlayerData} */
         const playerData = {
             playerName: this.playerName,
-            souls: this.souls
+            souls: this.souls,
+            level: this.level,
+            attributes: this.attributes
         }
         
         Player.database[`${this.playerName}`] = playerData
@@ -157,10 +204,80 @@ export default class Player {
     }
 
     /**
+     * Return player level
+     * @returns {number}
+     */
+    getPlayerLevel(){
+        return this.level
+    }
+
+    /**
      * Returns player souls amount
      * @returns {number}
      */
     getSouls(){
         return this.souls
+    }
+
+    /**
+     * Return attribute upgrade cost
+     * @returns {number}
+     */
+    getUpgradeCost(){
+        return this.level * 100
+    }
+
+    upgradeAttribute(ATTRIBUTE_ENUM){
+
+        const upgradeCost = this.getUpgradeCost()
+        const soulsBalance = this.souls - upgradeCost
+
+        if(soulsBalance < 0) {
+            sendMessage(`/w ${this.playerName} Você não possui almas o suficiente`)
+            return
+        }
+
+        switch (ATTRIBUTE_ENUM) {
+
+            case ENUM.ATTRIBUTES.VITALITY:
+                this.souls -= upgradeCost
+                this.attributes.vitality += 1
+                this.level += 1
+                sendMessage(`/w ${this.playerName} VITALIDADE AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
+                break;
+            //
+
+            case ENUM.ATTRIBUTES.AGILITY:
+                this.souls -= upgradeCost
+                this.attributes.agility += 1
+                this.level += 1
+                sendMessage(`/w ${this.playerName} AGILIDADE AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
+                break
+            //
+
+            case ENUM.ATTRIBUTES.STRENGHT:
+                this.souls -= upgradeCost
+                this.attributes.strenght += 1
+                this.level += 1
+                sendMessage(`/w ${this.playerName} FORÇA AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
+                break
+            //
+
+            case ENUM.ATTRIBUTES.INTELLLIGENCE:
+                this.souls -= upgradeCost
+                this.attributes.intelligence += 1
+                this.level += 1
+                sendMessage(`/w ${this.playerName} INTELIGÊNCIA AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
+                break
+            //
+
+            default:
+                sendMessage(`Invalid Upgrade Attribute`)
+                console.log(`${this.playerName}: Invalid Upgrade Attribute`)
+                break
+            //
+        }
+
+        this.save()
     }
 }

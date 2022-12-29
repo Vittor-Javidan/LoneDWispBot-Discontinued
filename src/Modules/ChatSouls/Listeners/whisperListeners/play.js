@@ -1,6 +1,6 @@
 import ENUM from "../../Classes/ENUM";
 import Player from "../../Classes/Player";
-import resting from "../gameLogics/restingHandler";
+import resting from "../playLogics/restingHandler";
 
 /**
  * @param {Object} data
@@ -10,7 +10,6 @@ import resting from "../gameLogics/restingHandler";
 export default function play(data){
 
     const playerState = data.playerInstance.getPlayerState()
-    const playerName = data.playerInstance.getPlayerName()
     
     switch (playerState.primary){
         case ENUM.RESTING.PRIMARY: resting(data); break

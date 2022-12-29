@@ -12,6 +12,9 @@ export default function justResting(data) {
 	const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
 	const userName = playerInstance.getPlayerName()
+	const level = playerInstance.getPlayerLevel()
+	const souls = playerInstance.getSouls()
+	const upgradeCost = playerInstance.getUpgradeCost()
 
 	// If "!cs play"
 	if (words.length === 2) {
@@ -28,7 +31,7 @@ export default function justResting(data) {
 
 			case 1:
 				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.ATRIBUTE_UPGRADE)
-				sendMessage(`/w ${userName} "ATRIBUTOS: | 0. Voltar |`)
+				sendMessage(`/w ${userName} Você está no menu de atributos: | Level: ${level} | Almas: ${souls} | Custo Upgrade: ${upgradeCost} almas | 0. Voltar | 1. UP Vitalidade | 2. UP Agilidade | 3. UP Força | 4. UP Inteligência | 5. Descrições Atributos |`)
 				break
 			//
 
