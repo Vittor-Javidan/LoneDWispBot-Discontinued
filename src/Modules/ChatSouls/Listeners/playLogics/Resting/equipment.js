@@ -15,7 +15,10 @@ export default function equipament(data) {
 	
 	// If "!cs play"
 	if (words.length === 2) {
-		sendMessage(`/w ${userName} Você está olhando seus equipamento. | 0. Voltar |`)
+		sendMessage(
+			`/w ${userName} Você está olhando seus equipamento. 
+			| 0. Voltar | Atualmente você não possui nenhum equipamento`
+		)
 		return
 	}
 
@@ -27,7 +30,11 @@ export default function equipament(data) {
 		switch (itemCode) {
 			case 0:
 				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.JUST_RESTING)
-				sendMessage(`/w ${userName} Voltou para a fogueira: | 1. Upar níveis | 2. Ver Equipamento |`)
+				sendMessage(
+					`/w ${userName} Voltou para a fogueira: 
+					| 1. Statísticas 
+					| 2. Ver Equipamento |`
+				)
 				break
 			//
 

@@ -4,6 +4,7 @@ import Player from "../../Classes/Player"
 import attributeUpgrade from "./Resting/attributeUpgrade"
 import equipament from "./Resting/equipment"
 import justResting from "./Resting/justResting"
+import statsMenu from "./Resting/statsMenu"
 
 /**
  * @param {Object} data
@@ -16,8 +17,9 @@ export default function resting(data){
     
     switch(playerState.secondary) {
         
-        case ENUM.RESTING.SECONDARY.JUST_RESTING: justResting(data); break            
-        case ENUM.RESTING.SECONDARY.EQUIPMENT: equipament(data); break
+        case ENUM.RESTING.SECONDARY.JUST_RESTING: justResting(data); break
+        case ENUM.RESTING.SECONDARY.STATS_MENU: statsMenu(data); break    
         case ENUM.RESTING.SECONDARY.ATRIBUTE_UPGRADE: attributeUpgrade(data); break
+        case ENUM.RESTING.SECONDARY.EQUIPMENT: equipament(data); break
     }
 }

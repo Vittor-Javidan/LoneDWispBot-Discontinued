@@ -11,13 +11,26 @@ export default function attributeUpgrade(data) {
 
 	const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
+	
 	const userName = playerInstance.getPlayerName()
+	const level = playerInstance.getPlayerLevel()
 	const souls = playerInstance.getSouls()
 	const upgradeCost = playerInstance.getUpgradeCost()
 	
 	// If "!cs play"
 	if (words.length === 2) {
-		sendMessage(`/w ${userName} Você está no menu de atributos: | Level: ${level} | Almas: ${souls} | Custo Upgrade: ${upgradeCost} almas | 0. Voltar | 1. UP Vitalidade | 2. UP Agilidade | 3. UP Força | 4. UP Inteligência | 5. Descrições Atributos |`)
+		sendMessage(
+			`/w ${userName} Você está no menu de atributos: 
+			| Level: ${level} 
+			| Almas: ${souls} 
+			| Custo Upgrade: ${upgradeCost} almas 
+			| 0. Voltar 
+			| 1. UP Vitalidade 
+			| 2. UP Agilidade 
+			| 3. UP Força 
+			| 4. UP Inteligência 
+			| 5. Descrições Atributos |`
+		)
 		return
 	}
 
@@ -29,8 +42,13 @@ export default function attributeUpgrade(data) {
 		switch(itemCode){
 					
 			case 0:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.JUST_RESTING)
-				sendMessage(`/w ${userName} Voltou para a fogueira: | 1. Upar níveis | 2. Ver Equipamento |`)
+				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.STATS_MENU)
+				sendMessage(
+					`/w ${userName} Você está no menu de estatísticas: 
+					| 0. Voltar 
+					| 1. Ver Atributos 
+					| 2. Upar Atributos |`
+				)
 				break
 			//
 
@@ -55,7 +73,15 @@ export default function attributeUpgrade(data) {
 			//
 
 			case 5:
-				sendMessage(`/w ${userName} Vitalidade: + HP | Agilidade: + evasão | Força: + dano/defesa física | Inteligência: + dano/defesa mágica`)
+				sendMessage(
+					`/w ${userName} 
+					| Vitalidade: + HP 
+					| Agilidade: + evasão 
+					| Força: + dano/defesa física 
+					| Inteligência: + dano/defesa mágica`
+				)
+				break
+			//
 
 			default:
 				sendMessage(`/w ${userName} opção inválida`)

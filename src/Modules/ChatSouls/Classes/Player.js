@@ -227,6 +227,14 @@ export default class Player {
         return this.level * 100
     }
 
+    /**
+     * Return player attributes
+     * @returns {CS_Attributes}
+     */
+    getPlayerAttibutes(){
+        return this.attributes
+    }
+
     upgradeAttribute(ATTRIBUTE_ENUM){
 
         const upgradeCost = this.getUpgradeCost()

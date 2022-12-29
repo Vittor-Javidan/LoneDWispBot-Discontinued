@@ -3,8 +3,9 @@ const ENUM = {
         PRIMARY: "RESTING",
         SECONDARY: {
             JUST_RESTING : "RESTING_0",
-            ATRIBUTE_UPGRADE: "RESTING_1",
-            EQUIPMENT: "RESTING_2",
+            STATS_MENU: "RESTING_1",
+            ATRIBUTE_UPGRADE: "RESTING_2",
+            EQUIPMENT: "RESTING_3",
         }
     },
     ATTRIBUTES: {
