@@ -26,7 +26,8 @@ export default function statsMenu(data) {
             `/w ${userName} Você está no menu de estatísticas: 
             | 0. Voltar 
             | 1. Ver Atributos 
-            | 2. Upar Atributos |`
+            | 2. Upar Atributos 
+            |`
         )
         return
     }
@@ -43,7 +44,9 @@ export default function statsMenu(data) {
                 sendMessage(
                     `/w ${userName} Você está descansando em uma fogueira. oque deseja fazer?: 
                     | 1. Statísticas 
-                    | 2. Ver Equipamento |`
+                    | 2. Ver Equipamento 
+                    | 3. Levantar da fogueira 
+                    |`
                 )
                 break
             //
@@ -71,7 +74,8 @@ export default function statsMenu(data) {
                     | 2. UP Agilidade 
                     | 3. UP Força 
                     | 4. UP Inteligência 
-                    | 5. Descrições Atributos |`)
+                    | 5. Descrições Atributos 
+                    |`)
 				break                
             //
 

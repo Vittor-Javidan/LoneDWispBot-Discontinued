@@ -20,7 +20,9 @@ export default function justResting(data) {
 		sendMessage(
 			`/w ${userName} Você está descansando em uma fogueira. oque deseja fazer?: 
 			| 1. Statísticas 
-			| 2. Ver Equipamento |`
+			| 2. Ver Equipamento 
+			| 3. Levantar da fogueira
+			|`
 		)
 		return
 	}
@@ -38,7 +40,8 @@ export default function justResting(data) {
 					`/w ${userName} Você está no menu de estatísticas: 
 					| 0. Voltar 
 					| 1. Ver Atributos 
-					| 2. Upar Atributos |`
+					| 2. Upar Atributos 
+					|`
 				)
 				break
 			//
@@ -47,7 +50,29 @@ export default function justResting(data) {
 				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT)
 				sendMessage(
 					`/w ${userName} "EQUIPAMENTOS: 
-					| 0. Voltar | Atualmente você não possui nenhum equipamento`
+					| 0. Voltar
+					| 1. Arma Corpo a Corpo (Em progresso)
+					| 2. Arma Longo alcance (Em progresso)
+					| 3. Capacetes (Em progresso)
+					| 4. Armaduras (Em progresso)
+					| 5. Luvas (Em progresso)
+					| 6. Botas (Em progresso)
+					| 7. Summário Geral (Em progresso)
+					|`
+				)
+				break
+			//
+
+			case 3:
+				playerInstance.setPlayerState_Primary(ENUM.EXPLORING.PRIMARY)
+				playerInstance.setPlayerState_Secondary(ENUM.EXPLORING.SECONDARY.IDLE)
+				sendMessage(
+					`/w ${userName} Você se levanta da fogueira e olha em volta.
+					| 0. Voltar a fogueira
+					| 1. Caçar (Em progresso)
+					| 2. Procurar por recursos (Em progresso)
+					| 3. Viajar (Em progresso)
+					|`
 				)
 				break
 			//

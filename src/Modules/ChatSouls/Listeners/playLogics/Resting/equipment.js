@@ -19,7 +19,15 @@ export default function equipament(data) {
 	if (words.length === 2) {
 		sendMessage(
 			`/w ${userName} Você está olhando seus equipamento. 
-			| 0. Voltar | Atualmente você não possui nenhum equipamento`
+			| 0. Voltar
+			| 1. Arma Corpo a Corpo (Em progresso)
+			| 2. Arma Longo alcance (Em progresso)
+			| 3. Capacetes (Em progresso)
+			| 4. Armaduras (Em progresso)
+			| 5. Luvas (Em progresso)
+			| 6. Botas (Em progresso)
+			| 7. Summário Geral (EM progresso)
+			|`
 		)
 		return
 	}
@@ -35,7 +43,9 @@ export default function equipament(data) {
 				sendMessage(
 					`/w ${userName} Voltou para a fogueira: 
 					| 1. Statísticas 
-					| 2. Ver Equipamento |`
+					| 2. Ver Equipamento 
+					| 3. Levantar da fogueira 
+					|`
 				)
 				break
 			//

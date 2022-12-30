@@ -8,11 +8,23 @@ const ENUM = {
             EQUIPMENT: "RESTING_3",
         }
     },
+    EXPLORING: {
+        PRIMARY: "EXPLORING",
+        SECONDARY: {
+            IDLE: "EXPLORING_0",
+            HUNTING: "EXPLORING_1",
+            FORAGING: "EXPLORING_2",
+            TRAVEL: "EXPLORING_3"
+        }
+    },
     ATTRIBUTES: {
         VITALITY: "VITALITY",
         AGILITY: "AGILITY",
         STRENGHT: "STRENGHT",
         INTELLLIGENCE: "INTELLIGENCE",
+    },
+    MAP_AREAS: {
+        THE_WOODS: "THE WOODS"
     }
 }
 

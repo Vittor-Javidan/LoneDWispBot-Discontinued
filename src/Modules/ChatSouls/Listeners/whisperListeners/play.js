@@ -1,5 +1,6 @@
 import ENUM from "../../Classes/ENUM";
 import Player from "../../Classes/Player";
+import exploring from "../playLogics/exploringHandler";
 import resting from "../playLogics/restingHandler";
 
 /**
@@ -15,5 +16,6 @@ export default function play(data){
     
     switch (playerState.primary){
         case ENUM.RESTING.PRIMARY: resting(data); break
+        case ENUM.EXPLORING.PRIMARY: exploring(data); break
     }
 }
