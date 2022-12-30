@@ -136,6 +136,11 @@ export default class Player {
     // INSTANCE METHODS ===============================================================================
     //=================================================================================================
 
+    /**
+     * Load player information from database
+     * @param {string} userName 
+     * @returns 
+     */
     load(userName){
 
         //Check for register
@@ -157,6 +162,10 @@ export default class Player {
         sendMessage(`/w ${userName} Seu progresso foi restaurado com sucesso`)
     }
 
+    /**
+     * Checks for missing information on player database.
+     * If there is missing information due game updates, the function automatically provide a default value for it.
+     */
     checkMissingInfo(){
 
         const playerData = Player.database[`${this.playerName}`]
@@ -166,6 +175,9 @@ export default class Player {
         if(!playerData.attributes) Player.database[`${this.playerName}`].attributes = this.attributes
     }
     
+    /**
+     * Save player info on database
+     */
     save(){
     
         /** @type {CS_PlayerData} */
@@ -187,10 +199,18 @@ export default class Player {
         return this.playerState
     }
 
+    /**
+     * Set player primary state
+     * @param {string} ENUM_STATE 
+     */
     setPlayerState_Primary(ENUM_STATE) {
         this.playerState.primary = ENUM_STATE
     }
 
+    /**
+     * Set player secondary state
+     * @param {string} ENUM_STATE 
+     */
     setPlayerState_Secondary(ENUM_STATE) {
         this.playerState.secondary = ENUM_STATE
     }
@@ -235,6 +255,11 @@ export default class Player {
         return this.attributes
     }
 
+    /**
+     * Handles attribute upgrade logics
+     * @param {string} ATTRIBUTE_ENUM 
+     * @returns 
+     */
     upgradeAttribute(ATTRIBUTE_ENUM){
 
         const upgradeCost = this.getUpgradeCost()

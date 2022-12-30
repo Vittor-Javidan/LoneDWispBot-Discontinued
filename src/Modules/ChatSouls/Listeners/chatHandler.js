@@ -1,6 +1,8 @@
 import startGame from "./chatListeners/startGame";
 
 /**
+ * Handles viewer chat messages related to ChatSouls module
+ * 
  * @param {Object} data - The data object passed to the function
  * @param {string} data.userName - The username of the person who sent the message
  * @param {string} data.message - The message that was sent

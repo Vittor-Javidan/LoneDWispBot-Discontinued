@@ -1,6 +1,8 @@
 import sendMessage from "../../../../Twitch/sendMessageHandler"
 
 /**
+ * Sends a whisper message with some commands to assist players
+ * 
  * @param {Player} playerInstance 
  */
 export default function help(playerInstance){

@@ -3,6 +3,8 @@ import ENUM from "../../../Classes/ENUM"
 import Player from "../../../Classes/Player"
 
 /**
+ * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "JUST_RESTING"
+ * 
  * @param {Object} data
  * @param {Player} data.playerInstance
  * @param {string} data.message

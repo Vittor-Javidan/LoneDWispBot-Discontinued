@@ -7,6 +7,8 @@ import justResting from "./Resting/justResting"
 import statsMenu from "./Resting/statsMenu"
 
 /**
+ * Handle !cs play commands when the player has a primary state of "RESTING"
+ * 
  * @param {Object} data
  * @param {Player} data.playerInstance
  * @param {string} data.message

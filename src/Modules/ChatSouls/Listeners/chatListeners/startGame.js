@@ -2,7 +2,8 @@ import sendMessage from "../../../../Twitch/sendMessageHandler"
 import Player from "../../Classes/Player"
 
 /**
- * Starts the game
+ * Starts the game by chat or whisper command
+ * 
  * @param {string} userName
  */
 export default function startGame(userName){

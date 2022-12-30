@@ -37,6 +37,10 @@ function writeDb(object) {
 	}
 }
 
+/**
+ * dbSystem Functions
+ * @type {object}
+ */
 const dbSystem = {
 	loadDb,
 	writeDb,
