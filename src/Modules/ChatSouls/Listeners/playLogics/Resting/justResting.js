@@ -51,7 +51,7 @@ export default function justResting(data) {
 				sendMessage(
 					`/w ${userName} "EQUIPAMENTOS: 
 					| 0. Voltar
-					| 1. Arma Corpo a Corpo (Em progresso)
+					| 1. Arma Corpo a Corpo
 					| 2. Arma Longo alcance (Em progresso)
 					| 3. Capacetes (Em progresso)
 					| 4. Armaduras (Em progresso)
