@@ -19,7 +19,7 @@ export default function equipment_Menu(data) {
 	// If "!cs play"
 	if (words.length === 2) {
 		sendMessage(
-			`/w ${userName} Você está olhando seus equipamento. 
+			`/w ${userName} Você está olhando seus equipamentos. 
 			| 0. Voltar 
 			| 1. Arma Corpo a Corpo 
 			| 2. Arma Longo alcance 
@@ -27,7 +27,7 @@ export default function equipment_Menu(data) {
 			| 4. Armaduras 
 			| 5. Luvas 
 			| 6. Botas 
-			| 7. Summário Geral (EM progresso) 
+			| 7. Summário Geral 
 			|`
 		)
 		return
@@ -136,6 +136,29 @@ export default function equipment_Menu(data) {
 				)
 				break
 			//
+
+			// GET EQUIPMENT SUMMARY =========================================================
+			case 7:
+
+				/** @type {import("../../../Classes/Player").CS_Player_Equipped} */
+				const playerEquipments = playerInstance.getPlayerEquipment()
+				const playerEquipmentProperties = Object.keys(playerEquipments)
+
+				if(playerEquipmentProperties.length === 0) {
+					sendMessage(`/w @${userName} Você está completamente nu!! Shame on you`)
+					return
+				}
+
+				let equipmentString = 'Atualmente você está equipando: '
+				for (let i = 0; i < playerEquipmentProperties.length; i++) {
+					equipmentString += `| ${playerEquipments[playerEquipmentProperties[i]].name} `
+				}
+				equipmentString += `|`
+
+				sendMessage(`/w ${userName} ${equipmentString} Você ainda está no menu de equipamentos.`)
+				break
+			//
+
 
 			default:
 				sendMessage(`/w ${userName} opção inválida`)

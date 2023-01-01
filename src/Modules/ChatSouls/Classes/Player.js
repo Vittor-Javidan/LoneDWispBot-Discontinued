@@ -19,7 +19,7 @@ import ENUM from "./ENUM"
  * @property {number} strenght
  * @property {number} intelligence
  * 
- * @typedef {Object} CS_Player_Equipped
+ * @typedef {Object<string, CS_Player_EquippedData>} CS_Player_Equipped
  * @property {CS_Player_EquippedData} longRangeWeapon
  * @property {CS_Player_EquippedData} meleeWeapon
  * @property {CS_Player_EquippedData} helmet

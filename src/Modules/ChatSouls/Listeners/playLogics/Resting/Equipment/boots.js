@@ -41,7 +41,7 @@ export default function equipment_boots(data) {
 			case 0:
 				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT)
 				sendMessage (
-					`/w ${userName} Você voltou a olhar seus equipamento. 
+					`/w ${userName} Você voltou a olhar seus equipamentos. 
                     | 0. Voltar 
                     | 1. Arma Corpo a Corpo 
                     | 2. Arma Longo alcance 
@@ -49,7 +49,7 @@ export default function equipment_boots(data) {
                     | 4. Armaduras 
                     | 5. Luvas 
                     | 6. Botas 
-                    | 7. Summário Geral (EM progresso)
+                    | 7. Summário Geral 
                     |`
 				)
 				break
