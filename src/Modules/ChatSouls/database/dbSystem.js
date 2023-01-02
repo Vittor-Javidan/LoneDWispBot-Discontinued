@@ -2,48 +2,47 @@ import fs from 'fs'
 import sendMessage from '../../../Twitch/sendMessageHandler'
 
 /**
- * Database path (directory + fileName)
- */
-const directory = `${__dirname}/database.json`
+ * - keys: `entity name string`
+ * @typedef {import('../TypeDefinitions/Types').CS_Database} CS_Database
+*/
 
-/**
- * Retrieves local database information
- * @returns {import('../Classes/Player').CS_Database}
- */
-function loadDb() {
+export default class DbSystem {
+
+	/**
+	 * Database path (directory + fileName)
+	 * @type {string}
+	 * @private
+	 */
+	static directory = `${__dirname}/playersData.json`
+
+	/**
+	 * Retrieves local database information
+	 * @returns {CS_Database}
+	 */
+	static loadDb() {
 	
-	try {
-		const data = fs.readFileSync(directory, 'utf-8')
-		return JSON.parse(data)
-	} catch (err) {
-		console.log(err)
-		console.log(`dataBase doesn't exist. "database.json" not found.`)
-		sendMessage(`Banco de dados local não existe. "database.json" não encotrado. Por favor, crie ou importe um novo arquivo "database.json" no diretório ${__dirname}.`)
+		try {
+			const data = fs.readFileSync(this.directory, 'utf-8')
+			return JSON.parse(data)
+		} catch (err) {
+			console.log(err)
+			console.log(`dataBase doesn't exist. "playersData.json" not found.`)
+			sendMessage(`Banco de dados local não existe. "playersData.json" não encotrado. Por favor, crie ou importe um novo arquivo "database.json" no diretório ${__dirname}.`)
+		}
+	}
+
+	/**
+	 * Write local database information
+	 * @param {CS_Database}
+	 */
+	static writeDb(object) {
+
+		try {
+			fs.writeFileSync(this.directory, JSON.stringify(object, null, 4))
+		} catch (err) {
+			console.log(err)
+			console.log('there is not information to be saved')
+			sendMessage('Não há nenhuma informação a ser salva')
+		}
 	}
 }
-
-/**
- * Write local database information
- * @param {import('../Classes/Player').CS_Database}
- */
-function writeDb(object) {
-
-	try {
-		fs.writeFileSync(directory, JSON.stringify(object, null, 4))
-	} catch (err) {
-		console.log(err)
-		console.log('there is not information to be saved')
-		sendMessage('Não há nenhuma informação a ser salva')
-	}
-}
-
-/**
- * dbSystem Functions
- * @type {object}
- */
-const dbSystem = {
-	loadDb,
-	writeDb,
-}
-
-export default dbSystem

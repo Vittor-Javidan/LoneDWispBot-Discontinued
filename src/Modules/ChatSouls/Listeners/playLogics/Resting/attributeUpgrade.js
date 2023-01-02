@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../Twitch/sendMessageHandler"
+import Player from "../../../Classes/EntityChilds/Player"
 import ENUM from "../../../Classes/ENUM"
-import Player from "../../../Classes/Player"
 
 /**
  * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "ATRIBUTE_UPGRADE"
@@ -18,6 +18,7 @@ export default function attributeUpgrade(data) {
 	const level = playerInstance.getLevel()
 	const souls = playerInstance.getSouls()
 	const upgradeCost = playerInstance.getUpgradeCost()
+	const soulsBalance_AfterUpgrade = souls - upgradeCost
 	
 	// If "!cs play"
 	if (words.length === 2) {
@@ -55,32 +56,77 @@ export default function attributeUpgrade(data) {
 			//
 
 			case 1:
+				if(soulsBalance_AfterUpgrade < 0 ){
+					sendMessage(`/w ${userName} Você não possui almas o suficiente`)
+					return
+				}
 				playerInstance.upgradeAttribute(ENUM.ATTRIBUTES.VITALITY)
+                sendMessage(
+					`/w ${userName} VITALIDADE AUMENTADA! 
+					| Novo level: ${playerInstance.getLevel()} 
+					| Almas restantes: ${playerInstance.getSouls()} 
+					| custo próximo nível: ${ playerInstance.getUpgradeCost() } 
+					|`
+				)
 				break
 			//
 
 			case 2:
+				if(soulsBalance_AfterUpgrade < 0 ){
+					sendMessage(`/w ${userName} Você não possui almas o suficiente`)
+					return
+				}
 				playerInstance.upgradeAttribute(ENUM.ATTRIBUTES.AGILITY)
+                sendMessage(
+					`/w ${userName} AGILIDADE AUMENTADA! 
+					| Novo level: ${playerInstance.getLevel()} 
+					| Almas restantes: ${playerInstance.getSouls()} 
+					| custo próximo nível: ${ playerInstance.getUpgradeCost() } 
+					|`
+				)
 				break
 			//
 
 			case 3:
+				if(soulsBalance_AfterUpgrade < 0 ){
+					sendMessage(`/w ${userName} Você não possui almas o suficiente`)
+					return
+				}
 				playerInstance.upgradeAttribute(ENUM.ATTRIBUTES.STRENGHT)
+                sendMessage(
+					`/w ${userName} FORÇA AUMENTADA! 
+					| Novo level: ${playerInstance.getLevel()} 
+					| Almas restantes: ${playerInstance.getSouls()} 
+					| custo próximo nível: ${ playerInstance.getUpgradeCost() } 
+					|`
+				)
 				break
 			//
 
 			case 4:
+				if(soulsBalance_AfterUpgrade < 0 ){
+					sendMessage(`/w ${userName} Você não possui almas o suficiente`)
+					return
+				}
 				playerInstance.upgradeAttribute(ENUM.ATTRIBUTES.INTELLLIGENCE)
+                sendMessage(
+					`/w ${userName} INTELIGÊNCIA AUMENTADA! 
+					| Novo level: ${playerInstance.getLevel()} 
+					| Almas restantes: ${playerInstance.getSouls} 
+					| custo próximo nível: ${ playerInstance.getUpgradeCost() } 
+					|`
+				)
 				break
 			//
 
 			case 5:
 				sendMessage(
-					`/w ${userName} 
-					| Vitalidade: + HP 
-					| Agilidade: + evasão 
-					| Força: + dano/defesa física 
-					| Inteligência: + dano/defesa mágica`
+					`/w ${userName} O bônus de cada um dos atributos são: 
+					| Vitalidade: +HP 
+					| Agilidade: +evasão 
+					| Força: +dano/defesa(física) 
+					| Inteligência: +dano/defesa(mágica) 
+					|`
 				)
 				break
 			//

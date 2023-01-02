@@ -1,4 +1,4 @@
-import Player from "../Classes/Player"
+import Player from "../Classes/EntityChilds/Player"
 
 import checkSouls from "./whisperListeners/checkSouls"
 import help from "./whisperListeners/help"

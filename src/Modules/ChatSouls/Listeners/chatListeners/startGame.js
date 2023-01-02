@@ -1,5 +1,5 @@
 import sendMessage from "../../../../Twitch/sendMessageHandler"
-import Player from "../../Classes/Player"
+import Player from "../../Classes/EntityChilds/Player"
 
 /**
  * Starts the game by chat or whisper command

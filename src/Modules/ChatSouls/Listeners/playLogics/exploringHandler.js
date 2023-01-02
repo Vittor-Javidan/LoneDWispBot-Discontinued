@@ -1,5 +1,5 @@
+import Player from "../../Classes/EntityChilds/Player";
 import ENUM from "../../Classes/ENUM";
-import Player from "../../Classes/Player";
 import idle from "./Exploring/idle";
 
 /**

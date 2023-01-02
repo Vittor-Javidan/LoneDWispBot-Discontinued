@@ -1,5 +1,5 @@
+import Player from "../../Classes/EntityChilds/Player"
 import ENUM from "../../Classes/ENUM"
-import Player from "../../Classes/Player"
 
 import attributeUpgrade from "./Resting/attributeUpgrade"
 import equipment_Body from "./Resting/Equipment/bodyArmor"

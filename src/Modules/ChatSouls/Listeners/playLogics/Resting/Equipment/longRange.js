@@ -1,7 +1,7 @@
 import sendMessage from "../../../../../../Twitch/sendMessageHandler"
+import Player from "../../../../Classes/EntityChilds/Player"
 import ENUM from "../../../../Classes/ENUM"
 import LongRangeWeapon from "../../../../Classes/EquipmentChilds/LongRangeWeapon"
-import Player from "../../../../Classes/Player"
 
 /**
  * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "EQUIPMENT_LONG_RANGE"

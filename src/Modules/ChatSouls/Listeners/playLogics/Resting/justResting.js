@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../Twitch/sendMessageHandler"
+import Player from "../../../Classes/EntityChilds/Player"
 import ENUM from "../../../Classes/ENUM"
-import Player from "../../../Classes/Player"
 
 /**
  * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "JUST_RESTING"
@@ -49,7 +49,7 @@ export default function justResting(data) {
 			case 2:
 				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
 				sendMessage(
-					`/w ${userName} "EQUIPAMENTOS: 
+					`/w ${userName} EQUIPAMENTOS: 
 					| 0. Voltar
 					| 1. Arma Corpo a Corpo
 					| 2. Arma Longo alcance
