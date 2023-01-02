@@ -9,7 +9,7 @@ export default class MeleeWeapon extends Equiment {
     static database = equipmentDataBase.WEAPONS.MELEE
 
     /**
-     * @param {import("../Player").CS_Player_EquippedData} itemObject 
+     * @param {import("../Player").CS_EquipmentData} itemObject 
      * @constructor
      */ 
     constructor(itemObject) {

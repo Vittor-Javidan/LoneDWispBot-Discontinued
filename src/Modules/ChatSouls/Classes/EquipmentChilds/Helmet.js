@@ -9,7 +9,7 @@ export default class Helmet extends Equiment {
     static database = equipmentDataBase.ARMORS.HELMETS
 
     /**
-     * @param {import("../Player").CS_Player_EquippedData} itemObject 
+     * @param {import("../Player").CS_EquipmentData} itemObject 
      * @constructor
      */
     constructor(itemObject){

@@ -14,8 +14,8 @@ export default function equipment_Gloves(data) {
 
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
-	const equippedArmor = playerInstance.getPlayerEquipment().gloves
+	const userName = playerInstance.getName()
+	const equippedArmor = playerInstance.getEquippedEquipment().gloves
 
 	// GLOVES EQUIPMENT MENU =======================================================================
 	// If "!cs play"
@@ -39,7 +39,7 @@ export default function equipment_Gloves(data) {
 
             //GO BACK TO EQUIPMENT MENU ================================================================
 			case 0:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
 				sendMessage (
 					`/w ${userName} Você voltou a olhar seus equipamentos. 
                     | 0. Voltar 
@@ -58,15 +58,15 @@ export default function equipment_Gloves(data) {
             // EQUIP ANOTHER GLOVE ====================================================================
 			case 1:
 
-				const inventory_GlovesArmor = playerInstance.getPlayerInvetoryEquipment().gloves
+				const inventory_GlovesArmor = playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.GLOVES)
 				if (!inventory_GlovesArmor) {
 					sendMessage(`/w @${userName} Seu inventário está vazio.`)
                     return
 				}
 
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES_INVENTORY)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES_INVENTORY)
                 sendMessage(
-                    `/w @${userName} Quais luvas deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentByType_StringFormat(ENUM.EQUIPMENT_TYPES.GLOVES)}`
+                    `/w @${userName} Quais luvas deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.GLOVES)}`
                 )
 				break
 			//
@@ -88,7 +88,8 @@ export default function equipment_Gloves(data) {
                     sendMessage(`/w @${userName} você não possui nenhuma luva equipada`)
                     return
                 }
-                playerInstance.unequip(ENUM.EQUIPMENT_TYPES.GLOVES)
+                playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.GLOVES)
+				sendMessage(`/w @${userName} Luvas desequipadas`)
 				break
 			//
 

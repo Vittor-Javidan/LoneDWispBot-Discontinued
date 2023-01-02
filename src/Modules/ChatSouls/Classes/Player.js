@@ -3,43 +3,25 @@ import dbSystem from "../database/dbSystem"
 import ENUM from "./ENUM"
 
 /**
- * @typedef {Object<string, CS_PlayerData>} CS_Database x is playerName string
+ * @typedef {Object<string, CS_EntityData>} CS_Database
  * 
- * @typedef {Object} CS_PlayerData
- * @property {string} playerName - player name
- * @property {number} souls - Currency of ChatSouls
- * @property {number} level - Player level
- * @property {CS_Player_Attributes} attributes
- * @property {CS_Player_Equipped} equipment
+ * @typedef {Object} CS_EntityData
+ * @property {string} name
+ * @property {number} souls
+ * @property {number} level
+ * @property {CS_Attributes} attributes
+ * @property {CS_Equipment} equipment
  * @property {CS_Player_Inventory} inventory
  * 
- * @typedef {Object} CS_Player_Attributes
- * @property {number} vitality
- * @property {number} agility
- * @property {number} strenght
- * @property {number} intelligence
+ * @typedef {Object<string, number>} CS_Attributes
  * 
- * @typedef {Object<string, CS_Player_EquippedData>} CS_Player_Equipped
- * @property {CS_Player_EquippedData} longRangeWeapon
- * @property {CS_Player_EquippedData} meleeWeapon
- * @property {CS_Player_EquippedData} helmet
- * @property {CS_Player_EquippedData} bodyArmor
- * @property {CS_Player_EquippedData} gloves
- * @property {CS_Player_EquippedData} boots
+ * @typedef {Object<string, CS_EquipmentData>} CS_Equipment
+ * @typedef {Object} CS_EquipmentData
+ * @property {string} name
  * 
  * @typedef {Object} CS_Player_Inventory
- * @property {CS_Player_Inventory_Equipment} equipment
- * 
- * @typedef {Object } CS_Player_Inventory_Equipment
- * @property {CS_Player_EquippedData[]} longRangeWeapon
- * @property {CS_Player_EquippedData[]} meleeWeapon
- * @property {CS_Player_EquippedData[]} helmet
- * @property {CS_Player_EquippedData[]} bodyArmor
- * @property {CS_Player_EquippedData[]} gloves
- * @property {CS_Player_EquippedData[]} boots
- * 
- * @typedef {Object} CS_Player_EquippedData
- * @property {string} name
+ * @property {CS_Inventory_Equipments} equipments
+ * @typedef {Object<string, CS_EquipmentData[]>} CS_Inventory_Equipments
 */
 
 /**
@@ -65,15 +47,14 @@ export default class Player {
     /**
      * @type {string}
      * @private
-    */
-    playerName = ''
+     */
+    name = ''
 
     /**
-        * Player current state
-        * @type {playerState}
-        * @private
-        */
-    playerState = {
+     * @type {playerState}
+     * @private
+     */
+    currentState = {
         primary: ENUM.RESTING.PRIMARY,
         secondary: ENUM.RESTING.SECONDARY.JUST_RESTING
     }
@@ -91,33 +72,33 @@ export default class Player {
     level = 1
 
     /**
-     * @type {CS_Player_Attributes}
+     * @type {CS_Attributes} 
      * @private
      */
     attributes = {
-        vitality: 1,
-        agility: 1,
-        strenght: 1,
-        intelligence: 1
+        [ENUM.ATTRIBUTES.VITALITY]: 1,
+        [ENUM.ATTRIBUTES.AGILITY]: 1,
+        [ENUM.ATTRIBUTES.STRENGHT]: 1,
+        [ENUM.ATTRIBUTES.INTELLLIGENCE]: 1
     }
 
     /**
-     * @type {CS_Player_Equipped}
+     * @type {CS_Equipment}
      */
     equipment = {
-        longRangeWeapon: {name: 'Wooden Bow'},
-        meleeWeapon: {name: 'Dagger'},
-        helmet: {name: 'Hunter Hat'},
-        bodyArmor: {name: 'Hunter Vest'},
-        gloves: {name: 'Hunter Gloves'},
-        boots: {name: 'Hunter Boots'}
+        [ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON]: {name: 'Wooden Bow'},
+        [ENUM.EQUIPMENT_TYPES.MELEE_WEAPON]: {name: 'Dagger'},
+        [ENUM.EQUIPMENT_TYPES.HELMET]: {name: 'Hunter Hat'},
+        [ENUM.EQUIPMENT_TYPES.BODY_ARMOR]: {name: 'Hunter Vest'},
+        [ENUM.EQUIPMENT_TYPES.GLOVES]: {name: 'Hunter Gloves'},
+        [ENUM.EQUIPMENT_TYPES.BOOTS]: {name: 'Hunter Boots'}
     }
 
     /**
      * @type {CS_Player_Inventory}
      */
     inventory = {
-        equipment: {}
+        equipments: {}
     }
 
     /**
@@ -126,7 +107,7 @@ export default class Player {
      * @constructor
      */
     constructor(userName){
-        this.playerName = userName
+        this.name = userName
     }
 
     //=================================================================================================
@@ -166,7 +147,7 @@ export default class Player {
 
         let playerInstance
         for(let i = 0; i < this.onlinePlayers.length; i++){
-            if(userName === this.onlinePlayers[i].playerName){
+            if(userName === this.onlinePlayers[i].name){
 
                 playerInstance = this.onlinePlayers[i]
             }
@@ -212,13 +193,14 @@ export default class Player {
      */
     checkMissingInfo(){
 
-        const playerData = Player.database[`${this.playerName}`]
+        const playerData = Player.database[`${this.name}`]
 
-        if(!playerData.souls) Player.database[`${this.playerName}`].souls = this.souls
-        if(!playerData.level) Player.database[`${this.playerName}`].level = this.level
-        if(!playerData.attributes) Player.database[`${this.playerName}`].attributes = this.attributes
-        if(!playerData.equipment) Player.database[`${this.playerName}`].equipment = this.equipment
-        if(!playerData.inventory) Player.database[`${this.playerName}`].inventory = this.inventory
+        if(!playerData.souls) Player.database[`${this.name}`].souls = this.souls
+        if(!playerData.level) Player.database[`${this.name}`].level = this.level
+        if(!playerData.attributes) Player.database[`${this.name}`].attributes = this.attributes
+        if(!playerData.equipment) Player.database[`${this.name}`].equipment = this.equipment
+        if(!playerData.inventory) Player.database[`${this.name}`].inventory = this.inventory
+        if(!playerData.inventory.equipments) Player.database[`${this.name}`].inventory.equipments = this.inventory.equipments
     }
     
     /**
@@ -226,9 +208,9 @@ export default class Player {
      */
     save(){
     
-        /** @type {CS_PlayerData} */
+        /** @type {CS_EntityData} */
         const playerData = {
-            playerName: this.playerName,
+            name: this.name,
             souls: this.souls,
             level: this.level,
             attributes: this.attributes,
@@ -236,46 +218,46 @@ export default class Player {
             inventory: this.inventory
         }
         
-        Player.database[`${this.playerName}`] = playerData
+        Player.database[`${this.name}`] = playerData
         dbSystem.writeDb(Player.database)
     }
 
     /**
      * @returns {playerState}
      */
-    getPlayerState(){
-        return this.playerState
+    getCurrentState(){
+        return this.currentState
     }
 
     /**
      * Set player primary state
      * @param {string} ENUM_STATE 
      */
-    setPlayerState_Primary(ENUM_STATE) {
-        this.playerState.primary = ENUM_STATE
+    setPrimaryState(ENUM_STATE) {
+        this.currentState.primary = ENUM_STATE
     }
 
     /**
      * Set player secondary state
      * @param {string} ENUM_STATE 
      */
-    setPlayerState_Secondary(ENUM_STATE) {
-        this.playerState.secondary = ENUM_STATE
+    setSecondaryState(ENUM_STATE) {
+        this.currentState.secondary = ENUM_STATE
     }
 
     /**
      * Returns player name
      * @returns {string}
      */
-    getPlayerName(){
-        return this.playerName
+    getName(){
+        return this.name
     }
 
     /**
      * Return player level
      * @returns {number}
      */
-    getPlayerLevel(){
+    getLevel(){
         return this.level
     }
 
@@ -297,9 +279,9 @@ export default class Player {
 
     /**
      * Return player attributes
-     * @returns {CS_Player_Attributes}
+     * @returns {CS_Attributes} ATTRIBUTES ENUM to check the keys
      */
-    getPlayerAttibutes(){
+    getAttributes(){
         return this.attributes
     }
 
@@ -314,7 +296,7 @@ export default class Player {
         const soulsBalance = this.souls - upgradeCost
 
         if(soulsBalance < 0) {
-            sendMessage(`/w ${this.playerName} Você não possui almas o suficiente`)
+            sendMessage(`/w ${this.name} Você não possui almas o suficiente`)
             return
         }
 
@@ -322,39 +304,38 @@ export default class Player {
 
             case ENUM.ATTRIBUTES.VITALITY:
                 this.souls -= upgradeCost
-                this.attributes.vitality += 1
+                this.attributes[ENUM.ATTRIBUTES.VITALITY] += 1
                 this.level += 1
-                sendMessage(`/w ${this.playerName} VITALIDADE AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
+                sendMessage(`/w ${this.name} VITALIDADE AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
                 break;
             //
 
             case ENUM.ATTRIBUTES.AGILITY:
                 this.souls -= upgradeCost
-                this.attributes.agility += 1
+                this.attributes[ENUM.ATTRIBUTES.AGILITY] += 1
                 this.level += 1
-                sendMessage(`/w ${this.playerName} AGILIDADE AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
+                sendMessage(`/w ${this.name} AGILIDADE AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
                 break
             //
 
             case ENUM.ATTRIBUTES.STRENGHT:
                 this.souls -= upgradeCost
-                this.attributes.strenght += 1
+                this.attributes[ENUM.ATTRIBUTES.STRENGHT] += 1
                 this.level += 1
-                sendMessage(`/w ${this.playerName} FORÇA AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
+                sendMessage(`/w ${this.name} FORÇA AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
                 break
             //
 
             case ENUM.ATTRIBUTES.INTELLLIGENCE:
                 this.souls -= upgradeCost
-                this.attributes.intelligence += 1
+                this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE] += 1
                 this.level += 1
-                sendMessage(`/w ${this.playerName} INTELIGÊNCIA AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
+                sendMessage(`/w ${this.name} INTELIGÊNCIA AUMENTADA! LEVEL: ${this.level} | Almas restantes: ${this.souls} | custo próximo nível: ${ this.getUpgradeCost() } | `)
                 break
             //
 
             default:
-                sendMessage(`Invalid Upgrade Attribute`)
-                console.log(`${this.playerName}: Invalid Upgrade Attribute`)
+                console.log(`${this.name}: Invalid Upgrade Attribute`)
                 break
             //
         }
@@ -364,31 +345,32 @@ export default class Player {
 
     /**
      * Returns the player current equips
-     * @returns {CS_Player_Equipped}
+     * @returns {CS_Equipment}
      */
-    getPlayerEquipment(){
+    getEquippedEquipment(){
         return this.equipment
     }
 
     /**
      * Unequip player equipment by type
-     * @param {import("./ENUM").EQUIPMENT_TYPES} type - Type of selected equipment
+     * @param {string} EQUIPMENT_TYPE_ENUM - Type of selected equipment
      * @returns {void}
      */
-    unequip(type){
+    unequipEquipment(EQUIPMENT_TYPE_ENUM){
 
-        const unequippedWeapon = this.equipment[type]
+        const unequippedWeapon = this.equipment[EQUIPMENT_TYPE_ENUM]
 
-        if(!this.inventory.equipment[type]) {
-            this.inventory.equipment[type] = [unequippedWeapon]
+        //If the specific equipment inventory type is not empty, just push. Create the specific equipments inventory type property otherwise
+        if(!this.inventory.equipments[EQUIPMENT_TYPE_ENUM]) {
+            this.inventory.equipments[EQUIPMENT_TYPE_ENUM] = [unequippedWeapon]
         } else {
-            this.inventory.equipment[type].push(unequippedWeapon)
+            this.inventory.equipments[EQUIPMENT_TYPE_ENUM].push(unequippedWeapon)
         }
+        //
         
-        delete this.equipment[type]
+        delete this.equipment[EQUIPMENT_TYPE_ENUM]
         
-        sendMessage(`/w @${this.playerName} ${unequippedWeapon.name} foi desequipada`)
-        this.inventory.equipment[type].sort((a, b) => {
+        this.inventory.equipments[EQUIPMENT_TYPE_ENUM].sort((a, b) => {
             if (a.name < b.name) return -1
             if (a.name > b.name) return 1
             return 0
@@ -398,23 +380,27 @@ export default class Player {
 
     /**
      * Returns the equipment stored in player inventory
-     * @returns {CS_Player_Inventory_Equipment}
+     * @param {string} EQUIPMENT_TYPE_ENUM
+     * @returns {CS_Inventory_Equipments | CS_EquipmentData[]} If the type is not specify, all equipment types will return.
      */
-    getPlayerInvetoryEquipment(){
-        return this.inventory.equipment
+    getInvetoryEquipments(EQUIPMENT_TYPE_ENUM){
+
+        if(EQUIPMENT_TYPE_ENUM) {
+            return this.inventory.equipments[EQUIPMENT_TYPE_ENUM]
+        }
+        return this.inventory.equipments
     }
 
     /**
      * Return a string containing all equipment inside players inventory.
      * Output example: `| 1. itemName_1 | 2. itemName_2 | ... | n. itemName_n |`
      * 
-     * @param {import("./ENUM").EQUIPMENT_TYPES} type - Type of selected equipment
-     * @returns {string | undefined}
+     * @param {string} EQUIPMENT_TYPE_ENUM
+     * @returns {string | undefined} Returns `undefined` if iventory is empty.
      */
-    getInventoryEquipmentByType_StringFormat(type){
+    getInventoryEquipmentsString(EQUIPMENT_TYPE_ENUM){
 
-        let equipment = this.inventory.equipment[type]
-        
+        let equipment = this.inventory.equipments[EQUIPMENT_TYPE_ENUM]
         if (!equipment) {
             return
         }
@@ -424,24 +410,23 @@ export default class Player {
         for(let i = 0; i < equipment.length; i++) {
             equipmentListString += `| ${i + 1}. ${equipment[i].name} `
         }
-
         return equipmentListString
     }
 
     /**
-     * Equip a type of equipment
-     * @param {import("./ENUM").EQUIPMENT_TYPES} type - Type of selected equipment
+     * Equip a type of equipment from player inventory
+     * @param {string} EQUIPMENT_TYPE_ENUM
      * @param {number} itemCode
      * @returns {void}
      */
-    setEquipment(itemCode, type) {
+    setEquippedEquipment(itemCode, EQUIPMENT_TYPE_ENUM) {
 
         const itemIndex = itemCode - 1
 
         //`False` if there is no weapon equiped, `True` otherwise
-        this.equipment[type]
-            ? this.equipment[type] = this.replaceInventoryEquipment(itemIndex, this.equipment[type], type)
-            : this.equipment[type] = this.removeInventoryEquipment(itemIndex, type)
+        this.equipment[EQUIPMENT_TYPE_ENUM]
+            ? this.equipment[EQUIPMENT_TYPE_ENUM] = this.replaceInventoryEquipment(itemIndex, this.equipment[EQUIPMENT_TYPE_ENUM], EQUIPMENT_TYPE_ENUM)
+            : this.equipment[EQUIPMENT_TYPE_ENUM] = this.removeInventoryEquipment(itemIndex, EQUIPMENT_TYPE_ENUM)
         //
 
         this.save()
@@ -450,14 +435,14 @@ export default class Player {
     /**
      * Remove and return a equipment type from player inventory using the indexArray
      * @param {number} itemIndex 
-     * @param {import("./ENUM").EQUIPMENT_TYPES} type - Type of selected equipment
-     * @returns {CS_Player_EquippedData}
+     * @param {string} EQUIPMENT_TYPE_ENUM - Type of selected equipment
+     * @returns {CS_EquipmentData}
      */
-    removeInventoryEquipment(itemIndex, type){
+    removeInventoryEquipment(itemIndex, EQUIPMENT_TYPE_ENUM){
 
-        const itemRemoved = this.inventory.equipment[type].splice(itemIndex, 1)
-        if (this.inventory.equipment[type].length === 0) {
-            delete this.inventory.equipment[type]
+        const itemRemoved = this.inventory.equipments[EQUIPMENT_TYPE_ENUM].splice(itemIndex, 1)
+        if (this.inventory.equipments[EQUIPMENT_TYPE_ENUM].length === 0) {
+            delete this.inventory.equipments[EQUIPMENT_TYPE_ENUM]
         }
         return itemRemoved[0]
     }
@@ -466,12 +451,12 @@ export default class Player {
      * Remove and return a equipment type from player invetory and replaces to another
      * @param {number} itemIndex 
      * @param {string} itemToReplace 
-     * @param {import("./ENUM").EQUIPMENT_TYPES} type - Type of selected equipment
+     * @param {string} type - Type of selected equipment
      */
     replaceInventoryEquipment(itemIndex, itemToReplace, type){
 
-        const itemRemoved = this.inventory.equipment[type].splice(itemIndex, 1, itemToReplace)
-        this.inventory.equipment[type].sort((a, b) => {
+        const itemRemoved = this.inventory.equipments[type].splice(itemIndex, 1, itemToReplace)
+        this.inventory.equipments[type].sort((a, b) => {
             if (a.name < b.name) return -1
             if (a.name > b.name) return 1
             return 0

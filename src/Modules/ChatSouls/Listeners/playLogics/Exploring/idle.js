@@ -13,7 +13,7 @@ export default function idle(data) {
 
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
+	const userName = playerInstance.getName()
 
 	// If "!cs play"
 	if (words.length === 2) {
@@ -36,8 +36,8 @@ export default function idle(data) {
         switch (itemCode) {
             
             case 0:
-                playerInstance.setPlayerState_Primary(ENUM.RESTING.PRIMARY)
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.JUST_RESTING)
+                playerInstance.setPrimaryState(ENUM.RESTING.PRIMARY)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
                 sendMessage(
                     `/w ${userName} Montou uma fogueira: 
 					| 1. Statísticas 
@@ -50,21 +50,21 @@ export default function idle(data) {
 
             case 1:
                 break
-                playerInstance.setPlayerState_Secondary(ENUM.EXPLORING.SECONDARY.HUNTING)
+                playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.HUNTING)
                 //randomBattleEventFunction(playerInstance)
                 break
             //
 
             case 2:
                 break
-                playerInstance.setPlayerState_Secondary(ENUM.EXPLORING.SECONDARY.FORAGING)
+                playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.FORAGING)
                 //randomResourceGatteringFunction(playerInstance)
                 break
             //
 
             case 3:
                 break
-                playerInstance.setPlayerState_Secondary(ENUM.EXPLORING.SECONDARY.TRAVEL)
+                playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.TRAVEL)
                 //travelFunction(playerInstance)
                 break
         }

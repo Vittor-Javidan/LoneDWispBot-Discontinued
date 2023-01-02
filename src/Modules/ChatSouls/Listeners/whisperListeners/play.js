@@ -12,7 +12,7 @@ import resting from "../playLogics/restingHandler";
  */
 export default function play(data){
 
-    const playerState = data.playerInstance.getPlayerState()
+    const playerState = data.playerInstance.getCurrentState()
     
     switch (playerState.primary){
         case ENUM.RESTING.PRIMARY: resting(data); break

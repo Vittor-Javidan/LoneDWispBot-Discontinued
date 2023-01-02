@@ -14,8 +14,8 @@ export default function equipment_Body(data) {
 
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
-	const equippedArmor = playerInstance.getPlayerEquipment().bodyArmor
+	const userName = playerInstance.getName()
+	const equippedArmor = playerInstance.getEquippedEquipment().bodyArmor
 
 	// BODY EQUIPMENT MENU =======================================================================
 	// If "!cs play"
@@ -39,7 +39,7 @@ export default function equipment_Body(data) {
 
             //GO BACK TO EQUIPMENT MENU ================================================================
 			case 0:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
 				sendMessage (
 					`/w ${userName} Você voltou a olhar seus equipamentos. 
                     | 0. Voltar 
@@ -58,15 +58,15 @@ export default function equipment_Body(data) {
             // EQUIP ANOTHER BODY ARMOR =========================================================
 			case 1:
 
-				const inventory_BodyArmors = playerInstance.getPlayerInvetoryEquipment().bodyArmor
+				const inventory_BodyArmors = playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.BODY_ARMOR)
 				if (!inventory_BodyArmors) {
 					sendMessage(`/w @${userName} Seu inventário está vazio.`)
                     return
 				}
 
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR_INVENTORY)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR_INVENTORY)
                 sendMessage(
-                    `/w @${userName} Qual armadura deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentByType_StringFormat(ENUM.EQUIPMENT_TYPES.BODY_ARMOR)}`
+                    `/w @${userName} Qual armadura deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.BODY_ARMOR)}`
                 )
 				break
 			//
@@ -88,7 +88,8 @@ export default function equipment_Body(data) {
                     sendMessage(`/w @${userName} você não possui nenhuma armadura equipada`)
                     return
                 }
-                playerInstance.unequip(ENUM.EQUIPMENT_TYPES.BODY_ARMOR)
+                playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.BODY_ARMOR)
+				sendMessage(`/w @${userName} Armadura desequipada`)
 				break
 			//
 

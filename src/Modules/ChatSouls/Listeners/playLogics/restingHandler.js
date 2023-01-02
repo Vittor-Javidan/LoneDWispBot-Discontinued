@@ -27,7 +27,7 @@ import statsMenu from "./Resting/statsMenu"
  */
 export default function resting(data){
 
-    const playerState = data.playerInstance.getPlayerState()
+    const playerState = data.playerInstance.getCurrentState()
     
     switch(playerState.secondary) {
         

@@ -14,8 +14,8 @@ export default function equipment_boots(data) {
 
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
-	const equippedArmor = playerInstance.getPlayerEquipment().boots
+	const userName = playerInstance.getName()
+	const equippedArmor = playerInstance.getEquippedEquipment().boots
 
 	// BOOTS EQUIPMENT MENU =======================================================================
 	// If "!cs play"
@@ -39,7 +39,7 @@ export default function equipment_boots(data) {
 
             //GO BACK TO EQUIPMENT MENU ================================================================
 			case 0:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
 				sendMessage (
 					`/w ${userName} Você voltou a olhar seus equipamentos. 
                     | 0. Voltar 
@@ -58,15 +58,15 @@ export default function equipment_boots(data) {
             // EQUIP ANOTHER BOOTS ====================================================================
 			case 1:
 
-				const inventory_Boots = playerInstance.getPlayerInvetoryEquipment().boots
+				const inventory_Boots = playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.BOOTS)
 				if (!inventory_Boots) {
 					sendMessage(`/w @${userName} Seu inventário está vazio.`)
                     return
 				}
 
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS_INVENTORY)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS_INVENTORY)
                 sendMessage(
-                    `/w @${userName} Quais botas deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentByType_StringFormat(ENUM.EQUIPMENT_TYPES.BOOTS)}`
+                    `/w @${userName} Quais botas deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.BOOTS)}`
                 )
 				break
 			//
@@ -88,7 +88,8 @@ export default function equipment_boots(data) {
                     sendMessage(`/w @${userName} você não possui nenhuma bota equipada`)
                     return
                 }
-                playerInstance.unequip(ENUM.EQUIPMENT_TYPES.BOOTS)
+                playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.BOOTS)
+				sendMessage(`/w @${userName} Botas desequipadas`)
 				break
 			//
 

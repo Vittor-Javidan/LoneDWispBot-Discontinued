@@ -14,8 +14,8 @@ export default function attributeUpgrade(data) {
 	const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
 	
-	const userName = playerInstance.getPlayerName()
-	const level = playerInstance.getPlayerLevel()
+	const userName = playerInstance.getName()
+	const level = playerInstance.getLevel()
 	const souls = playerInstance.getSouls()
 	const upgradeCost = playerInstance.getUpgradeCost()
 	
@@ -44,7 +44,7 @@ export default function attributeUpgrade(data) {
 		switch(itemCode){
 					
 			case 0:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.STATS_MENU)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.STATS_MENU)
 				sendMessage(
 					`/w ${userName} Você está no menu de estatísticas: 
 					| 0. Voltar 

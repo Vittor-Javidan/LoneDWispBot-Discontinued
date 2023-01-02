@@ -14,8 +14,8 @@ export default function equipment_Helmet(data) {
 
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
-	const equippedArmor = playerInstance.getPlayerEquipment().helmet
+	const userName = playerInstance.getName()
+	const equippedArmor = playerInstance.getEquippedEquipment().helmet
 
 	// HELMET EQUIPMENT MENU =======================================================================
 	// If "!cs play"
@@ -39,7 +39,7 @@ export default function equipment_Helmet(data) {
 
             //GO BACK TO EQUIPMENT MENU ================================================================
 			case 0:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
 				sendMessage (
 					`/w ${userName} Você voltou a olhar seus equipamentos. 
                     | 0. Voltar
@@ -58,15 +58,15 @@ export default function equipment_Helmet(data) {
             // EQUIP ANOTHER HELMET ====================================================================
 			case 1:
 
-				const inventory_Helmets = playerInstance.getPlayerInvetoryEquipment().helmet
+				const inventory_Helmets = playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.HELMET)
 				if (!inventory_Helmets) {
 					sendMessage(`/w @${userName} Seu inventário está vazio.`)
                     return
 				}
 
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_HELMET_INVENTORY)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_HELMET_INVENTORY)
                 sendMessage(
-                    `/w @${userName} Qual capacete deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentByType_StringFormat(ENUM.EQUIPMENT_TYPES.HELMET)}`
+                    `/w @${userName} Qual capacete deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.HELMET)}`
                 )
 				break
 			//
@@ -88,7 +88,8 @@ export default function equipment_Helmet(data) {
                     sendMessage(`/w @${userName} você não possui nenhum capacete equipado`)
                     return
                 }
-                playerInstance.unequip(ENUM.EQUIPMENT_TYPES.HELMET)
+                playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.HELMET)
+				sendMessage(`/w @${userName} Capacete desequipado`)
 				break
 			//
 

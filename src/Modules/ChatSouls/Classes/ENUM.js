@@ -1,16 +1,3 @@
-/**
- * @typedef {Object} ENUM
- * @property {Object} EQUIPMENT_TYPES
- * @property {EQUIPMENT_TYPES} EQUIPMENT_TYPES.MELEE_WEAPON
- * @property {EQUIPMENT_TYPES} EQUIPMENT_TYPES.LONG_RANGE_WEAPON
- * @property {EQUIPMENT_TYPES} EQUIPMENT_TYPES.HELMET
- * @property {EQUIPMENT_TYPES} EQUIPMENT_TYPES.BODY_ARMOR
- * @property {EQUIPMENT_TYPES} EQUIPMENT_TYPES.GLOVES
- * @property {EQUIPMENT_TYPES} EQUIPMENT_TYPES.BOOTS
- * 
- * @typedef {string} EQUIPMENT_TYPES
- */
-
 const ENUM = {
     RESTING: {
         PRIMARY: "RESTING",
@@ -43,17 +30,17 @@ const ENUM = {
         }
     },
     ATTRIBUTES: {
-        VITALITY: "VITALITY",
-        AGILITY: "AGILITY",
-        STRENGHT: "STRENGHT",
-        INTELLLIGENCE: "INTELLIGENCE",
+        VITALITY: "vitality",
+        AGILITY: "agility",
+        STRENGHT: "strenght",
+        INTELLLIGENCE: "intelligence",
     },
     MAP_AREAS: {
         THE_WOODS: "THE WOODS"
     },
     EQUIPMENT_TYPES: {
-        MELEE_WEAPON: "meleeWeapon",
         LONG_RANGE_WEAPON: "longRangeWeapon",
+        MELEE_WEAPON: "meleeWeapon",
         HELMET: "helmet",
         BODY_ARMOR: "bodyArmor",
         GLOVES: "gloves",

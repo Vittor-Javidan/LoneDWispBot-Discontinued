@@ -13,13 +13,13 @@ export default function equipment_BootsInventory(data) {
 
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
+	const userName = playerInstance.getName()
 
     // BOOTS INVENTORY LIST =======================================================================
     // If "!cs play"
 	if (words.length === 2) {
 
-		const allEquipmentString = playerInstance.getInventoryEquipmentByType_StringFormat(ENUM.EQUIPMENT_TYPES.BOOTS)
+		const allEquipmentString = playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.BOOTS)
         sendMessage(
             `/w @${userName} Você está olhando seu inventário de botas. Qual deseja equipar?: 
             | 0. Voltar ${allEquipmentString}
@@ -37,7 +37,7 @@ export default function equipment_BootsInventory(data) {
 			//GO BOOTS EQUIPMENT MENU =============================================================
             case itemCode === 0:
                 
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS)
                 sendMessage(
                     `/w ${userName} Você voltou ao menu de botas
                     | 0. Voltar
@@ -50,12 +50,12 @@ export default function equipment_BootsInventory(data) {
             //
 
             //CHOSE A BOOTS TO EQUIP AND GO BACK TO BOOTS EQUIPMENT MENU =====================
-            case (itemCode <= playerInstance.getPlayerInvetoryEquipment().boots.length):
+            case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.BOOTS).length):
 
-                playerInstance.setEquipment(itemCode, ENUM.EQUIPMENT_TYPES.BOOTS)
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS)
+                playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.BOOTS)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS)
                 sendMessage(
-                    `/w @${userName} ${playerInstance.getPlayerEquipment().boots.name} foi equipado. Voltando ao menu de botas. 
+                    `/w @${userName} ${playerInstance.getEquippedEquipment().boots.name} foi equipado. Voltando ao menu de botas. 
                     | 0. Voltar
                     | 1. Equipar outras botas
                     | 2. Ver detalhes das botas

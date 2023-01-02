@@ -14,11 +14,11 @@ export default function statsMenu(data) {
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
     
-	const userName = playerInstance.getPlayerName()
-	const level = playerInstance.getPlayerLevel()
+	const userName = playerInstance.getName()
+	const level = playerInstance.getLevel()
 	const souls = playerInstance.getSouls()
 	const upgradeCost = playerInstance.getUpgradeCost()
-    const playerAttributes = playerInstance.getPlayerAttibutes()
+    const playerAttributes = playerInstance.getAttributes()
 
     // If "!cs play"
 	if (words.length === 2) {
@@ -40,7 +40,7 @@ export default function statsMenu(data) {
         switch (itemCode) {
 
             case 0:
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.JUST_RESTING)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
                 sendMessage(
                     `/w ${userName} Você está descansando em uma fogueira. oque deseja fazer?: 
                     | 1. Statísticas 
@@ -63,7 +63,7 @@ export default function statsMenu(data) {
             //
 
             case 2:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.ATRIBUTE_UPGRADE)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.ATRIBUTE_UPGRADE)
 				sendMessage(
                     `/w ${userName} Você está no menu de atributos: 
                     | Level: ${level} 

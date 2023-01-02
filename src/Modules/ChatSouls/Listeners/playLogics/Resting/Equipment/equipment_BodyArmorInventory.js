@@ -13,13 +13,13 @@ export default function equipment_BodyArmorInventory(data) {
 
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
+	const userName = playerInstance.getName()
 
     // BODY ARMOR INVENTORY LIST =======================================================================
     // If "!cs play"
 	if (words.length === 2) {
 
-		const allEquipmentString = playerInstance.getInventoryEquipmentByType_StringFormat(ENUM.EQUIPMENT_TYPES.BODY_ARMOR)
+		const allEquipmentString = playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.BODY_ARMOR)
         sendMessage(
             `/w @${userName} Você está olhando seu inventário de armaduras. Qual deseja equipar?: 
             | 0. Voltar ${allEquipmentString}
@@ -37,7 +37,7 @@ export default function equipment_BodyArmorInventory(data) {
 			//GO BODY ARMOR EQUIPMENT MENU =============================================================
             case itemCode === 0:
                 
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
                 sendMessage(
                     `/w ${userName} Você voltou ao menu de armaduras
                     | 0. Voltar
@@ -50,12 +50,12 @@ export default function equipment_BodyArmorInventory(data) {
             //
 
             //CHOSE A BODY ARMOR TO EQUIP AND GO BACK TO BODY ARMOR EQUIPMENT MENU =====================
-            case (itemCode <= playerInstance.getPlayerInvetoryEquipment().bodyArmor.length):
+            case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.BODY_ARMOR).length):
 
-                playerInstance.setEquipment(itemCode, ENUM.EQUIPMENT_TYPES.BODY_ARMOR)
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
+                playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.BODY_ARMOR)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
                 sendMessage(
-                    `/w @${userName} ${playerInstance.getPlayerEquipment().bodyArmor.name} foi equipado. Voltando ao menu de armaduras. 
+                    `/w @${userName} ${playerInstance.getEquippedEquipment().bodyArmor.name} foi equipado. Voltando ao menu de armaduras. 
                     | 0. Voltar
                     | 1. Equipar outra armadura
                     | 2. Ver detalhes da armadura

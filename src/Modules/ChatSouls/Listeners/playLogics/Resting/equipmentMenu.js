@@ -13,7 +13,7 @@ export default function equipment_Menu(data) {
 
 	const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
+	const userName = playerInstance.getName()
 	
 	// EQUIPMENT MENU =========================================================================
 	// If "!cs play"
@@ -42,7 +42,7 @@ export default function equipment_Menu(data) {
 
 			// GO BACK TO RESTING MAIN MENU ===================================================
 			case 0:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.JUST_RESTING)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
 				sendMessage(
 					`/w ${userName} Voltou para a fogueira: 
 					| 1. Statísticas 
@@ -55,7 +55,7 @@ export default function equipment_Menu(data) {
 
 			// MELEE EQUIPMENT MENU ===========================================================
 			case 1:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_MELEE)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_MELEE)
 				sendMessage(
 					`/w ${userName} Menu de armas corpo a corpo: 
 					| 0. Voltar 
@@ -69,7 +69,7 @@ export default function equipment_Menu(data) {
 
 			// LONG RANGE EQUIPMENT MENU ======================================================
 			case 2:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
 				sendMessage(
 					`/w ${userName} Menu de armas longo alcance: 
 					| 0. Voltar 
@@ -83,7 +83,7 @@ export default function equipment_Menu(data) {
 
 			// HELMETS EQUIPMENT MENU =========================================================
 			case 3:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_HELMET)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_HELMET)
 				sendMessage(
 					`/w ${userName} Menu de capacetes: 
 					| 0. Voltar 
@@ -97,7 +97,7 @@ export default function equipment_Menu(data) {
 
 			// BODY EQUIPMENT MENU ============================================================
 			case 4:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
 				sendMessage(
 					`/w ${userName} Menu de armaduras: 
 					| 0. Voltar
@@ -111,7 +111,7 @@ export default function equipment_Menu(data) {
 
 			// GLOVES EQUIPMENT MENU ==========================================================
 			case 5:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES)
 				sendMessage(
 					`/w ${userName} Menu de luvas: 
 					| 0. Voltar 
@@ -125,7 +125,7 @@ export default function equipment_Menu(data) {
 
 			// BOOTS EQUIPMENT MENU ==========================================================
 			case 6:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS)
 				sendMessage(
 					`/w ${userName} Menu de botas: 
 					| 0. Voltar 
@@ -140,8 +140,8 @@ export default function equipment_Menu(data) {
 			// GET EQUIPMENT SUMMARY =========================================================
 			case 7:
 
-				/** @type {import("../../../Classes/Player").CS_Player_Equipped} */
-				const playerEquipments = playerInstance.getPlayerEquipment()
+				/** @type {import("../../../Classes/Player").CS_Equipment} */
+				const playerEquipments = playerInstance.getEquippedEquipment()
 				const playerEquipmentProperties = Object.keys(playerEquipments)
 
 				if(playerEquipmentProperties.length === 0) {

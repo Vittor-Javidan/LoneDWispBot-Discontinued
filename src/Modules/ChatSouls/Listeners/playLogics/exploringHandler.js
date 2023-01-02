@@ -11,7 +11,7 @@ import idle from "./Exploring/idle";
  */
 export default function exploring(data){
 
-    const playerState = data.playerInstance.getPlayerState()
+    const playerState = data.playerInstance.getCurrentState()
 
     switch (playerState.secondary) {
         

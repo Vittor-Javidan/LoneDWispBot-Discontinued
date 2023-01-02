@@ -1,4 +1,5 @@
 import sendMessage from "../../../../Twitch/sendMessageHandler"
+import Player from "../../Classes/Player"
 
 /**
  * Sends a whisper message with some commands to assist players
@@ -6,6 +7,6 @@ import sendMessage from "../../../../Twitch/sendMessageHandler"
  * @param {Player} playerInstance 
  */
 export default function help(playerInstance){
-    const playerName = playerInstance.getPlayerName()
+    const playerName = playerInstance.getName()
     sendMessage(`/w ${playerName} digite "!cs <commando>". Os commandos disponíveis são: help, souls`)
 }

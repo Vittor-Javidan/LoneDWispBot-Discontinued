@@ -13,7 +13,7 @@ export default function justResting(data) {
 
 	const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
+	const userName = playerInstance.getName()
 
 	// If "!cs play"
 	if (words.length === 2) {
@@ -35,7 +35,7 @@ export default function justResting(data) {
 		switch (itemCode) {
 
 			case 1:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.STATS_MENU)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.STATS_MENU)
 				sendMessage(
 					`/w ${userName} Você está no menu de estatísticas: 
 					| 0. Voltar 
@@ -47,25 +47,25 @@ export default function justResting(data) {
 			//
 
 			case 2:
-				playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT)
+				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
 				sendMessage(
 					`/w ${userName} "EQUIPAMENTOS: 
 					| 0. Voltar
 					| 1. Arma Corpo a Corpo
-					| 2. Arma Longo alcance (Em progresso)
-					| 3. Capacetes (Em progresso)
-					| 4. Armaduras (Em progresso)
-					| 5. Luvas (Em progresso)
-					| 6. Botas (Em progresso)
-					| 7. Summário Geral (Em progresso)
+					| 2. Arma Longo alcance
+					| 3. Capacetes
+					| 4. Armaduras
+					| 5. Luvas
+					| 6. Botas
+					| 7. Summário Geral
 					|`
 				)
 				break
 			//
 
 			case 3:
-				playerInstance.setPlayerState_Primary(ENUM.EXPLORING.PRIMARY)
-				playerInstance.setPlayerState_Secondary(ENUM.EXPLORING.SECONDARY.IDLE)
+				playerInstance.setPrimaryState(ENUM.EXPLORING.PRIMARY)
+				playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.IDLE)
 				sendMessage(
 					`/w ${userName} Você se levanta da fogueira e olha em volta.
 					| 0. Voltar a fogueira

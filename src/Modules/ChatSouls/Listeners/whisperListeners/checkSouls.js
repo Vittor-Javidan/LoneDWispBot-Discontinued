@@ -1,4 +1,5 @@
 import sendMessage from "../../../../Twitch/sendMessageHandler"
+import Player from "../../Classes/Player"
 
 /**
  * Sends a whisper message with the amount of souls player has
@@ -6,7 +7,7 @@ import sendMessage from "../../../../Twitch/sendMessageHandler"
  * @param {Player} playerInstance 
  */
 export default function checkSouls(playerInstance){
-    const playerName = playerInstance.getPlayerName()
+    const playerName = playerInstance.getName()
     const souls = playerInstance.getSouls()
     sendMessage(`/w ${playerName} suas almas: ${souls}`)
 }

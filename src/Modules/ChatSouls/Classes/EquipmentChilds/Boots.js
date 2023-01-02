@@ -9,7 +9,7 @@ export default class Boots extends Equiment {
     static database = equipmentDataBase.ARMORS.BOOTS
 
     /**
-     * @param {import("../Player").CS_Player_EquippedData} itemObject 
+     * @param {import("../Player").CS_EquipmentData} itemObject 
      * @constructor
      */
     constructor(itemObject){

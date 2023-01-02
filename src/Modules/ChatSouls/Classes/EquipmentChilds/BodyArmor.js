@@ -9,7 +9,7 @@ export default class BodyArmor extends Equiment {
     static database = equipmentDataBase.ARMORS.BODY
 
     /**
-     * @param {import("../Player").CS_Player_EquippedData} itemObject 
+     * @param {import("../Player").CS_EquipmentData} itemObject 
      * @constructor
      */
     constructor(itemObject){

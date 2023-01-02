@@ -14,8 +14,8 @@ export default function equipment_Melee(data) {
 
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
-    const equippedWeapon = playerInstance.getPlayerEquipment().meleeWeapon
+	const userName = playerInstance.getName()
+    const equippedWeapon = playerInstance.getEquippedEquipment().meleeWeapon
 
     // MELEE EQUIPMENT MENU ============================================================================
     // If "!cs play"
@@ -39,7 +39,7 @@ export default function equipment_Melee(data) {
 
             //GO BACK EQUIPMENT MENU ===================================================================
             case 0:
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
                 sendMessage(
                     `/w ${userName} Você voltou a olhar seus equipamentos. 
                     | 0. Voltar 
@@ -58,15 +58,15 @@ export default function equipment_Melee(data) {
             // EQUIP ANOTHER MELEE WEAPON ==============================================================
             case 1:
                 
-                const inventoryWeapons_Melee = playerInstance.getPlayerInvetoryEquipment().meleeWeapon
+                const inventoryWeapons_Melee = playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)
                 if (!inventoryWeapons_Melee) {
                     sendMessage(`/w @${userName} Seu inventário está vazio.`)
                     return
                 }
                     
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_MELEE_INVENTORY)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_MELEE_INVENTORY)
                 sendMessage(
-                    `/w @${userName} Qual arma deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentByType_StringFormat(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)}`
+                    `/w @${userName} Qual arma deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)}`
                 )
                 break
             //
@@ -89,7 +89,8 @@ export default function equipment_Melee(data) {
                     sendMessage(`/w @${userName} você não possui nenhuma arma equipada`)
                     return
                 }
-                playerInstance.unequip(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)
+                playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)
+                sendMessage(`/w @${userName} Arma corpor a corpor desequipada`)
                 break
             //
 

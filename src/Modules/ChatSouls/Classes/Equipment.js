@@ -1,4 +1,5 @@
 import sendMessage from "../../../Twitch/sendMessageHandler"
+import ENUM from "./ENUM"
 
 export default class Equiment {
 
@@ -8,7 +9,7 @@ export default class Equiment {
     name
 
     /**
-     * @type {import("./Player").CS_Player_Attributes}
+     * @type {import("./Player").CS_Attributes}
      */
     multipliers
     
@@ -18,7 +19,7 @@ export default class Equiment {
     description
 
     /**
-     * @param {import("./Player").CS_Player_EquippedData} Object 
+     * @param {import("./Player").CS_EquipmentData} Object 
      * @constructor
      */
     constructor(Object){
@@ -34,10 +35,10 @@ export default class Equiment {
             `/w @${userName} 
             DESCRIÇÃO: ${this.description} 
             MULTIPLICADORES: 
-            | ${this.multipliers.vitality}x Vitalidade 
-            | ${this.multipliers.agility}x Agilidade 
-            | ${this.multipliers.strenght}x Força
-            | ${this.multipliers.intelligence}x Inteligência
+            | ${this.multipliers[ENUM.ATTRIBUTES.VITALITY]}x Vitalidade 
+            | ${this.multipliers[ENUM.ATTRIBUTES.AGILITY]}x Agilidade 
+            | ${this.multipliers[ENUM.ATTRIBUTES.STRENGHT]}x Força
+            | ${this.multipliers[ENUM.ATTRIBUTES.INTELLLIGENCE]}x Inteligência
             `
         )
     }

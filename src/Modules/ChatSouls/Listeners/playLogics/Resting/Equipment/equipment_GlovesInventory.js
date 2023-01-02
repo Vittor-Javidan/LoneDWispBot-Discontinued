@@ -13,13 +13,13 @@ export default function equipment_GlovesInventory(data) {
 
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
+	const userName = playerInstance.getName()
 
     // GLOVES INVENTORY LIST =======================================================================
     // If "!cs play"
 	if (words.length === 2) {
 
-		const allEquipmentString = playerInstance.getInventoryEquipmentByType_StringFormat(ENUM.EQUIPMENT_TYPES.GLOVES)
+		const allEquipmentString = playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.GLOVES)
         sendMessage(
             `/w @${userName} Você está olhando seu inventário de luvas. Qual deseja equipar?: 
             | 0. Voltar ${allEquipmentString}
@@ -37,7 +37,7 @@ export default function equipment_GlovesInventory(data) {
 			//GO GLOVES EQUIPMENT MENU =============================================================
             case itemCode === 0:
                 
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES)
                 sendMessage(
                     `/w ${userName} Você voltou ao menu de luvas
                     | 0. Voltar
@@ -50,12 +50,12 @@ export default function equipment_GlovesInventory(data) {
             //
 
             //CHOSE A GLOVES TO EQUIP AND GO BACK TO GLOVES EQUIPMENT MENU =====================
-            case (itemCode <= playerInstance.getPlayerInvetoryEquipment().gloves.length):
+            case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.GLOVES).length):
 
-                playerInstance.setEquipment(itemCode, ENUM.EQUIPMENT_TYPES.GLOVES)
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES)
+                playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.GLOVES)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES)
                 sendMessage(
-                    `/w @${userName} ${playerInstance.getPlayerEquipment().gloves.name} foi equipado. Voltando ao menu de luvas. 
+                    `/w @${userName} ${playerInstance.getEquippedEquipment().gloves.name} foi equipado. Voltando ao menu de luvas. 
                     | 0. Voltar
                     | 1. Equipar outras luvas
                     | 2. Ver detalhes das luvas

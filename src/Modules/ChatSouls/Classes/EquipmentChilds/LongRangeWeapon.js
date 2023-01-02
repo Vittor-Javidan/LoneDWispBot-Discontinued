@@ -9,7 +9,7 @@ export default class LongRangeWeapon extends Equiment {
     static database = equipmentDataBase.WEAPONS.LONG_RANGE
 
     /**
-     * @param {import("../Player").CS_Player_EquippedData} itemObject 
+     * @param {import("../Player").CS_EquipmentData} itemObject 
      * @constructor
      */
     constructor(itemObject){

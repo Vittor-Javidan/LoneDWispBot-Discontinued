@@ -13,13 +13,13 @@ export default function equipment_HelmetInventory(data) {
     
     const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
-	const userName = playerInstance.getPlayerName()
+	const userName = playerInstance.getName()
 
     // HELMET INVENTORY LIST ============================================================================
     // If "!cs play"
 	if (words.length === 2) {
         
-        const allEquipmentString = playerInstance.getInventoryEquipmentByType_StringFormat(ENUM.EQUIPMENT_TYPES.HELMET)
+        const allEquipmentString = playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.HELMET)
         sendMessage(
             `/w @${userName} Você está olhando seu inventário de capacetes. Qual deseja equipar?: 
             | 0. Voltar ${allEquipmentString}
@@ -37,7 +37,7 @@ export default function equipment_HelmetInventory(data) {
             //GO HELMET EQUIPMENT MENU =============================================================
             case itemCode === 0:
                 
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_HELMET)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_HELMET)
                 sendMessage(
                     `/w ${userName} Você voltou ao menu de capacetes
                     | 0. Voltar
@@ -50,12 +50,12 @@ export default function equipment_HelmetInventory(data) {
             //   
             
             //CHOSE A HELMET TO EQUIP AND GO BACK TO HELMET EQUIPMENT MENU ====================================
-            case (itemCode <= playerInstance.getPlayerInvetoryEquipment().helmet.length):
+            case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.HELMET).length):
 
-                playerInstance.setEquipment(itemCode, ENUM.EQUIPMENT_TYPES.HELMET)
-                playerInstance.setPlayerState_Secondary(ENUM.RESTING.SECONDARY.EQUIPMENT_HELMET)
+                playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.HELMET)
+                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_HELMET)
                 sendMessage(
-                    `/w @${userName} ${playerInstance.getPlayerEquipment().helmet.name} foi equipado. Voltando ao menu de capacetes. 
+                    `/w @${userName} ${playerInstance.getEquippedEquipment().helmet.name} foi equipado. Voltando ao menu de capacetes. 
                     | 0. Voltar
                     | 1. Equipar outro capates
                     | 2. Ver detalhes do capates
