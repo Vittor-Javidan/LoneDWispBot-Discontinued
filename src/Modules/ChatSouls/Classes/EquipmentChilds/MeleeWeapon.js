@@ -1,15 +1,18 @@
 import equipmentDataBase from "../../database/equipmentData"
 import Equiment from "../Equipment"
 
+/** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData */
+
 export default class MeleeWeapon extends Equiment {
 
     /**
-     * @type {Object<string, import("../../database/equipmentData").CS_Equipment_WeaponData>}
+     * -keys: `item name string`
+     * @type {Object<string, CS_Equipment_WeaponData>}
      */
     static database = equipmentDataBase.WEAPONS.MELEE
 
     /**
-     * @param {import("../Player").CS_EquipmentData} itemObject 
+     * @param {CS_Equipment_WeaponData} itemObject
      * @constructor
      */ 
     constructor(itemObject) {
@@ -19,7 +22,7 @@ export default class MeleeWeapon extends Equiment {
         }
 
         super(itemObject)
-        super.multipliers = MeleeWeapon.database[itemObject.name].DMG_MULTIPLIERS
-        super.description = MeleeWeapon.database[itemObject.name].DESCRIPTION
+        super.multipliers = MeleeWeapon.database[itemObject.name].damage_multipliers
+        super.description = MeleeWeapon.database[itemObject.name].description
     }
 }

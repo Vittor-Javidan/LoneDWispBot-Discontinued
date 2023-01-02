@@ -1,15 +1,18 @@
 import equipmentDataBase from "../../database/equipmentData"
 import Equiment from "../Equipment"
 
+/** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_ArmorData} CS_Equipment_ArmorData */
+
 export default class Gloves extends Equiment {
 
     /**
-     * @type {Object<string, import("../../database/equipmentData").CS_Equipment_ArmorData>}
+     * -keys: `item name string`
+     * @type {Object<string, CS_Equipment_ArmorData>}
      */
     static database = equipmentDataBase.ARMORS.GLOVES
 
     /**
-     * @param {import("../Player").CS_EquipmentData} itemObject 
+     * @param {CS_Equipment_ArmorData} itemObject 
      * @constructor
      */
     constructor(itemObject){
@@ -19,7 +22,7 @@ export default class Gloves extends Equiment {
         }
         
         super(itemObject)
-        super.multipliers = Gloves.database[itemObject.name].DEF_MULTIPLIERS
-        super.description = Gloves.database[itemObject.name].DESCRIPTION
+        super.multipliers = Gloves.database[itemObject.name].defense_multipliers
+        super.description = Gloves.database[itemObject.name].description
     }
 }

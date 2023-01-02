@@ -90,7 +90,7 @@ export default function equipment_Melee(data) {
                     return
                 }
                 playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)
-                sendMessage(`/w @${userName} Arma corpor a corpor desequipada`)
+                sendMessage(`/w @${userName} Arma corpo a corpo desequipada`)
                 break
             //
 

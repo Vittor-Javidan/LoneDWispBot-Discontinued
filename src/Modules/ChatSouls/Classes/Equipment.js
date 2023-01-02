@@ -1,6 +1,10 @@
 import sendMessage from "../../../Twitch/sendMessageHandler"
 import ENUM from "./ENUM"
 
+/** @typedef {import('../TypeDefinitions/Types').CS_Attributes} CS_Attributes - Keys: `ATTRIBUTE_TYPE ENUM` */
+/** @typedef {import('../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData */
+/** @typedef {import('../TypeDefinitions/Types').CS_Equipment_ArmorData} CS_Equipment_ArmorData */
+
 export default class Equiment {
 
     /**
@@ -9,7 +13,7 @@ export default class Equiment {
     name
 
     /**
-     * @type {import("./Player").CS_Attributes}
+     * @type {CS_Attributes}
      */
     multipliers
     
@@ -19,9 +23,9 @@ export default class Equiment {
     description
 
     /**
-     * @param {import("./Player").CS_EquipmentData} Object 
+     * @param {CS_Equipment_WeaponData | CS_Equipment_ArmorData} Object 
      * @constructor
-     */
+    */
     constructor(Object){
         this.name = Object.name
     }

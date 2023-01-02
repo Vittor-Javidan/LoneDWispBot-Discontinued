@@ -3,31 +3,14 @@ import dbSystem from "../database/dbSystem"
 import ENUM from "./ENUM"
 
 /**
- * @typedef {Object<string, CS_EntityData>} CS_Database
- * 
- * @typedef {Object} CS_EntityData
- * @property {string} name
- * @property {number} souls
- * @property {number} level
- * @property {CS_Attributes} attributes
- * @property {CS_Equipment} equipment
- * @property {CS_Player_Inventory} inventory
- * 
- * @typedef {Object<string, number>} CS_Attributes
- * 
- * @typedef {Object<string, CS_EquipmentData>} CS_Equipment
- * @typedef {Object} CS_EquipmentData
- * @property {string} name
- * 
- * @typedef {Object} CS_Player_Inventory
- * @property {CS_Inventory_Equipments} equipments
- * @typedef {Object<string, CS_EquipmentData[]>} CS_Inventory_Equipments
-*/
-
-/**
- * @typedef {Object} playerState
- * @property {string} primary
- * @property {string} secondary
+ * @typedef {import ('../TypeDefinitions/Types').CS_Database} CS_Database
+ * @typedef {import ('../TypeDefinitions/Types').CS_EntityData} CS_EntityData
+ * @typedef {import ('../TypeDefinitions/Types').CS_Attributes} CS_Attributes
+ * @typedef {import ('../TypeDefinitions/Types').CS_Entity_Equipment} CS_Entity_Equipment
+ * @typedef {import ('../TypeDefinitions/Types').CS_EquipmentData} CS_EquipmentData
+ * @typedef {import ('../TypeDefinitions/Types').CS_Entity_Inventory} CS_Entity_Inventory
+ * @typedef {import ('../TypeDefinitions/Types').CS_Inventory_Equipments} CS_Inventory_Equipments
+ * @typedef {import ('../TypeDefinitions/Types').playerState} playerState
 */
 
 export default class Player {
@@ -83,19 +66,19 @@ export default class Player {
     }
 
     /**
-     * @type {CS_Equipment}
+     * @type {CS_Entity_Equipment}
      */
     equipment = {
-        [ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON]: {name: 'Wooden Bow'},
-        [ENUM.EQUIPMENT_TYPES.MELEE_WEAPON]: {name: 'Dagger'},
-        [ENUM.EQUIPMENT_TYPES.HELMET]: {name: 'Hunter Hat'},
-        [ENUM.EQUIPMENT_TYPES.BODY_ARMOR]: {name: 'Hunter Vest'},
-        [ENUM.EQUIPMENT_TYPES.GLOVES]: {name: 'Hunter Gloves'},
-        [ENUM.EQUIPMENT_TYPES.BOOTS]: {name: 'Hunter Boots'}
+        [ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON]: {name: 'Arco de madeira'},
+        [ENUM.EQUIPMENT_TYPES.MELEE_WEAPON]: {name: 'Adaga'},
+        [ENUM.EQUIPMENT_TYPES.HELMET]: {name: 'Chapéu de caçador'},
+        [ENUM.EQUIPMENT_TYPES.BODY_ARMOR]: {name: 'Roupa de caçador'},
+        [ENUM.EQUIPMENT_TYPES.GLOVES]: {name: 'Luvas de caçador'},
+        [ENUM.EQUIPMENT_TYPES.BOOTS]: {name: 'Botas de caçador'}
     }
 
     /**
-     * @type {CS_Player_Inventory}
+     * @type {CS_Entity_Inventory}
      */
     inventory = {
         equipments: {}
@@ -345,7 +328,7 @@ export default class Player {
 
     /**
      * Returns the player current equips
-     * @returns {CS_Equipment}
+     * @returns {CS_Entity_Equipment}
      */
     getEquippedEquipment(){
         return this.equipment

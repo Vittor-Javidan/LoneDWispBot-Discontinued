@@ -140,7 +140,6 @@ export default function equipment_Menu(data) {
 			// GET EQUIPMENT SUMMARY =========================================================
 			case 7:
 
-				/** @type {import("../../../Classes/Player").CS_Equipment} */
 				const playerEquipments = playerInstance.getEquippedEquipment()
 				const playerEquipmentProperties = Object.keys(playerEquipments)
 
