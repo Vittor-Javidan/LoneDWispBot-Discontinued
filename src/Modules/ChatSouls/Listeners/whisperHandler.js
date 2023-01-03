@@ -30,5 +30,5 @@ export default function chatSoulsWhisperListeners(data){
     //Game commands
     if(message.startsWith('!cs help')) {help(newData.playerInstance); return}
     if(message.startsWith('!cs souls')) {checkSouls(newData.playerInstance); return}
-    if(message.startsWith('!cs play')) {play(newData); return}
+    if(message.startsWith('!cs')) {play(newData); return}
 }

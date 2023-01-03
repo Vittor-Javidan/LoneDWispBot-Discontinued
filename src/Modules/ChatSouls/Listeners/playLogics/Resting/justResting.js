@@ -15,8 +15,8 @@ export default function justResting(data) {
 	const playerInstance = data.playerInstance
 	const userName = playerInstance.getName()
 
-	// If "!cs play"
-	if (words.length === 2) {
+	// If "!cs"
+	if (words.length === 1) {
 		sendMessage(
 			`/w ${userName} Você está descansando em uma fogueira. oque deseja fazer?: 
 			| 1. Statísticas 
@@ -27,10 +27,10 @@ export default function justResting(data) {
 		return
 	}
 
-	// if "!cs play <itemCode>"
-	if (words.length === 3) {
+	// if "!cs <itemCode>"
+	if (words.length === 2) {
 
-		const itemCode = Number(words[2])
+		const itemCode = Number(words[1])
 
 		switch (itemCode) {
 

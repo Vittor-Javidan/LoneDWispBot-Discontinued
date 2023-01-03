@@ -16,8 +16,8 @@ export default function equipment_BootsInventory(data) {
 	const userName = playerInstance.getName()
 
     // BOOTS INVENTORY LIST =======================================================================
-    // If "!cs play"
-	if (words.length === 2) {
+    // If "!cs"
+	if (words.length === 1) {
 
 		const allEquipmentString = playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.BOOTS)
         sendMessage(
@@ -27,10 +27,10 @@ export default function equipment_BootsInventory(data) {
         )
 	}
 
-	// if "!cs play <itemCode>"
-	if (words.length === 3) {
+	// if "!cs <itemCode>"
+	if (words.length === 2) {
  
-        let itemCode = Number(words[2])
+        let itemCode = Number(words[1])
     
         switch (true) {
 

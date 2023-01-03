@@ -15,8 +15,8 @@ export default function idle(data) {
 	const playerInstance = data.playerInstance
 	const userName = playerInstance.getName()
 
-	// If "!cs play"
-	if (words.length === 2) {
+	// If "!cs"
+	if (words.length === 1) {
 		sendMessage(
             `/w ${userName} Você se está planejando seu próximo passo.
             | 0. Montar uma fogueira
@@ -28,10 +28,10 @@ export default function idle(data) {
 		return
 	}
 
-    	// if "!cs play <itemCode>"
-	if (words.length === 3) {
+    	// if "!cs <itemCode>"
+	if (words.length === 2) {
 
-		const itemCode = Number(words[2])
+		const itemCode = Number(words[1])
 
         switch (itemCode) {
             

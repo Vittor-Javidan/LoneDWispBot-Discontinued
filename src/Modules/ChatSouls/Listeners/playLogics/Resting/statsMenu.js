@@ -20,8 +20,8 @@ export default function statsMenu(data) {
 	const upgradeCost = playerInstance.getUpgradeCost()
     const playerAttributes = playerInstance.getAttributes()
 
-    // If "!cs play"
-	if (words.length === 2) {
+    // If "!cs"
+	if (words.length === 1) {
         sendMessage(
             `/w ${userName} Você está no menu de estatísticas: 
             | 0. Voltar 
@@ -32,10 +32,10 @@ export default function statsMenu(data) {
         return
     }
 
-	// if "!cs play <itemCode>"
-	if (words.length === 3) {
+	// if "!cs <itemCode>"
+	if (words.length === 2) {
 
-        const itemCode = Number(words[2])
+        const itemCode = Number(words[1])
 
         switch (itemCode) {
 

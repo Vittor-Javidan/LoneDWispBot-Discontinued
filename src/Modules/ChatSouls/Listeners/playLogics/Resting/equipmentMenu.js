@@ -16,8 +16,8 @@ export default function equipment_Menu(data) {
 	const userName = playerInstance.getName()
 	
 	// EQUIPMENT MENU =========================================================================
-	// If "!cs play"
-	if (words.length === 2) {
+	// If "!cs"
+	if (words.length === 1) {
 		sendMessage(
 			`/w ${userName} Você está olhando seus equipamentos. 
 			| 0. Voltar 
@@ -33,10 +33,10 @@ export default function equipment_Menu(data) {
 		return
 	}
 
-	// if "!cs play <itemCode>"
-	if (words.length === 3) {
+	// if "!cs <itemCode>"
+	if (words.length === 2) {
 		
-		let itemCode = Number(words[2])
+		let itemCode = Number(words[1])
 
 		switch (itemCode) {
 

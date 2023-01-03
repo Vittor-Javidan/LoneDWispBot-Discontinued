@@ -20,8 +20,8 @@ export default function attributeUpgrade(data) {
 	const upgradeCost = playerInstance.getUpgradeCost()
 	const soulsBalance_AfterUpgrade = souls - upgradeCost
 	
-	// If "!cs play"
-	if (words.length === 2) {
+	// If "!cs"
+	if (words.length === 1) {
 		sendMessage(
 			`/w ${userName} Você está no menu de atributos: 
 			| Level: ${level} 
@@ -37,10 +37,10 @@ export default function attributeUpgrade(data) {
 		return
 	}
 
-	// if "!cs play <itemCode>"
-	if (words.length === 3 ) {
+	// if "!cs <itemCode>"
+	if (words.length === 2 ) {
 				
-		let itemCode = Number(words[2])
+		let itemCode = Number(words[1])
 			
 		switch(itemCode){
 					
