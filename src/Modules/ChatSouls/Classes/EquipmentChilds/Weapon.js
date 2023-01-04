@@ -1,3 +1,5 @@
+import sendMessage from "../../../../Twitch/sendMessageHandler"
+import ENUM from "../ENUM"
 import Equipment from "../Equipment"
 
 /** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData */
