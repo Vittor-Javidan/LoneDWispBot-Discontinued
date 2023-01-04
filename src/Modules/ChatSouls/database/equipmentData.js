@@ -16,8 +16,8 @@ const equipmentDataBase = {
                 name: "Arco de madeira",
                 damage_multipliers: {
                     vitality: 0,
-                    agility: 3,
-                    strenght: 1,
+                    agility: 0,
+                    strenght: 0.2,
                     intelligence: 0,
                 },
                 description: "Um arco simples de madeira."
@@ -29,8 +29,8 @@ const equipmentDataBase = {
                 name: "Adaga",
                 damage_multipliers: {
                     vitality: 0,
-                    agility: 2,
-                    strenght: 2,
+                    agility: 0,
+                    strenght: 0.2,
                     intelligence: 0
                 },
                 description: "Uma adaga comum. Tão especial quanto uma pedra na estrada."
@@ -44,9 +44,9 @@ const equipmentDataBase = {
             "Chapéu de caçador": {
                 name: "Chapéu de caçador",
                 defense_multipliers: {
-                    vitality: 1,
+                    vitality: 0,
                     agility: 0,
-                    strenght: 1,
+                    strenght: 0.1,
                     intelligence: 0,
                 },
                 description: "Chapéu de caçador. Usado para se camuflar na floresta."
@@ -57,8 +57,8 @@ const equipmentDataBase = {
             "Roupa de caçador": {
                 name: "Roupa de caçador",
                 defense_multipliers: {
-                    vitality: 1,
-                    strenght: 1,
+                    vitality: 0,
+                    strenght: 0.1,
                     agility: 0,
                     intelligence: 0,
                 },
@@ -70,8 +70,8 @@ const equipmentDataBase = {
             "Luvas de caçador": {
                 name: "Luvas de caçador",
                 defense_multipliers: {
-                    vitality: 1,
-                    strenght: 1,
+                    vitality: 0,
+                    strenght: 0.1,
                     agility: 0,
                     intelligence: 0,
                 },
@@ -83,8 +83,8 @@ const equipmentDataBase = {
             "Botas de caçador": {
                 name: "Botas de caçador",
                 defense_multipliers: {
-                    vitality: 1,
-                    strenght: 1,
+                    vitality: 0,
+                    strenght: 0.1,
                     agility: 0,
                     intelligence: 0,
                 },

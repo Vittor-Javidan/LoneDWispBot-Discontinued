@@ -1,4 +1,5 @@
 import sendMessage from "../../../../../Twitch/sendMessageHandler";
+import Battle from "../../../Classes/Battle";
 import Player from "../../../Classes/EntityChilds/Player";
 import ENUM from "../../../Classes/ENUM";
 
@@ -20,7 +21,7 @@ export default function idle(data) {
 		sendMessage(
             `/w ${userName} Você se está planejando seu próximo passo.
             | 0. Montar uma fogueira
-            | 1. Caçar (Em progresso)
+            | 1. Caçar 
             | 2. Procurar por recursos (Em progresso)
             | 3. Viajar (Em progresso)
             |`
@@ -28,16 +29,18 @@ export default function idle(data) {
 		return
 	}
 
-    	// if "!cs <itemCode>"
+    // if "!cs <itemCode>"
 	if (words.length === 2) {
 
 		const itemCode = Number(words[1])
 
         switch (itemCode) {
-            
+
+            // GO BACK TO RESTING MENU ==========================================================       
             case 0:
                 playerInstance.setPrimaryState(ENUM.RESTING.PRIMARY)
                 playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
+                playerInstance.recoverHP()
                 sendMessage(
                     `/w ${userName} Montou uma fogueira: 
 					| 1. Statísticas 
@@ -48,10 +51,17 @@ export default function idle(data) {
                 break
             //
 
+            // START A PVE BATTLE ===============================================================
             case 1:
-                break
+                Battle.startPvEBattle(playerInstance)
+                const battleInstance = Battle.getPvEBattle(userName)
                 playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.HUNTING)
-                //randomBattleEventFunction(playerInstance)
+                sendMessage(
+                    `/w ${userName} ${battleInstance.getBattleStatusStringPvE()} 
+                    | 0. Fugir (Em progresso)
+                    | 1. Atacar (Em progresso)
+                    |`
+                )
                 break
             //
 
@@ -67,6 +77,12 @@ export default function idle(data) {
                 playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.TRAVEL)
                 //travelFunction(playerInstance)
                 break
+            //
+
+			default:
+				sendMessage(`/w ${userName} opção inválida`)
+				break
+			//
         }
     }
 }

@@ -8,7 +8,20 @@
  * @typedef {import ('../TypeDefinitions/Types').CS_Entity_Inventory} CS_Entity_Inventory
  * @typedef {import ('../TypeDefinitions/Types').CS_Inventory_Equipments} CS_Inventory_Equipments
  * @typedef {import ('../TypeDefinitions/Types').playerState} playerState
+ * @typedef {import ('../TypeDefinitions/Types').CS_Stats} CS_Stats
+ * @typedef {import ('../TypeDefinitions/Types').CS_ResourceData} CS_ResourceData
 */
+
+import ENUM from './ENUM'
+import Equipment from './Equipment'
+import Armor from './EquipmentChilds/Armor'
+import BodyArmor from './EquipmentChilds/BodyArmor'
+import Boots from './EquipmentChilds/Boots'
+import Gloves from './EquipmentChilds/Gloves'
+import Helmet from './EquipmentChilds/Helmet'
+import LongRangeWeapon from './EquipmentChilds/LongRangeWeapon'
+import MeleeWeapon from './EquipmentChilds/MeleeWeapon'
+import Weapon from './EquipmentChilds/Weapon'
 
 export default class Entity {
 
@@ -28,7 +41,7 @@ export default class Entity {
     level = 1
 
     /**
-     * @type {CS_Attributes} 
+     * @type {CS_Attributes} - Keys: `ATTRIBUTE_TYPE ENUM`
      */
     attributes = {}
 
@@ -43,6 +56,21 @@ export default class Entity {
     inventory = {
         equipments: {}
     }
+
+    /**
+     * @type {CS_Stats}
+     */
+    stats
+
+    /**
+     * @type {number}
+     */
+    currentHP
+
+    /**
+     * @type {boolean}
+     */
+    isAlive = true
 
     /**
      * Create a instance of Entity
@@ -80,6 +108,14 @@ export default class Entity {
      */
     getSouls(){
         return this.souls
+    }
+
+    /**
+     * Adds souls to entity souls
+     * @param {number} value 
+     */
+    addSouls(value){
+        this.souls += value
     }
 
     /**
@@ -206,5 +242,188 @@ export default class Entity {
             return 0
         })
         return itemRemoved[0]
+    }
+
+    /**
+     * @param {string} STATS_TYPE_ENUM
+     * @returns {Object<string, number> | number} Returns the value directly if the ENUM is specify, otherwise it returns the whole stats object
+     */
+    getStats(STATS_TYPE_ENUM){
+        if(STATS_TYPE_ENUM) {
+            return this.stats[STATS_TYPE_ENUM]
+        }
+        return this.stats
+    }
+
+    /**
+     * Heavy processing. Calculate only when its really needed. Like before battles or during summary consulting.
+     * @returns {void}
+     */
+    calculateStats() {
+        
+        let statsFromEquips = {
+            [ENUM.STATS_TYPES.HP]: 0,
+            [ENUM.STATS_TYPES.EVASION]: 0,
+            [ENUM.STATS_TYPES.FISICAL_DMG]: 0,
+            [ENUM.STATS_TYPES.FISICAL_DEF]: 0,
+            [ENUM.STATS_TYPES.MAGICAL_DMG]: 0,
+            [ENUM.STATS_TYPES.MAGICAL_DMG]: 0,
+        }
+            
+        //Sum `statsFromEquips``the stats given by equipment multipliers
+        const data = {
+            equipment: this.equipment,
+            attributes: this.attributes,
+        }
+        bonusFromEquippment(MeleeWeapon, ENUM.EQUIPMENT_TYPES.MELEE_WEAPON, data)
+        bonusFromEquippment(LongRangeWeapon, ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON, data)
+        bonusFromEquippment(Helmet, ENUM.EQUIPMENT_TYPES.HELMET, data)
+        bonusFromEquippment(BodyArmor, ENUM.EQUIPMENT_TYPES.BODY_ARMOR, data)
+        bonusFromEquippment(Gloves, ENUM.EQUIPMENT_TYPES.GLOVES, data)
+        bonusFromEquippment(Boots, ENUM.EQUIPMENT_TYPES.BOOTS, data)
+        
+        //Sum base stats + stats from equipments
+        this.stats = {
+            [ENUM.STATS_TYPES.HP]: (this.attributes[ENUM.ATTRIBUTES.VITALITY] + statsFromEquips[ENUM.STATS_TYPES.HP]) * 10, 
+            [ENUM.STATS_TYPES.EVASION]: (this.attributes[ENUM.ATTRIBUTES.AGILITY] + statsFromEquips[ENUM.STATS_TYPES.EVASION]) * 1,
+            [ENUM.STATS_TYPES.FISICAL_DMG]: (this.attributes[ENUM.ATTRIBUTES.STRENGHT] + statsFromEquips[ENUM.STATS_TYPES.FISICAL_DMG]) * 5,
+            [ENUM.STATS_TYPES.FISICAL_DEF]: (this.attributes[ENUM.ATTRIBUTES.STRENGHT] + statsFromEquips[ENUM.STATS_TYPES.FISICAL_DEF]) * 1,
+            [ENUM.STATS_TYPES.MAGICAL_DMG]: (this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE] + statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]) * 5,
+            [ENUM.STATS_TYPES.MAGICAL_DEF]: (this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE] + statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DEF]) * 1
+        }
+        
+        //Checks if Maximum HP was reduced
+        if(this.currentHP > this.stats[ENUM.STATS_TYPES.HP]) {
+            this.currentHP = this.stats[ENUM.STATS_TYPES.HP]
+        }
+        
+        /**
+         * @param {Equipment} EquipmentClass Literally the class itself, not the intance of the class
+         * @param {string} EQUIPMENT_TYPE_ENUM `EQUIPMENT_TYPE ENUM`
+         * @param {Object} data
+         * @param {CS_Attributes} data.attributes
+         * @param {CS_Entity_Equipment} data.equipment
+         */
+        function bonusFromEquippment(EquipmentClass, EQUIPMENT_TYPE_ENUM, data){
+            //Check if data.equipment is define. Right after checks is data.equipment[EQUIPMENT_TYPE_ENUM] is define.
+            if(
+                data.equipment &&
+                data.equipment[EQUIPMENT_TYPE_ENUM]
+            ){
+                const equipmentInstance = new EquipmentClass(data.equipment[EQUIPMENT_TYPE_ENUM])
+
+                if(equipmentInstance instanceof Weapon) {
+
+                    statsFromEquips[ENUM.STATS_TYPES.HP]           += data.attributes[ENUM.ATTRIBUTES.VITALITY] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.VITALITY],
+                    statsFromEquips[ENUM.STATS_TYPES.EVASION]      += data.attributes[ENUM.ATTRIBUTES.AGILITY] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.AGILITY],
+                    statsFromEquips[ENUM.STATS_TYPES.FISICAL_DMG]  += data.attributes[ENUM.ATTRIBUTES.STRENGHT] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT],
+                    statsFromEquips[ENUM.STATS_TYPES.FISICAL_DEF]  += 0,
+                    statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += data.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT],
+                    statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += 0
+
+                } else if (equipmentInstance instanceof Armor) {
+
+                    statsFromEquips[ENUM.STATS_TYPES.HP]           += data.attributes[ENUM.ATTRIBUTES.VITALITY] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.VITALITY],
+                    statsFromEquips[ENUM.STATS_TYPES.EVASION]      += data.attributes[ENUM.ATTRIBUTES.AGILITY] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.AGILITY],
+                    statsFromEquips[ENUM.STATS_TYPES.FISICAL_DMG]  += 0,
+                    statsFromEquips[ENUM.STATS_TYPES.FISICAL_DEF]  += data.attributes[ENUM.ATTRIBUTES.STRENGHT] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT],
+                    statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += 0,
+                    statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += data.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT]
+                }
+            }
+        }
+    }
+
+    /**
+     * Fully restore the current HP
+     */
+    recoverHP() {
+        this.currentHP = this.stats[ENUM.STATS_TYPES.HP]
+    }
+
+    /**
+     * Reduce current HP
+     * @param {number} value 
+     * @returns {boolean} Returns `True` if value reach 0 or less, `False` otherwise
+     */
+    reduceCurrentHP(value) {
+        this.currentHP -= value
+        if(this.currentHP <= 0){
+            this.isAlive = false
+            return true
+        }
+        return false
+    }
+
+    /**
+     * @returns {boolean} Returns `True` if its alive, `False` otherwise
+     */
+    getIsAlive(){
+        return this.isAlive
+    }
+
+    /**
+     * Return the Resources of the entity
+     * @returns {Object<string, CS_ResourceData>}
+     */
+    getResources() {
+        return this.inventory.resources
+    }
+
+    /**
+     * @param {CS_ResourceData} resourceObject
+     */
+    addResources(resourceObject) {
+
+        //Create the entry if there is the resource section doesn't exist
+        if(!this.inventory.resources) {
+            this.inventory.resources = {}
+        }
+        
+        //Create the entry if there is thespecific resource doesn't exist
+        if(!this.inventory.resources[resourceObject.name]) {
+            this.inventory.resources[resourceObject.name] = {
+                name: resourceObject.name,
+                amount: resourceObject.amount
+            }
+            return
+        }
+
+        //Adds the reource
+        this.inventory.resources[resourceObject.name].amount += resourceObject.amount
+    }
+
+    /**
+     * @param {string} resourceName
+     * @param {number} amount
+     * @returns {boolean} `False` if oparation is invalid, `True` otherwise.
+     */
+    removeResources(resourceName, amount){
+        
+        //Checks if the resource exist
+        if(!this.inventory.resources[resourceName]) {
+            return false
+        }
+
+        //Checks if the amount to remove is bigger than current amount 
+        if(amount > this.inventory.resources[resourceName].amount) {
+            return false
+        }
+
+        //Removes the specify amount
+        this.inventory.resources[resourceName].amount -= amount
+
+        //Delete item if amount reachs zero
+        if (this.inventory.resources[resourceName].amount === 0) {
+            delete this.inventory.resources[resourceName]
+        }
+    }
+
+    /**
+     * Returns the entity current HP
+     * @returns {number}
+     */
+    getCurrentHP() {
+        return this.currentHP
     }
 }

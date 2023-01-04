@@ -1,9 +1,9 @@
 import equipmentDataBase from "../../database/equipmentData"
-import Equiment from "../Equipment"
+import Weapon from "./Weapon"
 
 /** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData */
 
-export default class MeleeWeapon extends Equiment {
+export default class MeleeWeapon extends Weapon {
 
     /**
      * -keys: `item name string`
@@ -13,6 +13,7 @@ export default class MeleeWeapon extends Equiment {
 
     /**
      * @param {CS_Equipment_WeaponData} itemObject
+     * @param {string} itemObject.name - item name
      * @constructor
      */ 
     constructor(itemObject) {

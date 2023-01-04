@@ -1,5 +1,7 @@
 import Player from "../../Classes/EntityChilds/Player";
 import ENUM from "../../Classes/ENUM";
+
+import hunting from "./Exploring/hunting";
 import idle from "./Exploring/idle";
 
 /**
@@ -16,7 +18,7 @@ export default function exploring(data){
     switch (playerState.secondary) {
         
         case ENUM.EXPLORING.SECONDARY.IDLE: idle(data); break
-        case ENUM.EXPLORING.SECONDARY.HUNTING: break
+        case ENUM.EXPLORING.SECONDARY.HUNTING: hunting(data); break
         case ENUM.EXPLORING.SECONDARY.FORAGING: break
         case ENUM.EXPLORING.SECONDARY.TRAVEL: break
     }

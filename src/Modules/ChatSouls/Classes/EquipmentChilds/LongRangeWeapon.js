@@ -1,9 +1,9 @@
 import equipmentDataBase from "../../database/equipmentData"
-import Equiment from "../Equipment"
+import Weapon from "./Weapon"
 
 /** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData */
 
-export default class LongRangeWeapon extends Equiment {
+export default class LongRangeWeapon extends Weapon {
 
     /**
      * -keys: `item name string`

@@ -69,7 +69,7 @@ export default function justResting(data) {
 				sendMessage(
 					`/w ${userName} Você se levanta da fogueira e olha em volta.
 					| 0. Voltar a fogueira
-					| 1. Caçar (Em progresso)
+					| 1. Caçar 
 					| 2. Procurar por recursos (Em progresso)
 					| 3. Viajar (Em progresso)
 					|`

@@ -39,6 +39,17 @@ export default class Player extends Entity {
     }
 
     /**
+     * @type {string} - type: `MAP_AREAS ENUM`
+     */
+    currentLocation = ENUM.MAP_AREAS.THE_WOODS
+
+    /**
+     * used to define if player can play in some situations
+     * @type {boolean}
+     */
+    canPlay = true
+
+    /**
      * Create a instance of Player
      * @returns {Player}
      * @constructor
@@ -47,10 +58,10 @@ export default class Player extends Entity {
         
         super(userName)
         this.attributes = {
-            [ENUM.ATTRIBUTES.VITALITY]: 1,
-            [ENUM.ATTRIBUTES.AGILITY]: 1,
-            [ENUM.ATTRIBUTES.STRENGHT]: 1,
-            [ENUM.ATTRIBUTES.INTELLLIGENCE]: 1
+            [ENUM.ATTRIBUTES.VITALITY]: 10,
+            [ENUM.ATTRIBUTES.AGILITY]: 10,
+            [ENUM.ATTRIBUTES.STRENGHT]: 10,
+            [ENUM.ATTRIBUTES.INTELLLIGENCE]: 10
         }
         this.equipment = {
             [ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON]: {name: 'Arco de madeira'},
@@ -74,6 +85,8 @@ export default class Player extends Entity {
 
         const playerInstance = new Player(userName)
         playerInstance.load(userName)
+        playerInstance.calculateStats()
+        playerInstance.recoverHP()
         this.onlinePlayers.push(playerInstance)
         return true
     }
@@ -271,5 +284,45 @@ export default class Player extends Entity {
 
         super.setEquippedEquipment(itemCode, EQUIPMENT_TYPE_ENUM)
         this.save()
+    }
+
+    /**
+     * Returns the player current location. The return string type is a `MAP_AREAS ENUM`
+     * @returns {string}
+     */
+    getCurrentLocation() {
+        return this.currentLocation
+    }
+
+    getIsAlive(){
+        if(!this.isAlive) {
+            //remove souls and send player back to resting state after death 
+            this.setPrimaryState(ENUM.RESTING.PRIMARY)
+            this.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
+            this.souls = 0
+
+            //recover player
+            this.recoverHP()
+            this.isAlive = true
+            this.save()
+        }
+        return super.getIsAlive()
+    }
+
+    delayPlayerAction(milisseconds){
+        
+        this.canPlay = false
+        const delay = setInterval(() => {
+            this.canPlay = true
+            clearDelayTimer()
+        }, milisseconds)
+
+        function clearDelayTimer(){
+            clearInterval(delay)
+        }
+    }
+
+    getCanPLay() {
+        return this.canPlay
     }
 }

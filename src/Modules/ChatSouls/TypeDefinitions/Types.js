@@ -46,6 +46,7 @@
  * 
  * @typedef {Object} CS_Entity_Inventory
  * @property {CS_Inventory_Equipments} equipments
+ * @property {CS_Inventory_Resources} resources
 */
 
 //ENITTY DATA SUBTYPES DEFINITION - ENTITY EQUIPMENT
@@ -59,7 +60,6 @@
  * - keys: `EQUIPMENT_TYPE ENUM`
  * @typedef {Object<string, CS_Equipment_WeaponData[] | CS_Equipment_ArmorData[]>} CS_Inventory_Equipments
 */
-
 
 //WEAPON DATA DEFINITION
 /**
@@ -77,10 +77,26 @@
  * @property {string} description
 */
 
+//RESOURCES DATA DEFINITION
+/**
+ * - Keys: `resource name string`
+ * @typedef {Object<string, CS_ResourceData>} CS_Inventory_Resources
+ * @typedef {Object} CS_ResourceData
+ * @property {string} name
+ * @property {number} amount
+ * @property {string} type
+ * @property {string} description
+*/
+
 //ATRIBUTE DEFINTION
 /** 
  * - Keys: `ATTRIBUTE_TYPE ENUM`
  * @typedef {Object<string, number>} CS_Attributes 
+*/
+
+//STATS DEFINITION
+/**
+ * @typedef {Object<string, number>} CS_Stats
 */
 
 //This empty export is just to expose these definitons to other files

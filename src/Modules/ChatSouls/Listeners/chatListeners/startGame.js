@@ -15,7 +15,12 @@ export default function startGame(userName){
     
     Player.init(userName)
     sendMessage(
-        `/w @${userName} você acabou de iniciar ChatSouls, MUAHAHAHAH *-*. Digitar: "!cs help" mostra opções sobre sua conta, "!cs play <opção>" escolhe opções dentro do game`
+        `/w @${userName} você acabou de iniciar ChatSouls, MUAHAHAHAH *-*. Digitar: "!cs help" mostra opções sobre sua conta, "!cs <opção>" escolhe opções dentro do game. 
+        Você está descansando em uma fogueira. oque deseja fazer?: 
+        | 1. Statísticas 
+        | 2. Ver Equipamento 
+        | 3. Levantar da fogueira
+        |`
     )
     sendMessage(`@${userName} acabou de entrar em ChatSouls *-*. Lembre-se sempre de verificar se mensagens privadas com o canal está habilitada!`)
 }

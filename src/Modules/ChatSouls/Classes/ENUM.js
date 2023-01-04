@@ -36,7 +36,7 @@ const ENUM = {
         INTELLLIGENCE: "intelligence",
     },
     MAP_AREAS: {
-        THE_WOODS: "THE WOODS"
+        THE_WOODS: "theWoods"
     },
     EQUIPMENT_TYPES: {
         LONG_RANGE_WEAPON: "longRangeWeapon",
@@ -45,6 +45,14 @@ const ENUM = {
         BODY_ARMOR: "bodyArmor",
         GLOVES: "gloves",
         BOOTS: "boots"
+    },
+    STATS_TYPES: {
+        HP: "hp",
+        EVASION: "evasion",
+        FISICAL_DMG: "fisicalDmg",
+        FISICAL_DEF: "fisicalDef",
+        MAGICAL_DMG: "magicalDmg",
+        MAGICAL_DEF: "magicalDef"
     }
 }
 
