@@ -12,76 +12,72 @@ import ENUM from "../../../Classes/ENUM"
  */
 export default function hunting(data) {
 
-    const words = data.message.split(" ")
+	const words = data.message.split(" ")
 	const playerInstance = data.playerInstance
 	const userName = playerInstance.getName()
-    const battleInstancePvE = Battle.getPvEBattle(userName)
+	const battleInstancePvE = Battle.getPvEBattle(userName)
 
-    // If "!cs"
-	if (words.length === 1) {
+	// If "!cs"
+	if (words[0] === '!cs') {
 		sendMessage(
-            `/w ${userName} Você está em batalha!!! ${battleInstancePvE.getBattleStatusStringPvE()} 
-            | 0. Fugir 
-            | 1. Atacar 
-            |`
+			`/w ${userName} Você está em batalha!!! ${battleInstancePvE.getBattleStatusStringPvE()} 
+			| 0. Fugir 
+			| 1. Atacar 
+			|`
 		)
 		return
 	}
 
-    // if "!cs <itemCode>"
-	if (words.length === 2) {
+	// if just a number "<itemCode>"
+	const itemCode = Number(words[0])
+	switch (itemCode) {
 
-		const itemCode = Number(words[1])
+		// TRY TO FLEE AND GO BACK TO IDLE MENU =============================================
+		case 0:
+				
+			if(!playerInstance.getCanPLay()) {
+				sendMessage(`/w ${userName} Você está digitando muito rápido!`)
+				return
+			}
 
-        switch (itemCode) {
+			const succed = battleInstancePvE.fleePvE()
+			if(succed) {
+				playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.IDLE)
+				return
+			}
+			break
+		//
 
-            // TRY TO FLEE AND GO BACK TO IDLE MENU =============================================
-            case 0:
-                
-                if(!playerInstance.getCanPLay()) {
-                    sendMessage(`/w ${userName} Você está digitando muito rápido!`)
-                    return
-                }
+		// ATTACK ENEMIE ====================================================================
+		case 1:
 
-                const succed = battleInstancePvE.fleePvE()
-                if(succed) {
-                    playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.IDLE)
-                    return
-                }
-                break
-            //
+			//Checks if player action still delayed
+			if(!playerInstance.getCanPLay()) {
+				sendMessage(`/w ${userName} Você está digitando muito rápido!`)
+				return
+			}
 
-            // ATTACK ENEMIE ====================================================================
-            case 1:
+			battleInstancePvE.attackPvE()
 
-                //Checks if player action still delayed
-                if(!playerInstance.getCanPLay()) {
-                    sendMessage(`/w ${userName} Você está digitando muito rápido!`)
-                    return
-                }
+			if(!Battle.doesPvEBattleExist(userName)) {
+				return
+			}
 
-                battleInstancePvE.attackPvE()
+			sendMessage(
+				`/w ${userName} ${battleInstancePvE.getBattleStatusStringPvE()}
+				| 0. Fugir 
+				| 1. Atacar 
+				|`
+				, 2000
+			)
 
-                if(!Battle.doesPvEBattleExist(userName)) {
-                    return
-                }
+			playerInstance.delayPlayerAction(2000)
+			break
+		//
 
-                sendMessage(
-                    `/w ${userName} ${battleInstancePvE.getBattleStatusStringPvE()}
-                    | 0. Fugir 
-                    | 1. Atacar 
-                    |`
-                , 2000)
-
-                playerInstance.delayPlayerAction(2000)
-                
-                break
-            //
-
-            default:
-				sendMessage(`/w ${userName} opção inválida`)
-				break
-			//
-        }
-    }
+		default:
+			sendMessage(`/w ${userName} opção inválida`)
+			break
+		//
+	}
 }

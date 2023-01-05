@@ -17,7 +17,7 @@ export default function equipment_BootsInventory(data) {
 
     // BOOTS INVENTORY LIST =======================================================================
     // If "!cs"
-	if (words.length === 1) {
+	if (words[0] === '!cs') {
 
 		const allEquipmentString = playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.BOOTS)
         sendMessage(
@@ -27,48 +27,44 @@ export default function equipment_BootsInventory(data) {
         )
 	}
 
-	// if "!cs <itemCode>"
-	if (words.length === 2) {
- 
-        let itemCode = Number(words[1])
-    
-        switch (true) {
+	// if just a number "<itemCode>"
+    let itemCode = Number(words[0])
+    switch (true) {
 
-			//GO BOOTS EQUIPMENT MENU =============================================================
-            case itemCode === 0:
-                
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS)
-                sendMessage(
-                    `/w ${userName} Você voltou ao menu de botas
-                    | 0. Voltar
-                    | 1. Equipar outras botas
-                    | 2. Ver detalhes das botas
-                    | 3. Desequipar botas
-                    |`
-                )
-                break
-            //
+        //GO BOOTS EQUIPMENT MENU =============================================================
+        case itemCode === 0:
+            
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS)
+            sendMessage(
+                `/w ${userName} Você voltou ao menu de botas
+                | 0. Voltar
+                | 1. Equipar outras botas
+                | 2. Ver detalhes das botas
+                | 3. Desequipar botas
+                |`
+            )
+            break
+        //
 
-            //CHOSE A BOOTS TO EQUIP AND GO BACK TO BOOTS EQUIPMENT MENU =====================
-            case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.BOOTS).length):
+        //CHOSE A BOOTS TO EQUIP AND GO BACK TO BOOTS EQUIPMENT MENU =====================
+        case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.BOOTS).length):
 
-                playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.BOOTS)
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS)
-                sendMessage(
-                    `/w @${userName} ${playerInstance.getEquippedEquipment().boots.name} foi equipado. Voltando ao menu de botas. 
-                    | 0. Voltar
-                    | 1. Equipar outras botas
-                    | 2. Ver detalhes das botas
-                    | 3. Desequipar botas
-                    |`
-                )
-                break
-            //
+            playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.BOOTS)
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS)
+            sendMessage(
+                `/w @${userName} ${playerInstance.getEquippedEquipment().boots.name} foi equipado. Voltando ao menu de botas. 
+                | 0. Voltar
+                | 1. Equipar outras botas
+                | 2. Ver detalhes das botas
+                | 3. Desequipar botas
+                |`
+            )
+            break
+        //
 
-            default:
-                sendMessage(`/w ${userName} Código inválido`)
-                break
-            //	
-		}
-	}
+        default:
+            sendMessage(`/w ${userName} Código inválido`)
+            break
+        //	
+    }
 }

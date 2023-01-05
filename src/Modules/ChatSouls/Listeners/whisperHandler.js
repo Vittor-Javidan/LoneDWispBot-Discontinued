@@ -28,7 +28,12 @@ export default function chatSoulsWhisperListeners(data){
     }
 
     //Game commands
-    if(message.startsWith('!cs help')) {help(newData.playerInstance); return}
-    if(message.startsWith('!cs souls')) {checkSouls(newData.playerInstance); return}
-    if(message.startsWith('!cs')) {play(newData); return}
+    switch (true) {
+        case (message.startsWith('!cs help')):      help(newData.playerInstance);       break
+        case (message.startsWith('!cs souls')):     checkSouls(newData.playerInstance); break
+        case (
+            message.startsWith('!cs') ||  
+            typeof Number(message)  === 'number'
+        ):                                          play(newData);                      break
+    }
 }

@@ -16,7 +16,7 @@ export default function justResting(data) {
 	const userName = playerInstance.getName()
 
 	// If "!cs"
-	if (words.length === 1) {
+	if (words[0] === '!cs') {
 		sendMessage(
 			`/w ${userName} Você está descansando em uma fogueira. oque deseja fazer?: 
 			| 1. Statísticas 
@@ -27,60 +27,56 @@ export default function justResting(data) {
 		return
 	}
 
-	// if "!cs <itemCode>"
-	if (words.length === 2) {
+	// if just a number "<itemCode>"
+	const itemCode = Number(words[0])
+	switch (itemCode) {
 
-		const itemCode = Number(words[1])
+		case 1:
+			playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.STATS_MENU)
+			sendMessage(
+				`/w ${userName} Você está no menu de estatísticas: 
+				| 0. Voltar 
+				| 1. Ver Atributos 
+				| 2. Upar Atributos 
+				|`
+			)
+			break
+		//
 
-		switch (itemCode) {
+		case 2:
+			playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
+			sendMessage(
+				`/w ${userName} EQUIPAMENTOS: 
+				| 0. Voltar
+				| 1. Arma Corpo a Corpo
+				| 2. Arma Longo alcance
+				| 3. Capacetes
+				| 4. Armaduras
+				| 5. Luvas
+				| 6. Botas
+				| 7. Summário Geral
+				|`
+			)
+			break
+		//
 
-			case 1:
-				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.STATS_MENU)
-				sendMessage(
-					`/w ${userName} Você está no menu de estatísticas: 
-					| 0. Voltar 
-					| 1. Ver Atributos 
-					| 2. Upar Atributos 
-					|`
-				)
-				break
-			//
+		case 3:
+			playerInstance.setPrimaryState(ENUM.EXPLORING.PRIMARY)
+			playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.IDLE)
+			sendMessage(
+				`/w ${userName} Você se levanta da fogueira e olha em volta.
+				| 0. Voltar a fogueira
+				| 1. Caçar 
+				| 2. Procurar por recursos (Em progresso)
+				| 3. Viajar (Em progresso)
+				|`
+			)
+			break
+		//
 
-			case 2:
-				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
-				sendMessage(
-					`/w ${userName} EQUIPAMENTOS: 
-					| 0. Voltar
-					| 1. Arma Corpo a Corpo
-					| 2. Arma Longo alcance
-					| 3. Capacetes
-					| 4. Armaduras
-					| 5. Luvas
-					| 6. Botas
-					| 7. Summário Geral
-					|`
-				)
-				break
-			//
-
-			case 3:
-				playerInstance.setPrimaryState(ENUM.EXPLORING.PRIMARY)
-				playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.IDLE)
-				sendMessage(
-					`/w ${userName} Você se levanta da fogueira e olha em volta.
-					| 0. Voltar a fogueira
-					| 1. Caçar 
-					| 2. Procurar por recursos (Em progresso)
-					| 3. Viajar (Em progresso)
-					|`
-				)
-				break
-			//
-
-			default:
-				sendMessage(`/w ${userName} opção inválida`)
-				break
-			//
-		}
+		default:
+			sendMessage(`/w ${userName} opção inválida`)
+			break
+		//
 	}
 }

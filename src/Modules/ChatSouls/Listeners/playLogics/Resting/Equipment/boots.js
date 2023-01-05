@@ -19,7 +19,7 @@ export default function equipment_boots(data) {
 
 	// BOOTS EQUIPMENT MENU =======================================================================
 	// If "!cs"
-	if (words.length === 1) {
+	if (words[0] === '!cs') {
 		sendMessage(
 			`/w ${userName} Você está no menu de botas
 			| 0. Voltar
@@ -30,73 +30,69 @@ export default function equipment_boots(data) {
 		)
     }
 
-	// if "!cs <itemCode>"
-	if (words.length === 2) {
+	// if just a number "<itemCode>"
+	let itemCode = Number(words[0])
+	switch (itemCode) {
 
-		let itemCode = Number(words[1])
+		//GO BACK TO EQUIPMENT MENU ================================================================
+		case 0:
+			playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
+			sendMessage (
+				`/w ${userName} Você voltou a olhar seus equipamentos. 
+				| 0. Voltar 
+				| 1. Arma Corpo a Corpo 
+				| 2. Arma Longo alcance 
+				| 3. Capacetes 
+				| 4. Armaduras 
+				| 5. Luvas 
+				| 6. Botas 
+				| 7. Summário Geral 
+				|`
+			)
+			break
+		//
 
-		switch (itemCode) {
+		// EQUIP ANOTHER BOOTS ====================================================================
+		case 1:
 
-            //GO BACK TO EQUIPMENT MENU ================================================================
-			case 0:
-				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
-				sendMessage (
-					`/w ${userName} Você voltou a olhar seus equipamentos. 
-                    | 0. Voltar 
-                    | 1. Arma Corpo a Corpo 
-                    | 2. Arma Longo alcance 
-                    | 3. Capacetes 
-                    | 4. Armaduras 
-                    | 5. Luvas 
-                    | 6. Botas 
-                    | 7. Summário Geral 
-                    |`
-				)
-				break
-			//
+			const inventory_Boots = playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.BOOTS)
+			if (!inventory_Boots) {
+				sendMessage(`/w @${userName} Seu inventário está vazio.`)
+				return
+			}
 
-            // EQUIP ANOTHER BOOTS ====================================================================
-			case 1:
+			playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS_INVENTORY)
+			sendMessage(
+				`/w @${userName} Quais botas deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.BOOTS)}`
+			)
+			break
+		//
 
-				const inventory_Boots = playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.BOOTS)
-				if (!inventory_Boots) {
-					sendMessage(`/w @${userName} Seu inventário está vazio.`)
-                    return
-				}
+		// CHECK BOOTS DETAILS =====================================================================
+		case 2:
 
-				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BOOTS_INVENTORY)
-                sendMessage(
-                    `/w @${userName} Quais botas deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.BOOTS)}`
-                )
-				break
-			//
+			if(!equippedArmor) {
+				sendMessage(`/w @${userName} você está sem botas equipadas`)
+				return
+			}
+			new Boots(equippedArmor).printDetailsTo(userName)
+			break
+		//
 
-            // CHECK BOOTS DETAILS =====================================================================
-			case 2:
+		// UNEQUIP BOOTS ======================================================================
+		case 3:
+			if(!equippedArmor){
+				sendMessage(`/w @${userName} você não possui nenhuma bota equipada`)
+				return
+			}
+			playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.BOOTS)
+			sendMessage(`/w @${userName} Botas desequipadas`)
+			break
+		//
 
-				if(!equippedArmor) {
-					sendMessage(`/w @${userName} você está sem botas equipadas`)
-					return
-				}
-				new Boots(equippedArmor).printDetailsTo(userName)
-				break
-			//
-
-            // UNEQUIP BOOTS ======================================================================
-            case 3:
-                if(!equippedArmor){
-                    sendMessage(`/w @${userName} você não possui nenhuma bota equipada`)
-                    return
-                }
-                playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.BOOTS)
-				sendMessage(`/w @${userName} Botas desequipadas`)
-				break
-			//
-
-            default:
-                sendMessage(`/w ${userName} Código inválido`)
-                break
-            //
-        }
-    }
+		default:
+			sendMessage(`/w ${userName} Código inválido`)
+			break
+		//
+	}
 }

@@ -17,7 +17,7 @@ export default function equipment_GlovesInventory(data) {
 
     // GLOVES INVENTORY LIST =======================================================================
     // If "!cs"
-	if (words.length === 1) {
+	if (words[0] === '!cs') {
 
 		const allEquipmentString = playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.GLOVES)
         sendMessage(
@@ -27,48 +27,44 @@ export default function equipment_GlovesInventory(data) {
         )
 	}
 
-	// if "!cs <itemCode>"
-	if (words.length === 2) {
- 
-        let itemCode = Number(words[1])
-    
-        switch (true) {
+	// if just a number "<itemCode>"
+    let itemCode = Number(words[0])
+    switch (true) {
 
-			//GO GLOVES EQUIPMENT MENU =============================================================
-            case itemCode === 0:
-                
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES)
-                sendMessage(
-                    `/w ${userName} Você voltou ao menu de luvas
-                    | 0. Voltar
-                    | 1. Equipar outras luvas
-                    | 2. Ver detalhes das luvas
-                    | 3. Desequipar luvas
-                    |`
-                )
-                break
-            //
+        //GO GLOVES EQUIPMENT MENU =============================================================
+        case itemCode === 0:
+            
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES)
+            sendMessage(
+                `/w ${userName} Você voltou ao menu de luvas
+                | 0. Voltar
+                | 1. Equipar outras luvas
+                | 2. Ver detalhes das luvas
+                | 3. Desequipar luvas
+                |`
+            )
+            break
+        //
 
-            //CHOSE A GLOVES TO EQUIP AND GO BACK TO GLOVES EQUIPMENT MENU =====================
-            case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.GLOVES).length):
+        //CHOSE A GLOVES TO EQUIP AND GO BACK TO GLOVES EQUIPMENT MENU =====================
+        case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.GLOVES).length):
 
-                playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.GLOVES)
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES)
-                sendMessage(
-                    `/w @${userName} ${playerInstance.getEquippedEquipment().gloves.name} foi equipado. Voltando ao menu de luvas. 
-                    | 0. Voltar
-                    | 1. Equipar outras luvas
-                    | 2. Ver detalhes das luvas
-                    | 3. Desequipar luvas
-                    |`
-                )
-                break
-            //
+            playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.GLOVES)
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_GLOVES)
+            sendMessage(
+                `/w @${userName} ${playerInstance.getEquippedEquipment().gloves.name} foi equipado. Voltando ao menu de luvas. 
+                | 0. Voltar
+                | 1. Equipar outras luvas
+                | 2. Ver detalhes das luvas
+                | 3. Desequipar luvas
+                |`
+            )
+            break
+        //
 
-            default:
-                sendMessage(`/w ${userName} Código inválido`)
-                break
-            //	
-		}
-	}
+        default:
+            sendMessage(`/w ${userName} Código inválido`)
+            break
+        //	
+    }
 }

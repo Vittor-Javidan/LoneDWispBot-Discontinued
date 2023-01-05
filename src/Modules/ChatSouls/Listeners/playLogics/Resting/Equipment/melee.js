@@ -19,7 +19,7 @@ export default function equipment_Melee(data) {
 
     // MELEE EQUIPMENT MENU ============================================================================
     // If "!cs"
-	if (words.length === 1) {
+	if (words[0] === '!cs') {
         sendMessage(
             `/w ${userName} Você está no menu de armas corpo a corpo
             | 0. Voltar
@@ -30,74 +30,70 @@ export default function equipment_Melee(data) {
         )
     }
 
-	// if "!cs <itemCode>"
-	if (words.length === 2) {
-		
-		let itemCode = Number(words[1])
-    
-        switch (itemCode) {
+	// if just a number "<itemCode>"
+    let itemCode = Number(words[0])
+    switch (itemCode) {
 
-            //GO BACK EQUIPMENT MENU ===================================================================
-            case 0:
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
-                sendMessage(
-                    `/w ${userName} Você voltou a olhar seus equipamentos. 
-                    | 0. Voltar 
-                    | 1. Arma Corpo a Corpo 
-                    | 2. Arma Longo alcance 
-                    | 3. Capacetes 
-                    | 4. Armaduras 
-                    | 5. Luvas 
-                    | 6. Botas 
-                    | 7. Summário Geral 
-                    |`
-                )
-                break
-            //
+        //GO BACK EQUIPMENT MENU ===================================================================
+        case 0:
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
+            sendMessage(
+                `/w ${userName} Você voltou a olhar seus equipamentos. 
+                | 0. Voltar 
+                | 1. Arma Corpo a Corpo 
+                | 2. Arma Longo alcance 
+                | 3. Capacetes 
+                | 4. Armaduras 
+                | 5. Luvas 
+                | 6. Botas 
+                | 7. Summário Geral 
+                |`
+            )
+            break
+        //
 
-            // EQUIP ANOTHER MELEE WEAPON ==============================================================
-            case 1:
+        // EQUIP ANOTHER MELEE WEAPON ==============================================================
+        case 1:
+            
+            const inventoryWeapons_Melee = playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)
+            if (!inventoryWeapons_Melee) {
+                sendMessage(`/w @${userName} Seu inventário está vazio.`)
+                return
+            }
                 
-                const inventoryWeapons_Melee = playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)
-                if (!inventoryWeapons_Melee) {
-                    sendMessage(`/w @${userName} Seu inventário está vazio.`)
-                    return
-                }
-                    
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_MELEE_INVENTORY)
-                sendMessage(
-                    `/w @${userName} Qual arma deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)}`
-                )
-                break
-            //
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_MELEE_INVENTORY)
+            sendMessage(
+                `/w @${userName} Qual arma deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)}`
+            )
+            break
+        //
 
-            // CHECK WEAPON DETAILS ====================================================================
-            case 2:
-                
-                if(!equippedWeapon) {
-                    sendMessage(`/w @${userName} você está sem arma equipada`)
-                    return
-                }
-                new MeleeWeapon(equippedWeapon).printDetailsTo(userName)
-                break
-            //
-                
-            // UNEQUIP MELEE WEAPON ===============================================================
-            case 3:
-                
-                if(!equippedWeapon){
-                    sendMessage(`/w @${userName} você não possui nenhuma arma equipada`)
-                    return
-                }
-                playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)
-                sendMessage(`/w @${userName} Arma corpo a corpo desequipada`)
-                break
-            //
+        // CHECK WEAPON DETAILS ====================================================================
+        case 2:
+            
+            if(!equippedWeapon) {
+                sendMessage(`/w @${userName} você está sem arma equipada`)
+                return
+            }
+            new MeleeWeapon(equippedWeapon).printDetailsTo(userName)
+            break
+        //
+            
+        // UNEQUIP MELEE WEAPON ===============================================================
+        case 3:
+            
+            if(!equippedWeapon){
+                sendMessage(`/w @${userName} você não possui nenhuma arma equipada`)
+                return
+            }
+            playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.MELEE_WEAPON)
+            sendMessage(`/w @${userName} Arma corpo a corpo desequipada`)
+            break
+        //
 
-            default:
-                sendMessage(`/w ${userName} código inválido`)
-                break
-            // 
-        }
+        default:
+            sendMessage(`/w ${userName} código inválido`)
+            break
+        // 
     }
 }

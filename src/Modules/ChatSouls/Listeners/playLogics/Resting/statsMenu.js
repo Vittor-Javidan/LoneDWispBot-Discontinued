@@ -21,7 +21,7 @@ export default function statsMenu(data) {
     const playerAttributes = playerInstance.getAttributes()
 
     // If "!cs"
-	if (words.length === 1) {
+	if (words[0] === '!cs') {
         sendMessage(
             `/w ${userName} Você está no menu de estatísticas: 
             | 0. Voltar 
@@ -32,57 +32,53 @@ export default function statsMenu(data) {
         return
     }
 
-	// if "!cs <itemCode>"
-	if (words.length === 2) {
+	// if just a number "<itemCode>"
+    const itemCode = Number(words[0])
+    switch (itemCode) {
 
-        const itemCode = Number(words[1])
+        case 0:
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
+            sendMessage(
+                `/w ${userName} Você está descansando em uma fogueira. oque deseja fazer?: 
+                | 1. Statísticas 
+                | 2. Ver Equipamento 
+                | 3. Levantar da fogueira 
+                |`
+            )
+            break
+        //
 
-        switch (itemCode) {
+        case 1:
+            sendMessage(
+                `/w ${userName} seus atributos são: 
+                | Vitalidade: ${playerAttributes.vitality} 
+                | Agilidade: ${playerAttributes.agility} 
+                | Força: ${playerAttributes.strenght} 
+                | Inteligência: ${playerAttributes.intelligence} |`
+            )
+            break
+        //
 
-            case 0:
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
-                sendMessage(
-                    `/w ${userName} Você está descansando em uma fogueira. oque deseja fazer?: 
-                    | 1. Statísticas 
-                    | 2. Ver Equipamento 
-                    | 3. Levantar da fogueira 
-                    |`
-                )
-                break
-            //
+        case 2:
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.ATRIBUTE_UPGRADE)
+            sendMessage(
+                `/w ${userName} Você está no menu de atributos: 
+                | Level: ${level} 
+                | Almas: ${souls} 
+                | Custo Upgrade: ${upgradeCost} almas 
+                | 0. Voltar 
+                | 1. UP Vitalidade 
+                | 2. UP Agilidade 
+                | 3. UP Força 
+                | 4. UP Inteligência 
+                | 5. Descrições Atributos 
+                |`)
+            break                
+        //
 
-            case 1:
-                sendMessage(
-                    `/w ${userName} seus atributos são: 
-                    | Vitalidade: ${playerAttributes.vitality} 
-                    | Agilidade: ${playerAttributes.agility} 
-                    | Força: ${playerAttributes.strenght} 
-                    | Inteligência: ${playerAttributes.intelligence} |`
-                )
-                break
-            //
-
-            case 2:
-				playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.ATRIBUTE_UPGRADE)
-				sendMessage(
-                    `/w ${userName} Você está no menu de atributos: 
-                    | Level: ${level} 
-                    | Almas: ${souls} 
-                    | Custo Upgrade: ${upgradeCost} almas 
-                    | 0. Voltar 
-                    | 1. UP Vitalidade 
-                    | 2. UP Agilidade 
-                    | 3. UP Força 
-                    | 4. UP Inteligência 
-                    | 5. Descrições Atributos 
-                    |`)
-				break                
-            //
-
-			default:
-				sendMessage(`/w ${userName} opção inválida`)
-				break
-			//            
-        }
+        default:
+            sendMessage(`/w ${userName} opção inválida`)
+            break
+        //            
     }
 }

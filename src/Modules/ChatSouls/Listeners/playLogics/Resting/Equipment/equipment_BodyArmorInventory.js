@@ -17,7 +17,7 @@ export default function equipment_BodyArmorInventory(data) {
 
     // BODY ARMOR INVENTORY LIST =======================================================================
     // If "!cs"
-	if (words.length === 1) {
+	if (words[0] === '!cs') {
 
 		const allEquipmentString = playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.BODY_ARMOR)
         sendMessage(
@@ -27,48 +27,44 @@ export default function equipment_BodyArmorInventory(data) {
         )
 	}
 
-	// if "!cs <itemCode>"
-	if (words.length === 2) {
- 
-        let itemCode = Number(words[1])
-    
-        switch (true) {
+	// if just a number "<itemCode>"
+    let itemCode = Number(words[0])
+    switch (true) {
 
-			//GO BODY ARMOR EQUIPMENT MENU =============================================================
-            case itemCode === 0:
-                
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
-                sendMessage(
-                    `/w ${userName} Você voltou ao menu de armaduras
-                    | 0. Voltar
-                    | 1. Equipar outra armadura
-                    | 2. Ver detalhes da armadura
-                    | 3. Desequipar armadura
-                    |`
-                )
-                break
-            //
+        //GO BODY ARMOR EQUIPMENT MENU =============================================================
+        case itemCode === 0:
+            
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
+            sendMessage(
+                `/w ${userName} Você voltou ao menu de armaduras
+                | 0. Voltar
+                | 1. Equipar outra armadura
+                | 2. Ver detalhes da armadura
+                | 3. Desequipar armadura
+                |`
+            )
+            break
+        //
 
-            //CHOSE A BODY ARMOR TO EQUIP AND GO BACK TO BODY ARMOR EQUIPMENT MENU =====================
-            case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.BODY_ARMOR).length):
+        //CHOSE A BODY ARMOR TO EQUIP AND GO BACK TO BODY ARMOR EQUIPMENT MENU =====================
+        case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.BODY_ARMOR).length):
 
-                playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.BODY_ARMOR)
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
-                sendMessage(
-                    `/w @${userName} ${playerInstance.getEquippedEquipment().bodyArmor.name} foi equipado. Voltando ao menu de armaduras. 
-                    | 0. Voltar
-                    | 1. Equipar outra armadura
-                    | 2. Ver detalhes da armadura
-                    | 3. Desequipar armadura
-                    |`
-                )
-                break
-            //
+            playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.BODY_ARMOR)
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
+            sendMessage(
+                `/w @${userName} ${playerInstance.getEquippedEquipment().bodyArmor.name} foi equipado. Voltando ao menu de armaduras. 
+                | 0. Voltar
+                | 1. Equipar outra armadura
+                | 2. Ver detalhes da armadura
+                | 3. Desequipar armadura
+                |`
+            )
+            break
+        //
 
-            default:
-                sendMessage(`/w ${userName} Código inválido`)
-                break
-            //	
-		}
-	}
+        default:
+            sendMessage(`/w ${userName} Código inválido`)
+            break
+        //	
+    }
 }

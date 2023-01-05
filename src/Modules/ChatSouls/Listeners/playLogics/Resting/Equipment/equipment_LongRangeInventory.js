@@ -17,7 +17,7 @@ export default function equipment_LongRangeInventory(data) {
 
     // LONG RANGE INVENTORY LIST =======================================================================
     // If "!cs"
-	if (words.length === 1) {
+	if (words[0] === '!cs') {
         const allEquipmentString = playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)
         sendMessage(
             `/w @${userName} Você está olhando seu inventário de armas longo alcance. Qual arma deseja equipar?: 
@@ -26,48 +26,44 @@ export default function equipment_LongRangeInventory(data) {
         )
     }
 
-    // if "!cs <itemCode>"
-	if (words.length === 2) {
+    // if just a number "<itemCode>"
+    let itemCode = Number(words[0])
+    switch (true) {
 
-        let itemCode = Number(words[1])
-    
-        switch (true) {
-
-            //GO BACK LONG RANGE EQUIPMENT MENU =============================================================
-            case itemCode === 0:
-                
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
-                sendMessage(
-                    `/w ${userName} Você voltou ao menu de armas longo alcance
-                    | 0. Voltar
-                    | 1. Equipar outra arma
-                    | 2. Ver detalhes da arma
-                    | 3. Desequipar Arma
-                    |`
-                )
-                break
-            //
-
-            //CHOSE A WEAPON TO EQUIP AND GO BACK TO LONG RANGE EQUIPMENT MENU =========================
-            case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON).length):
-
-                playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)
-                playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
-                sendMessage(
-                    `/w @${userName} ${playerInstance.getEquippedEquipment().longRangeWeapon.name} foi equipado. Vontando ao menu de armas longo alcance. 
-                    | 0. Voltar
-                    | 1. Equipar outra arma
-                    | 2. Ver detalhes da arma
-                    | 3. Desequipar Arma
-                    |`
-                )
-                break
-            //
+        //GO BACK LONG RANGE EQUIPMENT MENU =============================================================
+        case itemCode === 0:
             
-            default:
-                sendMessage(`/w ${userName} Código inválido`)
-                break
-            //
-        }
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
+            sendMessage(
+                `/w ${userName} Você voltou ao menu de armas longo alcance
+                | 0. Voltar
+                | 1. Equipar outra arma
+                | 2. Ver detalhes da arma
+                | 3. Desequipar Arma
+                |`
+            )
+            break
+        //
+
+        //CHOSE A WEAPON TO EQUIP AND GO BACK TO LONG RANGE EQUIPMENT MENU =========================
+        case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON).length):
+
+            playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)
+            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
+            sendMessage(
+                `/w @${userName} ${playerInstance.getEquippedEquipment().longRangeWeapon.name} foi equipado. Vontando ao menu de armas longo alcance. 
+                | 0. Voltar
+                | 1. Equipar outra arma
+                | 2. Ver detalhes da arma
+                | 3. Desequipar Arma
+                |`
+            )
+            break
+        //
+        
+        default:
+            sendMessage(`/w ${userName} Código inválido`)
+            break
+        //
     }
 }
