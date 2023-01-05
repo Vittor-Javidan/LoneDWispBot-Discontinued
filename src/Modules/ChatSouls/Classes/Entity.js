@@ -288,10 +288,6 @@ export default class Entity {
             this.totalStats[statsTypes[i]] += this.baseStats[statsTypes[i]] + this.statsFromEquips[statsTypes[i]]
         }
         
-        console.log(this.baseStats)
-        console.log(this.statsFromEquips)
-        console.log(this.totalStats)
-        
         //Checks if Maximum HP was reduced
         if(this.currentHP > this.totalStats[ENUM.STATS_TYPES.HP]) {
             this.currentHP = this.totalStats[ENUM.STATS_TYPES.HP]
