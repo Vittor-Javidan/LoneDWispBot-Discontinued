@@ -1,4 +1,5 @@
 import auctionRewardListeners from "../../Modules/Auction/Listeners/rewardHandler"
+import chatsoulsRewardHandler from "../../Modules/ChatSouls/Listeners/rewardHandler"
 import musicRewardListeners from "../../Modules/Music/rewardListeners"
 import websiteRewardListeners from "../../Modules/Website/rewardListeners"
 
@@ -19,4 +20,5 @@ export default function rewardListeners(data) {
 	websiteRewardListeners(data)
 	musicRewardListeners(data)
 	auctionRewardListeners(data)
+	chatsoulsRewardHandler(data)
 }

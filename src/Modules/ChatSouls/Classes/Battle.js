@@ -78,6 +78,10 @@ export default class Battle {
         this.TempStats_2 = this.entityInstance.getStats()
     }
 
+    //=================================================================================================
+    // CLASS METHODS ==================================================================================
+    //=================================================================================================
+
     /**
      * @param {Player} playerInstance 
      */
@@ -150,6 +154,28 @@ export default class Battle {
         }
         return false
     }
+
+    static sendMessageWithAllPvEBattles(){
+        let message = 'Jogadores em batalha nesse momento: '
+
+        if(this.PvEBattles.length === 0){
+            message += '| Nenhum |'
+            sendMessage(message)
+            return
+        }
+        
+        for (let i = 0; i < this.PvEBattles.length; i++){
+            const playerString = this.PvEBattles[i].getPlayerBattleStatusStringPvE()
+            const enemieString = this.PvEBattles[i].getEnemieBattleStatusStringPvE()
+            message += `| ${playerString} vs ${enemieString} `
+        }
+        message += "|"
+        sendMessage(message)
+    }
+
+    //=================================================================================================
+    // INSTANCE METHODS ===============================================================================
+    //=================================================================================================
 
     whosFirstPvE(){
         
@@ -403,16 +429,31 @@ export default class Battle {
      * @returns {string}
      */
     getBattleStatusStringPvE(){
+        return `| ${this.getPlayerBattleStatusStringPvE()} 
+                | ${this.getEnemieBattleStatusStringPvE()}`
+    }
 
+    /**
+     * Returns a string with Player current HP already formatted.
+     * @returns {string}
+     */
+    getPlayerBattleStatusStringPvE(){
+        
+        const playerName = this.playerInstance.getName()
         const playerHP = this.playerInstance.getCurrentHP()
         const playerMaxHP = this.playerInstance.getStats(ENUM.STATS_TYPES.HP)
-        const playerHPString = `${this.playerInstance.getName()}: ${playerHP}/${playerMaxHP} HP`
+        const playerHPString = `${playerName}: ${playerHP}/${playerMaxHP} HP`
 
+        return `${playerHPString}`
+    }
+
+    getEnemieBattleStatusStringPvE(){
+        
         const enemieName = this.entityInstance.getName()
         const enemieHP = this.entityInstance.getCurrentHP()
         const enemieMaxHP = this.entityInstance.getStats(ENUM.STATS_TYPES.HP)
         const enemieHPString = `${enemieName}: ${enemieHP}/${enemieMaxHP} HP`
 
-        return `| ${playerHPString} | ${enemieHPString}`
+        return `${enemieHPString}`
     }
 }
