@@ -224,41 +224,9 @@ export default class Player extends Entity {
 
         const upgradeCost = this.getUpgradeCost()
 
-        switch (ATTRIBUTE_ENUM) {
-
-            case ENUM.ATTRIBUTES.VITALITY:
-                this.souls -= upgradeCost
-                this.attributes[ENUM.ATTRIBUTES.VITALITY] += 1
-                this.level += 1
-                break;
-            //
-
-            case ENUM.ATTRIBUTES.AGILITY:
-                this.souls -= upgradeCost
-                this.attributes[ENUM.ATTRIBUTES.AGILITY] += 1
-                this.level += 1
-                break
-            //
-
-            case ENUM.ATTRIBUTES.STRENGHT:
-                this.souls -= upgradeCost
-                this.attributes[ENUM.ATTRIBUTES.STRENGHT] += 1
-                this.level += 1
-                break
-            //
-
-            case ENUM.ATTRIBUTES.INTELLLIGENCE:
-                this.souls -= upgradeCost
-                this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE] += 1
-                this.level += 1
-                break
-            //
-
-            default:
-                console.log(`${this.name}: Invalid Upgrade Attribute`)
-                break
-            //
-        }
+        this.souls -= upgradeCost
+        this.attributes[ATTRIBUTE_ENUM] += 1
+        this.level += 1
 
         this.save()
     }

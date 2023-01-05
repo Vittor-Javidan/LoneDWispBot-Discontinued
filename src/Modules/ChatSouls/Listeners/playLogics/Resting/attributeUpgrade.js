@@ -62,7 +62,7 @@ export default function attributeUpgrade(data) {
 				`/w ${userName} VITALIDADE AUMENTADA! 
 				| Novo level: ${playerInstance.getLevel()} 
 				| Almas restantes: ${playerInstance.getSouls()} 
-				| custo próximo nível: ${ playerInstance.getUpgradeCost() } 
+				| custo próximo nível: ${playerInstance.getUpgradeCost()} 
 				|`
 			)
 			break
@@ -78,7 +78,7 @@ export default function attributeUpgrade(data) {
 				`/w ${userName} AGILIDADE AUMENTADA! 
 				| Novo level: ${playerInstance.getLevel()} 
 				| Almas restantes: ${playerInstance.getSouls()} 
-				| custo próximo nível: ${ playerInstance.getUpgradeCost() } 
+				| custo próximo nível: ${playerInstance.getUpgradeCost()} 
 				|`
 			)
 			break
@@ -94,7 +94,7 @@ export default function attributeUpgrade(data) {
 				`/w ${userName} FORÇA AUMENTADA! 
 				| Novo level: ${playerInstance.getLevel()} 
 				| Almas restantes: ${playerInstance.getSouls()} 
-				| custo próximo nível: ${ playerInstance.getUpgradeCost() } 
+				| custo próximo nível: ${playerInstance.getUpgradeCost()} 
 				|`
 			)
 			break
@@ -109,8 +109,8 @@ export default function attributeUpgrade(data) {
 			sendMessage(
 				`/w ${userName} INTELIGÊNCIA AUMENTADA! 
 				| Novo level: ${playerInstance.getLevel()} 
-				| Almas restantes: ${playerInstance.getSouls} 
-				| custo próximo nível: ${ playerInstance.getUpgradeCost() } 
+				| Almas restantes: ${playerInstance.getSouls()} 
+				| custo próximo nível: ${playerInstance.getUpgradeCost()} 
 				|`
 			)
 			break
