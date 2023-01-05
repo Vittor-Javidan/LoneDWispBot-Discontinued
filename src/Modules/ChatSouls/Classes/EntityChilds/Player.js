@@ -116,6 +116,14 @@ export default class Player extends Entity {
         return playerInstance
     }
 
+    static deletePlayerInstance(userName) {
+        for (let i = 0; i < this.onlinePlayers.length; i++) {
+            if (userName === this.onlinePlayers[i].getName()) {
+                this.onlinePlayers.splice(i, 1)
+            }
+        }
+    }
+
     //=================================================================================================
     // INSTANCE METHODS ===============================================================================
     //=================================================================================================

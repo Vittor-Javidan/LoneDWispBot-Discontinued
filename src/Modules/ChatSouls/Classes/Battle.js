@@ -111,7 +111,7 @@ export default class Battle {
     /**
      * Return a PvE battle instance for a specific username
      * @param {string} userName 
-     * @returns {Battle}
+     * @returns {Battle | undefined} Returns undefined if there is no battle with the given player name
      */
     static getPvEBattle(userName) {
 
@@ -120,12 +120,7 @@ export default class Battle {
                 return this.PvEBattles[i]
             }
         }
-
-        //If there is no battle
-        sendMessage(
-            `Batalha PvE não encotrada ou já concluída: ${userName}`
-        )
-        console.log(`Erro: Batalha PvE não encotrada: ${userName}`)
+        return undefined
     }
 
     /**

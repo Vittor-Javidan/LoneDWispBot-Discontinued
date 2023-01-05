@@ -1,6 +1,7 @@
 import Player from "../Classes/EntityChilds/Player"
 
 import checkSouls from "./whisperListeners/checkSouls"
+import exitGame from "./whisperListeners/exitGame"
 import help from "./whisperListeners/help"
 import play from "./whisperListeners/play"
 
@@ -29,11 +30,12 @@ export default function chatSoulsWhisperListeners(data){
 
     //Game commands
     switch (true) {
-        case (message.startsWith('!cs help')):      help(newData.playerInstance);       break
-        case (message.startsWith('!cs souls')):     checkSouls(newData.playerInstance); break
+        case (message.startsWith('!cs exit')):      exitGame(newData.playerInstance)    ;break
+        case (message.startsWith('!cs help')):      help(newData.playerInstance)        ;break
+        case (message.startsWith('!cs souls')):     checkSouls(newData.playerInstance)  ;break
         case (
-            message.startsWith('!cs') ||  
-            typeof Number(message)  === 'number'
-        ):                                          play(newData);                      break
+            message.startsWith('!cs') || 
+            !isNaN(Number(message))
+        ):                                          play(newData)                       ;break
     }
 }

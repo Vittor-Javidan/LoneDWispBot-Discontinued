@@ -25,6 +25,11 @@ function restoreEnemieHpPvE(data){
 
     const battleInstance = Battle.getPvEBattle(targetPlayer)
     if(!battleInstance){
+        //If there is no battle
+        sendMessage(
+            `Batalha PvE não encotrada ou já concluída: ${userName}`
+        )
+        console.log(`Erro: Batalha PvE não encotrada: ${userName}`)
         return
     }
 
@@ -43,6 +48,13 @@ function restoreEnemieHpPvE(data){
     sendMessage(`/w ${targetPlayer} ${data.userName} acabou de restaurar a vida de seu inimigo!!!`)
 }
 
+/**
+ * Restore player hp on PvE battles
+ * 
+ * @param {Object} data - The data object passed to the function
+ * @param {string} data.userName - The username of the person who sent the message
+ * @param {string} data.message - The message that was sent
+ */
 function restorePlayerHpPvE(data) {
 
     const words = data.message.split(' ')
@@ -50,6 +62,11 @@ function restorePlayerHpPvE(data) {
 
     const battleInstance = Battle.getPvEBattle(targetPlayer)
     if(!battleInstance){
+        //If there is no battle
+        sendMessage(
+            `Batalha PvE não encotrada ou já concluída: ${userName}`
+        )
+        console.log(`Erro: Batalha PvE não encotrada: ${userName}`)
         return
     }
 
