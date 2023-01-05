@@ -28,6 +28,15 @@ function restoreEnemieHpPvE(data){
         return
     }
 
+    const playerInstance = battleInstance.getPlayerInstancePvE()
+    if(playerInstance.getName() === data.userName){
+        const playerSouls = playerInstance.getSouls()
+        playerInstance.setSouls(Math.floor(playerSouls/2))
+        playerInstance.save()
+        sendMessage(`@${data.userName} tentou recuperar a vida de seu próprio inimigo! Tamanha audacidade o fez perder metade de suas almas *-*`)
+        return
+    }
+
     const enemieInstance = battleInstance.getEnemieInstancePvE()
     enemieInstance.recoverHP()
     enemieInstance.addSouls(enemieInstance.getSouls())
@@ -48,6 +57,7 @@ function restorePlayerHpPvE(data) {
     if(playerInstance.getName() === data.userName){
         const playerSouls = playerInstance.getSouls()
         playerInstance.setSouls(Math.floor(playerSouls/2))
+        playerInstance.save()
         sendMessage(`@${data.userName} tentou recuperar sua própria vida! Tamanha audacidade o fez perder metade de suas almas *-*`)
         return
     }
