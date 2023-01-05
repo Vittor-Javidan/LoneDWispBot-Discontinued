@@ -15,7 +15,7 @@ export default function startGame(userName){
     
     Player.init(userName)
     sendMessage(
-        `/w @${userName} você acabou de iniciar ChatSouls, MUAHAHAHAH *-*. Digitar: "!cs help" mostra opções sobre sua conta, "!cs <opção>" escolhe opções dentro do game. 
+        `/w @${userName} você acabou de iniciar ChatSouls, MUAHAHAHAH *-*. Digitar: "!cs help" mostra opções da sua conta, "!cs" para se situar no game, e apenas digite o número da opção para navegar dentro do jogo. 
         Você está descansando em uma fogueira. oque deseja fazer?: 
         | 1. Statísticas 
         | 2. Ver Equipamento 
