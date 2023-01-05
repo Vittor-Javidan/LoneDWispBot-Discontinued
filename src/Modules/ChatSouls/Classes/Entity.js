@@ -111,6 +111,14 @@ export default class Entity {
     }
 
     /**
+     * Set entity souls amount
+     * @param {number} value 
+     */
+    setSouls(value){
+        this.souls = value
+    }
+
+    /**
      * Adds souls to entity souls
      * @param {number} value 
      */
@@ -342,14 +350,14 @@ export default class Entity {
     }
 
     /**
-     * Reduce current HP
+     * Reduce current HP and set `isAlive` to `False` if HP becomes less or equal to zero
      * @param {number} value 
      * @returns {boolean} Returns `True` if value reach 0 or less, `False` otherwise
      */
     reduceCurrentHP(value) {
         this.currentHP -= value
         if(this.currentHP <= 0){
-            this.isAlive = false
+            this.kill()
             return true
         }
         return false
@@ -360,6 +368,22 @@ export default class Entity {
      */
     getIsAlive(){
         return this.isAlive
+    }
+
+    /**
+     * Ressurrect entity
+     * @returns {void}
+     */
+    ressurrect(){
+        this.isAlive = true
+    }
+
+    /**
+     * Kill entity
+     * @returns {void}
+     */
+    kill(){
+        this.isAlive = false
     }
 
     /**

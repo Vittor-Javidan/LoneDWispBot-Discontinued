@@ -42,7 +42,7 @@ export default function idle(data) {
                 playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
                 playerInstance.recoverHP()
                 sendMessage(
-                    `/w ${userName} Montou uma fogueira: 
+                    `/w ${userName} Montou uma fogueira. HP restaurado. 
 					| 1. Statísticas 
 					| 2. Ver Equipamento 
 					| 3. Levantar da fogueira 
@@ -58,8 +58,8 @@ export default function idle(data) {
                 playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.HUNTING)
                 sendMessage(
                     `/w ${userName} ${battleInstance.getBattleStatusStringPvE()} 
-                    | 0. Fugir (Em progresso)
-                    | 1. Atacar (Em progresso)
+                    | 0. Fugir 
+                    | 1. Atacar 
                     |`
                 )
                 break

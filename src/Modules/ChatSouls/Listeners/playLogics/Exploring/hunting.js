@@ -21,8 +21,8 @@ export default function hunting(data) {
 	if (words.length === 1) {
 		sendMessage(
             `/w ${userName} Você está em batalha!!! ${battleInstancePvE.getBattleStatusStringPvE()} 
-            | 0. Fugir (Em progresso)
-            | 1. Atacar (Em progresso)
+            | 0. Fugir 
+            | 1. Atacar 
             |`
 		)
 		return
@@ -45,53 +45,36 @@ export default function hunting(data) {
 
                 const succed = battleInstancePvE.fleePvE()
                 if(succed) {
-                    Battle.deletePvEBattle(userName)
                     playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.IDLE)
-                    sendMessage(`/w @${userName} Fuga bem sucedida!`, 500)
                     return
                 }
-                sendMessage(`/w @${userName} sua fuga falhou!`, 500)
                 break
             //
 
             // ATTACK ENEMIE ====================================================================
             case 1:
 
+                //Checks if player action still delayed
                 if(!playerInstance.getCanPLay()) {
                     sendMessage(`/w ${userName} Você está digitando muito rápido!`)
                     return
                 }
 
-                //Attack enemie
                 battleInstancePvE.attackPvE()
 
-                //Check if enemy is alive
-                const enemieInstance = battleInstancePvE.getEnemieInstancePvE()
-                if(!enemieInstance.getIsAlive()) {
-
-                    Battle.deletePvEBattle(userName)
-
-                    //send back to idle menu if enemy dies
-                    playerInstance.setPrimaryState(ENUM.EXPLORING.PRIMARY)
-                    playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.IDLE)
+                if(!Battle.doesPvEBattleExist(userName)) {
                     return
                 }
 
-                if(!playerInstance.getIsAlive()) {
-                    sendMessage(`/w ${userName} Você foi derrotado por ${enemieInstance.getName()}. Voltando a fogueira. Todas almas foram perdidas.`)
-                    return
-                }
-
-                //Feedback message to next round
                 sendMessage(
                     `/w ${userName} ${battleInstancePvE.getBattleStatusStringPvE()}
-                    | 0. Fugir (Em progresso)
-                    | 1. Atacar (Em progresso)
+                    | 0. Fugir 
+                    | 1. Atacar 
                     |`
                 , 2000)
 
                 playerInstance.delayPlayerAction(2000)
-
+                
                 break
             //
 

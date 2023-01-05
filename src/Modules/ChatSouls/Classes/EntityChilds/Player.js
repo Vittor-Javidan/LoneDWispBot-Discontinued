@@ -294,21 +294,6 @@ export default class Player extends Entity {
         return this.currentLocation
     }
 
-    getIsAlive(){
-        if(!this.isAlive) {
-            //remove souls and send player back to resting state after death 
-            this.setPrimaryState(ENUM.RESTING.PRIMARY)
-            this.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
-            this.souls = 0
-
-            //recover player
-            this.recoverHP()
-            this.isAlive = true
-            this.save()
-        }
-        return super.getIsAlive()
-    }
-
     delayPlayerAction(milisseconds){
         
         this.canPlay = false

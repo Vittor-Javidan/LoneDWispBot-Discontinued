@@ -130,12 +130,25 @@ export default class Battle {
      * @returns {void}
      */
     static deletePvEBattle(userName) {
-
         for (let i = 0; i < this.PvEBattles.length; i++) {
             if (userName === this.PvEBattles[i].playerInstance.getName()) {
                 this.PvEBattles.splice(i, 1)
             }
         }
+    }
+
+    /**
+     * `True` if battle exist, `False` otherwise
+     * @param {string} userName 
+     * @returns {boolean}
+     */
+    static doesPvEBattleExist(userName){
+        for (let i = 0; i < this.PvEBattles.length; i++) {
+            if (userName === this.PvEBattles[i].playerInstance.getName()) {
+                return true
+            }
+        }
+        return false
     }
 
     whosFirstPvE(){
@@ -182,17 +195,43 @@ export default class Battle {
         ) {
             switch (this.turn) {
                 case 1:
-                    if(this.playerInstance.getIsAlive()) this.calculateDmg(this.playerInstance, this.entityInstance)
-                    if(this.entityInstance.getIsAlive()) this.calculateDmg(this.entityInstance, this.playerInstance)
+                    console.log('case 1')
+                    if(this.isBothAlive()) this.calculateDmg(this.playerInstance, this.entityInstance)
+                    if(this.isBothAlive()) this.calculateDmg(this.entityInstance, this.playerInstance)
                     break
                 //
                 case 2:
-                    if(this.entityInstance.getIsAlive()) this.calculateDmg(this.entityInstance, this.playerInstance)
-                    if(this.playerInstance.getIsAlive()) this.calculateDmg(this.playerInstance, this.entityInstance)
+                    console.log('case 2')
+                    if(this.isBothAlive()) this.calculateDmg(this.entityInstance, this.playerInstance)
+                    if(this.isBothAlive()) this.calculateDmg(this.playerInstance, this.entityInstance)
                     break
                 //
             }
         }
+
+        //If anyone dies
+        if(!this.isBothAlive()){
+
+            //if enemie died
+            if(!this.entityInstance.getIsAlive()) {
+                this.calculateRewardsPvE()
+            }
+
+            //if player died
+            if(!this.playerInstance.getIsAlive()) {
+                this.sendDeadPlayerBackHome()
+            }
+            
+            Battle.deletePvEBattle(this.playerInstance.getName())                  
+        }
+    }
+
+    /**
+     * Returns if both Player and other entity is alive
+     * @returns {boolean}
+     */
+    isBothAlive(){
+        return this.playerInstance.getIsAlive() && this.entityInstance.getIsAlive()
     }
 
     /**
@@ -202,9 +241,12 @@ export default class Battle {
 
         const succes = this.evasionEvent(this.playerInstance, this.entityInstance, 0.5)
         if(!succes) {
+            sendMessage(`/w ${this.playerInstance.getName()} sua fuga falhou!`)
             this.calculateDmg(this.entityInstance, this.playerInstance)
             return succes
         }
+        sendMessage(`/w ${this.playerInstance.getName()} Fuga bem sucedida!`)
+        Battle.deletePvEBattle(this.playerInstance.getName())
         return succes
     }
 
@@ -222,32 +264,24 @@ export default class Battle {
         const attacker_fisicalDmg = attacker.getStats(ENUM.STATS_TYPES.FISICAL_DMG)
         const defender_fisicalDef = defender.getStats(ENUM.STATS_TYPES.FISICAL_DEF)
         let damageCaused = attacker_fisicalDmg - defender_fisicalDef
+
         let effectiveDamage = this.calculateEffectivenessDmg(damageCaused)
+        if (effectiveDamage < 1) effectiveDamage = 1
         
-        if (effectiveDamage < 1) {
-            effectiveDamage = 1
-        }
+        defender.reduceCurrentHP(effectiveDamage)  
         
         //player feedback
         if (attacker instanceof Player) {
             sendMessage(
                 `/w ${attacker.getName()} Você causou ${effectiveDamage} de dano`
-                , 500)
+            )
             }
         if (defender instanceof Player) {
             sendMessage(
                 `/w ${defender.getName()} Você sofreu ${effectiveDamage} de dano`
-            , 500)
+            )
         }
 
-        const isDefeated = defender.reduceCurrentHP(effectiveDamage)
-        
-        //Check if the defender die
-        if(isDefeated) {
-            if(attacker instanceof Player) {
-                this.calculateRewards(attacker, defender)
-            }
-        }
     }
 
     /**
@@ -269,39 +303,57 @@ export default class Battle {
 
     /**
      * Calculate the rewards when battle ends
-     * @param {Entity} attacker 
-     * @param {Entity} defender 
      * @returns {void}
      */
-    calculateRewards(attacker, defender) {
+    calculateRewardsPvE() {
 
-        //Gets loser souls
-        attacker.addSouls(defender.getSouls())
-
-        //Gets resources from Enemie Class
-        if(defender instanceof Enemie) {
-
-            /** @type {Object<string, CS_ResourceData>} */
-            const resources = defender.getResources()
-            const resourcesNames = Object.keys(resources)
-
-            let lootString = '|'
-            for (let i = 0; i < resourcesNames.length; i++) {
-                attacker.addResources(resources[resourcesNames[i]])
-                lootString += `|  ${resources[resourcesNames[i]].amount}x ${resourcesNames[i]} |`
-            }
-            lootString += '|'
-
-            sendMessage(
-                `/w ${attacker.getName()} ${defender.getName()} foi derrotado. ${defender.getSouls()} almas absorvidas. Recursos ganhos: ${lootString}`
-            , 1500)
+        const resources = this.entityInstance.getResources()
+        const resourcesNames = Object.keys(resources)
+        
+        let lootString = '|'
+        for (let i = 0; i < resourcesNames.length; i++) {
+            this.playerInstance.addResources(resources[resourcesNames[i]])
+            lootString += `|  ${resources[resourcesNames[i]].amount}x ${resourcesNames[i]} |`
         }
+        lootString += '|'
 
-        if(attacker instanceof Player) {
-            attacker.save()
-        }
+        this.playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.IDLE)
+        this.playerInstance.addSouls(this.entityInstance.getSouls())
+        this.playerInstance.save()
+        
+        sendMessage(
+            `/w ${this.playerInstance.getName()} ${this.entityInstance.getName()} foi derrotado. ${this.entityInstance.getSouls()} almas absorvidas. Recursos ganhos: ${lootString}. 
+            Você voltou a planejar seu próximo passo.
+            | 0. Montar uma fogueira
+            | 1. Caçar 
+            | 2. Procurar por recursos (Em progresso)
+            | 3. Viajar (Em progresso)
+            |`
+            , 1000
+        )
     }
 
+    /**
+     * Sends player back to fire pit after he dies in battle
+     */
+    sendDeadPlayerBackHome(){
+        
+        this.playerInstance.setPrimaryState(ENUM.RESTING.PRIMARY)
+        this.playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
+        this.playerInstance.setSouls(0)
+        this.playerInstance.ressurrect()
+        this.playerInstance.recoverHP()
+        this.playerInstance.save()
+        
+        sendMessage(
+            `/w ${this.playerInstance.getName()} Você morreu para ${this.entityInstance.getName()} e perdeu todas suas almas. Voltando para fogueira: 
+            | 1. Statísticas 
+            | 2. Ver Equipamento 
+            | 3. Levantar da fogueira 
+            |`, 1000
+        )
+    }
+        
     /**
      * return the current HP of the entity
      * @param {string} entityName
@@ -321,29 +373,26 @@ export default class Battle {
         if(this.evasionEvent(defender, attacker, 0.5)) {
             sendMessage(
                 `/w @${this.playerInstance.getName()} ${attacker.getName()} errou o ataque em ${defender.getName()}`
-            , 500)
+            )
             return true
         }
         return false
     }
 
     /**
-     * @param {Player | Enemie} whoCalling
+     * @param {Player | Enemie} whosEvading
      * @param {Player | Enemie} against
      * @returns {boolean}
      */
-    evasionEvent(whoCalling, against, evasionWeight){
+    evasionEvent(whosEvading, against, evasionWeight){
         
-        //Evasion from each entity
+        const evasion = whosEvading.getStats(ENUM.STATS_TYPES.EVASION)
         const oponent_evasion = against.getStats(ENUM.STATS_TYPES.EVASION)
-        const whosCall_evasion = whoCalling.getStats(ENUM.STATS_TYPES.EVASION)
 
-        //evasion event chance
-        const whosCallEvasionChance = (whosCall_evasion * evasionWeight) / (oponent_evasion + whosCall_evasion) * 100
+        const evasionChance = (evasion * evasionWeight) / (oponent_evasion + evasion) * 100
         const randomNumber = Math.random() * 100
 
-        //Return if the evasion event succed ocurred
-        if(whosCallEvasionChance > randomNumber) {
+        if(evasionChance > randomNumber) {
             return true
         }
         return false
