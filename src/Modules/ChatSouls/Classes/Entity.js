@@ -13,7 +13,6 @@
 */
 
 import ENUM from './ENUM'
-import Equipment from './Equipment'
 import Armor from './EquipmentChilds/Armor'
 import BodyArmor from './EquipmentChilds/BodyArmor'
 import Boots from './EquipmentChilds/Boots'
@@ -60,12 +59,22 @@ export default class Entity {
     /**
      * @type {CS_Stats}
      */
-    stats
+    baseStats = {}
+
+    /**
+     * @type {CS_Stats}
+     */
+    statsFromEquips = {}
+
+    /**
+     * @type {CS_Stats}
+     */
+    totalStats = {}
 
     /**
      * @type {number}
      */
-    currentHP
+    currentHP = 1
 
     /**
      * @type {boolean}
@@ -258,9 +267,9 @@ export default class Entity {
      */
     getStats(STATS_TYPE_ENUM){
         if(STATS_TYPE_ENUM) {
-            return this.stats[STATS_TYPE_ENUM]
+            return this.totalStats[STATS_TYPE_ENUM]
         }
-        return this.stats
+        return this.totalStats
     }
 
     /**
@@ -268,77 +277,86 @@ export default class Entity {
      * @returns {void}
      */
     calculateStats() {
-        
-        let statsFromEquips = {
-            [ENUM.STATS_TYPES.HP]: 0,
-            [ENUM.STATS_TYPES.EVASION]: 0,
-            [ENUM.STATS_TYPES.FISICAL_DMG]: 0,
-            [ENUM.STATS_TYPES.FISICAL_DEF]: 0,
-            [ENUM.STATS_TYPES.MAGICAL_DMG]: 0,
-            [ENUM.STATS_TYPES.MAGICAL_DMG]: 0,
-        }
-            
-        //Sum `statsFromEquips``the stats given by equipment multipliers
-        const data = {
-            equipment: this.equipment,
-            attributes: this.attributes,
-        }
-        bonusFromEquippment(MeleeWeapon, ENUM.EQUIPMENT_TYPES.MELEE_WEAPON, data)
-        bonusFromEquippment(LongRangeWeapon, ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON, data)
-        bonusFromEquippment(Helmet, ENUM.EQUIPMENT_TYPES.HELMET, data)
-        bonusFromEquippment(BodyArmor, ENUM.EQUIPMENT_TYPES.BODY_ARMOR, data)
-        bonusFromEquippment(Gloves, ENUM.EQUIPMENT_TYPES.GLOVES, data)
-        bonusFromEquippment(Boots, ENUM.EQUIPMENT_TYPES.BOOTS, data)
+
+        this.initializeStats()
+        this.calculateBaseStats()
+        this.calculateStatsFromEquips()
         
         //Sum base stats + stats from equipments
-        this.stats = {
-            [ENUM.STATS_TYPES.HP]: (this.attributes[ENUM.ATTRIBUTES.VITALITY] + statsFromEquips[ENUM.STATS_TYPES.HP]) * 10, 
-            [ENUM.STATS_TYPES.EVASION]: (this.attributes[ENUM.ATTRIBUTES.AGILITY] + statsFromEquips[ENUM.STATS_TYPES.EVASION]) * 1,
-            [ENUM.STATS_TYPES.FISICAL_DMG]: (this.attributes[ENUM.ATTRIBUTES.STRENGHT] + statsFromEquips[ENUM.STATS_TYPES.FISICAL_DMG]) * 5,
-            [ENUM.STATS_TYPES.FISICAL_DEF]: (this.attributes[ENUM.ATTRIBUTES.STRENGHT] + statsFromEquips[ENUM.STATS_TYPES.FISICAL_DEF]) * 1,
-            [ENUM.STATS_TYPES.MAGICAL_DMG]: (this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE] + statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]) * 5,
-            [ENUM.STATS_TYPES.MAGICAL_DEF]: (this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE] + statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DEF]) * 1
+        const statsTypes = Object.values(ENUM.STATS_TYPES)
+        for(let i = 0; i < statsTypes.length; i++){
+            this.totalStats[statsTypes[i]] += this.baseStats[statsTypes[i]] + this.statsFromEquips[statsTypes[i]]
         }
+        
+        console.log(this.baseStats)
+        console.log(this.statsFromEquips)
+        console.log(this.totalStats)
         
         //Checks if Maximum HP was reduced
-        if(this.currentHP > this.stats[ENUM.STATS_TYPES.HP]) {
-            this.currentHP = this.stats[ENUM.STATS_TYPES.HP]
+        if(this.currentHP > this.totalStats[ENUM.STATS_TYPES.HP]) {
+            this.currentHP = this.totalStats[ENUM.STATS_TYPES.HP]
         }
+    }
+
+    initializeStats(){
+
+        const statsTypes = Object.values(ENUM.STATS_TYPES)
+        for(let i = 0; i < statsTypes.length; i++){
+            this.baseStats[statsTypes[i]]       = 0
+            this.statsFromEquips[statsTypes[i]] = 0
+            this.totalStats[statsTypes[i]]      = 0
+        }
+    }
+
+    calculateBaseStats(){
+
+        this.baseStats[ENUM.STATS_TYPES.HP]             += this.attributes[ENUM.ATTRIBUTES.VITALITY]        * 10
+        this.baseStats[ENUM.STATS_TYPES.EVASION]        += this.attributes[ENUM.ATTRIBUTES.AGILITY]         * 1
+        this.baseStats[ENUM.STATS_TYPES.FISICAL_DMG]    += this.attributes[ENUM.ATTRIBUTES.STRENGHT]        * 5
+        this.baseStats[ENUM.STATS_TYPES.FISICAL_DEF]    += this.attributes[ENUM.ATTRIBUTES.STRENGHT]        * 1
+        this.baseStats[ENUM.STATS_TYPES.MAGICAL_DMG]    += this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE]   * 5
+        this.baseStats[ENUM.STATS_TYPES.MAGICAL_DEF]    += this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE]   * 1
+    }
+
+    calculateStatsFromEquips(){
+
+        this.bonusFromEquippment(   MeleeWeapon        ,ENUM.EQUIPMENT_TYPES.MELEE_WEAPON      )
+        this.bonusFromEquippment(   LongRangeWeapon    ,ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON )
+        this.bonusFromEquippment(   Helmet             ,ENUM.EQUIPMENT_TYPES.HELMET            )
+        this.bonusFromEquippment(   BodyArmor          ,ENUM.EQUIPMENT_TYPES.BODY_ARMOR        )
+        this.bonusFromEquippment(   Gloves             ,ENUM.EQUIPMENT_TYPES.GLOVES            )
+        this.bonusFromEquippment(   Boots              ,ENUM.EQUIPMENT_TYPES.BOOTS             )
+    }
+
+    /**
+     * @param {className} EquipmentClass 
+     * @param {string} EQUIPMENT_TYPE_ENUM 
+     */
+    bonusFromEquippment(EquipmentClass, EQUIPMENT_TYPE_ENUM){
+
+        if(
+            !this.equipment ||                      //Check if this.equipment is define. 
+            !this.equipment[EQUIPMENT_TYPE_ENUM]    //Right after checks is this.equipment[EQUIPMENT_TYPE_ENUM] is define.
+        ) return
         
-        /**
-         * @param {Equipment} EquipmentClass Literally the class itself, not the intance of the class
-         * @param {string} EQUIPMENT_TYPE_ENUM `EQUIPMENT_TYPE ENUM`
-         * @param {Object} data
-         * @param {CS_Attributes} data.attributes
-         * @param {CS_Entity_Equipment} data.equipment
-         */
-        function bonusFromEquippment(EquipmentClass, EQUIPMENT_TYPE_ENUM, data){
-            //Check if data.equipment is define. Right after checks is data.equipment[EQUIPMENT_TYPE_ENUM] is define.
-            if(
-                data.equipment &&
-                data.equipment[EQUIPMENT_TYPE_ENUM]
-            ){
-                const equipmentInstance = new EquipmentClass(data.equipment[EQUIPMENT_TYPE_ENUM])
+        const equipmentInstance = new EquipmentClass(this.equipment[EQUIPMENT_TYPE_ENUM])
 
-                if(equipmentInstance instanceof Weapon) {
+        this.statsFromEquips[ENUM.STATS_TYPES.HP]           += this.attributes[ENUM.ATTRIBUTES.VITALITY]        * equipmentInstance.multipliers[ENUM.ATTRIBUTES.VITALITY]   * 10
+        this.statsFromEquips[ENUM.STATS_TYPES.EVASION]      += this.attributes[ENUM.ATTRIBUTES.AGILITY]         * equipmentInstance.multipliers[ENUM.ATTRIBUTES.AGILITY]    * 1
 
-                    statsFromEquips[ENUM.STATS_TYPES.HP]           += data.attributes[ENUM.ATTRIBUTES.VITALITY] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.VITALITY],
-                    statsFromEquips[ENUM.STATS_TYPES.EVASION]      += data.attributes[ENUM.ATTRIBUTES.AGILITY] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.AGILITY],
-                    statsFromEquips[ENUM.STATS_TYPES.FISICAL_DMG]  += data.attributes[ENUM.ATTRIBUTES.STRENGHT] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT],
-                    statsFromEquips[ENUM.STATS_TYPES.FISICAL_DEF]  += 0,
-                    statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += data.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT],
-                    statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += 0
-
-                } else if (equipmentInstance instanceof Armor) {
-
-                    statsFromEquips[ENUM.STATS_TYPES.HP]           += data.attributes[ENUM.ATTRIBUTES.VITALITY] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.VITALITY],
-                    statsFromEquips[ENUM.STATS_TYPES.EVASION]      += data.attributes[ENUM.ATTRIBUTES.AGILITY] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.AGILITY],
-                    statsFromEquips[ENUM.STATS_TYPES.FISICAL_DMG]  += 0,
-                    statsFromEquips[ENUM.STATS_TYPES.FISICAL_DEF]  += data.attributes[ENUM.ATTRIBUTES.STRENGHT] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT],
-                    statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += 0,
-                    statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += data.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE] * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT]
-                }
-            }
+        switch (true) {
+            case equipmentInstance instanceof Weapon:
+                this.statsFromEquips[ENUM.STATS_TYPES.FISICAL_DMG]  += this.attributes[ENUM.ATTRIBUTES.STRENGHT]        * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT]   * 5
+                this.statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE]   * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT]   * 5
+                break
+            case equipmentInstance instanceof Armor:
+                this.statsFromEquips[ENUM.STATS_TYPES.FISICAL_DEF]  += this.attributes[ENUM.ATTRIBUTES.STRENGHT]        * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT]   * 1
+                this.statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE]   * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT]   * 1
+                break
+            default:
+                console.log('ERRO: Entity class, bonusFromEquippment: instanceof Equipment class not recognized')
+                break
+            //
         }
     }
 
@@ -346,7 +364,7 @@ export default class Entity {
      * Fully restore the current HP
      */
     recoverHP() {
-        this.currentHP = this.stats[ENUM.STATS_TYPES.HP]
+        this.currentHP = this.totalStats[ENUM.STATS_TYPES.HP]
     }
 
     /**

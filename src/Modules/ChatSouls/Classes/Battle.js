@@ -69,10 +69,6 @@ export default class Battle {
         this.playerInstance = playerInstance
         this.entityInstance = entityInstance
 
-        //Ensure stats are updated before start battle
-        this.playerInstance.calculateStats()
-        this.entityInstance.calculateStats()
-
         //Get instaces stats. 
         this.TempStats_1 = this.playerInstance.getStats()
         this.TempStats_2 = this.entityInstance.getStats()
@@ -83,28 +79,32 @@ export default class Battle {
     //=================================================================================================
 
     /**
+     * Starts a PvE battle for a given player
      * @param {Player} playerInstance 
      */
     static startPvEBattle(playerInstance) {
         
+        //Get possible enemies by map area
         const playerMapArea = playerInstance.getCurrentLocation()
         const playerLevel = playerInstance.getLevel()
         const enemiesArray = Object.values(enemiesDataBase[playerMapArea])
         const possibleEnemies = []
-
         for (let i = 0; i < enemiesArray.length; i++){
             if (playerLevel >= enemiesArray[i].level) {
                 possibleEnemies.push(enemiesArray[i])
             }
         }
 
+        //Initialize enemy
         const randomIndex = Math.floor(Math.random() * possibleEnemies.length);
         const randomEnemie = possibleEnemies[randomIndex];
         const enemieInstance = new Enemie(randomEnemie)
         
+        //Initialize battle
         const battleInstance = new Battle(playerInstance, enemieInstance)
         battleInstance.whosFirstPvE()
         
+        //Register PvE battle
         Battle.PvEBattles.push(battleInstance)
     }
 

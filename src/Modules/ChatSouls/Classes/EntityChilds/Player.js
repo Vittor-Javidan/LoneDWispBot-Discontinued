@@ -271,6 +271,7 @@ export default class Player extends Entity {
     unequipEquipment(EQUIPMENT_TYPE_ENUM){
 
         super.unequipEquipment(EQUIPMENT_TYPE_ENUM)
+        this.calculateStats()
         this.save()
     }
 
@@ -283,6 +284,7 @@ export default class Player extends Entity {
     setEquippedEquipment(itemCode, EQUIPMENT_TYPE_ENUM) {
 
         super.setEquippedEquipment(itemCode, EQUIPMENT_TYPE_ENUM)
+        this.calculateStats()
         this.save()
     }
 
