@@ -221,13 +221,11 @@ export default class Battle {
         ) {
             switch (this.turn) {
                 case 1:
-                    console.log('case 1')
                     if(this.isBothAlive()) this.calculateDmg(this.playerInstance, this.entityInstance)
                     if(this.isBothAlive()) this.calculateDmg(this.entityInstance, this.playerInstance)
                     break
                 //
                 case 2:
-                    console.log('case 2')
                     if(this.isBothAlive()) this.calculateDmg(this.entityInstance, this.playerInstance)
                     if(this.isBothAlive()) this.calculateDmg(this.playerInstance, this.entityInstance)
                     break
