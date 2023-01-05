@@ -22,13 +22,12 @@ export default class Auction {
 	static date = new Date();
 
 	/**
-	 * The list of all current timers, used to retrieve the remaining time for all auction items.
-	 * 
-	 * @type {Object.<string, number>}
+	 * -Keys: `itemName`, Values: `timeLeft_Seconds`. The list of all current timers, used to retrieve the remaining time for all auction items.
+	 * @type {Object.<string, number>} 
 	 * @static
 	 * @private
 	 */
-	static itemName_TimeLeft_KVPairs = {}
+	static timersList = {}
 
 
 	/**
@@ -65,13 +64,13 @@ export default class Auction {
 	regressiveTimer
 
 	/**
+	 * - Keys: `biderName`, Value: `totalBidValue`.
 	 * A object that stores participant names as keys and their corresponding total points as values. 
-	 * Example: { "michael": 1000, "maria": 500, ... }
 	 * 
 	 * @type {Object.<string, number>}
 	 * @private
 	 */
-	participants_Bid_KVPairs = {}
+	bidersObject = {}
 
 	/** ====================================================
 	 * Creates a new instance of the Auction class with the given item name and duration.
@@ -268,7 +267,7 @@ export default class Auction {
 	 * @static
 	 */
 	static registerTimesLeft(itemName, secondsLeft){
-		this.itemName_TimeLeft_KVPairs[itemName] = secondsLeft
+		this.timersList[itemName] = secondsLeft
 	}
 	/** ====================================================
 	 * Returns an object with the remaining time for items being auctioned.
@@ -277,7 +276,7 @@ export default class Auction {
 	 * @static
 	 */
 	static retrieveTimesLeft() {
-		return this.itemName_TimeLeft_KVPairs
+		return this.timersList
 	}
 	/** ====================================================
 	 * Clears all registered remaining times for items being auctioned.
@@ -286,7 +285,7 @@ export default class Auction {
 	 * @static
 	 */
 	static clearTimesLeft() {
-		this.itemName_TimeLeft_KVPairs = {}
+		this.timersList = {}
 	}
 	/** ====================================================
 	 * Starts the main timer, which handles which auction should announce its remaining time to reduce chat spamming.
@@ -325,9 +324,9 @@ export default class Auction {
 		let message = `Minutos restantes : |`
 		let count = 0
 
-		for (const item in this.itemName_TimeLeft_KVPairs) {
+		for (const item in this.timersList) {
 
-			const timeLeft = this.itemName_TimeLeft_KVPairs[item]
+			const timeLeft = this.timersList[item]
 			const itemName = item
 
 			if(
@@ -338,7 +337,7 @@ export default class Auction {
 					timeLeft <= (5 * 60)
 				)) && timeLeft > 0
 			) {
-			   message += `| Leilão[${itemName}]: ${timeLeft/60} |`
+			   message += `| ${itemName}: ${timeLeft/60} |`
 			   count++
 			}
 		}
@@ -470,14 +469,14 @@ export default class Auction {
 				if(secondsLeft > 60) return
 
 				this.addExtraMinutes(extraMinutes)
-				sendMessage(`Leilão[${itemName}] PRORROGAÇÃO: 2 minutos adicionados.`)
+				sendMessage(`${itemName}: 2 minutos adicionados.`)
 
 			} else if (isNewWinner()) {
 
 				if(secondsLeft > 60) return
 					
 				this.addExtraMinutes(extraMinutes)
-				sendMessage(`Leilão[${itemName}] PRORROGAÇÃO: 2 minutos adicionados.`)
+				sendMessage(`${itemName}: 2 minutos adicionados.`)
 			}
 
 		} else if (isFirstBid()) {
@@ -485,7 +484,7 @@ export default class Auction {
 			if(secondsLeft > 60) return
 
 			this.addExtraMinutes(extraMinutes)
-			sendMessage(`Leilão[${itemName}] PRORROGAÇÃO: 2 minutos adicionados.`)
+			sendMessage(`${itemName}: 2 minutos adicionados.`)
 		}
 
 		function isDraw(){
@@ -496,7 +495,7 @@ export default class Auction {
 					userName === podium[1].name
 				)
 			){
-				sendMessage(`Leilão[${itemName}] EMPATE!!: @${podium[0].name} e ${podium[1].name} - ${podium[0].score} pontos. Em caso de item empatado, existe nenhum ganhador! BEM VINDO AO LEILÃO MUAHAHA *-*`)
+				sendMessage(`${itemName}: @${podium[0].name} e @${podium[1].name} empataram com ${podium[0].score} pontos. Em caso de empate apenas a casa ganha! BEM VINDO AO LEILÃO MUAHAHA *-*`)
 				return true
 			}
 			return false
@@ -505,7 +504,7 @@ export default class Auction {
 		function isNewWinner(){
 
 			if(userName === podium[0].name) {
-				sendMessage(`Leilão[${itemName}] Nova Melhor pontuação: @${podium[0].name} - ${podium[0].score} pontos.`)
+				sendMessage(`${itemName}: Nova Melhor pontuação, @${podium[0].name} com ${podium[0].score} pontos.`)
 				return true
 			}
 			return false
@@ -514,7 +513,7 @@ export default class Auction {
 		function isFirstBid(){
 
 			if(userName === podium[0].name) {
-				sendMessage(`Leilão[${itemName}] Primeiro lance: @${podium[0].name} - ${podium[0].score} pontos.`)
+				sendMessage(`${itemName}: Primeiro lance, @${podium[0].name} com ${podium[0].score} pontos.`)
 				return true
 			}
 			return false
@@ -562,7 +561,7 @@ export default class Auction {
 	 * @returns {Object.<string, number>} The list of participants and their points for the auction item.
 	 */
 	getParticipants() {
-		return this.participants_Bid_KVPairs
+		return this.bidersObject
 	}
 	/** ====================================================
 	 * Adds the given bid value to the total bid value for a specific participant.
@@ -572,7 +571,7 @@ export default class Auction {
 	 * @returns {void}
 	 */
 	addParticipantTotalBid(userName, bidValue){
-		this.participants_Bid_KVPairs[userName] += bidValue
+		this.bidersObject[userName] += bidValue
 	}
 	/** ====================================================
 	 * Checks if a specific name already exist inside the Participants list
@@ -581,7 +580,7 @@ export default class Auction {
 	 * @returns {boolean} `True` is useName already exists, `false` otherwise
 	 */
 	isParticipantRegistered(userName){
-		return this.participants_Bid_KVPairs.hasOwnProperty(userName)
+		return this.bidersObject.hasOwnProperty(userName)
 	}
 	/** ====================================================
 	 * Register a specific name with the initial bid value provided
@@ -591,7 +590,7 @@ export default class Auction {
 	 * @returns {void}
 	 */
 	registerParticipant(userName, bidValue) {
-		this.participants_Bid_KVPairs[userName] = bidValue
+		this.bidersObject[userName] = bidValue
 	}
 	/** ====================================================
 	 * Returns an array of participants object, example: [{name: michael, score: 1200}, ...] descendent ordered by score
@@ -629,7 +628,7 @@ export default class Auction {
 		
 		//Check for no bid result
 		if (podium.length <= 0) {
-			sendMessage(`SEM LANCE: Leilão[${itemName}]`)
+			sendMessage(`${itemName}: não houve lances...`)
 			return
 		}
 
@@ -638,19 +637,19 @@ export default class Auction {
 
 		//Check for only 1 bid result
 		if (podium.length === 1) {
-			sendMessage(`GANHADOR Leilão[${itemName}: @${name} - ${score} pontos`)
-			sendMessage(`/w @${name} PARABÉNS!! Voce ganhou um ${itemName}. ${Auction.getDateAndTime()}.`)
+			sendMessage(`${itemName}: ganhador é @${name} com ${score} pontos`)
+			sendMessage(`/w @${name} PARABÉNS!! Voce ganhou um ${itemName}. ${Auction.getDateAndTime()}. Você tem até o final da stream pra receber o prêmio!`)
 			return
 		}
 
 		//Check for Draw result
 		if(score === podium[1].score){
-			sendMessage(`EMPATE Leilão[${itemName}: sem ganhadores, a casa ganhou *-*`)
+			sendMessage(`${itemName}: empate, sem ganhadores, a casa ganhou *-*`)
 			return
 		}
 
 		//Check for winner result
-		sendMessage(`GANHADOR Leilão[${itemName}]: @${name} - ${score} pontos`)	
+		sendMessage(`${itemName}: ganhador é @${name} com ${score} pontos`)	
 		sendMessage(`/w @${name} PARABÉNS!! Você ganhou um ${itemName}. ${Auction.getDateAndTime()}. Você tem até o final da stream pra receber o prêmio!`)
 	}
 }
