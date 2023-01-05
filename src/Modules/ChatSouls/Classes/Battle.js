@@ -387,6 +387,10 @@ export default class Battle {
         return this.entityInstance
     }
 
+    getPlayerInstancePvE(){
+        return this.playerInstance
+    }
+
     /**
      * @param {Player | Enemie} attacker 
      * @param {Player | Enemie} defender 
