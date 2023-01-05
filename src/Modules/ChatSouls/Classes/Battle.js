@@ -123,7 +123,7 @@ export default class Battle {
 
         //If there is no battle
         sendMessage(
-            `Erro: Batalha PvE não encotrada: ${userName}`
+            `Batalha PvE não encotrada ou já concluída: ${userName}`
         )
         console.log(`Erro: Batalha PvE não encotrada: ${userName}`)
     }
@@ -362,6 +362,15 @@ export default class Battle {
      */
     sendDeadPlayerBackHome(){
         
+        //Channel Chat public feedback
+        const playerName = this.playerInstance.getName()
+        const enemieName = this.entityInstance.getName()
+        const playerSouls = this.playerInstance.getSouls()
+        sendMessage(
+            `O jogador ${playerName} morreu para um ${enemieName} e perdeu ${playerSouls} almas.`
+        )
+
+        //Logics to send player back home
         this.playerInstance.setPrimaryState(ENUM.RESTING.PRIMARY)
         this.playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
         this.playerInstance.setSouls(0)
@@ -376,6 +385,7 @@ export default class Battle {
             | 3. Levantar da fogueira 
             |`, 1000
         )
+
     }
         
     /**
