@@ -1,7 +1,7 @@
 import sendMessage from "../../../../Twitch/sendMessageHandler"
 import DbSystem from "../../database/DbSystem"
 import Entity from "../Entity"
-import ENUM from "../ENUM"
+import CHATSOULS_ENUM from "../ENUM"
 
 /**
  * @typedef {import ('../../TypeDefinitions/Types').CS_Database} CS_Database
@@ -34,14 +34,14 @@ export default class Player extends Entity {
      * @private
      */
     currentState = {
-        primary: ENUM.RESTING.PRIMARY,
-        secondary: ENUM.RESTING.SECONDARY.JUST_RESTING
+        primary: CHATSOULS_ENUM.STATES.RESTING.PRIMARY,
+        secondary: CHATSOULS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING
     }
 
     /**
      * @type {string} - type: `MAP_AREAS ENUM`
      */
-    currentLocation = ENUM.MAP_AREAS.THE_WOODS
+    currentLocation = CHATSOULS_ENUM.MAP_AREAS.THE_WOODS
 
     /**
      * used to define if player can play in some situations
@@ -57,19 +57,25 @@ export default class Player extends Entity {
     constructor(userName){
         
         super(userName)
+        
+        const attributeTypes = CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES
+        const playerAttributes = CHATSOULS_ENUM.BALANCE.PLAYER_START.ATTRIBUTES
         this.attributes = {
-            [ENUM.ATTRIBUTES.VITALITY]: 10,
-            [ENUM.ATTRIBUTES.AGILITY]: 10,
-            [ENUM.ATTRIBUTES.STRENGHT]: 10,
-            [ENUM.ATTRIBUTES.INTELLLIGENCE]: 10
+            [attributeTypes.VITALITY]:      playerAttributes.VITALITY,
+            [attributeTypes.AGILITY]:       playerAttributes.AGILITY,
+            [attributeTypes.STRENGHT]:      playerAttributes.STRENGHT,
+            [attributeTypes.INTELLLIGENCE]: playerAttributes.INTELLLIGENCE
         }
+
+        const equipTypes = CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES
+        const playerEquips = CHATSOULS_ENUM.BALANCE.PLAYER_START.EQUIPMENTS
         this.equipment = {
-            [ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON]: {name: 'Arco de madeira'},
-            [ENUM.EQUIPMENT_TYPES.MELEE_WEAPON]: {name: 'Adaga'},
-            [ENUM.EQUIPMENT_TYPES.HELMET]: {name: 'Chapéu de caçador'},
-            [ENUM.EQUIPMENT_TYPES.BODY_ARMOR]: {name: 'Roupa de caçador'},
-            [ENUM.EQUIPMENT_TYPES.GLOVES]: {name: 'Luvas de caçador'},
-            [ENUM.EQUIPMENT_TYPES.BOOTS]: {name: 'Botas de caçador'}
+            [equipTypes.LONG_RANGE_WEAPON]: playerEquips.LONG_RANGE_WEAPON,
+            [equipTypes.MELEE_WEAPON]:      playerEquips.MELEE_WEAPON,
+            [equipTypes.HELMET]:            playerEquips.HELMET,
+            [equipTypes.BODY_ARMOR]:        playerEquips.BODY_ARMOR,
+            [equipTypes.GLOVES]:            playerEquips.GLOVES,
+            [equipTypes.BOOTS]:             playerEquips.BOOTS
         }
     }
 
@@ -87,8 +93,15 @@ export default class Player extends Entity {
         playerInstance.load(userName)
         playerInstance.calculateStats()
         playerInstance.recoverHP()
-        this.onlinePlayers.push(playerInstance)
+        this.loginPlayer(playerInstance)
         return true
+    }
+
+    /**
+     * @param {Player}
+     */
+    static loginPlayer(playerInstance){
+        this.onlinePlayers.push(playerInstance)
     }
 
     /**
@@ -100,7 +113,7 @@ export default class Player extends Entity {
     }
 
     /**
-     * Returns the instance of the 
+     * Returns the instance of the player
      * @param {string} userName 
      * @returns {Player | undefined} If undefined, that means no player was found
     */
@@ -166,11 +179,11 @@ export default class Player extends Entity {
         const playerData = Player.database[`${userName}`]
 
         //Replace default values for saved values
-        this.souls = playerData.souls
-        this.level = playerData.level
-        this.attributes = playerData.attributes
-        this.equipment = playerData.equipment
-        this.inventory = playerData.inventory
+        this.souls      =   playerData.souls
+        this.level      =   playerData.level
+        this.attributes =   playerData.attributes
+        this.equipment  =   playerData.equipment
+        this.inventory  =   playerData.inventory
         
         sendMessage(`/w ${userName} Seu progresso foi restaurado com sucesso`)
     }
@@ -183,11 +196,11 @@ export default class Player extends Entity {
 
         const playerData = Player.database[`${this.name}`]
 
-        if(!playerData.souls) Player.database[`${this.name}`].souls = this.souls
-        if(!playerData.level) Player.database[`${this.name}`].level = this.level
-        if(!playerData.attributes) Player.database[`${this.name}`].attributes = this.attributes
-        if(!playerData.equipment) Player.database[`${this.name}`].equipment = this.equipment
-        if(!playerData.inventory) Player.database[`${this.name}`].inventory = this.inventory
+        if(!playerData.souls)       Player.database[`${this.name}`].souls = this.souls
+        if(!playerData.level)       Player.database[`${this.name}`].level = this.level
+        if(!playerData.attributes)  Player.database[`${this.name}`].attributes = this.attributes
+        if(!playerData.equipment)   Player.database[`${this.name}`].equipment = this.equipment
+        if(!playerData.inventory)   Player.database[`${this.name}`].inventory = this.inventory
         if(!playerData.inventory.equipments) Player.database[`${this.name}`].inventory.equipments = this.inventory.equipments
     }
 

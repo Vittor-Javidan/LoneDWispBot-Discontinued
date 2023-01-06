@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../../Twitch/sendMessageHandler"
 import Player from "../../../../Classes/EntityChilds/Player"
-import ENUM from "../../../../Classes/ENUM"
+import CHATSOULS_ENUM from "../../../../Classes/ENUM"
 import LongRangeWeapon from "../../../../Classes/EquipmentChilds/LongRangeWeapon"
 
 /**
@@ -36,7 +36,7 @@ export default function equipment_LongRange(data) {
 
 		//GO BACK EQUIPMENT MENU ===================================================================
 		case 0:
-			playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT)
+			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT)
 			sendMessage (
 				`/w ${userName} Você voltou a olhar seus equipamentos. 
 				| 0. Voltar 
@@ -55,15 +55,15 @@ export default function equipment_LongRange(data) {
 		// EQUIP ANOTHER LONG RANGE WEAPON =========================================================
 		case 1:
 
-			const inventoryWeapons_LongRange = playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)
+			const inventoryWeapons_LongRange = playerInstance.getInvetoryEquipments(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)
 			if (!inventoryWeapons_LongRange) {
 				sendMessage(`/w @${userName} Seu inventário está vazio.`)
 				return
 			}
 
-			playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE_INVENTORY)
+			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE_INVENTORY)
 			sendMessage(
-				`/w @${userName} Qual arma deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)}`
+				`/w @${userName} Qual arma deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)}`
 			)
 			break
 		//
@@ -86,7 +86,7 @@ export default function equipment_LongRange(data) {
 				sendMessage(`/w @${userName} você não possui nenhuma arma equipada`)
 				return
 			}
-			playerInstance.unequipEquipment(ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)
+			playerInstance.unequipEquipment(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)
 			sendMessage(`/w @${userName} Arma de longo alcance desequipada`)
 			break
 		//

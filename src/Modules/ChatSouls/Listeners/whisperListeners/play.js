@@ -1,5 +1,5 @@
 import Player from "../../Classes/EntityChilds/Player"
-import ENUM from "../../Classes/ENUM"
+import CHATSOULS_ENUM from "../../Classes/ENUM"
 import exploring from "../playLogics/exploringHandler"
 import resting from "../playLogics/restingHandler"
 
@@ -15,7 +15,7 @@ export default function play(data){
     const playerState = data.playerInstance.getCurrentState()
     
     switch (playerState.primary){
-        case ENUM.RESTING.PRIMARY: resting(data); break
-        case ENUM.EXPLORING.PRIMARY: exploring(data); break
+        case CHATSOULS_ENUM.STATES.RESTING.PRIMARY: resting(data); break
+        case CHATSOULS_ENUM.STATES.EXPLORING.PRIMARY: exploring(data); break
     }
 }

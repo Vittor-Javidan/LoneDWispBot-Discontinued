@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../Twitch/sendMessageHandler"
 import Player from "../../../Classes/EntityChilds/Player"
-import ENUM from "../../../Classes/ENUM"
+import CHATSOULS_ENUM from "../../../Classes/ENUM"
 
 /**
  * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "STATS_MENU"
@@ -37,7 +37,7 @@ export default function statsMenu(data) {
     switch (itemCode) {
 
         case 0:
-            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
+            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING)
             sendMessage(
                 `/w ${userName} Você está descansando em uma fogueira. oque deseja fazer?: 
                 | 1. Statísticas 
@@ -60,7 +60,7 @@ export default function statsMenu(data) {
         //
 
         case 2:
-            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.ATRIBUTE_UPGRADE)
+            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.ATRIBUTE_UPGRADE)
             sendMessage(
                 `/w ${userName} Você está no menu de atributos: 
                 | Level: ${level} 

@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../../Twitch/sendMessageHandler"
 import Player from "../../../../Classes/EntityChilds/Player"
-import ENUM from "../../../../Classes/ENUM"
+import CHATSOULS_ENUM from "../../../../Classes/ENUM"
 
 /**
  * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "EQUIPMENT_HELMET_INVENTORY"
@@ -19,7 +19,7 @@ export default function equipment_HelmetInventory(data) {
     // If "!cs"
 	if (words[0] === '!cs') {
         
-        const allEquipmentString = playerInstance.getInventoryEquipmentsString(ENUM.EQUIPMENT_TYPES.HELMET)
+        const allEquipmentString = playerInstance.getInventoryEquipmentsString(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.HELMET)
         sendMessage(
             `/w @${userName} Você está olhando seu inventário de capacetes. Qual deseja equipar?: 
             | 0. Voltar ${allEquipmentString}
@@ -34,7 +34,7 @@ export default function equipment_HelmetInventory(data) {
         //GO HELMET EQUIPMENT MENU =============================================================
         case itemCode === 0:
             
-            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_HELMET)
+            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_HELMET)
             sendMessage(
                 `/w ${userName} Você voltou ao menu de capacetes
                 | 0. Voltar
@@ -47,10 +47,10 @@ export default function equipment_HelmetInventory(data) {
         //   
         
         //CHOSE A HELMET TO EQUIP AND GO BACK TO HELMET EQUIPMENT MENU ====================================
-        case (itemCode <= playerInstance.getInvetoryEquipments(ENUM.EQUIPMENT_TYPES.HELMET).length):
+        case (itemCode <= playerInstance.getInvetoryEquipments(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.HELMET).length):
 
-            playerInstance.setEquippedEquipment(itemCode, ENUM.EQUIPMENT_TYPES.HELMET)
-            playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.EQUIPMENT_HELMET)
+            playerInstance.setEquippedEquipment(itemCode, CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.HELMET)
+            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_HELMET)
             sendMessage(
                 `/w @${userName} ${playerInstance.getEquippedEquipment().helmet.name} foi equipado. Voltando ao menu de capacetes. 
                 | 0. Voltar

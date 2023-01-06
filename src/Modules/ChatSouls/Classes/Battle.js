@@ -3,7 +3,7 @@ import enemiesDataBase from '../database/enemiesData';
 import Entity from './Entity';
 import Enemie from './EntityChilds/Enemie';
 import Player from './EntityChilds/Player';
-import ENUM from './ENUM';
+import CHATSOULS_ENUM from './ENUM';
 
 /**
  * @typedef {import('../TypeDefinitions/Types').CS_EntityData} CS_EntityData
@@ -191,8 +191,8 @@ export default class Battle {
 
     chargeTimeActionPvE() {
 
-        const player = this.playerInstance.getStats(ENUM.STATS_TYPES.EVASION)
-        const enemie = this.entityInstance.getStats(ENUM.STATS_TYPES.EVASION)
+        const player = this.playerInstance.getStats(CHATSOULS_ENUM.TYPES.STATS_TYPES.EVASION)
+        const enemie = this.entityInstance.getStats(CHATSOULS_ENUM.TYPES.STATS_TYPES.EVASION)
 
         //Checks if any player can reapeat his round
         this.entity_1_TimeAction += player
@@ -288,14 +288,14 @@ export default class Battle {
         if (this.isDodgeSucced(attacker, defender)) return
 
         //Calculate damage value
-        const attacker_fisicalDmg = attacker.getStats(ENUM.STATS_TYPES.FISICAL_DMG)
-        const defender_fisicalDef = defender.getStats(ENUM.STATS_TYPES.FISICAL_DEF)
+        const attacker_fisicalDmg = attacker.getStats(CHATSOULS_ENUM.TYPES.STATS_TYPES.FISICAL_DMG)
+        const defender_fisicalDef = defender.getStats(CHATSOULS_ENUM.TYPES.STATS_TYPES.FISICAL_DEF)
         let damageCaused = attacker_fisicalDmg - defender_fisicalDef
 
         let effectiveDamage = this.calculateEffectivenessDmg(damageCaused)
         if (effectiveDamage < 1) effectiveDamage = 1
         
-        defender.reduceCurrentHP(effectiveDamage)  
+        defender.inflictDamage(effectiveDamage)  
         
         //player feedback
         if (attacker instanceof Player) {
@@ -344,7 +344,7 @@ export default class Battle {
         }
         lootString += '|'
 
-        this.playerInstance.setSecondaryState(ENUM.EXPLORING.SECONDARY.IDLE)
+        this.playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.EXPLORING.SECONDARY.IDLE)
         this.playerInstance.addSouls(this.entityInstance.getSouls())
         this.playerInstance.save()
         
@@ -374,8 +374,8 @@ export default class Battle {
         )
 
         //Logics to send player back home
-        this.playerInstance.setPrimaryState(ENUM.RESTING.PRIMARY)
-        this.playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.JUST_RESTING)
+        this.playerInstance.setPrimaryState(CHATSOULS_ENUM.STATES.RESTING.PRIMARY)
+        this.playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING)
         this.playerInstance.setSouls(0)
         this.playerInstance.ressurrect()
         this.playerInstance.recoverHP()
@@ -427,8 +427,8 @@ export default class Battle {
      */
     evasionEvent(whosEvading, against, evasionWeight){
         
-        const evasion = whosEvading.getStats(ENUM.STATS_TYPES.EVASION)
-        const oponent_evasion = against.getStats(ENUM.STATS_TYPES.EVASION)
+        const evasion = whosEvading.getStats(CHATSOULS_ENUM.TYPES.STATS_TYPES.EVASION)
+        const oponent_evasion = against.getStats(CHATSOULS_ENUM.TYPES.STATS_TYPES.EVASION)
 
         const evasionChance = (evasion * evasionWeight) / (oponent_evasion + evasion) * 100
         const randomNumber = Math.random() * 100
@@ -456,7 +456,7 @@ export default class Battle {
         
         const playerName = this.playerInstance.getName()
         const playerHP = this.playerInstance.getCurrentHP()
-        const playerMaxHP = this.playerInstance.getStats(ENUM.STATS_TYPES.HP)
+        const playerMaxHP = this.playerInstance.getStats(CHATSOULS_ENUM.TYPES.STATS_TYPES.HP)
         const playerHPString = `${playerName}: ${playerHP}/${playerMaxHP} HP`
 
         return `${playerHPString}`
@@ -466,7 +466,7 @@ export default class Battle {
         
         const enemieName = this.entityInstance.getName()
         const enemieHP = this.entityInstance.getCurrentHP()
-        const enemieMaxHP = this.entityInstance.getStats(ENUM.STATS_TYPES.HP)
+        const enemieMaxHP = this.entityInstance.getStats(CHATSOULS_ENUM.TYPES.STATS_TYPES.HP)
         const enemieHPString = `${enemieName}: ${enemieHP}/${enemieMaxHP} HP`
 
         return `${enemieHPString}`

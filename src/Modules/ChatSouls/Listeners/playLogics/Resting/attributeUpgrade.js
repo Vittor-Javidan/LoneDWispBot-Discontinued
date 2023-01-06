@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../Twitch/sendMessageHandler"
 import Player from "../../../Classes/EntityChilds/Player"
-import ENUM from "../../../Classes/ENUM"
+import CHATSOULS_ENUM from "../../../Classes/ENUM"
 
 /**
  * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "ATRIBUTE_UPGRADE"
@@ -42,7 +42,7 @@ export default function attributeUpgrade(data) {
 	switch(itemCode){
 				
 		case 0:
-			playerInstance.setSecondaryState(ENUM.RESTING.SECONDARY.STATS_MENU)
+			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.STATS_MENU)
 			sendMessage(
 				`/w ${userName} Você está no menu de estatísticas: 
 				| 0. Voltar 
@@ -57,7 +57,7 @@ export default function attributeUpgrade(data) {
 				sendMessage(`/w ${userName} Você não possui almas o suficiente`)
 				return
 			}
-			playerInstance.upgradeAttribute(ENUM.ATTRIBUTES.VITALITY)
+			playerInstance.upgradeAttribute(CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.VITALITY)
 			sendMessage(
 				`/w ${userName} VITALIDADE AUMENTADA! 
 				| Novo level: ${playerInstance.getLevel()} 
@@ -73,7 +73,7 @@ export default function attributeUpgrade(data) {
 				sendMessage(`/w ${userName} Você não possui almas o suficiente`)
 				return
 			}
-			playerInstance.upgradeAttribute(ENUM.ATTRIBUTES.AGILITY)
+			playerInstance.upgradeAttribute(CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.AGILITY)
 			sendMessage(
 				`/w ${userName} AGILIDADE AUMENTADA! 
 				| Novo level: ${playerInstance.getLevel()} 
@@ -89,7 +89,7 @@ export default function attributeUpgrade(data) {
 				sendMessage(`/w ${userName} Você não possui almas o suficiente`)
 				return
 			}
-			playerInstance.upgradeAttribute(ENUM.ATTRIBUTES.STRENGHT)
+			playerInstance.upgradeAttribute(CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.STRENGHT)
 			sendMessage(
 				`/w ${userName} FORÇA AUMENTADA! 
 				| Novo level: ${playerInstance.getLevel()} 
@@ -105,7 +105,7 @@ export default function attributeUpgrade(data) {
 				sendMessage(`/w ${userName} Você não possui almas o suficiente`)
 				return
 			}
-			playerInstance.upgradeAttribute(ENUM.ATTRIBUTES.INTELLLIGENCE)
+			playerInstance.upgradeAttribute(CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.INTELLLIGENCE)
 			sendMessage(
 				`/w ${userName} INTELIGÊNCIA AUMENTADA! 
 				| Novo level: ${playerInstance.getLevel()} 

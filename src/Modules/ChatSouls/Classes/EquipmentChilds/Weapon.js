@@ -1,5 +1,5 @@
 import sendMessage from "../../../../Twitch/sendMessageHandler"
-import ENUM from "../ENUM"
+import CHATSOULS_ENUM from "../ENUM"
 import Equipment from "../Equipment"
 
 /** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData */
@@ -24,10 +24,10 @@ export default class Weapon extends Equipment {
             `/w @${userName} 
             DESCRIÇÃO: ${this.description} 
             MULTIPLICADORES: 
-            | +HP = ${this.multipliers[ENUM.ATTRIBUTES.VITALITY]}x Vitalidade 
-            | +Evasão = ${this.multipliers[ENUM.ATTRIBUTES.AGILITY]}x Agilidade 
-            | +Dano físico = ${this.multipliers[ENUM.ATTRIBUTES.STRENGHT]}x Força
-            | +Dano mágico = ${this.multipliers[ENUM.ATTRIBUTES.INTELLLIGENCE]}x Inteligência
+            | +HP = ${this.multipliers[CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.VITALITY]}x Vitalidade 
+            | +Evasão = ${this.multipliers[CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.AGILITY]}x Agilidade 
+            | +Dano físico = ${this.multipliers[CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.STRENGHT]}x Força
+            | +Dano mágico = ${this.multipliers[CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.INTELLLIGENCE]}x Inteligência
             |`
         )
     }

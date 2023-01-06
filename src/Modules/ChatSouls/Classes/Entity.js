@@ -12,7 +12,8 @@
  * @typedef {import ('../TypeDefinitions/Types').CS_ResourceData} CS_ResourceData
 */
 
-import ENUM from './ENUM'
+import CHATSOULS_ENUM from './ENUM'
+import Equipment from './Equipment'
 import Armor from './EquipmentChilds/Armor'
 import BodyArmor from './EquipmentChilds/BodyArmor'
 import Boots from './EquipmentChilds/Boots'
@@ -282,21 +283,23 @@ export default class Entity {
         this.calculateBaseStats()
         this.calculateStatsFromEquips()
         
+        const statsTypes = CHATSOULS_ENUM.TYPES.STATS_TYPES
+        const statsTypesArray = Object.values(statsTypes)
+        
         //Sum base stats + stats from equipments
-        const statsTypes = Object.values(ENUM.STATS_TYPES)
-        for(let i = 0; i < statsTypes.length; i++){
-            this.totalStats[statsTypes[i]] += this.baseStats[statsTypes[i]] + this.statsFromEquips[statsTypes[i]]
+        for(let i = 0; i < statsTypesArray.length; i++){
+            this.totalStats[statsTypesArray[i]] += this.baseStats[statsTypesArray[i]] + this.statsFromEquips[statsTypesArray[i]]
         }
         
         //Checks if Maximum HP was reduced
-        if(this.currentHP > this.totalStats[ENUM.STATS_TYPES.HP]) {
-            this.currentHP = this.totalStats[ENUM.STATS_TYPES.HP]
+        if(this.currentHP > this.totalStats[statsTypes.HP]) {
+            this.currentHP = this.totalStats[statsTypes.HP]
         }
     }
 
     initializeStats(){
 
-        const statsTypes = Object.values(ENUM.STATS_TYPES)
+        const statsTypes = Object.values(CHATSOULS_ENUM.TYPES.STATS_TYPES)
         for(let i = 0; i < statsTypes.length; i++){
             this.baseStats[statsTypes[i]]       = 0
             this.statsFromEquips[statsTypes[i]] = 0
@@ -306,48 +309,59 @@ export default class Entity {
 
     calculateBaseStats(){
 
-        this.baseStats[ENUM.STATS_TYPES.HP]             += this.attributes[ENUM.ATTRIBUTES.VITALITY]        * 10
-        this.baseStats[ENUM.STATS_TYPES.EVASION]        += this.attributes[ENUM.ATTRIBUTES.AGILITY]         * 1
-        this.baseStats[ENUM.STATS_TYPES.FISICAL_DMG]    += this.attributes[ENUM.ATTRIBUTES.STRENGHT]        * 5
-        this.baseStats[ENUM.STATS_TYPES.FISICAL_DEF]    += this.attributes[ENUM.ATTRIBUTES.STRENGHT]        * 1
-        this.baseStats[ENUM.STATS_TYPES.MAGICAL_DMG]    += this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE]   * 5
-        this.baseStats[ENUM.STATS_TYPES.MAGICAL_DEF]    += this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE]   * 1
+        const balanceStatsValues = CHATSOULS_ENUM.BALANCE.STATS_WEIGHT
+        const statsTypes = CHATSOULS_ENUM.TYPES.STATS_TYPES
+        const attributeTypes = CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES
+
+        this.baseStats[statsTypes.HP]             += this.attributes[attributeTypes.VITALITY]        * balanceStatsValues.HP
+        this.baseStats[statsTypes.EVASION]        += this.attributes[attributeTypes.AGILITY]         * balanceStatsValues.EVASION
+        this.baseStats[statsTypes.FISICAL_DMG]    += this.attributes[attributeTypes.STRENGHT]        * balanceStatsValues.FISICAL_DMG
+        this.baseStats[statsTypes.FISICAL_DEF]    += this.attributes[attributeTypes.STRENGHT]        * balanceStatsValues.FISICAL_DEF
+        this.baseStats[statsTypes.MAGICAL_DMG]    += this.attributes[attributeTypes.INTELLLIGENCE]   * balanceStatsValues.MAGICAL_DMG
+        this.baseStats[statsTypes.MAGICAL_DEF]    += this.attributes[attributeTypes.INTELLLIGENCE]   * balanceStatsValues.MAGICAL_DEF
     }
 
     calculateStatsFromEquips(){
 
-        this.bonusFromEquippment(   MeleeWeapon        ,ENUM.EQUIPMENT_TYPES.MELEE_WEAPON      )
-        this.bonusFromEquippment(   LongRangeWeapon    ,ENUM.EQUIPMENT_TYPES.LONG_RANGE_WEAPON )
-        this.bonusFromEquippment(   Helmet             ,ENUM.EQUIPMENT_TYPES.HELMET            )
-        this.bonusFromEquippment(   BodyArmor          ,ENUM.EQUIPMENT_TYPES.BODY_ARMOR        )
-        this.bonusFromEquippment(   Gloves             ,ENUM.EQUIPMENT_TYPES.GLOVES            )
-        this.bonusFromEquippment(   Boots              ,ENUM.EQUIPMENT_TYPES.BOOTS             )
+        const equipmentTypes = CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES
+
+        this.bonusFromEquippment(   MeleeWeapon        ,equipmentTypes.MELEE_WEAPON      )
+        this.bonusFromEquippment(   LongRangeWeapon    ,equipmentTypes.LONG_RANGE_WEAPON )
+        this.bonusFromEquippment(   Helmet             ,equipmentTypes.HELMET            )
+        this.bonusFromEquippment(   BodyArmor          ,equipmentTypes.BODY_ARMOR        )
+        this.bonusFromEquippment(   Gloves             ,equipmentTypes.GLOVES            )
+        this.bonusFromEquippment(   Boots              ,equipmentTypes.BOOTS             )
     }
 
     /**
-     * @param {className} EquipmentClass 
-     * @param {string} EQUIPMENT_TYPE_ENUM 
+     * @param {Equipment} EquipmentClass 
+     * @param {string} EQUIPMENT_TYPE `CHATSOULS_ENUM: EQUIPMENT_TYPE`
      */
-    bonusFromEquippment(EquipmentClass, EQUIPMENT_TYPE_ENUM){
+    bonusFromEquippment(EquipmentClass, EQUIPMENT_TYPE){
 
         if(
             !this.equipment ||                      //Check if this.equipment is define. 
-            !this.equipment[EQUIPMENT_TYPE_ENUM]    //Right after checks is this.equipment[EQUIPMENT_TYPE_ENUM] is define.
+            !this.equipment[EQUIPMENT_TYPE]    //Right after checks is this.equipment[EQUIPMENT_TYPE_ENUM] is define.
         ) return
         
-        const equipmentInstance = new EquipmentClass(this.equipment[EQUIPMENT_TYPE_ENUM])
+        const equipmentInstance = new EquipmentClass(this.equipment[EQUIPMENT_TYPE])
+        const equipMultipliers = equipmentInstance.multipliers
+        
+        const statsTypes            = CHATSOULS_ENUM.TYPES.STATS_TYPES
+        const attributeTypes        = CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES
+        const balanceStatsValues    = CHATSOULS_ENUM.BALANCE.STATS_WEIGHT
 
-        this.statsFromEquips[ENUM.STATS_TYPES.HP]           += this.attributes[ENUM.ATTRIBUTES.VITALITY]        * equipmentInstance.multipliers[ENUM.ATTRIBUTES.VITALITY]   * 10
-        this.statsFromEquips[ENUM.STATS_TYPES.EVASION]      += this.attributes[ENUM.ATTRIBUTES.AGILITY]         * equipmentInstance.multipliers[ENUM.ATTRIBUTES.AGILITY]    * 1
+        this.statsFromEquips[statsTypes.HP]           += this.attributes[attributeTypes.VITALITY]        * equipMultipliers[attributeTypes.VITALITY]   * balanceStatsValues.HP
+        this.statsFromEquips[statsTypes.EVASION]      += this.attributes[attributeTypes.AGILITY]         * equipMultipliers[attributeTypes.AGILITY]    * balanceStatsValues.EVASION
 
         switch (true) {
             case equipmentInstance instanceof Weapon:
-                this.statsFromEquips[ENUM.STATS_TYPES.FISICAL_DMG]  += this.attributes[ENUM.ATTRIBUTES.STRENGHT]        * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT]   * 5
-                this.statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE]   * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT]   * 5
+                this.statsFromEquips[statsTypes.FISICAL_DMG] += this.attributes[attributeTypes.STRENGHT]        * equipMultipliers[attributeTypes.STRENGHT]         * balanceStatsValues.FISICAL_DMG
+                this.statsFromEquips[statsTypes.MAGICAL_DMG] += this.attributes[attributeTypes.INTELLLIGENCE]   * equipMultipliers[attributeTypes.INTELLLIGENCE]    * balanceStatsValues.MAGICAL_DMG
                 break
             case equipmentInstance instanceof Armor:
-                this.statsFromEquips[ENUM.STATS_TYPES.FISICAL_DEF]  += this.attributes[ENUM.ATTRIBUTES.STRENGHT]        * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT]   * 1
-                this.statsFromEquips[ENUM.STATS_TYPES.MAGICAL_DMG]  += this.attributes[ENUM.ATTRIBUTES.INTELLLIGENCE]   * equipmentInstance.multipliers[ENUM.ATTRIBUTES.STRENGHT]   * 1
+                this.statsFromEquips[statsTypes.FISICAL_DEF]  += this.attributes[attributeTypes.STRENGHT]        * equipMultipliers[attributeTypes.STRENGHT]        * balanceStatsValues.FISICAL_DEF
+                this.statsFromEquips[statsTypes.MAGICAL_DMG]  += this.attributes[attributeTypes.INTELLLIGENCE]   * equipMultipliers[attributeTypes.INTELLLIGENCE]   * balanceStatsValues.MAGICAL_DEF
                 break
             default:
                 console.log('ERRO: Entity class, bonusFromEquippment: instanceof Equipment class not recognized')
@@ -360,7 +374,7 @@ export default class Entity {
      * Fully restore the current HP
      */
     recoverHP() {
-        this.currentHP = this.totalStats[ENUM.STATS_TYPES.HP]
+        this.currentHP = this.totalStats[CHATSOULS_ENUM.TYPES.STATS_TYPES.HP]
     }
 
     /**
@@ -368,7 +382,7 @@ export default class Entity {
      * @param {number} value 
      * @returns {boolean} Returns `True` if value reach 0 or less, `False` otherwise
      */
-    reduceCurrentHP(value) {
+    inflictDamage(value) {
         this.currentHP -= value
         if(this.currentHP <= 0){
             this.kill()

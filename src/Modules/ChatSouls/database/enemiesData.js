@@ -1,4 +1,4 @@
-import ENUM from '../Classes/ENUM';
+import CHATSOULS_ENUM from '../Classes/ENUM';
 
 /**
  * @typedef {import('../TypeDefinitions/Types').CS_Database} CS_Database - Keys: `enemie name string`
@@ -9,16 +9,16 @@ import ENUM from '../Classes/ENUM';
  * @type {Object<string, CS_Database>}
  */
 const enemiesDataBase = {
-    [ENUM.MAP_AREAS.THE_WOODS]: {
+    [CHATSOULS_ENUM.MAP_AREAS.THE_WOODS]: {
         "Javali": {
             level: 1,
             name: "Javali",
             souls: 100,
             attributes: {
-                [ENUM.ATTRIBUTES.VITALITY]: 15,
-                [ENUM.ATTRIBUTES.AGILITY]: 10,
-                [ENUM.ATTRIBUTES.STRENGHT]: 10,
-                [ENUM.ATTRIBUTES.INTELLLIGENCE]: 5
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.VITALITY]: 15,
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.AGILITY]: 10,
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.STRENGHT]: 10,
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.INTELLLIGENCE]: 5
             },
             inventory: {
                 resources: {
@@ -48,16 +48,16 @@ const enemiesDataBase = {
             name: "Bandido",
             souls: 500,
             attributes: {
-                [ENUM.ATTRIBUTES.VITALITY]: 10,
-                [ENUM.ATTRIBUTES.AGILITY]: 15,
-                [ENUM.ATTRIBUTES.STRENGHT]: 10,
-                [ENUM.ATTRIBUTES.INTELLLIGENCE]: 10
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.VITALITY]: 10,
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.AGILITY]: 15,
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.STRENGHT]: 10,
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.INTELLLIGENCE]: 10
             },
             equipment: {
-                [ENUM.EQUIPMENT_TYPES.MELEE_WEAPON]: { 
+                [CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.MELEE_WEAPON]: { 
                     name: "Adaga"
                 },
-                [ENUM.EQUIPMENT_TYPES.BODY_ARMOR]: {
+                [CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.BODY_ARMOR]: {
                     name: "Roupa de caçador"
                 }
             },
@@ -83,10 +83,10 @@ const enemiesDataBase = {
             name: "Lobo",
             souls: 1000,
             attributes: {
-                [ENUM.ATTRIBUTES.VITALITY]: 13,
-                [ENUM.ATTRIBUTES.AGILITY]: 13,
-                [ENUM.ATTRIBUTES.STRENGHT]: 14,
-                [ENUM.ATTRIBUTES.INTELLLIGENCE]: 10
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.VITALITY]: 13,
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.AGILITY]: 13,
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.STRENGHT]: 14,
+                [CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES.INTELLLIGENCE]: 10
             },
             inventory: {
                 resources: {
