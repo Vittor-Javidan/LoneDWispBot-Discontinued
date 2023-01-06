@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../Twitch/sendMessageHandler"
 import Player from "../../../Classes/EntityChilds/Player"
-import CHATSOULS_ENUM from "../../../Classes/ENUM"
+import CS_ENUM from "../../../Classes/ENUM"
 
 /**
  * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "JUST_RESTING"
@@ -32,7 +32,7 @@ export default function justResting(data) {
 	switch (itemCode) {
 
 		case 1:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.STATS_MENU)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.STATS_MENU)
 			sendMessage(
 				`/w ${userName} Você está no menu de estatísticas: 
 				| 0. Voltar 
@@ -44,7 +44,7 @@ export default function justResting(data) {
 		//
 
 		case 2:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT)
 			sendMessage(
 				`/w ${userName} EQUIPAMENTOS: 
 				| 0. Voltar
@@ -61,8 +61,8 @@ export default function justResting(data) {
 		//
 
 		case 3:
-			playerInstance.setPrimaryState(CHATSOULS_ENUM.STATES.EXPLORING.PRIMARY)
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.EXPLORING.SECONDARY.IDLE)
+			playerInstance.setPrimaryState(CS_ENUM.STATES.EXPLORING.PRIMARY)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.EXPLORING.SECONDARY.IDLE)
 			sendMessage(
 				`/w ${userName} Você se levanta da fogueira e olha em volta.
 				| 0. Voltar a fogueira

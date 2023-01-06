@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../Twitch/sendMessageHandler"
 import Player from "../../../Classes/EntityChilds/Player"
-import CHATSOULS_ENUM from "../../../Classes/ENUM"
+import CS_ENUM from "../../../Classes/ENUM"
 
 /**
  * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "EQUIPMENT"
@@ -39,7 +39,7 @@ export default function equipment_Menu(data) {
 
 		// GO BACK TO RESTING MAIN MENU ===================================================
 		case 0:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING)
 			sendMessage(
 				`/w ${userName} Voltou para a fogueira: 
 				| 1. Statísticas 
@@ -52,7 +52,7 @@ export default function equipment_Menu(data) {
 
 		// MELEE EQUIPMENT MENU ===========================================================
 		case 1:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_MELEE)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_MELEE)
 			sendMessage(
 				`/w ${userName} Menu de armas corpo a corpo: 
 				| 0. Voltar 
@@ -66,7 +66,7 @@ export default function equipment_Menu(data) {
 
 		// LONG RANGE EQUIPMENT MENU ======================================================
 		case 2:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
 			sendMessage(
 				`/w ${userName} Menu de armas longo alcance: 
 				| 0. Voltar 
@@ -80,7 +80,7 @@ export default function equipment_Menu(data) {
 
 		// HELMETS EQUIPMENT MENU =========================================================
 		case 3:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_HELMET)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_HELMET)
 			sendMessage(
 				`/w ${userName} Menu de capacetes: 
 				| 0. Voltar 
@@ -94,7 +94,7 @@ export default function equipment_Menu(data) {
 
 		// BODY EQUIPMENT MENU ============================================================
 		case 4:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR)
 			sendMessage(
 				`/w ${userName} Menu de armaduras: 
 				| 0. Voltar
@@ -108,7 +108,7 @@ export default function equipment_Menu(data) {
 
 		// GLOVES EQUIPMENT MENU ==========================================================
 		case 5:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES)
 			sendMessage(
 				`/w ${userName} Menu de luvas: 
 				| 0. Voltar 
@@ -122,7 +122,7 @@ export default function equipment_Menu(data) {
 
 		// BOOTS EQUIPMENT MENU ==========================================================
 		case 6:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BOOTS)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BOOTS)
 			sendMessage(
 				`/w ${userName} Menu de botas: 
 				| 0. Voltar 

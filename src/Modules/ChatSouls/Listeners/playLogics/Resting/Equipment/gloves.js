@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../../Twitch/sendMessageHandler"
 import Player from "../../../../Classes/EntityChilds/Player"
-import CHATSOULS_ENUM from "../../../../Classes/ENUM"
+import CS_ENUM from "../../../../Classes/ENUM"
 import Gloves from "../../../../Classes/EquipmentChilds/Gloves"
 
 /**
@@ -36,7 +36,7 @@ export default function equipment_Gloves(data) {
 
 		//GO BACK TO EQUIPMENT MENU ================================================================
 		case 0:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT)
 			sendMessage (
 				`/w ${userName} Você voltou a olhar seus equipamentos. 
 				| 0. Voltar 
@@ -55,15 +55,15 @@ export default function equipment_Gloves(data) {
 		// EQUIP ANOTHER GLOVE ====================================================================
 		case 1:
 
-			const inventory_GlovesArmor = playerInstance.getInvetoryEquipments(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.GLOVES)
+			const inventory_GlovesArmor = playerInstance.getInvetoryEquipments(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.GLOVES)
 			if (!inventory_GlovesArmor) {
 				sendMessage(`/w @${userName} Seu inventário está vazio.`)
 				return
 			}
 
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES_INVENTORY)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES_INVENTORY)
 			sendMessage(
-				`/w @${userName} Quais luvas deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.GLOVES)}`
+				`/w @${userName} Quais luvas deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.GLOVES)}`
 			)
 			break
 		//
@@ -85,7 +85,7 @@ export default function equipment_Gloves(data) {
 				sendMessage(`/w @${userName} você não possui nenhuma luva equipada`)
 				return
 			}
-			playerInstance.unequipEquipment(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.GLOVES)
+			playerInstance.unequipEquipment(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.GLOVES)
 			sendMessage(`/w @${userName} Luvas desequipadas`)
 			break
 		//

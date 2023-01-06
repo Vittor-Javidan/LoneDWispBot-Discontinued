@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../../Twitch/sendMessageHandler"
 import Player from "../../../../Classes/EntityChilds/Player"
-import CHATSOULS_ENUM from "../../../../Classes/ENUM"
+import CS_ENUM from "../../../../Classes/ENUM"
 import BodyArmor from "../../../../Classes/EquipmentChilds/BodyArmor"
 
 /**
@@ -36,7 +36,7 @@ export default function equipment_Body(data) {
 
 		//GO BACK TO EQUIPMENT MENU ================================================================
 		case 0:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT)
 			sendMessage (
 				`/w ${userName} Você voltou a olhar seus equipamentos. 
 				| 0. Voltar 
@@ -55,15 +55,15 @@ export default function equipment_Body(data) {
 		// EQUIP ANOTHER BODY ARMOR =========================================================
 		case 1:
 
-			const inventory_BodyArmors = playerInstance.getInvetoryEquipments(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.BODY_ARMOR)
+			const inventory_BodyArmors = playerInstance.getInvetoryEquipments(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.BODY_ARMOR)
 			if (!inventory_BodyArmors) {
 				sendMessage(`/w @${userName} Seu inventário está vazio.`)
 				return
 			}
 
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR_INVENTORY)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR_INVENTORY)
 			sendMessage(
-				`/w @${userName} Qual armadura deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.BODY_ARMOR)}`
+				`/w @${userName} Qual armadura deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.BODY_ARMOR)}`
 			)
 			break
 		//
@@ -85,7 +85,7 @@ export default function equipment_Body(data) {
 				sendMessage(`/w @${userName} você não possui nenhuma armadura equipada`)
 				return
 			}
-			playerInstance.unequipEquipment(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.BODY_ARMOR)
+			playerInstance.unequipEquipment(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.BODY_ARMOR)
 			sendMessage(`/w @${userName} Armadura desequipada`)
 			break
 		//

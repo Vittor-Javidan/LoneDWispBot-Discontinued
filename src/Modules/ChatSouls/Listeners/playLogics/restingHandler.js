@@ -1,5 +1,5 @@
 import Player from "../../Classes/EntityChilds/Player"
-import CHATSOULS_ENUM from "../../Classes/ENUM"
+import CS_ENUM from "../../Classes/ENUM"
 
 import attributeUpgrade from "./Resting/attributeUpgrade"
 import equipment_Body from "./Resting/Equipment/bodyArmor"
@@ -31,21 +31,21 @@ export default function resting(data){
     
     switch(playerState.secondary) {
         
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING: justResting(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.STATS_MENU: statsMenu(data); break    
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.ATRIBUTE_UPGRADE: attributeUpgrade(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT: equipment_Menu(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_MELEE: equipment_Melee(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_MELEE_INVENTORY: equipment_MeleeInventory(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE: equipment_LongRange(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE_INVENTORY: equipment_LongRangeInventory(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_HELMET: equipment_Helmet(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_HELMET_INVENTORY: equipment_HelmetInventory(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR: equipment_Body(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR_INVENTORY: equipment_BodyArmorInventory(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES: equipment_Gloves(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES_INVENTORY: equipment_GlovesInventory(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BOOTS: equipment_boots(data); break
-        case CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BOOTS_INVENTORY: equipment_BootsInventory(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING: justResting(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.STATS_MENU: statsMenu(data); break    
+        case CS_ENUM.STATES.RESTING.SECONDARY.ATRIBUTE_UPGRADE: attributeUpgrade(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT: equipment_Menu(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_MELEE: equipment_Melee(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_MELEE_INVENTORY: equipment_MeleeInventory(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE: equipment_LongRange(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE_INVENTORY: equipment_LongRangeInventory(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_HELMET: equipment_Helmet(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_HELMET_INVENTORY: equipment_HelmetInventory(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR: equipment_Body(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BODY_ARMOR_INVENTORY: equipment_BodyArmorInventory(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES: equipment_Gloves(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES_INVENTORY: equipment_GlovesInventory(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BOOTS: equipment_boots(data); break
+        case CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_BOOTS_INVENTORY: equipment_BootsInventory(data); break
     }
 }

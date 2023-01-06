@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../../Twitch/sendMessageHandler"
 import Player from "../../../../Classes/EntityChilds/Player"
-import CHATSOULS_ENUM from "../../../../Classes/ENUM"
+import CS_ENUM from "../../../../Classes/ENUM"
 
 /**
  * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "EQUIPMENT_GLOVES_INVENTORY"
@@ -19,7 +19,7 @@ export default function equipment_GlovesInventory(data) {
     // If "!cs"
 	if (words[0] === '!cs') {
 
-		const allEquipmentString = playerInstance.getInventoryEquipmentsString(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.GLOVES)
+		const allEquipmentString = playerInstance.getInventoryEquipmentsString(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.GLOVES)
         sendMessage(
             `/w @${userName} Você está olhando seu inventário de luvas. Qual deseja equipar?: 
             | 0. Voltar ${allEquipmentString}
@@ -34,7 +34,7 @@ export default function equipment_GlovesInventory(data) {
         //GO GLOVES EQUIPMENT MENU =============================================================
         case itemCode === 0:
             
-            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES)
+            playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES)
             sendMessage(
                 `/w ${userName} Você voltou ao menu de luvas
                 | 0. Voltar
@@ -47,10 +47,10 @@ export default function equipment_GlovesInventory(data) {
         //
 
         //CHOSE A GLOVES TO EQUIP AND GO BACK TO GLOVES EQUIPMENT MENU =====================
-        case (itemCode <= playerInstance.getInvetoryEquipments(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.GLOVES).length):
+        case (itemCode <= playerInstance.getInvetoryEquipments(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.GLOVES).length):
 
-            playerInstance.setEquippedEquipment(itemCode, CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.GLOVES)
-            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES)
+            playerInstance.setEquippedEquipment(itemCode, CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.GLOVES)
+            playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_GLOVES)
             sendMessage(
                 `/w @${userName} ${playerInstance.getEquippedEquipment().gloves.name} foi equipado. Voltando ao menu de luvas. 
                 | 0. Voltar

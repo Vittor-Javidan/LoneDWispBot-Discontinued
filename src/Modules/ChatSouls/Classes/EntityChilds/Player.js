@@ -1,7 +1,7 @@
 import sendMessage from "../../../../Twitch/sendMessageHandler"
 import DbSystem from "../../database/DbSystem"
 import Entity from "../Entity"
-import CHATSOULS_ENUM from "../ENUM"
+import CS_ENUM from "../ENUM"
 
 /**
  * @typedef {import ('../../TypeDefinitions/Types').CS_Database} CS_Database
@@ -34,14 +34,14 @@ export default class Player extends Entity {
      * @private
      */
     currentState = {
-        primary: CHATSOULS_ENUM.STATES.RESTING.PRIMARY,
-        secondary: CHATSOULS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING
+        primary: CS_ENUM.STATES.RESTING.PRIMARY,
+        secondary: CS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING
     }
 
     /**
      * @type {string} - type: `MAP_AREAS ENUM`
      */
-    currentLocation = CHATSOULS_ENUM.MAP_AREAS.THE_WOODS
+    currentLocation = CS_ENUM.MAP_AREAS.THE_WOODS
 
     /**
      * used to define if player can play in some situations
@@ -58,8 +58,8 @@ export default class Player extends Entity {
         
         super(userName)
         
-        const attributeTypes = CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES
-        const playerAttributes = CHATSOULS_ENUM.BALANCE.PLAYER_START.ATTRIBUTES
+        const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
+        const playerAttributes = CS_ENUM.BALANCE_VALUES.PLAYER_START.ATTRIBUTES
         this.attributes = {
             [attributeTypes.VITALITY]:      playerAttributes.VITALITY,
             [attributeTypes.AGILITY]:       playerAttributes.AGILITY,
@@ -67,8 +67,8 @@ export default class Player extends Entity {
             [attributeTypes.INTELLLIGENCE]: playerAttributes.INTELLLIGENCE
         }
 
-        const equipTypes = CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES
-        const playerEquips = CHATSOULS_ENUM.BALANCE.PLAYER_START.EQUIPMENTS
+        const equipTypes = CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT
+        const playerEquips = CS_ENUM.BALANCE_VALUES.PLAYER_START.EQUIPMENTS
         this.equipment = {
             [equipTypes.LONG_RANGE_WEAPON]: playerEquips.LONG_RANGE_WEAPON,
             [equipTypes.MELEE_WEAPON]:      playerEquips.MELEE_WEAPON,
@@ -215,18 +215,18 @@ export default class Player extends Entity {
 
     /**
      * Set player primary state
-     * @param {string} ENUM_STATE 
+     * @param {string} STATE 
      */
-    setPrimaryState(ENUM_STATE) {
-        this.currentState.primary = ENUM_STATE
+    setPrimaryState(STATE) {
+        this.currentState.primary = STATE
     }
 
     /**
      * Set player secondary state
-     * @param {string} ENUM_STATE 
+     * @param {string} STATE 
      */
-    setSecondaryState(ENUM_STATE) {
-        this.currentState.secondary = ENUM_STATE
+    setSecondaryState(STATE) {
+        this.currentState.secondary = STATE
     }
 
     /**
@@ -239,15 +239,15 @@ export default class Player extends Entity {
 
     /**
      * Handles attribute upgrade logics
-     * @param {string} ATTRIBUTE_ENUM 
+     * @param {string} KEYS_CS_ATTRIBUTES 
      * @returns 
      */
-    upgradeAttribute(ATTRIBUTE_ENUM){
+    upgradeAttribute(KEYS_CS_ATTRIBUTES){
 
         const upgradeCost = this.getUpgradeCost()
 
         this.souls -= upgradeCost
-        this.attributes[ATTRIBUTE_ENUM] += 1
+        this.attributes[KEYS_CS_ATTRIBUTES] += 1
         this.level += 1
         this.calculateStats()
         this.recoverHP()
@@ -256,25 +256,25 @@ export default class Player extends Entity {
 
     /**
      * Unequip player equipment by type
-     * @param {string} EQUIPMENT_TYPE_ENUM - Type of selected equipment
+     * @param {string} KEYS_CS_ENTITY_EQUIPMENT - Type of selected equipment
      * @returns {void}
      */
-    unequipEquipment(EQUIPMENT_TYPE_ENUM){
+    unequipEquipment(KEYS_CS_ENTITY_EQUIPMENT){
 
-        super.unequipEquipment(EQUIPMENT_TYPE_ENUM)
+        super.unequipEquipment(KEYS_CS_ENTITY_EQUIPMENT)
         this.calculateStats()
         this.save()
     }
 
     /**
      * Equip a type of equipment from player inventory
-     * @param {string} EQUIPMENT_TYPE_ENUM
+     * @param {string} KEYS_CS_ENTITY_EQUIPMENT
      * @param {number} itemCode
      * @returns {void}
      */
-    setEquippedEquipment(itemCode, EQUIPMENT_TYPE_ENUM) {
+    setEquippedEquipment(itemCode, KEYS_CS_ENTITY_EQUIPMENT) {
 
-        super.setEquippedEquipment(itemCode, EQUIPMENT_TYPE_ENUM)
+        super.setEquippedEquipment(itemCode, KEYS_CS_ENTITY_EQUIPMENT)
         this.calculateStats()
         this.save()
     }

@@ -12,7 +12,7 @@
  * @typedef {import ('../TypeDefinitions/Types').CS_ResourceData} CS_ResourceData
 */
 
-import CHATSOULS_ENUM from './ENUM'
+import CS_ENUM from './ENUM'
 import Equipment from './Equipment'
 import Armor from './EquipmentChilds/Armor'
 import BodyArmor from './EquipmentChilds/BodyArmor'
@@ -155,24 +155,24 @@ export default class Entity {
 
     /**
      * Unequip entity equipment by type
-     * @param {string} EQUIPMENT_TYPE_ENUM - Type of selected equipment
+     * @param {string} KEYS_CS_ENTITY_EQUIPMENT - Type of selected equipment
      * @returns {void}
      */
-    unequipEquipment(EQUIPMENT_TYPE_ENUM){
+    unequipEquipment(KEYS_CS_ENTITY_EQUIPMENT){
 
-        const unequippedWeapon = this.equipment[EQUIPMENT_TYPE_ENUM]
+        const unequippedWeapon = this.equipment[KEYS_CS_ENTITY_EQUIPMENT]
 
         //If the specific equipment inventory type is not empty, just push. Create the specific equipments inventory type property otherwise
-        if(!this.inventory.equipments[EQUIPMENT_TYPE_ENUM]) {
-            this.inventory.equipments[EQUIPMENT_TYPE_ENUM] = [unequippedWeapon]
+        if(!this.inventory.equipments[KEYS_CS_ENTITY_EQUIPMENT]) {
+            this.inventory.equipments[KEYS_CS_ENTITY_EQUIPMENT] = [unequippedWeapon]
         } else {
-            this.inventory.equipments[EQUIPMENT_TYPE_ENUM].push(unequippedWeapon)
+            this.inventory.equipments[KEYS_CS_ENTITY_EQUIPMENT].push(unequippedWeapon)
         }
         //
         
-        delete this.equipment[EQUIPMENT_TYPE_ENUM]
+        delete this.equipment[KEYS_CS_ENTITY_EQUIPMENT]
         
-        this.inventory.equipments[EQUIPMENT_TYPE_ENUM].sort((a, b) => {
+        this.inventory.equipments[KEYS_CS_ENTITY_EQUIPMENT].sort((a, b) => {
             if (a.name < b.name) return -1
             if (a.name > b.name) return 1
             return 0
@@ -181,13 +181,13 @@ export default class Entity {
 
     /**
      * Returns the equipment stored in entity inventory
-     * @param {string} EQUIPMENT_TYPE_ENUM
+     * @param {string} KEY_CS_ENTITY_EQUIPMENT
      * @returns {CS_Inventory_Equipments | CS_EquipmentData[]} If the type is not specify, all equipment types will return.
      */
-    getInvetoryEquipments(EQUIPMENT_TYPE_ENUM){
+    getInvetoryEquipments(KEY_CS_ENTITY_EQUIPMENT){
 
-        if(EQUIPMENT_TYPE_ENUM) {
-            return this.inventory.equipments[EQUIPMENT_TYPE_ENUM]
+        if(KEY_CS_ENTITY_EQUIPMENT) {
+            return this.inventory.equipments[KEY_CS_ENTITY_EQUIPMENT]
         }
         return this.inventory.equipments
     }
@@ -196,12 +196,12 @@ export default class Entity {
      * Return a string containing all equipment inside entity inventory.
      * Output example: `| 1. itemName_1 | 2. itemName_2 | ... | n. itemName_n |`
      * 
-     * @param {string} EQUIPMENT_TYPE_ENUM
+     * @param {string} KEYS_CS_ENTITY_EQUIPMENT
      * @returns {string | undefined} Returns `undefined` if iventory is empty.
      */
-    getInventoryEquipmentsString(EQUIPMENT_TYPE_ENUM){
+    getInventoryEquipmentsString(KEYS_CS_ENTITY_EQUIPMENT){
 
-        let equipment = this.inventory.equipments[EQUIPMENT_TYPE_ENUM]
+        let equipment = this.inventory.equipments[KEYS_CS_ENTITY_EQUIPMENT]
         if (!equipment) {
             return
         }
@@ -216,32 +216,32 @@ export default class Entity {
 
     /**
      * Equip a type of equipment from entity inventory
-     * @param {string} EQUIPMENT_TYPE_ENUM
+     * @param {string} KEYS_CS_ENTITY_EQUIPMENT
      * @param {number} itemCode
      * @returns {void}
      */
-    setEquippedEquipment(itemCode, EQUIPMENT_TYPE_ENUM) {
+    setEquippedEquipment(itemCode, KEYS_CS_ENTITY_EQUIPMENT) {
 
         const itemIndex = itemCode - 1
 
         //`False` if there is no weapon equiped, `True` otherwise
-        this.equipment[EQUIPMENT_TYPE_ENUM]
-            ? this.equipment[EQUIPMENT_TYPE_ENUM] = this.replaceInventoryEquipment(itemIndex, this.equipment[EQUIPMENT_TYPE_ENUM], EQUIPMENT_TYPE_ENUM)
-            : this.equipment[EQUIPMENT_TYPE_ENUM] = this.removeInventoryEquipment(itemIndex, EQUIPMENT_TYPE_ENUM)
+        this.equipment[KEYS_CS_ENTITY_EQUIPMENT]
+            ? this.equipment[KEYS_CS_ENTITY_EQUIPMENT] = this.replaceInventoryEquipment(itemIndex, this.equipment[KEYS_CS_ENTITY_EQUIPMENT], KEYS_CS_ENTITY_EQUIPMENT)
+            : this.equipment[KEYS_CS_ENTITY_EQUIPMENT] = this.removeInventoryEquipment(itemIndex, KEYS_CS_ENTITY_EQUIPMENT)
         //
     }
 
     /**
      * Remove and return a equipment type from entity inventory using the indexArray
      * @param {number} itemIndex 
-     * @param {string} EQUIPMENT_TYPE_ENUM - Type of selected equipment
+     * @param {string} KEYS_CS_ENTITY_EQUIPMENT - Type of selected equipment
      * @returns {CS_EquipmentData}
      */
-    removeInventoryEquipment(itemIndex, EQUIPMENT_TYPE_ENUM){
+    removeInventoryEquipment(itemIndex, KEYS_CS_ENTITY_EQUIPMENT){
 
-        const itemRemoved = this.inventory.equipments[EQUIPMENT_TYPE_ENUM].splice(itemIndex, 1)
-        if (this.inventory.equipments[EQUIPMENT_TYPE_ENUM].length === 0) {
-            delete this.inventory.equipments[EQUIPMENT_TYPE_ENUM]
+        const itemRemoved = this.inventory.equipments[KEYS_CS_ENTITY_EQUIPMENT].splice(itemIndex, 1)
+        if (this.inventory.equipments[KEYS_CS_ENTITY_EQUIPMENT].length === 0) {
+            delete this.inventory.equipments[KEYS_CS_ENTITY_EQUIPMENT]
         }
         return itemRemoved[0]
     }
@@ -264,12 +264,12 @@ export default class Entity {
     }
 
     /**
-     * @param {string} STATS_TYPE_ENUM
+     * @param {string} KEYS_CS_STATS
      * @returns {Object<string, number> | number} Returns the value directly if the ENUM is specify, otherwise it returns the whole stats object
      */
-    getStats(STATS_TYPE_ENUM){
-        if(STATS_TYPE_ENUM) {
-            return this.totalStats[STATS_TYPE_ENUM]
+    getStats(KEYS_CS_STATS){
+        if(KEYS_CS_STATS) {
+            return this.totalStats[KEYS_CS_STATS]
         }
         return this.totalStats
     }
@@ -284,35 +284,35 @@ export default class Entity {
         this.calculateBaseStats()
         this.calculateStatsFromEquips()
         
-        const statsTypes = CHATSOULS_ENUM.TYPES.STATS_TYPES
-        const statsTypesArray = Object.values(statsTypes)
+        const statsKeys = CS_ENUM.KEYS.CS_STATS
+        const statsKeysArray = Object.values(statsKeys)
         
         //Sum base stats + stats from equipments
-        for(let i = 0; i < statsTypesArray.length; i++){
-            this.totalStats[statsTypesArray[i]] += this.baseStats[statsTypesArray[i]] + this.statsFromEquips[statsTypesArray[i]]
+        for(let i = 0; i < statsKeysArray.length; i++){
+            this.totalStats[statsKeysArray[i]] += this.baseStats[statsKeysArray[i]] + this.statsFromEquips[statsKeysArray[i]]
         }
         
         //Checks if Maximum HP was reduced
-        if(this.currentHP > this.totalStats[statsTypes.HP]) {
-            this.currentHP = this.totalStats[statsTypes.HP]
+        if(this.currentHP > this.totalStats[statsKeys.HP]) {
+            this.currentHP = this.totalStats[statsKeys.HP]
         }
     }
 
     initializeStats(){
 
-        const statsTypes = Object.values(CHATSOULS_ENUM.TYPES.STATS_TYPES)
-        for(let i = 0; i < statsTypes.length; i++){
-            this.baseStats[statsTypes[i]]       = 0
-            this.statsFromEquips[statsTypes[i]] = 0
-            this.totalStats[statsTypes[i]]      = 0
+        const statsKeys = Object.values(CS_ENUM.KEYS.CS_STATS)
+        for(let i = 0; i < statsKeys.length; i++){
+            this.baseStats[statsKeys[i]]       = 0
+            this.statsFromEquips[statsKeys[i]] = 0
+            this.totalStats[statsKeys[i]]      = 0
         }
     }
 
     calculateBaseStats(){
 
-        const balanceStatsValues = CHATSOULS_ENUM.BALANCE.STATS_WEIGHT
-        const statsTypes = CHATSOULS_ENUM.TYPES.STATS_TYPES
-        const attributeTypes = CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES
+        const balanceStatsValues = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
+        const statsTypes = CS_ENUM.KEYS.CS_STATS
+        const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
 
         this.baseStats[statsTypes.HP]             += this.attributes[attributeTypes.VITALITY]        * balanceStatsValues.HP
         this.baseStats[statsTypes.EVASION]        += this.attributes[attributeTypes.AGILITY]         * balanceStatsValues.EVASION
@@ -324,7 +324,7 @@ export default class Entity {
 
     calculateStatsFromEquips(){
 
-        const equipmentTypes = CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES
+        const equipmentTypes = CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT
 
         this.bonusFromEquippment(   MeleeWeapon        ,equipmentTypes.MELEE_WEAPON      )
         this.bonusFromEquippment(   LongRangeWeapon    ,equipmentTypes.LONG_RANGE_WEAPON )
@@ -336,33 +336,34 @@ export default class Entity {
 
     /**
      * @param {Equipment} EquipmentClass 
-     * @param {string} EQUIPMENT_TYPE `CHATSOULS_ENUM: EQUIPMENT_TYPE`
+     * @param {string} KEYS_CS_ENTITY_EQUIPMENT `CHATSOULS_ENUM: EQUIPMENT_TYPE`
      */
-    bonusFromEquippment(EquipmentClass, EQUIPMENT_TYPE){
+    bonusFromEquippment(EquipmentClass, KEYS_CS_ENTITY_EQUIPMENT){
 
         if(
             !this.equipment ||                      //Check if this.equipment is define. 
-            !this.equipment[EQUIPMENT_TYPE]    //Right after checks is this.equipment[EQUIPMENT_TYPE_ENUM] is define.
+            !this.equipment[KEYS_CS_ENTITY_EQUIPMENT]    //Right after checks is this.equipment[EQUIPMENT_TYPE_ENUM] is define.
         ) return
         
-        const equipmentInstance = new EquipmentClass(this.equipment[EQUIPMENT_TYPE])
+        /**@type {Equipment} */
+        const equipmentInstance = new EquipmentClass(this.equipment[KEYS_CS_ENTITY_EQUIPMENT])
         const equipMultipliers = equipmentInstance.multipliers
         
-        const statsTypes            = CHATSOULS_ENUM.TYPES.STATS_TYPES
-        const attributeTypes        = CHATSOULS_ENUM.TYPES.ATTRIBUTE_TYPES
-        const balanceStatsValues    = CHATSOULS_ENUM.BALANCE.STATS_WEIGHT
+        const statsKeys            = CS_ENUM.KEYS.CS_STATS
+        const attributeKeys        = CS_ENUM.KEYS.CS_ATTRIBUTES
+        const statsWeightValues    = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
 
-        this.statsFromEquips[statsTypes.HP]           += this.attributes[attributeTypes.VITALITY]        * equipMultipliers[attributeTypes.VITALITY]   * balanceStatsValues.HP
-        this.statsFromEquips[statsTypes.EVASION]      += this.attributes[attributeTypes.AGILITY]         * equipMultipliers[attributeTypes.AGILITY]    * balanceStatsValues.EVASION
+        this.statsFromEquips[statsKeys.HP]           += this.attributes[attributeKeys.VITALITY]        * equipMultipliers[attributeKeys.VITALITY]   * statsWeightValues.HP
+        this.statsFromEquips[statsKeys.EVASION]      += this.attributes[attributeKeys.AGILITY]         * equipMultipliers[attributeKeys.AGILITY]    * statsWeightValues.EVASION
 
         switch (true) {
             case equipmentInstance instanceof Weapon:
-                this.statsFromEquips[statsTypes.FISICAL_DMG] += this.attributes[attributeTypes.STRENGHT]        * equipMultipliers[attributeTypes.STRENGHT]         * balanceStatsValues.FISICAL_DMG
-                this.statsFromEquips[statsTypes.MAGICAL_DMG] += this.attributes[attributeTypes.INTELLLIGENCE]   * equipMultipliers[attributeTypes.INTELLLIGENCE]    * balanceStatsValues.MAGICAL_DMG
+                this.statsFromEquips[statsKeys.FISICAL_DMG] += this.attributes[attributeKeys.STRENGHT]        * equipMultipliers[attributeKeys.STRENGHT]         * statsWeightValues.FISICAL_DMG
+                this.statsFromEquips[statsKeys.MAGICAL_DMG] += this.attributes[attributeKeys.INTELLLIGENCE]   * equipMultipliers[attributeKeys.INTELLLIGENCE]    * statsWeightValues.MAGICAL_DMG
                 break
             case equipmentInstance instanceof Armor:
-                this.statsFromEquips[statsTypes.FISICAL_DEF]  += this.attributes[attributeTypes.STRENGHT]        * equipMultipliers[attributeTypes.STRENGHT]        * balanceStatsValues.FISICAL_DEF
-                this.statsFromEquips[statsTypes.MAGICAL_DMG]  += this.attributes[attributeTypes.INTELLLIGENCE]   * equipMultipliers[attributeTypes.INTELLLIGENCE]   * balanceStatsValues.MAGICAL_DEF
+                this.statsFromEquips[statsKeys.FISICAL_DEF]  += this.attributes[attributeKeys.STRENGHT]        * equipMultipliers[attributeKeys.STRENGHT]        * statsWeightValues.FISICAL_DEF
+                this.statsFromEquips[statsKeys.MAGICAL_DMG]  += this.attributes[attributeKeys.INTELLLIGENCE]   * equipMultipliers[attributeKeys.INTELLLIGENCE]   * statsWeightValues.MAGICAL_DEF
                 break
             default:
                 console.log('ERRO: Entity class, bonusFromEquippment: instanceof Equipment class not recognized')
@@ -375,7 +376,7 @@ export default class Entity {
      * Fully restore the current HP
      */
     recoverHP() {
-        this.currentHP = this.totalStats[CHATSOULS_ENUM.TYPES.STATS_TYPES.HP]
+        this.currentHP = this.totalStats[CS_ENUM.KEYS.CS_STATS.HP]
     }
 
     /**

@@ -1,7 +1,7 @@
 import sendMessage from "../../../../../Twitch/sendMessageHandler";
 import Battle from "../../../Classes/Battle";
 import Player from "../../../Classes/EntityChilds/Player";
-import CHATSOULS_ENUM from "../../../Classes/ENUM";
+import CS_ENUM from "../../../Classes/ENUM";
 
 /**
  * Handle !cs play commands when the player has a primary state of "EXPLORING" and secondary state of "IDLE"
@@ -35,8 +35,8 @@ export default function idle(data) {
 
         // GO BACK TO RESTING MENU ==========================================================       
         case 0:
-            playerInstance.setPrimaryState(CHATSOULS_ENUM.STATES.RESTING.PRIMARY)
-            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING)
+            playerInstance.setPrimaryState(CS_ENUM.STATES.RESTING.PRIMARY)
+            playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING)
             playerInstance.recoverHP()
             sendMessage(
                 `/w ${userName} Montou uma fogueira. HP restaurado. 
@@ -52,7 +52,7 @@ export default function idle(data) {
         case 1:
             Battle.startPvEBattle(playerInstance)
             const battleInstance = Battle.getPvEBattle(userName)
-            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.EXPLORING.SECONDARY.HUNTING)
+            playerInstance.setSecondaryState(CS_ENUM.STATES.EXPLORING.SECONDARY.HUNTING)
             sendMessage(
                 `/w ${userName} ${battleInstance.getBattleStatusStringPvE()} 
                 | 0. Fugir 
@@ -64,14 +64,14 @@ export default function idle(data) {
 
         case 2:
             break
-            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.EXPLORING.SECONDARY.FORAGING)
+            playerInstance.setSecondaryState(CS_ENUM.STATES.EXPLORING.SECONDARY.FORAGING)
             //randomResourceGatteringFunction(playerInstance)
             break
         //
 
         case 3:
             break
-            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.EXPLORING.SECONDARY.TRAVEL)
+            playerInstance.setSecondaryState(CS_ENUM.STATES.EXPLORING.SECONDARY.TRAVEL)
             //travelFunction(playerInstance)
             break
         //

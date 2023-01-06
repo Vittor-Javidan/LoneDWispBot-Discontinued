@@ -1,6 +1,6 @@
 
-const CHATSOULS_ENUM = {
-    BALANCE: {
+const CS_ENUM = {
+    BALANCE_VALUES: {
         STATS_WEIGHT: {
             HP:             10,
             EVASION:        1,
@@ -65,14 +65,14 @@ const CHATSOULS_ENUM = {
     MAP_AREAS: {
         THE_WOODS: "theWoods"
     },
-    TYPES: {
-        ATTRIBUTE_TYPES: {
+    KEYS: {//Keys of many Object<string, value> types definitions
+        CS_ATTRIBUTES: { //Keys of CS_Attributes
             VITALITY: "vitality",
             AGILITY: "agility",
             STRENGHT: "strenght",
             INTELLLIGENCE: "intelligence",
         },
-        STATS_TYPES: {
+        CS_STATS: { //Keys of CS_Stats
             HP: "hp",
             EVASION: "evasion",
             FISICAL_DMG: "fisicalDmg",
@@ -80,7 +80,7 @@ const CHATSOULS_ENUM = {
             MAGICAL_DMG: "magicalDmg",
             MAGICAL_DEF: "magicalDef"
         },
-        EQUIPMENT_TYPES: {
+        CS_ENTITY_EQUIPMENT: { //Keys of CS_Entity_Equipment
             LONG_RANGE_WEAPON: "longRangeWeapon",
             MELEE_WEAPON: "meleeWeapon",
             HELMET: "helmet",
@@ -91,4 +91,4 @@ const CHATSOULS_ENUM = {
     }
 }
 
-export default CHATSOULS_ENUM
+export default CS_ENUM

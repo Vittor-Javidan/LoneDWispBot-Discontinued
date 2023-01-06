@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../../Twitch/sendMessageHandler"
 import Player from "../../../../Classes/EntityChilds/Player"
-import CHATSOULS_ENUM from "../../../../Classes/ENUM"
+import CS_ENUM from "../../../../Classes/ENUM"
 
 /**
  * Handle !cs play commands when the player has a primary state of "RESTING" and secondary state of "EQUIPMENT_LONG_RANGE_INVENTORY"
@@ -18,7 +18,7 @@ export default function equipment_LongRangeInventory(data) {
     // LONG RANGE INVENTORY LIST =======================================================================
     // If "!cs"
 	if (words[0] === '!cs') {
-        const allEquipmentString = playerInstance.getInventoryEquipmentsString(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)
+        const allEquipmentString = playerInstance.getInventoryEquipmentsString(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.LONG_RANGE_WEAPON)
         sendMessage(
             `/w @${userName} Você está olhando seu inventário de armas longo alcance. Qual arma deseja equipar?: 
             | 0. Voltar ${allEquipmentString}
@@ -33,7 +33,7 @@ export default function equipment_LongRangeInventory(data) {
         //GO BACK LONG RANGE EQUIPMENT MENU =============================================================
         case itemCode === 0:
             
-            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
+            playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
             sendMessage(
                 `/w ${userName} Você voltou ao menu de armas longo alcance
                 | 0. Voltar
@@ -46,10 +46,10 @@ export default function equipment_LongRangeInventory(data) {
         //
 
         //CHOSE A WEAPON TO EQUIP AND GO BACK TO LONG RANGE EQUIPMENT MENU =========================
-        case (itemCode <= playerInstance.getInvetoryEquipments(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.LONG_RANGE_WEAPON).length):
+        case (itemCode <= playerInstance.getInvetoryEquipments(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.LONG_RANGE_WEAPON).length):
 
-            playerInstance.setEquippedEquipment(itemCode, CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.LONG_RANGE_WEAPON)
-            playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
+            playerInstance.setEquippedEquipment(itemCode, CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.LONG_RANGE_WEAPON)
+            playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_LONG_RANGE)
             sendMessage(
                 `/w @${userName} ${playerInstance.getEquippedEquipment().longRangeWeapon.name} foi equipado. Vontando ao menu de armas longo alcance. 
                 | 0. Voltar

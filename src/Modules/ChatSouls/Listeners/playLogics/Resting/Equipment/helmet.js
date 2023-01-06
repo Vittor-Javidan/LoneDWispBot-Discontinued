@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../../Twitch/sendMessageHandler"
 import Player from "../../../../Classes/EntityChilds/Player"
-import CHATSOULS_ENUM from "../../../../Classes/ENUM"
+import CS_ENUM from "../../../../Classes/ENUM"
 import Helmet from "../../../../Classes/EquipmentChilds/Helmet"
 
 /**
@@ -36,7 +36,7 @@ export default function equipment_Helmet(data) {
 
 		//GO BACK TO EQUIPMENT MENU ================================================================
 		case 0:
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT)
 			sendMessage (
 				`/w ${userName} Você voltou a olhar seus equipamentos. 
 				| 0. Voltar
@@ -55,15 +55,15 @@ export default function equipment_Helmet(data) {
 		// EQUIP ANOTHER HELMET ====================================================================
 		case 1:
 
-			const inventory_Helmets = playerInstance.getInvetoryEquipments(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.HELMET)
+			const inventory_Helmets = playerInstance.getInvetoryEquipments(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.HELMET)
 			if (!inventory_Helmets) {
 				sendMessage(`/w @${userName} Seu inventário está vazio.`)
 				return
 			}
 
-			playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_HELMET_INVENTORY)
+			playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.EQUIPMENT_HELMET_INVENTORY)
 			sendMessage(
-				`/w @${userName} Qual capacete deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.HELMET)}`
+				`/w @${userName} Qual capacete deseja equipar?: | 0. Voltar ${playerInstance.getInventoryEquipmentsString(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.HELMET)}`
 			)
 			break
 		//
@@ -85,7 +85,7 @@ export default function equipment_Helmet(data) {
 				sendMessage(`/w @${userName} você não possui nenhum capacete equipado`)
 				return
 			}
-			playerInstance.unequipEquipment(CHATSOULS_ENUM.TYPES.EQUIPMENT_TYPES.HELMET)
+			playerInstance.unequipEquipment(CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.HELMET)
 			sendMessage(`/w @${userName} Capacete desequipado`)
 			break
 		//

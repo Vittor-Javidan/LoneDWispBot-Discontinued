@@ -1,7 +1,7 @@
 import sendMessage from "../../../../../Twitch/sendMessageHandler"
 import Battle from "../../../Classes/Battle"
 import Player from "../../../Classes/EntityChilds/Player"
-import CHATSOULS_ENUM from "../../../Classes/ENUM"
+import CS_ENUM from "../../../Classes/ENUM"
 
 /**
  * Handle !cs play commands when the player has a primary state of "EXPLORING" and secondary state of "HUNTING"
@@ -42,7 +42,7 @@ export default function hunting(data) {
 
 			const succed = battleInstancePvE.fleePvE()
 			if(succed) {
-				playerInstance.setSecondaryState(CHATSOULS_ENUM.STATES.EXPLORING.SECONDARY.IDLE)
+				playerInstance.setSecondaryState(CS_ENUM.STATES.EXPLORING.SECONDARY.IDLE)
 				return
 			}
 			break
