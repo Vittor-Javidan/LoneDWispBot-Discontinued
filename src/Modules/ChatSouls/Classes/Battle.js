@@ -258,15 +258,23 @@ export default class Battle {
      */
     fleePvE() {
 
-        const succes = this.evasionEvent(this.playerInstance, this.entityInstance, 0.5)
-        if(!succes) {
-            sendMessage(`/w ${this.playerInstance.getName()} sua fuga falhou!`)
-            this.calculateDmg(this.entityInstance, this.playerInstance)
-            return succes
+        const succeed = this.evasionEvent(this.playerInstance, this.entityInstance, 1)
+        if(succeed) {
+            sendMessage(`/w ${this.playerInstance.getName()} Fuga bem sucedida!`)
+            Battle.deletePvEBattle(this.playerInstance.getName())
+            return succeed
         }
-        sendMessage(`/w ${this.playerInstance.getName()} Fuga bem sucedida!`)
-        Battle.deletePvEBattle(this.playerInstance.getName())
-        return succes
+        
+        sendMessage(`/w ${this.playerInstance.getName()} sua fuga falhou!`)
+        this.calculateDmg(this.entityInstance, this.playerInstance)
+        
+        //If whos tried to flee dies
+        const isPlayerAlive = this.playerInstance.getIsAlive()
+        if(!isPlayerAlive) {
+            this.sendDeadPlayerBackHome()
+            Battle.deletePvEBattle(this.playerInstance.getName())      
+        }
+        return succeed
     }
 
     /**
