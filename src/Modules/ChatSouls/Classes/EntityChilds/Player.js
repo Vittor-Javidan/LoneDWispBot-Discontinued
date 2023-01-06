@@ -235,7 +235,8 @@ export default class Player extends Entity {
         this.souls -= upgradeCost
         this.attributes[ATTRIBUTE_ENUM] += 1
         this.level += 1
-
+        this.calculateStats()
+        this.recoverHP()
         this.save()
     }
 
