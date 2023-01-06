@@ -175,7 +175,7 @@ export default class Player extends Entity {
         }
 
         //Load saved player data from database
-        this.checkMissingInfo()
+        this.updateMissingInfo()
         const playerData = Player.database[`${userName}`]
 
         //Replace default values for saved values
@@ -192,7 +192,7 @@ export default class Player extends Entity {
      * Checks for missing information on player database.
      * If there is missing information due game updates, the function automatically provide a default value for it.
      */
-    checkMissingInfo(){
+    updateMissingInfo(){
 
         const playerData = Player.database[`${this.name}`]
 
@@ -201,7 +201,8 @@ export default class Player extends Entity {
         if(!playerData.attributes)  Player.database[`${this.name}`].attributes = this.attributes
         if(!playerData.equipment)   Player.database[`${this.name}`].equipment = this.equipment
         if(!playerData.inventory)   Player.database[`${this.name}`].inventory = this.inventory
-        if(!playerData.inventory.equipments) Player.database[`${this.name}`].inventory.equipments = this.inventory.equipments
+        if(!playerData.inventory.equipments)    Player.database[`${this.name}`].inventory.equipments = this.inventory.equipments
+        if(!playerData.inventory.resources)     Player.database[`${this.name}`].inventory.resources = this.inventory.resources
     }
 
     /**

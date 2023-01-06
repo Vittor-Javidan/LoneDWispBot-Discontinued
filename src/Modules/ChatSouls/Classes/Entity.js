@@ -54,7 +54,8 @@ export default class Entity {
      * @type {CS_Entity_Inventory}
      */
     inventory = {
-        equipments: {}
+        equipments: {},
+        resources: {}
     }
 
     /**
