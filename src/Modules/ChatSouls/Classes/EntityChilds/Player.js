@@ -1,53 +1,52 @@
 import sendMessage from "../../../../Twitch/sendMessageHandler"
-import DbSystem from "../../database/DbSystem"
+import deepCopy from "../../../../Utils/deepCopy"
+import DbSystem, { playerDataBasePath } from "../../database/DbSystem"
 import Entity from "../Entity"
 import CS_ENUM from "../ENUM"
+import EQUIPMENT_TYPES from "../EquipmentChilds/EQUIPMENT_TYPES"
+import PLAYER_STATES from "./PLAYER_STATES"
 
 /**
  * @typedef {import ('../../TypeDefinitions/Types').CS_Database} CS_Database
  * @typedef {import ('../../TypeDefinitions/Types').CS_EntityData} CS_EntityData
  * @typedef {import ('../../TypeDefinitions/Types').CS_Attributes} CS_Attributes
  * @typedef {import ('../../TypeDefinitions/Types').CS_Entity_Equipment} CS_Entity_Equipment
- * @typedef {import ('../../TypeDefinitions/Types').CS_EquipmentData} CS_EquipmentData
- * @typedef {import ('../../TypeDefinitions/Types').CS_Entity_Inventory} CS_Entity_Inventory
- * @typedef {import ('../../TypeDefinitions/Types').CS_Inventory_Equipments} CS_Inventory_Equipments
- * @typedef {import ('../../TypeDefinitions/Types').playerState} playerState
+ * @typedef {import ('../../TypeDefinitions/Types').CS_PlayerState} CS_playerState
+ * @typedef {import ('../../TypeDefinitions/Types').CS_PlayerPayload} CS_PlayerPayload
 */
+
+const equipmentKeys = Object.values(EQUIPMENT_TYPES)
 
 export default class Player extends Entity {
 
     /**
-     * - keys: `player name string`
      * @type {CS_Database}
-     * @private
      */
-    static database = DbSystem.loadDb()
+    static #database = DbSystem.loadDb(playerDataBasePath)
 
     /**
      * @type {Player[]}
-     * @private
      */
-    static onlinePlayers = []
+    static #onlinePlayers = []
 
     /**
-     * @type {playerState}
-     * @private
+     * @type {CS_playerState}
      */
-    currentState = {
-        primary: CS_ENUM.STATES.RESTING.PRIMARY,
-        secondary: CS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING
+    #currentState = {
+        primary: PLAYER_STATES.FIRE_PIT.PRIMARY,
+        secondary: PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT
     }
 
     /**
      * @type {string} - type: `MAP_AREAS ENUM`
      */
-    currentLocation = CS_ENUM.MAP_AREAS.THE_WOODS
+    #currentLocation = CS_ENUM.MAP_AREAS.THE_WOODS
 
     /**
      * used to define if player can play in some situations
      * @type {boolean}
      */
-    canPlay = true
+    #canPlay = true
 
     /**
      * Create a instance of Player
@@ -55,28 +54,153 @@ export default class Player extends Entity {
      * @constructor
      */
     constructor(userName){
+        super(true, userName)
         
-        super(userName)
-        
-        const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
         const playerAttributes = CS_ENUM.BALANCE_VALUES.PLAYER_START.ATTRIBUTES
         this.attributes = {
-            [attributeTypes.VITALITY]:      playerAttributes.VITALITY,
-            [attributeTypes.AGILITY]:       playerAttributes.AGILITY,
-            [attributeTypes.STRENGHT]:      playerAttributes.STRENGHT,
-            [attributeTypes.INTELLLIGENCE]: playerAttributes.INTELLLIGENCE
+            vitality:       playerAttributes.VITALITY,
+            agility:        playerAttributes.AGILITY,
+            strenght:       playerAttributes.STRENGHT,
+            intelligence:   playerAttributes.INTELLLIGENCE
         }
 
-        const equipTypes = CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT
         const playerEquips = CS_ENUM.BALANCE_VALUES.PLAYER_START.EQUIPMENTS
-        this.equipment = {
-            [equipTypes.LONG_RANGE_WEAPON]: playerEquips.LONG_RANGE_WEAPON,
-            [equipTypes.MELEE_WEAPON]:      playerEquips.MELEE_WEAPON,
-            [equipTypes.HELMET]:            playerEquips.HELMET,
-            [equipTypes.BODY_ARMOR]:        playerEquips.BODY_ARMOR,
-            [equipTypes.GLOVES]:            playerEquips.GLOVES,
-            [equipTypes.BOOTS]:             playerEquips.BOOTS
+        this.currentEquipment = {
+            longRangeWeapon:    playerEquips.LONG_RANGE_WEAPON,
+            meleeWeapon:        playerEquips.MELEE_WEAPON,
+            helmet:             playerEquips.HELMET,
+            bodyArmor:          playerEquips.BODY_ARMOR,
+            gloves:             playerEquips.GLOVES,
+            boots:              playerEquips.BOOTS
         }
+    }
+
+    //=================================================================================================
+    // GETTERS AND SETTERS ============================================================================
+    //=================================================================================================
+
+    /**
+     * - keys: `player name string`
+     * @return {CS_Database} Getter
+     */
+    static get database() {
+        return this.#database
+    }
+
+    /**
+     * @param {CS_Database} data
+     */
+    static set database(data) {
+
+        if(!data.Authorization || !data.Authorization.key) {
+            throw Error(`ERROR: Player class, "database" setter. You probably sending wrong data to replace the actual data base.`)
+        }
+        this.#database = data
+    }
+
+    /**
+     * Setter only. Sets the player info inside class pre loaded database. 
+     * To really save the player data, use the instance method save() after set 
+     * the player data using this.
+     * @param {CS_EntityData} playerData
+     */
+    static set sendToDataBase(playerData) {
+
+        if(!playerData.name) throw Error(`ERROR: Player class, "sendToDataBase" setter: playerData must have at least a name.`)
+        
+        this.#database[playerData.name] = deepCopy(playerData)
+    }
+
+    /**
+     * @returns {Player[]} Getter
+     */ 
+    static get onlinePlayers() {
+        return this.#onlinePlayers
+    }
+
+    /**
+     * @param {Player[]} playerArray Setter
+     */
+    static set onlinePlayers(playerArray) {
+
+        for(let i = 0; i < playerArray.length; i++) {
+            if(!(playerArray[i] instanceof Player)) throw Error(`ERROR, Player class, "onlinePlayer" setter: only array of players are allowed`)
+        }
+
+        this.#onlinePlayers = playerArray
+    }
+
+    /**
+     * @returns {CS_playerState} Getter
+     */
+    get currentState() {
+        return this.#currentState
+    }
+
+    /**
+     * @param {CS_playerState} stateObject Setter
+     */
+    set currentState(stateObject) {
+        this.#currentState = deepCopy(stateObject)
+    }
+
+    /**
+     * @returns {string} Getter
+     */
+    get primaryState() {
+        return this.#currentState.primary
+    }
+
+    /**
+     * @param {string} state Setter
+     */
+    set primaryState(state) {
+        this.#currentState.primary = state
+    }
+
+    /**
+     * @returns {string} Getter
+     */
+    get secondaryState() {
+        return this.#currentState.secondary
+    }
+
+    /**
+     * @param {string} state Setter
+     */
+    set secondaryState(state) {
+        this.#currentState.secondary = state
+    }
+
+    /**
+     * @returns {string} Getter
+     */
+    get currentLocation() {
+        return this.#currentLocation
+    }
+
+    /**
+     * @param {string} mapName Setter
+     */
+    set currentLocation(mapName) {
+        this.#currentLocation = mapName
+    }
+
+    /**
+     * @returns {boolean} Getter
+     */
+    get canPlay() {
+        return this.#canPlay
+    }
+
+    /**
+     * @param {boolean} boolean Setter
+     */
+    set canPlay(boolean) {
+
+        if(typeof boolean !== 'boolean') throw Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`)
+
+        this.#canPlay = boolean
     }
 
     //=================================================================================================
@@ -84,32 +208,118 @@ export default class Player extends Entity {
     //=================================================================================================
 
     /**
-     * @param {string} userName 
-     * @returns {boolean} `True` if instance created, `False` otherwise
+     * Force save database current info.
+     * Use with caution.
      */
-    static init(userName){
-
-        const playerInstance = new Player(userName)
-        playerInstance.load(userName)
-        playerInstance.calculateStats()
-        playerInstance.recoverHP()
-        this.loginPlayer(playerInstance)
-        return true
+    static forceSaveDataBase(){
+        DbSystem.writeDb(this.database, playerDataBasePath)
     }
 
     /**
-     * @param {Player}
+     * @param {string} userName 
+     * @returns {CS_PlayerPayload}
      */
-    static loginPlayer(playerInstance){
+    static startGame(userName){
+
+        const playerInstance = new Player(userName)
+
+        /**@type {CS_PlayerPayload} */
+        const response = {}
+
+        response.registered = this.register(playerInstance)
+        this.updateDataBaseMissingInfo(playerInstance)
+        this.loginPlayerInstance(playerInstance)
+
+        playerInstance.load()
+        playerInstance.calculateStats()
+        playerInstance.recoverHP()
+        return response
+    }
+
+    /**
+     * Register new players on database. Sends `True` if player was registered, `False` otherwise
+     * @param {Player} playerInstance 
+     * @returns {boolean}
+     */
+    static register(playerInstance){
+
+        if(!Player.database[`${playerInstance.name}`]){
+            
+            Player.sendToDataBase = {
+                name: playerInstance.name
+            }
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Checks for missing information on player database.
+     * If there is missing information due game updates, the function automatically provide a default value for it.
+     * @param {Player} playerInstance
+     */
+    static updateDataBaseMissingInfo(playerInstance){
+
+        const playerName = playerInstance.name
+        const playerData = this.database[`${playerName}`]
+
+        if(!playerData.souls)                   playerData.souls = playerInstance.souls
+        if(!playerData.level)                   playerData.level = playerInstance.level
+        if(!playerData.attributes)              playerData.attributes = deepCopy(playerInstance.attributes)
+        if(!playerData.equipment)               playerData.equipment = deepCopy(playerInstance.currentEquipment)
+        if(!playerData.inventory)               playerData.inventory = deepCopy(playerInstance.inventory)
+        if(!playerData.inventory.equipments)    playerData.inventory.equipments = deepCopy(playerInstance.inventoryEquipments)
+        if(!playerData.inventory.resources)     playerData.inventory.resources = deepCopy(playerInstance.inventoryResources)
+
+        
+        for(let i = 0; i < equipmentKeys.length; i++){
+            if(!playerData.inventory.equipments[equipmentKeys[i]]) {
+                playerData.inventory.equipments[equipmentKeys[i]] = deepCopy(playerInstance.inventoryEquipments[equipmentKeys[i]])
+            }
+        }
+        
+        this.sendToDataBase = playerData
+    }
+
+    /**
+     * Return `True` if player has started the game, `False` otherwise
+     * @param {string} userName
+     * @returns {boolean}
+     */
+    static isLogged(userName){
+        for(let i = 0; i < this.onlinePlayers.length; i++){
+            if(userName === this.onlinePlayers[i].name){
+                return true
+            }
+        }
+        return false
+    }
+
+    /**
+     * @param {Player} playerInstance
+     */
+    static loginPlayerInstance(playerInstance){
+
+        for (let i = 0; i < this.onlinePlayers.length; i++){
+            if (this.onlinePlayers[i].name === playerInstance.name){
+                throw Error('ERROR: Player is already logged. Use this method only when a player is not logged in the game')
+            }
+        }
         this.onlinePlayers.push(playerInstance)
     }
 
     /**
-     * Load local database
-     * @returns {void}
+     * logout player instance
+     * @param {Player} playerInstance 
      */
-    static loadDB(){
-        this.database = DbSystem.loadDb()
+    static logoutPlayerInstance(playerInstance) {
+        for (let i = 0; i < this.onlinePlayers.length; i++) {
+            if (playerInstance.name === this.onlinePlayers[i].name) {
+                this.onlinePlayers.splice(i, 1)
+                return
+            }
+        }
+        throw Error(`ERROR: Player class, "logoutPlayerInstance" method: player instance is not logged`)
     }
 
     /**
@@ -117,29 +327,38 @@ export default class Player extends Entity {
      * @param {string} userName 
      * @returns {Player | undefined} If undefined, that means no player was found
     */
-    static getPlayerInstance(userName) {
-
-        let playerInstance
+    static getPlayerInstanceByName(userName) {
         for(let i = 0; i < this.onlinePlayers.length; i++){
             if(userName === this.onlinePlayers[i].name){
-
-                playerInstance = this.onlinePlayers[i]
+                return this.onlinePlayers[i]
             }
         }
-        return playerInstance
-    }
-
-    static deletePlayerInstance(userName) {
-        for (let i = 0; i < this.onlinePlayers.length; i++) {
-            if (userName === this.onlinePlayers[i].getName()) {
-                this.onlinePlayers.splice(i, 1)
-            }
-        }
+        throw Error(`ERROR: Player class, "getPlayerInstanceByName" method: cannot get a instance that is not inside onlinePlayers array`)
     }
 
     //=================================================================================================
     // INSTANCE METHODS ===============================================================================
     //=================================================================================================
+
+    /**
+     * Load player information from database
+     * @returns {string}
+     */
+    load(){
+
+        //Load saved player data from database
+        
+        const playerData = Player.database[`${this.name}`]
+
+        //Replace default values for saved values
+        this.souls      =   playerData.souls
+        this.level      =   playerData.level
+        this.attributes =   playerData.attributes
+        this.currentEquipment  =   playerData.equipment
+        this.inventory  =   playerData.inventory
+        
+        sendMessage(`/w ${this.name} Seu progresso foi restaurado com sucesso`)
+    }
 
     /**
      * Save player info on database
@@ -152,81 +371,12 @@ export default class Player extends Entity {
             souls: this.souls,
             level: this.level,
             attributes: this.attributes,
-            equipment: this.equipment,
+            equipment: this.currentEquipment,
             inventory: this.inventory
         }
         
-        Player.database[`${this.name}`] = playerData
-        DbSystem.writeDb(Player.database)
-    }
-
-    /**
-     * Load player information from database
-     * @param {string} userName 
-     * @returns {string}
-     */
-    load(userName){
-
-        //Check for register
-        if(!Player.database[`${userName}`]){
-            this.save()
-            sendMessage(`O jogador ${userName} acabou de se cadastrar em ChatSouls Muahaha *-*`)
-            return
-        }
-
-        //Load saved player data from database
-        this.updateMissingInfo()
-        const playerData = Player.database[`${userName}`]
-
-        //Replace default values for saved values
-        this.souls      =   playerData.souls
-        this.level      =   playerData.level
-        this.attributes =   playerData.attributes
-        this.equipment  =   playerData.equipment
-        this.inventory  =   playerData.inventory
-        
-        sendMessage(`/w ${userName} Seu progresso foi restaurado com sucesso`)
-    }
-
-    /**
-     * Checks for missing information on player database.
-     * If there is missing information due game updates, the function automatically provide a default value for it.
-     */
-    updateMissingInfo(){
-
-        const playerData = Player.database[`${this.name}`]
-
-        if(!playerData.souls)       Player.database[`${this.name}`].souls = this.souls
-        if(!playerData.level)       Player.database[`${this.name}`].level = this.level
-        if(!playerData.attributes)  Player.database[`${this.name}`].attributes = this.attributes
-        if(!playerData.equipment)   Player.database[`${this.name}`].equipment = this.equipment
-        if(!playerData.inventory)   Player.database[`${this.name}`].inventory = this.inventory
-        if(!playerData.inventory.equipments)    Player.database[`${this.name}`].inventory.equipments = this.inventory.equipments
-        if(!playerData.inventory.resources)     Player.database[`${this.name}`].inventory.resources = this.inventory.resources
-    }
-
-    /**
-     * Get player current state
-     * @returns {playerState}
-     */
-    getCurrentState(){
-        return this.currentState
-    }
-
-    /**
-     * Set player primary state
-     * @param {string} STATE 
-     */
-    setPrimaryState(STATE) {
-        this.currentState.primary = STATE
-    }
-
-    /**
-     * Set player secondary state
-     * @param {string} STATE 
-     */
-    setSecondaryState(STATE) {
-        this.currentState.secondary = STATE
+        Player.sendToDataBase = playerData
+        DbSystem.writeDb(Player.database, playerDataBasePath)
     }
 
     /**
@@ -238,55 +388,31 @@ export default class Player extends Entity {
     }
 
     /**
-     * Handles attribute upgrade logics
+     * Handles attribute upgrade logics when add 1 attribute point for a player
      * @param {string} KEYS_CS_ATTRIBUTES 
      * @returns 
      */
-    upgradeAttribute(KEYS_CS_ATTRIBUTES){
+    upgradeAttributeProcessHandler(KEYS_CS_ATTRIBUTES){
 
         const upgradeCost = this.getUpgradeCost()
 
-        this.souls -= upgradeCost
-        this.attributes[KEYS_CS_ATTRIBUTES] += 1
-        this.level += 1
+        this.decreaseSouls(upgradeCost)
+        this.addAttributes(KEYS_CS_ATTRIBUTES)
+        this.addLevel()
         this.calculateStats()
         this.recoverHP()
         this.save()
     }
 
     /**
-     * Unequip player equipment by type
-     * @param {string} KEYS_CS_ENTITY_EQUIPMENT - Type of selected equipment
-     * @returns {void}
+     * Delay player action for given amount of milisseconds.
+     * Use it when you want to want player to stop playing in some situations,
+     * like when you need to send many messages to a player, and you have
+     * to send then slower, so twitch don't think you are spamming
+     * using their API.
+     *  
+     * @param {number} milisseconds 
      */
-    unequipEquipment(KEYS_CS_ENTITY_EQUIPMENT){
-
-        super.unequipEquipment(KEYS_CS_ENTITY_EQUIPMENT)
-        this.calculateStats()
-        this.save()
-    }
-
-    /**
-     * Equip a type of equipment from player inventory
-     * @param {string} KEYS_CS_ENTITY_EQUIPMENT
-     * @param {number} itemCode
-     * @returns {void}
-     */
-    setEquippedEquipment(itemCode, KEYS_CS_ENTITY_EQUIPMENT) {
-
-        super.setEquippedEquipment(itemCode, KEYS_CS_ENTITY_EQUIPMENT)
-        this.calculateStats()
-        this.save()
-    }
-
-    /**
-     * Returns the player current location. The return string type is a `MAP_AREAS ENUM`
-     * @returns {string}
-     */
-    getCurrentLocation() {
-        return this.currentLocation
-    }
-
     delayPlayerAction(milisseconds){
         
         this.canPlay = false
@@ -298,9 +424,5 @@ export default class Player extends Entity {
         function clearDelayTimer(){
             clearInterval(delay)
         }
-    }
-
-    getCanPLay() {
-        return this.canPlay
     }
 }

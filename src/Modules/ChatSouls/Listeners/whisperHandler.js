@@ -1,9 +1,9 @@
 import Player from "../Classes/EntityChilds/Player"
 
+import gameUIHandler from "../UserInteface/UI_PrimaryState_Handler"
 import checkSouls from "./whisperListeners/checkSouls"
 import exitGame from "./whisperListeners/exitGame"
 import help from "./whisperListeners/help"
-import play from "./whisperListeners/play"
 
 /**
  * Handles viewers whispers related to ChatSouls module
@@ -19,10 +19,10 @@ export default function chatSoulsWhisperListeners(data){
     const message = data.message.toLowerCase()
 
     //There is no reason to keep reading this block of code if user is not logged.
-    const playerInstance = Player.getPlayerInstance(userName)
-    if(!playerInstance) return
-
+    if(!Player.isLogged(userName)) return
+    
     //Formating a new data input, wich makes more sense with the game
+    const playerInstance = Player.getPlayerInstanceByName(userName)
     const newData = {
         playerInstance: playerInstance,
         message: message
@@ -36,6 +36,6 @@ export default function chatSoulsWhisperListeners(data){
         case (
             message.startsWith('!cs') || 
             !isNaN(Number(message))
-        ):                                          play(newData)                       ;break
+        ):                                          gameUIHandler(newData)              ;break
     }
 }

@@ -25,7 +25,12 @@ export default class Equipment {
      * @param {CS_Equipment_WeaponData | CS_Equipment_ArmorData} Object 
      * @constructor
     */
-    constructor(Object){
+    constructor(isChild, Object){
+
+        if (typeof isChild !== 'boolean' || !isChild) {
+            throw Error('Cannot instantiate "Equipment" class directly')
+        }
+
         this.name = Object.name
     }
 }

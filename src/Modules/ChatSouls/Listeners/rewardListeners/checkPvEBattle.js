@@ -1,3 +1,4 @@
+import sendMessage from "../../../../Twitch/sendMessageHandler"
 import Battle from "../../Classes/Battle"
 
 /**
@@ -7,5 +8,6 @@ import Battle from "../../Classes/Battle"
  * @param {string} data.message - The message that was sent
  */
 export default function checkPvEBattle(data) {
-    Battle.sendMessageWithAllPvEBattles()
+    const message = Battle.returnStringWithAllBattles()
+    sendMessage(message)
 }

@@ -12,7 +12,7 @@ export default function restoreEnemieHpPvE(data){
     const words = data.message.split(' ')
     let targetPlayer = words[0]
 
-    const battleInstance = Battle.getPvEBattle(targetPlayer)
+    const battleInstance = Battle.getBattle(targetPlayer)
     if(!battleInstance){
         //If there is no battle
         sendMessage(
@@ -22,16 +22,16 @@ export default function restoreEnemieHpPvE(data){
         return
     }
 
-    const playerInstance = battleInstance.getPlayerInstancePvE()
-    if(playerInstance.getName() === data.userName){
+    const playerInstance = battleInstance.playerInstance
+    if(playerInstance.name === data.userName){
         const playerSouls = playerInstance.getSouls()
-        playerInstance.setSouls(Math.floor(playerSouls/2))
+        playerInstance.souls = Math.floor(playerSouls/2)
         playerInstance.save()
         sendMessage(`@${data.userName} tentou recuperar a vida de seu próprio inimigo! Tamanha audacidade o fez perder metade de suas almas *-*`)
         return
     }
 
-    const enemieInstance = battleInstance.getEnemieInstancePvE()
+    const enemieInstance = battleInstance.enemieInstance
     enemieInstance.recoverHP()
     enemieInstance.addSouls(enemieInstance.getSouls())
     sendMessage(`/w ${targetPlayer} ${data.userName} acabou de restaurar a vida de seu inimigo!!!`)

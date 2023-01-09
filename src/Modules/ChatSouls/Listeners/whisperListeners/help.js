@@ -7,6 +7,6 @@ import Player from "../../Classes/EntityChilds/Player"
  * @param {Player} playerInstance 
  */
 export default function help(playerInstance){
-    const playerName = playerInstance.getName()
+    const playerName = playerInstance.name
     sendMessage(`/w ${playerName} digite "!cs <commando>". Os commandos disponíveis são: help, souls`)
 }

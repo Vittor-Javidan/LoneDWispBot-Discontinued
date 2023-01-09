@@ -1,7 +1,9 @@
+import deepCopy from '../../../Utils/deepCopy';
 import CS_ENUM from '../Classes/ENUM';
 
 /**
  * @typedef {import('../TypeDefinitions/Types').CS_Database} CS_Database - Keys: `enemie name string`
+ * @typedef {import('../TypeDefinitions/Types').CS_EntityData} CS_EntityData
 */
 
 /**
@@ -9,36 +11,95 @@ import CS_ENUM from '../Classes/ENUM';
  * @type {Object<string, CS_Database>}
  */
 const enemiesDataBase = {
-    [CS_ENUM.MAP_AREAS.THE_WOODS]: {
+    testArea: {
+        "Dummy Enemie": {
+            level: 1,
+            name: "Dummy Enemie",
+            souls: 1000,
+            attributes: {
+                vitality: 1,
+                agility: 1,
+                strenght: 1,
+                intelligence: 1
+            },
+            equipment: {
+                longRangeWeapon: {name: "Dummy Equipment"},
+                meleeWeapon: {name: "Dummy Equipment"},
+                helmet: {name: "Dummy Equipment"},
+                bodyArmor: {name: "Dummy Equipment"},
+                gloves: {name: "Dummy Equipment"},
+                boots: {name: "Dummy Equipment"}
+            },
+            inventory: {
+                equipments: {
+                    longRangeWeapon: [{name: "Dummy Equipment"}, {name: "Dummy Equipment"}],
+                    meleeWeapon: [{name: "Dummy Equipment"}, {name: "Dummy Equipment"}],
+                    helmet: [{name: "Dummy Equipment"}, {name: "Dummy Equipment"}],
+                    bodyArmor: [{name: "Dummy Equipment"}, {name: "Dummy Equipment"}],
+                    gloves: [{name: "Dummy Equipment"}, {name: "Dummy Equipment"}],
+                    boots: [{name: "Dummy Equipment"}, {name: "Dummy Equipment"}]
+                },
+                resources: {
+                    "Dummy Resource": {
+                        name: "Dummy Resource",
+                        amount: 1,
+                        type: "Test",
+                        dropChance: 1,
+                        description: "This is just a item for tests",
+                    }
+                }
+            }
+        },
+    },
+    theWoods: {
         "Javali": {
             level: 1,
             name: "Javali",
             souls: 100,
             attributes: {
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.VITALITY]: 15,
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.AGILITY]: 10,
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.STRENGHT]: 10,
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.INTELLLIGENCE]: 5
+                vitality: 15,
+                agility: 10,
+                strenght: 10,
+                intelligence: 5
+            },
+            equipment: {
+                longRangeWeapon: {},
+                meleeWeapon: {},
+                helmet: {},
+                bodyArmor: {},
+                gloves: {},
+                boots: {}
             },
             inventory: {
+                equipments: {
+                    longRangeWeapon: [],
+                    meleeWeapon: [],
+                    helmet: [],
+                    bodyArmor: [],
+                    gloves: [],
+                    boots: []
+                },
                 resources: {
                     "Couro de Javali": {
                         name: "Couro de Javali",
                         amount: 1,
                         type: "couro",
-                        description: "Couro de um javali. Forte e resistente, porém nada nobre."
+                        dropChance: 0.5,
+                        description: "Couro de um javali. Forte e resistente, porém nada nobre.",
                     },
                     "Carne de Javali": {
                         name: "Carne de Javali",
                         amount: 1,
                         type: "comida",
-                        description: "Carne de um javali. Cheio de proteínas e delicioso se preparado do jeito correto."
+                        dropChance: 0.5,
+                        description: "Carne de um javali. Cheio de proteínas e delicioso se preparado do jeito correto.",
                     },
                     "Dente de Javali": {
                         name: "Dente de Javali",
                         amount: 2,
                         type: "recurso",
-                        description: "Dentes de javali. Bastante usado para confecção de acessórios."
+                        dropChance: 0.1,
+                        description: "Dentes de javali. Bastante usado para confecção de acessórios.",
                     }
                 }
             }
@@ -48,31 +109,41 @@ const enemiesDataBase = {
             name: "Bandido",
             souls: 500,
             attributes: {
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.VITALITY]: 10,
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.AGILITY]: 15,
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.STRENGHT]: 10,
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.INTELLLIGENCE]: 10
+                vitality: 10,
+                agility: 15,
+                strenght: 10,
+                intelligence: 10
             },
             equipment: {
-                [CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.MELEE_WEAPON]: { 
-                    name: "Adaga"
-                },
-                [CS_ENUM.KEYS.CS_ENTITY_EQUIPMENT.BODY_ARMOR]: {
-                    name: "Roupa de caçador"
-                }
+                longRangeWeapon: {},
+                meleeWeapon: { name: "Adaga" },
+                helmet: {},
+                bodyArmor: { name: "Roupa de caçador" },
+                gloves: {},
+                boots: {}
             },
             inventory: {
+                equipments: {
+                    longRangeWeapon: [],
+                    meleeWeapon: [],
+                    helmet: [],
+                    bodyArmor: [],
+                    gloves: [],
+                    boots: []
+                },
                 resources: {
                     "Dados viciados": {
                         name: "Dados viciados",
                         amount: 1,
                         type: "recurso",
+                        dropChance: 0.5,
                         description: "Usados para apostar e roubar dinheiro de tolos. Alguns caçadores de recompensas costumam colecioná-los para se que se lembrem de todos os bandidos já levados a justiça."
                     },
                     "Bolsa de Água": {
                         name: "Bolsa de Água",
                         type: "comida",
                         amount: 1,
+                        dropChance: 0.5,
                         description: "Água potável."
                     }
                 }
@@ -88,23 +159,42 @@ const enemiesDataBase = {
                 [CS_ENUM.KEYS.CS_ATTRIBUTES.STRENGHT]: 14,
                 [CS_ENUM.KEYS.CS_ATTRIBUTES.INTELLLIGENCE]: 10
             },
+            equipment: {
+                longRangeWeapon: {},
+                meleeWeapon: {},
+                helmet: {},
+                bodyArmor: {},
+                gloves: {},
+                boots: {}
+            },
             inventory: {
+                equipments: {
+                    longRangeWeapon: [],
+                    meleeWeapon: [],
+                    helmet: [],
+                    bodyArmor: [],
+                    gloves: [],
+                    boots: []
+                },
                 resources: {
                     "Couro de Lobo": {
                         name: "Couro de Lobo",
                         amount: 1,
                         type: "couro",
+                        dropChance: 0.5,
                         description: "Couro de um lobo. Essencial para confecção de agasalhos no inverno."
                     },
                     "Carne de Lobo": {
                         name: "Carne de Lobo",
                         amount: 1,
                         type: "comida",
+                        dropChance: 0.3,
                         description: "Carne de Lobo. Dura igual pedra! Mas no desespero da fome, tudo vale."
                     },
                     "Dente de Lobo": {
                         name: "Dente de Lobo",
                         amount: 2,
+                        dropChance: 0.2,
                         type: "recurso",
                         description: "Dentes de javali. Tão afiado que algumas tribos os utilizam com o propósito de se fazer incisões na pele."
                     }
@@ -114,3 +204,39 @@ const enemiesDataBase = {
     }
 }
 export default enemiesDataBase
+
+export const enemieEntries = {
+    testArea: {
+        DUMMY_ENEMIE: "Dummy Enemie"
+    },
+    theWoods: {
+        JAVALI: "Javali",
+        BANDIDO: "Bandido",
+        LOBO: "Lobo"
+    }
+}
+
+const mapNameKeys = Object.keys(enemiesDataBase)
+
+/**
+ * @param {string} enemieName 
+ * @param {string} mapArea
+ * @returns {CS_EntityData}
+ */
+export function getEnemie(enemieName, mapArea) {
+
+    if(!mapNameKeys.includes(mapArea)) {
+        throw Error(`ERROR: getEnemie function: Map Area doesn't exist`)
+    }
+
+    const emiesAreaMapDataBase = enemiesDataBase[mapArea]
+
+    const enemiesNameKeys = Object.keys(emiesAreaMapDataBase)
+    if(!enemiesNameKeys.includes(enemieName)) {
+        throw Error(`ERROR: getEnemie function: Enemie doesn't exist`)
+    }
+
+
+    const enemie = emiesAreaMapDataBase[enemieName]
+    return deepCopy(enemie)
+}

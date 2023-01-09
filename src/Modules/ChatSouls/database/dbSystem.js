@@ -1,48 +1,46 @@
 import fs from 'fs'
-import sendMessage from '../../../Twitch/sendMessageHandler'
 
 /**
  * - keys: `entity name string`
  * @typedef {import('../TypeDefinitions/Types').CS_Database} CS_Database
 */
 
+/**
+ * Database path (directory + fileName)
+ * @type {string}
+ * @private
+ */
+export const playerDataBasePath = `${__dirname}/playersData.json`
+
 export default class DbSystem {
 
-	/**
-	 * Database path (directory + fileName)
-	 * @type {string}
-	 * @private
-	 */
-	static directory = `${__dirname}/playersData.json`
+	static safetyKeys = {
+		playerDataBase: 52965926
+	}
 
 	/**
 	 * Retrieves local database information
 	 * @returns {CS_Database}
 	 */
-	static loadDb() {
-	
-		try {
-			const data = fs.readFileSync(this.directory, 'utf-8')
-			return JSON.parse(data)
-		} catch (err) {
-			console.log(err)
-			console.log(`dataBase doesn't exist. "playersData.json" not found.`)
-			sendMessage(`Banco de dados local não existe. "playersData.json" não encotrado. Por favor, crie ou importe um novo arquivo "database.json" no diretório ${__dirname}.`)
-		}
+	static loadDb(directory) {
+
+		const data = fs.readFileSync(directory, 'utf-8')
+		return JSON.parse(data)
 	}
 
 	/**
 	 * Write local database information
-	 * @param {CS_Database}
+	 * @param {CS_Database} object
+	 * @param {string} directory
 	 */
-	static writeDb(object) {
+	static writeDb(object, directory) {
 
-		try {
-			fs.writeFileSync(this.directory, JSON.stringify(object, null, 4))
-		} catch (err) {
-			console.log(err)
-			console.log('there is not information to be saved')
-			sendMessage('Não há nenhuma informação a ser salva')
-		}
+		if(
+			!object.Authorization 					||
+			object.Authorization.key === undefined  ||
+			Object.keys(object).length === 0
+		) throw Error(`ERROR: Player class, "database" setter. You probably sending wrong data to data base.`)
+
+		fs.writeFileSync(directory, JSON.stringify(object, null, 4))
 	}
 }

@@ -13,14 +13,21 @@ export default class Enemie extends Entity{
      * @constructor
      */
     constructor(enemieData){
-        super(enemieData.name)
+        super(true, enemieData.name)
         this.level = enemieData.level
         this.souls = enemieData.souls
         this.attributes = enemieData.attributes
-        this.equipment = enemieData.equipment
-        this.inventory = enemieData.inventory
+        this.currentEquipment = {...enemieData.equipment}
+        this.inventory = {
+            equipments: {...enemieData.inventory.equipments},
+            resources: {...enemieData.inventory.resources}
+        }
+    }
 
-        this.calculateStats()
-        this.recoverHP()
+    static initialize(enemieData){
+        const enemie = new Enemie(enemieData)
+        enemie.calculateStats()
+        enemie.recoverHP()
+        return enemie
     }
 }

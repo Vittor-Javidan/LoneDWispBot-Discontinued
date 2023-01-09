@@ -13,6 +13,11 @@ const options = {
 	channels: [env.TWITCH.CHANNEL_NAME],
 }
 const client = new tmi.client(options)
-client.connect()
+
+client.connect().catch( err => {
+	console.log('Could not connect to twitch')
+	console.log(err)
+})
+	
 
 export default client

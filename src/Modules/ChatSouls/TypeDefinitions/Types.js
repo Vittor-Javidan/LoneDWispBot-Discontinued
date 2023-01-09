@@ -12,24 +12,28 @@
  * @typedef {Object<string, CS_EntityData>} CS_Database
 */
 
+//STATUS RESPONSE
+/**
+ * A string containing feedback response, for action confirmation.
+ * @typedef {string} CS_STATUS_RESPONSE
+*/
+
 //EQUIPMENT DATABASE DEFINITION
 /**
  * - Keys: `database item name string`
  * 
  * @typedef {Object} CS_EquipmentDataBase
- * @property {Object} WEAPONS
- * @property {Object<string, CS_Equipment_WeaponData>} WEAPONS.LONG_RANGE
- * @property {Object<string, CS_Equipment_WeaponData>} WEAPONS.MELEE
- * @property {Object} ARMORS
- * @property {Object<string, CS_Equipment_ArmorData>} ARMORS.HELMETS
- * @property {Object<string, CS_Equipment_ArmorData>} ARMORS.BODY
- * @property {Object<string, CS_Equipment_ArmorData>} ARMORS.GLOVES
- * @property {Object<string, CS_Equipment_ArmorData>} ARMORS.BOOTS
+ * @property {Object<string, CS_Equipment_WeaponData>} longRangeWeapon
+ * @property {Object<string, CS_Equipment_WeaponData>} meleeWeapon
+ * @property {Object<string, CS_Equipment_ArmorData>} helmet
+ * @property {Object<string, CS_Equipment_ArmorData>} bodyArmor
+ * @property {Object<string, CS_Equipment_ArmorData>} gloves
+ * @property {Object<string, CS_Equipment_ArmorData>} boots
 */ 
 
 // PLAYER STATE DEFINITION
 /** 
- * @typedef {Object} playerState
+ * @typedef {Object} CS_PlayerState
  * @property {string} primary
  * @property {string} secondary
 */
@@ -45,20 +49,30 @@
  * @property {CS_Entity_Inventory} inventory
  * 
  * @typedef {Object} CS_Entity_Inventory
- * @property {CS_Inventory_Equipments} equipments
+ * @property {CS_Inventory_Equipments | CS_Inventory_Equipments_KV} equipments
  * @property {CS_Inventory_Resources} resources
 */
 
 //ENITTY DATA SUBTYPES DEFINITION - ENTITY EQUIPMENT
 /**
- * - keys: `EQUIPMENT_TYPE ENUM`
- * @typedef {Object<string, CS_Equipment_WeaponData | CS_Equipment_ArmorData >} CS_Entity_Equipment
+ * @typedef {Object} CS_Entity_Equipment
+ * @property {CS_Equipment_WeaponData} longRangeWeapon
+ * @property {CS_Equipment_WeaponData} meleeWeapon
+ * @property {CS_Equipment_ArmorData} helmet
+ * @property {CS_Equipment_ArmorData} bodyArmor
+ * @property {CS_Equipment_ArmorData} gloves
+ * @property {CS_Equipment_ArmorData} boots
 */
 
 //ENITTY DATA SUBTYPES DEFINITION - ENTITY INVENTORY EQUIPMENT
 /**
- * - keys: `EQUIPMENT_TYPE ENUM`
- * @typedef {Object<string, CS_Equipment_WeaponData[] | CS_Equipment_ArmorData[]>} CS_Inventory_Equipments
+ * @typedef {Object} CS_Inventory_Equipments
+ * @property {CS_Equipment_WeaponData[]} longRangeWeapon
+ * @property {CS_Equipment_WeaponData[]} meleeWeapon
+ * @property {CS_Equipment_ArmorData[]} helmet
+ * @property {CS_Equipment_ArmorData[]} bodyArmor
+ * @property {CS_Equipment_ArmorData[]} gloves
+ * @property {CS_Equipment_ArmorData[]} boots
 */
 
 //WEAPON DATA DEFINITION
@@ -86,17 +100,34 @@
  * @property {number} amount
  * @property {string} type
  * @property {string} description
+ * @property {number} dropChance
 */
 
 //ATRIBUTE DEFINTION
 /** 
  * - Keys: `ATTRIBUTE_TYPE ENUM`
- * @typedef {Object<string, number>} CS_Attributes 
+ * @typedef {Object} CS_Attributes 
+ * @property {number} vitality
+ * @property {number} agility
+ * @property {number} strenght
+ * @property {number} intelligence
 */
 
 //STATS DEFINITION
 /**
- * @typedef {Object<string, number>} CS_Stats
+ * @typedef {Object} CS_Stats
+ * @property {number} hp
+ * @property {number} evasion
+ * @property {number} fisicalDamage
+ * @property {number} fisicalDefense
+ * @property {number} magicalDamage
+ * @property {number} magicalDefense
+*/
+
+//Player Payload
+/**
+ * @typedef {Object} CS_PlayerPayload
+ * @property {boolean} registered
 */
 
 //This empty export is just to expose these definitons to other files

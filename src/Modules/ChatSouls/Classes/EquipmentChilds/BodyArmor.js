@@ -1,5 +1,6 @@
-import equipmentDataBase from "../../database/equipmentData"
+import { getAllEquipmentByType } from "../../database/equipmentData"
 import Armor from "./Armor"
+import EQUIPMENT_TYPES from "./EQUIPMENT_TYPES"
 
 /** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_ArmorData} CS_Equipment_ArmorData */
 
@@ -9,7 +10,7 @@ export default class BodyArmor extends Armor {
      * -keys: `item name string`
      * @type {Object<string, CS_Equipment_ArmorData>}
      */
-    static database = equipmentDataBase.ARMORS.BODY
+    static database = getAllEquipmentByType(EQUIPMENT_TYPES.BODY_ARMOR)
 
     /**
      * @param {CS_Equipment_ArmorData} itemObject 
@@ -21,8 +22,7 @@ export default class BodyArmor extends Armor {
             throw new Error (`BodyArmor ERROR: The body armor ${itemObject.name} doesn't exist`)
         }
         
-        super(itemObject)
-        super.multipliers = BodyArmor.database[itemObject.name].defense_multipliers
-        super.description = BodyArmor.database[itemObject.name].description
+        const databaseObject = BodyArmor.database[itemObject.name]
+        super(true, databaseObject)
     }
 }

@@ -1,5 +1,6 @@
-import equipmentDataBase from "../../database/equipmentData"
+import { getAllEquipmentByType } from "../../database/equipmentData"
 import Armor from "./Armor"
+import EQUIPMENT_TYPES from "./EQUIPMENT_TYPES"
 
 /** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_ArmorData} CS_Equipment_ArmorData */
 
@@ -9,7 +10,7 @@ export default class Gloves extends Armor {
      * -keys: `item name string`
      * @type {Object<string, CS_Equipment_ArmorData>}
      */
-    static database = equipmentDataBase.ARMORS.GLOVES
+    static database = getAllEquipmentByType(EQUIPMENT_TYPES.GLOVES)
 
     /**
      * @param {CS_Equipment_ArmorData} itemObject 
@@ -21,8 +22,7 @@ export default class Gloves extends Armor {
             throw new Error (`Gloves ERROR: The Gloves ${itemObject.name} doesn't exist`)
         }
         
-        super(itemObject)
-        super.multipliers = Gloves.database[itemObject.name].defense_multipliers
-        super.description = Gloves.database[itemObject.name].description
+        const databaseObject = Gloves.database[itemObject.name]
+        super(true, databaseObject)
     }
 }

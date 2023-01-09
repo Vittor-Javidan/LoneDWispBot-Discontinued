@@ -1,4 +1,3 @@
-import sendMessage from '../../../Twitch/sendMessageHandler';
 import enemiesDataBase from '../database/enemiesData';
 import Entity from './Entity';
 import Enemie from './EntityChilds/Enemie';
@@ -8,6 +7,8 @@ import CS_ENUM from './ENUM';
 /**
  * @typedef {import('../TypeDefinitions/Types').CS_EntityData} CS_EntityData
  * @typedef {import('../TypeDefinitions/Types').CS_ResourceData} CS_ResourceData
+ * @typedef {import('../TypeDefinitions/Types').CS_Stats} CS_Stats
+ * @typedef {import('../TypeDefinitions/Types').CS_Inventory_Resources} CS_Inventory_Resources
 */
 
 
@@ -18,7 +19,7 @@ export default class Battle {
     /**
      * @type {Battle[]}
      */
-    static PvEBattles = []
+    static battlesList = []
 
     /**
      * It's always a Player
@@ -27,51 +28,25 @@ export default class Battle {
     playerInstance
 
     /**
-     * @type {Player | Enemie}
+     * @type {Enemie}
      */
-    entityInstance
+    enemieInstance
 
     /**
+     * `1` if its player turn, `2` if its the enemie turn
      * @type {number}
      */
-    entity_1_TimeAction = 0
-
-    /**
-     * @type {number}
-     */
-    entity_2_TimeAction = 0
-
-    /**
-     * These are the stats that can be modify during the battle.
-     * @type {Object<string, number>}
-     */
-    TempStats_1
-
-    /**
-     * These are the stats that can be modify during the battle
-     * @type {Object<string, number>}
-     */
-    TempStats_2
-
-    /**
-     * `1` if its player turn, `2` if its the entityInstance turn
-     * @type {number}
-     */
-    turn
+    turn = undefined
 
     /**
      * @param {Player} playerInstance 
-     * @param {Player | Enemie} entityInstance 
+     * @param {Enemie} enemieInstance 
      */
-    constructor(playerInstance, entityInstance){
+    constructor(playerInstance, enemieInstance){
 
         //store instances localy
         this.playerInstance = playerInstance
-        this.entityInstance = entityInstance
-
-        //Get instaces stats. 
-        this.TempStats_1 = this.playerInstance.getStats()
-        this.TempStats_2 = this.entityInstance.getStats()
+        this.enemieInstance = enemieInstance
     }
 
     //=================================================================================================
@@ -82,58 +57,92 @@ export default class Battle {
      * Starts a PvE battle for a given player
      * @param {Player} playerInstance 
      */
-    static startPvEBattle(playerInstance) {
-        
-        //Get possible enemies by map area
-        const playerMapArea = playerInstance.getCurrentLocation()
-        const playerLevel = playerInstance.getLevel()
-        const enemiesArray = Object.values(enemiesDataBase[playerMapArea])
+    static startBattle(playerInstance) {
+        const enemieInstance = this.instantiateRandomEnemie(playerInstance)
+        const battleInstance = new Battle(playerInstance, enemieInstance)
+        this.determineFirstTurn(battleInstance)
+        this.battlesList.push(battleInstance)
+    }
+
+    /**
+     * Instantiate and return a random enemie according to player instance level
+     * @param  {Player} playerInstance
+     * @returns {Enemie}
+     */
+    static instantiateRandomEnemie(playerInstance) {
+        const possibleEnemies = this.getPossibleEnemies(playerInstance)
+        const randomIndex = Math.floor(Math.random() * possibleEnemies.length);
+        const randomEnemie = possibleEnemies[randomIndex];
+
+        return Enemie.initialize(randomEnemie)
+    }
+
+    /**
+     * Decides who is the first to have action during the battle
+     * @param {Battle} battleInstance 
+     */
+    static determineFirstTurn(battleInstance){
+        const playerInstance = battleInstance.playerInstance
+        const enemieInstance = battleInstance.enemieInstance
+        battleInstance.evasionEvent({
+            from: playerInstance, 
+            against: enemieInstance, 
+            evasionWeight: 1
+        }) ? battleInstance.turn = 1 : battleInstance.turn = 2
+    }
+
+    /**
+     * Get possible enemies related playerInstance current area and level
+     * @param  {Player} playerInstance
+     * @returns {CS_EntityData[]}
+     */
+    static getPossibleEnemies(playerInstance){
+
+        const playerMapArea = playerInstance.currentLocation
+        const playerLevel = playerInstance.level
+        const areaEnemies = enemiesDataBase[playerMapArea]
+
+        const enemiesArray = Object.values(areaEnemies)
         const possibleEnemies = []
         for (let i = 0; i < enemiesArray.length; i++){
             if (playerLevel >= enemiesArray[i].level) {
                 possibleEnemies.push(enemiesArray[i])
             }
         }
-
-        //Initialize enemy
-        const randomIndex = Math.floor(Math.random() * possibleEnemies.length);
-        const randomEnemie = possibleEnemies[randomIndex];
-        const enemieInstance = new Enemie(randomEnemie)
         
-        //Initialize battle
-        const battleInstance = new Battle(playerInstance, enemieInstance)
-        battleInstance.whosFirstPvE()
-        
-        //Register PvE battle
-        Battle.PvEBattles.push(battleInstance)
+        return possibleEnemies
     }
 
+    
     /**
      * Return a PvE battle instance for a specific username
      * @param {string} userName 
-     * @returns {Battle | undefined} Returns undefined if there is no battle with the given player name
-     */
-    static getPvEBattle(userName) {
-
-        for (let i = 0; i < this.PvEBattles.length; i++) {
-            if (userName === this.PvEBattles[i].playerInstance.getName()) {
-                return this.PvEBattles[i]
+     * @returns {Battle}
+    */
+    static getBattle(userName) {
+        for (let i = 0; i < this.battlesList.length; i++) {
+            if (userName === this.battlesList[i].playerInstance.name) {
+               return this.battlesList[i]
             }
         }
-        return undefined
+        throw Error(`ERROR: Battle class, "getBattle": Battle doesn't exist`)
     }
+    
+
 
     /**
      * Delete a PvE battle instance for a specific username
      * @param {string} userName 
      * @returns {void}
      */
-    static deletePvEBattle(userName) {
-        for (let i = 0; i < this.PvEBattles.length; i++) {
-            if (userName === this.PvEBattles[i].playerInstance.getName()) {
-                this.PvEBattles.splice(i, 1)
+    static deleteBattle(userName) {
+        for (let i = 0; i < this.battlesList.length; i++) {
+            if (userName === this.battlesList[i].playerInstance.name) {
+                this.battlesList.splice(i, 1)
+                return
             }
         }
+        throw Error(`ERROR: Battle class, "deleteBattle" method: impossible to delete a Battle that doesn't exist`)
     }
 
     /**
@@ -141,299 +150,123 @@ export default class Battle {
      * @param {string} userName 
      * @returns {boolean}
      */
-    static doesPvEBattleExist(userName){
-        for (let i = 0; i < this.PvEBattles.length; i++) {
-            if (userName === this.PvEBattles[i].playerInstance.getName()) {
+    static doesBattleExist(userName){
+        for (let i = 0; i < this.battlesList.length; i++) {
+            if (userName === this.battlesList[i].playerInstance.name) {
                 return true
             }
         }
         return false
     }
 
-    static sendMessageWithAllPvEBattles(){
+    /**
+     * Returns a formated string message containing all current battles happening
+     * @returns {string}
+     */
+    static returnStringWithAllBattles(){
         let message = 'Jogadores em batalha nesse momento: '
-
-        if(this.PvEBattles.length === 0){
+        if(this.battlesList.length === 0){
             message += '| Nenhum |'
-            sendMessage(message)
-            return
+            return message
         }
         
-        for (let i = 0; i < this.PvEBattles.length; i++){
-            const playerString = this.PvEBattles[i].getPlayerBattleStatusStringPvE()
-            const enemieString = this.PvEBattles[i].getEnemieBattleStatusStringPvE()
+        for (let i = 0; i < this.battlesList.length; i++){
+            const playerString = this.battlesList[i].getPlayerStatus()
+            const enemieString = this.battlesList[i].getEnemieStatus()
             message += `| ${playerString} vs ${enemieString} `
         }
         message += "|"
-        sendMessage(message)
+        return message
     }
 
     //=================================================================================================
     // INSTANCE METHODS ===============================================================================
     //=================================================================================================
 
-    whosFirstPvE(){
-        
-        const succed = this.evasionEvent(this.playerInstance, this.entityInstance, 1)
-
-        succed
-            ? this.turn = 1
-            : this.turn = 2
-        //
-            
-        const playerName = this.playerInstance.getName()
-        const enemieName = this.entityInstance.getName()
-        this.turn === 1
-            ? sendMessage(`/w ${playerName} Você encontrou um ${enemieName} e tem a vantagem de começar atacando`)
-            : sendMessage(`/w ${playerName} Você encontrou um ${enemieName} e ele começa atacando`)
-        //
-    }
-
-    chargeTimeActionPvE() {
-
-        const player = this.playerInstance.getStats(CS_ENUM.KEYS.CS_STATS.EVASION)
-        const enemie = this.entityInstance.getStats(CS_ENUM.KEYS.CS_STATS.EVASION)
-
-        //Checks if any player can reapeat his round
-        this.entity_1_TimeAction += player
-        this.entity_2_TimeAction += enemie
-        if (entity_1_TimeAction >= (1.5 * entity_2_TimeAction)) {
-            this.turn = 1
-            entity_1_TimeAction = 0
-            entity_2_TimeAction = 0
-        } else if (entity_2_TimeAction >= (1.5 * entity_1_TimeAction)) {
-            this.turn = 2
-            entity_1_TimeAction = 0
-            entity_2_TimeAction = 0
-        }
-    }
-
-    attackPvE(){
-
-        if( //PVE battle
-            this.playerInstance instanceof Player &&
-            this.entityInstance instanceof Enemie
-        ) {
-            switch (this.turn) {
-                case 1:
-                    if(this.isBothAlive()) this.calculateDmg(this.playerInstance, this.entityInstance)
-                    if(this.isBothAlive()) this.calculateDmg(this.entityInstance, this.playerInstance)
-                    break
-                //
-                case 2:
-                    if(this.isBothAlive()) this.calculateDmg(this.entityInstance, this.playerInstance)
-                    if(this.isBothAlive()) this.calculateDmg(this.playerInstance, this.entityInstance)
-                    break
-                //
-            }
-        }
-
-        //If anyone dies
-        if(!this.isBothAlive()){
-
-            //if enemie died
-            if(!this.entityInstance.getIsAlive()) {
-                this.calculateRewardsPvE()
-            }
-
-            //if player died
-            if(!this.playerInstance.getIsAlive()) {
-                this.sendDeadPlayerBackHome()
-            }
-            
-            Battle.deletePvEBattle(this.playerInstance.getName())                  
-        }
-    }
-
     /**
      * Returns if both Player and other entity is alive
      * @returns {boolean}
      */
     isBothAlive(){
-        return this.playerInstance.getIsAlive() && this.entityInstance.getIsAlive()
+        return this.playerInstance.isAlive && this.enemieInstance.isAlive
     }
 
     /**
      * @returns {boolean} `True` if flee succed, `False` otherwise
      */
     fleePvE() {
-
-        const succeed = this.evasionEvent(this.playerInstance, this.entityInstance, 1)
-        if(succeed) {
-            sendMessage(`/w ${this.playerInstance.getName()} Fuga bem sucedida!`)
-            Battle.deletePvEBattle(this.playerInstance.getName())
-            return succeed
-        }
-        
-        sendMessage(`/w ${this.playerInstance.getName()} sua fuga falhou!`)
-        this.calculateDmg(this.entityInstance, this.playerInstance)
-        
-        //If whos tried to flee dies
-        const isPlayerAlive = this.playerInstance.getIsAlive()
-        if(!isPlayerAlive) {
-            this.sendDeadPlayerBackHome()
-            Battle.deletePvEBattle(this.playerInstance.getName())      
-        }
-        return succeed
+        return this.evasionEvent({
+            from: this.playerInstance, 
+            against: this.enemieInstance, 
+            evasionWeight: 1
+        })
     }
 
     /**
-     * Calcula the damage from attacker perspective
-     * @param {Entity} attacker 
-     * @param {Entity} defender 
-     */
-    calculateDmg(attacker, defender) {
-
-        //Check if a dogde just happend
-        if (this.isDodgeSucced(attacker, defender)) return
-
-        //Calculate damage value
-        const attacker_fisicalDmg = attacker.getStats(CS_ENUM.KEYS.CS_STATS.FISICAL_DMG)
-        const defender_fisicalDef = defender.getStats(CS_ENUM.KEYS.CS_STATS.FISICAL_DEF)
-        let damageCaused = attacker_fisicalDmg - defender_fisicalDef
-
-        let effectiveDamage = this.calculateEffectivenessDmg(damageCaused)
-        if (effectiveDamage < 1) effectiveDamage = 1
-        
-        defender.inflictDamage(effectiveDamage)  
-        
-        //player feedback
-        if (attacker instanceof Player) {
-            sendMessage(
-                `/w ${attacker.getName()} Você causou ${effectiveDamage} de dano`
-            )
-            }
-        if (defender instanceof Player) {
-            sendMessage(
-                `/w ${defender.getName()} Você sofreu ${effectiveDamage} de dano`
-            )
-        }
-
-    }
-
-    /**
-     * Return the value of number after effectiveness calculation
-     * @param {number} damageCaused
+     * Calculet the damage from attacker perspective and returns the value
+     * @param {Object} object
+     * @param {Entity} object.attacker 
+     * @param {Entity} object.defender
      * @returns {number}
      */
-    calculateEffectivenessDmg(damageCaused) {
-        const randomNumber = Math.floor(Math.random() * 6) + 1
-        switch (randomNumber) {
-            case 1: return Math.floor(damageCaused * 0.5) 
-            case 2: return Math.floor(damageCaused * 0.75)
-            case 3: return Math.floor(damageCaused)
-            case 4: return Math.floor(damageCaused)
-            case 5: return Math.floor(damageCaused * 1.25)
-            case 6: return Math.floor(damageCaused * 1.5)
+    calculateRawDamage(object) {
+
+        const attacker_fisicalDmg = object.attacker.totalStats.fisicalDamage
+        const defender_fisicalDef = object.defender.totalStats.fisicalDefense
+        let rawDamage = attacker_fisicalDmg - defender_fisicalDef
+        if (rawDamage < 1) {
+            rawDamage = 1
         }
+        return Math.floor(rawDamage)
     }
 
     /**
      * Calculate the rewards when battle ends
      * @returns {void}
      */
-    calculateRewardsPvE() {
-
-        const resources = this.entityInstance.getResources()
-        const resourcesNames = Object.keys(resources)
-        
-        let lootString = '|'
-        for (let i = 0; i < resourcesNames.length; i++) {
-            this.playerInstance.addResources(resources[resourcesNames[i]])
-            lootString += `|  ${resources[resourcesNames[i]].amount}x ${resourcesNames[i]} |`
+    calculateRewards() {
+        /**@type {CS_Inventory_Resources} */
+        const resources = this.enemieInstance.inventoryResources
+        const resourceKeys = Object.keys(resources)
+        for(let  i = 0; i < resourceKeys.length; i++) {
+            const randomNumber = Math.random()
+            this.giveLootHandler(resources[resourceKeys[i]], randomNumber)
         }
-        lootString += '|'
-
-        this.playerInstance.setSecondaryState(CS_ENUM.STATES.EXPLORING.SECONDARY.IDLE)
-        this.playerInstance.addSouls(this.entityInstance.getSouls())
-        this.playerInstance.save()
-        
-        sendMessage(
-            `/w ${this.playerInstance.getName()} ${this.entityInstance.getName()} foi derrotado. ${this.entityInstance.getSouls()} almas absorvidas. Recursos ganhos: ${lootString}. 
-            Você voltou a planejar seu próximo passo.
-            | 0. Montar uma fogueira
-            | 1. Caçar 
-            | 2. Procurar por recursos (Em progresso)
-            | 3. Viajar (Em progresso)
-            |`
-            , 1000
-        )
+        this.playerInstance.addSouls(this.enemieInstance.souls)
     }
 
     /**
-     * Sends player back to fire pit after he dies in battle
+     * Handles if the player should or not receive the loot, 
+     * according to an already calculated and given random number, 
+     * @param {CS_ResourceData} resources 
+     * @param {number} randomNumber 
      */
-    sendDeadPlayerBackHome(){
-        
-        //Channel Chat public feedback
-        const playerName = this.playerInstance.getName()
-        const enemieName = this.entityInstance.getName()
-        const playerSouls = this.playerInstance.getSouls()
-        sendMessage(
-            `O jogador ${playerName} morreu para um ${enemieName} e perdeu ${playerSouls} almas.`
-        )
-
-        //Logics to send player back home
-        this.playerInstance.setPrimaryState(CS_ENUM.STATES.RESTING.PRIMARY)
-        this.playerInstance.setSecondaryState(CS_ENUM.STATES.RESTING.SECONDARY.JUST_RESTING)
-        this.playerInstance.setSouls(0)
-        this.playerInstance.ressurrect()
-        this.playerInstance.recoverHP()
-        this.playerInstance.save()
-        
-        sendMessage(
-            `/w ${this.playerInstance.getName()} Você morreu para ${this.entityInstance.getName()} e perdeu todas suas almas. Voltando para fogueira: 
-            | 1. Statísticas 
-            | 2. Ver Equipamento 
-            | 3. Levantar da fogueira 
-            |`, 1000
-        )
-
-    }
-        
-    /**
-     * return the current HP of the entity
-     * @param {string} entityName
-     * @returns {Player | Enemie}
-     */
-    getEnemieInstancePvE(){
-        return this.entityInstance
-    }
-
-    getPlayerInstancePvE(){
-        return this.playerInstance
-    }
-
-    /**
-     * @param {Player | Enemie} attacker 
-     * @param {Player | Enemie} defender 
-     * @returns 
-     */
-    isDodgeSucced(attacker, defender){
-
-        if(this.evasionEvent(defender, attacker, 0.5)) {
-            sendMessage(
-                `/w @${this.playerInstance.getName()} ${attacker.getName()} errou o ataque em ${defender.getName()}`
-            )
-            return true
+    giveLootHandler(resources, randomNumber){
+        if(resources.dropChance >= randomNumber) {
+            this.playerInstance.addResources({
+                name: resources.name,
+                amount: resources.amount,
+                type: resources.type
+            })
         }
-        return false
     }
 
     /**
-     * @param {Player | Enemie} whosEvading
-     * @param {Player | Enemie} against
-     * @returns {boolean}
+     * @param {Object} object
+     * @param {Player | Enemie} object.from
+     * @param {Player | Enemie} object.against
+     * @param {number} object.evasionWeight
+     * @returns {boolean} `True` if event succed, `False Otherwise`
      */
-    evasionEvent(whosEvading, against, evasionWeight){
+    evasionEvent(object){
         
-        const evasion = whosEvading.getStats(CS_ENUM.KEYS.CS_STATS.EVASION)
-        const oponent_evasion = against.getStats(CS_ENUM.KEYS.CS_STATS.EVASION)
+        const evasion = object.from.totalStats.evasion
+        const oponent_evasion = object.against.totalStats.evasion
 
-        const evasionChance = (evasion * evasionWeight) / (oponent_evasion + evasion) * 100
-        const randomNumber = Math.random() * 100
+        const evasionChance = (evasion * object.evasionWeight) / (oponent_evasion + evasion)
+        const randomNumber = Math.random()
 
-        if(evasionChance > randomNumber) {
+        if(evasionChance >= randomNumber) {
             return true
         }
         return false
@@ -443,32 +276,36 @@ export default class Battle {
      * Returns a string with Player current HP and Enemie current HP already formatted.
      * @returns {string}
      */
-    getBattleStatusStringPvE(){
-        return `| ${this.getPlayerBattleStatusStringPvE()} 
-                | ${this.getEnemieBattleStatusStringPvE()}`
+    getBattleStatus(){
+        return `| ${this.getPlayerStatus()} | ${this.getEnemieStatus()}`
     }
 
     /**
-     * Returns a string with Player current HP already formatted.
+     * Returns a string with Player current and max HP already formatted.
      * @returns {string}
      */
-    getPlayerBattleStatusStringPvE(){
+    getPlayerStatus(){
         
-        const playerName = this.playerInstance.getName()
-        const playerHP = this.playerInstance.getCurrentHP()
-        const playerMaxHP = this.playerInstance.getStats(CS_ENUM.KEYS.CS_STATS.HP)
+        const playerName = this.playerInstance.name
+        const playerHP = this.playerInstance.currentHP
+        const playerMaxHP = this.playerInstance.totalStats[CS_ENUM.KEYS.CS_STATS.HP]
         const playerHPString = `${playerName}: ${playerHP}/${playerMaxHP} HP`
 
         return `${playerHPString}`
     }
 
-    getEnemieBattleStatusStringPvE(){
+    /**
+     * Returns a string with Enemie current and max HP already formatted.
+     * @returns {string}
+     */
+    getEnemieStatus(){
         
-        const enemieName = this.entityInstance.getName()
-        const enemieHP = this.entityInstance.getCurrentHP()
-        const enemieMaxHP = this.entityInstance.getStats(CS_ENUM.KEYS.CS_STATS.HP)
+        const enemieName = this.enemieInstance.name
+        const enemieHP = this.enemieInstance.currentHP
+        const enemieMaxHP = this.enemieInstance.totalStats[CS_ENUM.KEYS.CS_STATS.HP]
         const enemieHPString = `${enemieName}: ${enemieHP}/${enemieMaxHP} HP`
 
         return `${enemieHPString}`
     }
+
 }
