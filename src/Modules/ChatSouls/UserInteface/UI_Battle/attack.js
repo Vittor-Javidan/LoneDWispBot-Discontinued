@@ -1,10 +1,9 @@
 import Battle from "../../Classes/Battle";
 import Enemie from "../../Classes/EntityChilds/Enemie";
 import Player from "../../Classes/EntityChilds/Player";
-import PLAYER_STATES from "../../Classes/EntityChilds/PLAYER_STATES";
 import { sendMessage_UI_Battle } from "../sendMessage_Customized/sendMessage_UI_Battle";
-import { sendMessage_UI_Idle } from "../sendMessage_Customized/sendMessage_UI_Idle";
 import playerDied from "./playerDied";
+import playerWon from "./playerWon";
 
 /**
  * @param {Battle} battleInstance
@@ -152,19 +151,3 @@ function didDodge(battleInstance, o) {
     })
 }
 
-/**
- * @param {Battle} battleInstance
- * @param {string} FINAL_MESSAGE
- */
-function playerWon(battleInstance, FINAL_MESSAGE) {
-
-    const playerInstance = battleInstance.playerInstance
-    const enemieInstance = battleInstance.enemieInstance
-    playerInstance.secondaryState = PLAYER_STATES.EXPLORING.SECONDARY.IDLE
-
-    FINAL_MESSAGE = `VOCÊ GANHOU!! e recebeu ${enemieInstance.souls} almas. últimos momentos: ${FINAL_MESSAGE}`
-    sendMessage_UI_Idle(playerInstance, FINAL_MESSAGE)
-
-    battleInstance.calculateRewards()
-    Battle.deleteBattle(playerInstance.name)
-}
