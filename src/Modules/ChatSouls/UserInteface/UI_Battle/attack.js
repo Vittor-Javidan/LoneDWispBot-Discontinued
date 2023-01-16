@@ -1,6 +1,7 @@
 import Battle from "../../Classes/Battle";
 import Enemie from "../../Classes/EntityChilds/Enemie";
 import Player from "../../Classes/EntityChilds/Player";
+import didDodge from "./didDogge";
 import playerDied from "./playerDied";
 import playerWon from "./playerWon";
 import sendMessage_UI_Battle from "./sendMessage_UI_Battle";
@@ -134,20 +135,4 @@ function attackAttempt(battleInstance, o) {
     return message
 }
 
-/**
- * @param {Battle} battleInstance
- * @param {object} o
- * @param {Player | Enemie} o.attacker
- * @param {Player | Enemie} o.defensor
- */
-function didDodge(battleInstance, o) {
-
-    const { attacker, defensor } = o
-
-    return battleInstance.evasionEvent({
-        from: defensor,
-        against: attacker,
-        evasionWeight: 1
-    })
-}
 
