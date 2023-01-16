@@ -1,7 +1,7 @@
 import Battle from "../../Classes/Battle";
 import Player from "../../Classes/EntityChilds/Player";
 import PLAYER_STATES from "../../Classes/EntityChilds/PLAYER_STATES";
-import { sendMessage_UI_Battle } from "../sendMessage_Customized/sendMessage_UI_Battle";
+import sendMessage_UI_Battle from "./sendMessage_UI_Battle";
 
 /**
  * @param {Player} playerInstance 

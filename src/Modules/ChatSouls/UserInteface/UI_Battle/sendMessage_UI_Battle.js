@@ -6,7 +6,7 @@ import Battle from "../../Classes/Battle"
  * @param {Battle} battleInstance 
  * @param {string} menuMessage 
  */
-export function sendMessage_UI_Battle(battleInstance, menuMessage) {
+export default function sendMessage_UI_Battle(battleInstance, menuMessage) {
     const playerInstance = battleInstance.playerInstance
 	sendMessage(
 		`/w ${playerInstance.name} ${menuMessage} ${battleInstance.getBattleStatus()}. 

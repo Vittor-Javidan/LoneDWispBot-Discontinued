@@ -1,8 +1,8 @@
 import Battle from "../../Classes/Battle";
 import Player from "../../Classes/EntityChilds/Player";
-import { sendMessage_UI_Battle } from "../sendMessage_Customized/sendMessage_UI_Battle";
 import attack from "./attack";
 import flee from "./flee";
+import sendMessage_UI_Battle from "./sendMessage_UI_Battle";
 
 /**
  * @param {Object} data

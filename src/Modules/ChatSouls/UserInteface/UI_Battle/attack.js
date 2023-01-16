@@ -1,9 +1,9 @@
 import Battle from "../../Classes/Battle";
 import Enemie from "../../Classes/EntityChilds/Enemie";
 import Player from "../../Classes/EntityChilds/Player";
-import { sendMessage_UI_Battle } from "../sendMessage_Customized/sendMessage_UI_Battle";
 import playerDied from "./playerDied";
 import playerWon from "./playerWon";
+import sendMessage_UI_Battle from "./sendMessage_UI_Battle";
 
 /**
  * @param {Battle} battleInstance
