@@ -3,8 +3,8 @@ import Enemie from "../../Classes/EntityChilds/Enemie";
 import Player from "../../Classes/EntityChilds/Player";
 import PLAYER_STATES from "../../Classes/EntityChilds/PLAYER_STATES";
 import { sendMessage_UI_Battle } from "../sendMessage_Customized/sendMessage_UI_Battle";
-import { sendMessage_UI_FirePit } from "../sendMessage_Customized/sendMessage_UI_firePit";
 import { sendMessage_UI_Idle } from "../sendMessage_Customized/sendMessage_UI_Idle";
+import playerDied from "./playerDied";
 
 /**
  * @param {Battle} battleInstance
@@ -25,27 +25,34 @@ function playerAdvantage(battleInstance) {
     const playerInstance = battleInstance.playerInstance
     const enemieInstance = battleInstance.enemieInstance
     
-    let FINAL_MESSAGE = ''
+    let feedBackMessage = ''
 
-    FINAL_MESSAGE += action(battleInstance, {
+    //Player Turn ========================================
+    feedBackMessage += attackAttempt(battleInstance, {
         attacker: playerInstance,
         defensor: enemieInstance
     })
+
     if(!enemieInstance.isAlive) {
-        playerWon(battleInstance, FINAL_MESSAGE)
+        playerWon(battleInstance, feedBackMessage)
         return   
     }
+
+    feedBackMessage += 'e '
     
-    FINAL_MESSAGE += action(battleInstance, {
+    //Enemie Turn ========================================
+    feedBackMessage += attackAttempt(battleInstance, {
         attacker: enemieInstance,
         defensor: playerInstance
     }) 
+
     if(!playerInstance.isAlive) {
-        playerDied(battleInstance, FINAL_MESSAGE)
+        playerDied(battleInstance, feedBackMessage)
         return
     }
 
-    sendMessage_UI_Battle(battleInstance, FINAL_MESSAGE)
+    //End turn message ===================================
+    sendMessage_UI_Battle(battleInstance, feedBackMessage)
 }
 
 /**
@@ -56,29 +63,34 @@ function enemieAdvantage(battleInstance) {
     const playerInstance = battleInstance.playerInstance
     const enemieInstance = battleInstance.enemieInstance
 
-    let FINAL_MESSAGE = ''
+    let feedBackMessage = ''
 
-    FINAL_MESSAGE += action(battleInstance, {
+    //Enemie Turn ========================================
+    feedBackMessage += attackAttempt(battleInstance, {
         attacker: enemieInstance,
         defensor: playerInstance
     })
+
     if(!playerInstance.isAlive) {
-        playerDied(battleInstance, FINAL_MESSAGE)
+        playerDied(battleInstance, feedBackMessage)
         return
     }
 
-    FINAL_MESSAGE += 'e '
+    feedBackMessage += 'e '
 
-    FINAL_MESSAGE += action(battleInstance, {
+    //Player Turn ========================================
+    feedBackMessage += attackAttempt(battleInstance, {
         attacker: playerInstance,
         defensor: enemieInstance
-    }, FINAL_MESSAGE)
+    }, feedBackMessage)
+    
     if(!enemieInstance.isAlive) {
-        playerWon(battleInstance, FINAL_MESSAGE)
+        playerWon(battleInstance, feedBackMessage)
         return   
     }
     
-    sendMessage_UI_Battle(battleInstance, FINAL_MESSAGE)
+    //End turn message ===================================
+    sendMessage_UI_Battle(battleInstance, feedBackMessage)
 }
 
 /**
@@ -86,31 +98,41 @@ function enemieAdvantage(battleInstance) {
  * @param {object} o
  * @param {Player | Enemie} o.attacker
  * @param {Player | Enemie} o.defensor
+ * @returns {string} action feedback message
  */
-function action(battleInstance, o) {
+function attackAttempt(battleInstance, o) {
 
     const { attacker, defensor } = o
-    let FINAL_MESSAGE = ''
+    let message = ''
     
+    //Dodge Phase =========================================================
     if(didDodge(battleInstance, {
         attacker: attacker,
         defensor: defensor
     })) {
+
         attacker instanceof Player
-            ? FINAL_MESSAGE = `${FINAL_MESSAGE} Você errou o ataque. `
-            : FINAL_MESSAGE = `${FINAL_MESSAGE} ${attacker.name} errou o ataque. `
-        return FINAL_MESSAGE
+            ? message = `${message} Você errou o ataque. `
+            : message = `${message} ${attacker.name} errou o ataque. `
+        //
+
+        return message
     }
 
+    //Damage Phase ========================================================
     const rawDamage = battleInstance.calculateRawDamage({
         attacker: attacker,
         defender: defensor
     })
+
     defensor.inflictDamage(rawDamage)
+
     attacker instanceof Player
-        ? FINAL_MESSAGE = `${FINAL_MESSAGE} ${defensor.name} sofreu ${rawDamage} de dano. `
-        : FINAL_MESSAGE = `${FINAL_MESSAGE} você sofreu ${rawDamage} de dano. `
-    return FINAL_MESSAGE
+        ? message = `${message} ${defensor.name} sofreu ${rawDamage} de dano. `
+        : message = `${message} você sofreu ${rawDamage} de dano. `
+    //
+    
+    return message
 }
 
 /**
@@ -144,30 +166,5 @@ function playerWon(battleInstance, FINAL_MESSAGE) {
     sendMessage_UI_Idle(playerInstance, FINAL_MESSAGE)
 
     battleInstance.calculateRewards()
-    Battle.deleteBattle(playerInstance.name)
-}
-
-/**
- * @param {Battle} battleInstance
- */
-function playerDied(battleInstance, FINAL_MESSAGE) {
-
-    const playerInstance = battleInstance.playerInstance
-    playerInstance.currentState = {
-        primary: PLAYER_STATES.FIRE_PIT.PRIMARY,
-        secondary: PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT
-    }
-
-    FINAL_MESSAGE = `
-        VOCÊ MORREU!! e ${playerInstance.souls} almas foram perdidas. 
-        últimos momentos: ${FINAL_MESSAGE}.
-        Você voltou a fogueira
-    `
-    sendMessage_UI_FirePit(playerInstance, FINAL_MESSAGE)
-    
-    playerInstance.souls = 0
-    playerInstance.recoverHP()
-    playerInstance.ressurrect()
-    playerInstance.save()
     Battle.deleteBattle(playerInstance.name)
 }
