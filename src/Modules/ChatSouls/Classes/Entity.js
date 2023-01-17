@@ -391,12 +391,12 @@ export default class Entity {
     /**
      * @returns {CS_Stats} Getter
      */
-    get baseStats() { return this.#baseStats }
+    getBaseStats() { return this.#baseStats }
 
     /**
      * @param {CS_Stats} object Setter
      */
-    set baseStats(object) {
+    setBaseStats(object) {
         
         if(typeof object !== 'object')
             throw Error('ERROR: Entity class, stats must be objects')
@@ -695,14 +695,14 @@ export default class Entity {
         const balanceStatsValues = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
         const attributes = this.getAttributes()
 
-        this.baseStats = {
+        this.setBaseStats({
             hp:             attributes.vitality     * balanceStatsValues.HP,
             evasion:        attributes.agility      * balanceStatsValues.EVASION,
             fisicalDamage:  attributes.strenght     * balanceStatsValues.FISICAL_DMG,
             fisicalDefense: attributes.strenght     * balanceStatsValues.FISICAL_DEF,
             magicalDamage:  attributes.intelligence * balanceStatsValues.MAGICAL_DMG,
             magicalDefense: attributes.intelligence * balanceStatsValues.MAGICAL_DEF
-        }
+        })
     }
 
     calculateStatsFromEquips(){
@@ -771,13 +771,15 @@ export default class Entity {
         this.calculateBaseStats()
         this.calculateStatsFromEquips()
 
+        const baseStats = this.getBaseStats()
+
         this.setTotalStats({
-            hp:             this.baseStats.hp               + this.statsFromEquips.hp,
-            evasion:        this.baseStats.evasion          + this.statsFromEquips.evasion,
-            fisicalDamage:  this.baseStats.fisicalDamage    + this.statsFromEquips.fisicalDamage,
-            fisicalDefense: this.baseStats.fisicalDefense   + this.statsFromEquips.fisicalDefense,
-            magicalDamage:  this.baseStats.magicalDamage    + this.statsFromEquips.magicalDamage,
-            magicalDefense: this.baseStats.magicalDefense   + this.statsFromEquips.magicalDefense
+            hp:             baseStats.hp               + this.statsFromEquips.hp,
+            evasion:        baseStats.evasion          + this.statsFromEquips.evasion,
+            fisicalDamage:  baseStats.fisicalDamage    + this.statsFromEquips.fisicalDamage,
+            fisicalDefense: baseStats.fisicalDefense   + this.statsFromEquips.fisicalDefense,
+            magicalDamage:  baseStats.magicalDamage    + this.statsFromEquips.magicalDamage,
+            magicalDefense: baseStats.magicalDefense   + this.statsFromEquips.magicalDefense
         })
         
         //Checks if Maximum HP was reduced
