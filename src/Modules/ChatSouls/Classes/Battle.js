@@ -191,7 +191,7 @@ export default class Battle {
      * @returns {void}
      */
     calculateRewards() {
-        /**@type {CS_Inventory_Resources} */
+        
         const resources = this.enemieInstance.getInventoryResources()
         const resourceKeys = Object.keys(resources)
         for(let  i = 0; i < resourceKeys.length; i++) {
@@ -208,6 +208,7 @@ export default class Battle {
      * @param {number} randomNumber 
      */
     giveLootHandler(resources, randomNumber){
+        
         if(resources.dropChance >= randomNumber) {
             this.playerInstance.addResources({
                 name: resources.name,
@@ -218,18 +219,20 @@ export default class Battle {
     }
 
     /**
-     * @param {Object} object
-     * @param {Player | Enemie} object.from
-     * @param {Player | Enemie} object.against
-     * @param {number} object.evasionWeight
+     * @param {Object} o
+     * @param {Player | Enemie} o.from
+     * @param {Player | Enemie} o.against
+     * @param {number} o.evasionWeight
      * @returns {boolean} `True` if event succed, `False Otherwise`
      */
-    evasionEvent(object){
-        
-        const evasion = object.from.getTotalStats().evasion
-        const oponent_evasion = object.against.getTotalStats().evasion
+    evasionEvent(o){
 
-        const evasionChance = (evasion * object.evasionWeight) / (oponent_evasion + evasion)
+        const { from, against, evasionWeight } = o
+        
+        const evasion = from.getTotalStats().evasion
+        const oponent_evasion = against.getTotalStats().evasion
+
+        const evasionChance = (evasion * evasionWeight) / (oponent_evasion + evasion)
         const randomNumber = Math.random()
 
         if(evasionChance >= randomNumber) {

@@ -109,8 +109,9 @@ export default class Player extends Entity {
      */
     static set sendToDataBase(playerData) {
 
-        if(!playerData.name) throw Error(`ERROR: Player class, "sendToDataBase" setter: playerData must have at least a name.`)
-        
+        if(!playerData.name) {
+            throw Error(`ERROR: Player class, "sendToDataBase" setter: playerData must have at least a name.`)
+        }
         this.#database[playerData.name] = deepCopy(playerData)
     }
 
@@ -127,9 +128,10 @@ export default class Player extends Entity {
     static set onlinePlayers(playerArray) {
 
         for(let i = 0; i < playerArray.length; i++) {
-            if(!(playerArray[i] instanceof Player)) throw Error(`ERROR, Player class, "onlinePlayer" setter: only array of players are allowed`)
+            if(!(playerArray[i] instanceof Player)) {
+                throw Error(`ERROR, Player class, "onlinePlayer" setter: only array of players are allowed`)
+            }
         }
-
         this.#onlinePlayers = playerArray
     }
 
@@ -274,7 +276,7 @@ export default class Player extends Entity {
         if(!playerData.inventory.equipments)    playerData.inventory.equipments = deepCopy(playerInstance.getInventoryEquipments())
         if(!playerData.inventory.resources)     playerData.inventory.resources  = deepCopy(playerInstance.getInventoryResources())
 
-        const inventoryEquipments = playerInstance.getInventoryEquipments()
+        const inventoryEquipments = playerInstance.getInventoryEquipments_KV()
         for(let i = 0; i < equipmentKeys.length; i++){
             if(!playerData.inventory.equipments[equipmentKeys[i]]) {
                 playerData.inventory.equipments[equipmentKeys[i]] = deepCopy(inventoryEquipments[equipmentKeys[i]])
@@ -392,15 +394,15 @@ export default class Player extends Entity {
 
     /**
      * Handles attribute upgrade logics when add 1 attribute point for a player
-     * @param {string} KEYS_CS_ATTRIBUTES 
+     * @param {string} attributeType 
      * @returns 
      */
-    upgradeAttributeProcessHandler(KEYS_CS_ATTRIBUTES){
+    upgradeAttributeProcessHandler(attributeType){
 
         const upgradeCost = this.getUpgradeCost()
 
         this.decreaseSouls(upgradeCost)
-        this.addAttributes(KEYS_CS_ATTRIBUTES)
+        this.addAttributes(attributeType)
         this.addLevel()
         this.calculateStats()
         this.recoverHP()

@@ -13,13 +13,18 @@ import Weapon from './EquipmentChilds/Weapon'
 
 /**
  * @typedef {import ('../TypeDefinitions/Types').CS_Attributes} CS_Attributes
+ * @typedef {import('../TypeDefinitions/Types').CS_Attributes_KV} CS_Attributes_KV
  * @typedef {import ('../TypeDefinitions/Types').CS_Entity_Equipment} CS_Entity_Equipment
+ * @typedef {import('../TypeDefinitions/Types').CS_Entity_Equipment_KV} CS_Entity_Equipment_KV
  * @typedef {import ('../TypeDefinitions/Types').CS_Entity_Inventory} CS_Entity_Inventory
+ * @typedef {import('../TypeDefinitions/Types').CS_Entity_Inventory_KV} CS_Entity_Inventory_KV
  * @typedef {import ('../TypeDefinitions/Types').CS_Inventory_Equipments} CS_Inventory_Equipments
+ * @typedef {import('../TypeDefinitions/Types').CS_Inventory_Equipments_KV} CS_Inventory_Equipments_KV
  * @typedef {import('../TypeDefinitions/Types').CS_Inventory_Resources} CS_Inventory_Resources
  * @typedef {import('../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData
  * @typedef {import('../TypeDefinitions/Types').CS_Equipment_ArmorData} CS_Equipment_ArmorData
  * @typedef {import ('../TypeDefinitions/Types').CS_Stats} CS_Stats
+ * @typedef {import('../TypeDefinitions/Types').CS_Stats_KV} CS_Stats_KV
  * @typedef {import ('../TypeDefinitions/Types').CS_ResourceData} CS_ResourceData
 */
 
@@ -227,6 +232,11 @@ export default class Entity {
      */
     getAttributes() { return this.#attributes }
 
+    /** Getter
+     * @returns {CS_Attributes_KV} 
+     */
+    getAttributes_KV() { return this.#attributes }
+
     /** Setter
      * @param {CS_Attributes} object 
      */
@@ -247,6 +257,11 @@ export default class Entity {
      * @returns {CS_Entity_Equipment} 
      */
     getCurrentEquipment() { return this.#currentEquipment }
+
+    /** Getter
+     * @returns {CS_Entity_Equipment_KV} 
+     */
+    getCurrentEquipment_KV() { return this.#currentEquipment }
 
     /** Setter
      * @param {CS_Entity_Equipment} newCurrentEquipment 
@@ -278,6 +293,11 @@ export default class Entity {
      */
     getInventory() { return this.#inventory }
 
+    /** Getter
+     * @returns {CS_Entity_Inventory_KV} 
+     */
+    getInventory_KV() { return this.#inventory }
+
     /** Setter
      * @param {CS_Entity_Inventory} inventoryObject 
      */
@@ -307,15 +327,22 @@ export default class Entity {
         this.#inventory = deepCopy(inventoryObject)
     }
 
-    /**
-     * @returns {CS_Inventory_Equipments} Getter
+    /** Getter
+     * @returns {CS_Inventory_Equipments} 
      */
     getInventoryEquipments() {
         return this.#inventory.equipments
     }
 
-    /**
-     * @param {CS_Inventory_Equipments} inventoryEquipmentObject Setter
+    /** Getter
+     * @returns {CS_Inventory_Equipments_KV} 
+     */
+    getInventoryEquipments_KV() {
+        return this.#inventory.equipments
+    }
+
+    /** Setter
+     * @param {CS_Inventory_Equipments} inventoryEquipmentObject 
      */
     setInventoryEquipments(inventoryEquipmentObject) {
 
@@ -373,6 +400,11 @@ export default class Entity {
      */
     getTotalStats() { return this.#totalStats }
 
+    /** Getter
+     * @returns {CS_Stats_KV} 
+     */
+    getTotalStats_KV() { return this.#totalStats }
+
     /** Setter
      * @param {CS_Stats} object 
      */
@@ -388,13 +420,18 @@ export default class Entity {
         this.#totalStats = deepCopy(object) 
     }
 
-    /**
-     * @returns {CS_Stats} Getter
+    /** Getter
+     * @returns {CS_Stats} 
      */
     getBaseStats() { return this.#baseStats }
 
-    /**
-     * @param {CS_Stats} object Setter
+    /** Getter
+     * @returns {CS_Stats_KV} 
+     */
+    getBaseStats_KV() { return this.#baseStats }
+
+    /** Setter
+     * @param {CS_Stats} object 
      */
     setBaseStats(object) {
         
@@ -412,6 +449,11 @@ export default class Entity {
      * @returns {CS_Stats} 
      */
     getEquipmentStats() { return this.#statsFromEquips }
+
+    /** Getter
+     * @returns {CS_Stats_KV} 
+     */
+    getEquipmentStats_KV() { return this.#statsFromEquips }
 
     /** Setter
      * @param {CS_Stats} object 
@@ -470,7 +512,7 @@ export default class Entity {
      * @param {string} attributeType
      */
     addAttributes(attributeType){
-        const newAttributes = this.getAttributes()
+        const newAttributes = this.getAttributes_KV()
         newAttributes[attributeType] += 1
         this.setAttributes(newAttributes)
     }
@@ -480,7 +522,7 @@ export default class Entity {
      * @param {string} equipmentType 
      */
     sortInventoryEquipments(equipmentType) {
-        this.getInventoryEquipments()[equipmentType].sort((a, b) => {
+        this.getInventoryEquipments_KV()[equipmentType].sort((a, b) => {
             if (a.name < b.name) return -1
             if (a.name > b.name) return 1
             return 0
@@ -498,7 +540,7 @@ export default class Entity {
             throw Error(`ERROR: Entity class, "isInventoryEquipmentsTypeEmpty": Equipment type must be valid`)
         }
 
-        if(this.getInventoryEquipments()[equipmentType].length > 0){
+        if(this.getInventoryEquipments_KV()[equipmentType].length > 0){
             return false
         }
         return true
@@ -526,7 +568,9 @@ export default class Entity {
      */
     equip(equipmentType, equipmentObject){
 
-        const newCurrentEquipment = this.getCurrentEquipment() 
+        //TODO: Implement a way to store the item o inventory when there is something already equipped
+
+        const newCurrentEquipment = this.getCurrentEquipment_KV() 
         newCurrentEquipment[equipmentType] = equipmentObject
         this.setCurrentEquipment(deepCopy(newCurrentEquipment))
     }
@@ -541,9 +585,9 @@ export default class Entity {
         /**@type {CS_Equipment_WeaponData | CS_Equipment_ArmorData} */
         const unequippedWeapon = deepCopy(this.getCurrentEquipment()[equipmentType])      
           
-        this.getInventoryEquipments()[equipmentType].push(unequippedWeapon)
+        this.getInventoryEquipments_KV()[equipmentType].push(unequippedWeapon)
 
-        const currentEquipment = this.getCurrentEquipment()
+        const currentEquipment = this.getCurrentEquipment_KV()
         currentEquipment[equipmentType] = {}
         
         this.setCurrentEquipment(currentEquipment)
@@ -562,17 +606,13 @@ export default class Entity {
             throw Error(`ERROR: Entity class, "equipFromInventory": itemIndex out of boundaries`)
         }
         
-        const newinventoryEquipments = this.getInventoryEquipments()
-        const newCurrentEquipment = this.getCurrentEquipment()
-        const itemToStore = newCurrentEquipment[equipmentType]
+        const newinventoryEquipments = this.getInventoryEquipments_KV()
+        const currentEquipment = this.getCurrentEquipment_KV()
+        const itemToStore = currentEquipment[equipmentType]
 
-        let itemToEquip
         itemToStore.name !== undefined
-            ? itemToEquip = newinventoryEquipments[equipmentType].splice(itemIndex, 1, itemToStore)[0]
-            : itemToEquip = newinventoryEquipments[equipmentType].splice(itemIndex, 1)[0]
-        //
-
-        newCurrentEquipment[equipmentType] = itemToEquip
+            ? currentEquipment[equipmentType] = newinventoryEquipments[equipmentType].splice(itemIndex, 1, itemToStore)[0]
+            : currentEquipment[equipmentType] = newinventoryEquipments[equipmentType].splice(itemIndex, 1)[0]
     }
 
     /**
@@ -584,16 +624,17 @@ export default class Entity {
      */
     getAllEquipmentInventoryString(equipmentType){
         
-        let equipment = this.getInventoryEquipments()[equipmentType]
-        if (equipment.length <= 0) {
+        if (this.getEquipmentInventoryAmount(equipmentType) <= 0) {
             throw Error(`ERROR: Entity class, "getAllEquipmentInventoryString" method: there is no equipment to format string from`)
         }
-
-        //Build the weapon list string
+        
+        let equipment = this.getInventoryEquipments_KV()[equipmentType]
         let equipmentListString = ''
-        for(let i = 0; i < equipment.length; i++) {
+
+        for(let i = 0; i < equipment.length; i++)
             equipmentListString += `| ${i + 1}. ${equipment[i].name} `
-        }
+        //
+        
         return equipmentListString
     }
 
@@ -639,7 +680,7 @@ export default class Entity {
      * Fully restore the current HP
      */
     recoverHP() {
-        this.setCurrentHP(this.getTotalStats()[statsTypes.HP])
+        this.setCurrentHP(this.getTotalStats().hp)
     }
 
     /** 
@@ -713,7 +754,7 @@ export default class Entity {
      */
     bonusFromEquippment(EquipmentClass, equipmentType){
 
-        const currentEquipment = this.getCurrentEquipment()
+        const currentEquipment = this.getCurrentEquipment_KV()
 
         if(!currentEquipment[equipmentType].name) return
         

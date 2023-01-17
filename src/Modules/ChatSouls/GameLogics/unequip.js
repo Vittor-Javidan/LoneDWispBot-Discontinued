@@ -10,7 +10,7 @@ import { sendMessage_UI_EquipmentTypeMenu } from "../UserInteface/sendMessage_Cu
 export default function unequip(playerInstance) {
 
     const equipmentType = getEquipmentTypeByPlayerState(playerInstance)
-    const currentEquipment = playerInstance.getCurrentEquipment()[equipmentType]
+    const currentEquipment = playerInstance.getCurrentEquipment_KV()[equipmentType]
     const message = choseMessageByEquipmentType(equipmentType)
 
 	if(!currentEquipment.name){

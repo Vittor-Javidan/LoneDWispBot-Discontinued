@@ -362,9 +362,12 @@ function classMethods() {
 
 			//1
 			const dummyInstance = new Player("Dummy Player: loginPlayerInstance()")
-			const dummyInstance2 = new Player("Dummy Player: loginPlayerInstance()")
+
+			//Setup
 			Player.onlinePlayers.push(dummyInstance)
-			expect(() => Player.loginPlayerInstance(dummyInstance2)).toThrow(
+
+			//Test
+			expect(() => Player.loginPlayerInstance(dummyInstance)).toThrow(
 				Error('ERROR: Player is already logged. Use this method only when a player is not logged in the game')
 			)
 

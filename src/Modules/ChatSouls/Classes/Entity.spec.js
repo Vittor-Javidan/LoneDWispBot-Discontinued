@@ -819,7 +819,7 @@ function statsCalculation() {
         `, () => {
 
             const dummyEntity = new Entity(true, 'Dummy Entity: calculateBaseStats()')            
-            dummyEntity.setAttributes(Dummy.attributes )
+            dummyEntity.setAttributes(Dummy.attributes)
             dummyEntity.calculateBaseStats()
             expect(dummyEntity.getBaseStats()).toStrictEqual({
                 hp:             10 * Utils.statsWeight.HP,

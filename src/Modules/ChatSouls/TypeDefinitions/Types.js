@@ -12,12 +12,8 @@
  * @typedef {Object<string, CS_EntityData>} CS_Database
 */
 
-//TODO: create variations of some definiton Types, to use with KV format
-
 //EQUIPMENT DATABASE DEFINITION
 /**
- * - Keys: `database item name string`
- * 
  * @typedef {Object} CS_EquipmentDataBase
  * @property {Object<string, CS_Equipment_WeaponData>} longRangeWeapon
  * @property {Object<string, CS_Equipment_WeaponData>} meleeWeapon
@@ -25,6 +21,10 @@
  * @property {Object<string, CS_Equipment_ArmorData>} bodyArmor
  * @property {Object<string, CS_Equipment_ArmorData>} gloves
  * @property {Object<string, CS_Equipment_ArmorData>} boots
+ * 
+ * @typedef {Object<string, Object<
+ *      string, CS_Equipment_WeaponData> | Object<string, CS_Equipment_ArmorData>
+ * >} CS_EquipmentDataBase_KV
 */ 
 
 // PLAYER STATE DEFINITION
@@ -47,6 +47,10 @@
  * @typedef {Object} CS_Entity_Inventory
  * @property {CS_Inventory_Equipments} equipments
  * @property {CS_Inventory_Resources} resources
+ * 
+ * @typedef {Object} CS_Entity_Inventory_KV
+ * @property {CS_Inventory_Equipments_KV} equipments
+ * @property {CS_Inventory_Resources} resources
 */
 
 //ENITTY DATA SUBTYPES DEFINITION - ENTITY EQUIPMENT
@@ -58,6 +62,8 @@
  * @property {CS_Equipment_ArmorData} bodyArmor
  * @property {CS_Equipment_ArmorData} gloves
  * @property {CS_Equipment_ArmorData} boots
+ * 
+ * @typedef {Object<string, CS_Equipment_WeaponData | CS_Equipment_ArmorData>} CS_Entity_Equipment_KV
 */
 
 //ENITTY DATA SUBTYPES DEFINITION - ENTITY INVENTORY EQUIPMENT
@@ -69,6 +75,8 @@
  * @property {CS_Equipment_ArmorData[]} bodyArmor
  * @property {CS_Equipment_ArmorData[]} gloves
  * @property {CS_Equipment_ArmorData[]} boots
+ * 
+ * @typedef {Object<string, CS_Equipment_WeaponData[] | CS_Equipment_ArmorData[]>} CS_Inventory_Equipments_KV
 */
 
 //WEAPON DATA DEFINITION
@@ -89,7 +97,6 @@
 
 //RESOURCES DATA DEFINITION
 /**
- * - Keys: `resource name string`
  * @typedef {Object<string, CS_ResourceData>} CS_Inventory_Resources
  * @typedef {Object} CS_ResourceData
  * @property {string} name
@@ -101,12 +108,13 @@
 
 //ATRIBUTE DEFINTION
 /** 
- * - Keys: `ATTRIBUTE_TYPE ENUM`
  * @typedef {Object} CS_Attributes 
  * @property {number} vitality
  * @property {number} agility
  * @property {number} strenght
  * @property {number} intelligence
+ * 
+ * @typedef {Object<string, number>} CS_Attributes_KV
 */
 
 //STATS DEFINITION
@@ -118,6 +126,8 @@
  * @property {number} fisicalDefense
  * @property {number} magicalDamage
  * @property {number} magicalDefense
+ * 
+ * @typedef {Object<string, number>} CS_Stats_KV
 */
 
 //Player Payload

@@ -1,4 +1,3 @@
-import CS_ENUM from "../ENUM"
 import Equipment from "../Equipment"
 
 /** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData */
@@ -28,9 +27,9 @@ export default class Weapon extends Equipment {
         return `
         DESCRIÇÃO: ${this.description} 
         MULTIPLICADORES: 
-        HP = ${this.multipliers[CS_ENUM.KEYS.CS_ATTRIBUTES.VITALITY]}x Vitalidade, 
-        Evasão = ${this.multipliers[CS_ENUM.KEYS.CS_ATTRIBUTES.AGILITY]}x Agilidade, 
-        Dano físico = ${this.multipliers[CS_ENUM.KEYS.CS_ATTRIBUTES.STRENGHT]}x Força, 
-        Dano mágico = ${this.multipliers[CS_ENUM.KEYS.CS_ATTRIBUTES.INTELLLIGENCE]}x Inteligência`
+        HP = ${this.multipliers.vitality}x Vitalidade, 
+        Evasão = ${this.multipliers.agility}x Agilidade, 
+        Dano físico = ${this.multipliers.strenght}x Força, 
+        Dano mágico = ${this.multipliers.intelligence}x Inteligência`
     }
 }
