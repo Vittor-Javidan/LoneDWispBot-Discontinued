@@ -8,13 +8,17 @@ import { sendMessage_UI_Idle } from "../../sendMessage_Customized/sendMessage_UI
  */
 export default function playerWon(battleInstance, FINAL_MESSAGE) {
 
+    //TODO: Refactor this function
+
     const playerInstance = battleInstance.playerInstance
     const enemieInstance = battleInstance.enemieInstance
+    
     playerInstance.secondaryState = PLAYER_STATES.EXPLORING.SECONDARY.IDLE
-
-    FINAL_MESSAGE = `VOCÊ GANHOU!! e recebeu ${enemieInstance.souls} almas. últimos momentos: ${FINAL_MESSAGE}`
-    sendMessage_UI_Idle(playerInstance, FINAL_MESSAGE)
-
     battleInstance.calculateRewards()
     Battle.deleteBattle(playerInstance.getName())
+    
+    //Feedback Message
+    const souls = enemieInstance.getSouls()
+    FINAL_MESSAGE = `VOCÊ GANHOU!! e recebeu ${souls} almas. últimos momentos: ${FINAL_MESSAGE}`
+    sendMessage_UI_Idle(playerInstance, FINAL_MESSAGE)
 }

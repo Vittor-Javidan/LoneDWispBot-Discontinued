@@ -12,12 +12,12 @@ describe(`doHaveEnoughSoulsBalance`, () => {
         const dummyPlayer = new Player(`Dummy Player: doHaveEnoughSoulsBalance()`)
 
         //1
-        dummyPlayer.souls = 0
+        dummyPlayer.setSouls(0)
         dummyPlayer.level = 1
         expect(doHaveEnoughSoulsBalance(dummyPlayer)).toBe(false)
 
         //2
-        dummyPlayer.souls = 9999
+        dummyPlayer.setSouls(9999)
         dummyPlayer.level = 1
         expect(doHaveEnoughSoulsBalance(dummyPlayer)).toBe(true)
     })

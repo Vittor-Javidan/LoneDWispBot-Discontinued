@@ -18,7 +18,7 @@ export default class Enemie extends Entity{
 
         super(true, enemieData.name)
         this.level = enemieData.level
-        this.souls = enemieData.souls
+        this.setSouls(enemieData.souls)
         this.attributes = enemieData.attributes
         this.currentEquipment = enemieData.equipment
         this.inventory = enemieData.inventory

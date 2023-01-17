@@ -198,7 +198,7 @@ export default class Battle {
             const randomNumber = Math.random()
             this.giveLootHandler(resources[resourceKeys[i]], randomNumber)
         }
-        this.playerInstance.addSouls(this.enemieInstance.souls)
+        this.playerInstance.addSouls(this.enemieInstance.getSouls())
     }
 
     /**

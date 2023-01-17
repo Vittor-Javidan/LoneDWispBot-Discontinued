@@ -186,15 +186,15 @@ export default class Entity {
         this.#currentHP = value
     }
 
-    /**
-     * @returns {number} Getter
+    /** Getter
+     * @returns {number}
      */
-    get souls() { return this.#souls }
+    getSouls() { return this.#souls }
 
-    /**
-     * @param {number} amount Setter
+    /** Setter
+     * @param {number} amount 
      */
-    set souls(amount) {
+    setSouls(amount) {
         
         if(typeof amount !== 'number' || isNaN(amount)) 
             throw Error('ERROR: Entity class, souls must be a number')
@@ -437,7 +437,8 @@ export default class Entity {
      * @param {number} value 
      */
     addSouls(value){
-        this.souls += value
+        const souls = this.getSouls()
+        this.setSouls(souls + value)
     }
 
     /**
@@ -446,11 +447,14 @@ export default class Entity {
      */
     decreaseSouls(value){
 
-        if(this.souls - value < 0){
-            this.souls = 0
+        const souls = this.getSouls()
+
+        if(souls - value < 0){
+            this.setSouls(0)
             return
         }
-        this.souls -= value
+
+        this.setSouls(souls - value)
     }
 
     /**

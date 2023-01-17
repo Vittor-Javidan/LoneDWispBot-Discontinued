@@ -151,9 +151,9 @@ function settersAndGetters() {
         it('Can set', () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: souls setter/getter")
-            dummyEntity.souls = 1000
-            expect(dummyEntity.souls).toBeTypeOf("number")
-            expect(dummyEntity.souls).toBe(1000)
+            dummyEntity.setSouls(1000)
+            expect(dummyEntity.getSouls()).toBeTypeOf("number")
+            expect(dummyEntity.getSouls()).toBe(1000)
         })
 
         it(`Throws error:
@@ -164,13 +164,13 @@ function settersAndGetters() {
             const dummyEntity = new Entity(true, "Dummy Entity: souls setter/getter")
 
             //1
-            expect(() => dummyEntity.souls = 'wrong type').toThrow(Error('ERROR: Entity class, souls must be a number'))
-            expect(() => dummyEntity.souls = false).toThrow(Error('ERROR: Entity class, souls must be a number'))
-            expect(() => dummyEntity.souls = NaN).toThrow(Error('ERROR: Entity class, souls must be a number'))
-            expect(() => dummyEntity.souls = {}).toThrow(Error('ERROR: Entity class, souls must be a number'))
+            expect(() => dummyEntity.setSouls('wrong type')).toThrow(Error('ERROR: Entity class, souls must be a number'))
+            expect(() => dummyEntity.setSouls(false)).toThrow(Error('ERROR: Entity class, souls must be a number'))
+            expect(() => dummyEntity.setSouls(NaN)).toThrow(Error('ERROR: Entity class, souls must be a number'))
+            expect(() => dummyEntity.setSouls({})).toThrow(Error('ERROR: Entity class, souls must be a number'))
 
             //2
-            expect(() => dummyEntity.souls = -1000).toThrow(Error('Error: Entity class, souls cannot be negative'))
+            expect(() => dummyEntity.setSouls(-1000)).toThrow(Error('Error: Entity class, souls cannot be negative'))
         })
     })
 
@@ -420,9 +420,9 @@ function utilMethods(){
         `, () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: addSouls()")
-            dummyEntity.souls = 0
+            dummyEntity.setSouls(0)
             dummyEntity.addSouls(5000)
-            expect(dummyEntity.souls).toBe(5000)
+            expect(dummyEntity.getSouls()).toBe(5000)
         })
 	})
 
@@ -436,14 +436,14 @@ function utilMethods(){
             const dummyEntity = new Entity(true, "Dummy Entity: decreaseSouls()")
 
             //1
-            dummyEntity.souls = 5000
+            dummyEntity.setSouls(5000)
             dummyEntity.decreaseSouls(2000)
-            expect(dummyEntity.souls).toBe(3000)
+            expect(dummyEntity.getSouls()).toBe(3000)
 
             //2
-            dummyEntity.souls = 2000
+            dummyEntity.setSouls(2000)
             dummyEntity.decreaseSouls(5000)
-            expect(dummyEntity.souls).toBe(0)
+            expect(dummyEntity.getSouls()).toBe(0)
         })
 	})
 

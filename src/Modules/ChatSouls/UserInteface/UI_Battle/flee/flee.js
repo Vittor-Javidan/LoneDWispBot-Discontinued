@@ -39,7 +39,7 @@ function didPlayerDied(battleInstance, attackPhaseMessage) {
         primary: PLAYER_STATES.FIRE_PIT.PRIMARY,
         secondary: PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT
     }
-    playerInstance.souls = 0
+    playerInstance.setSouls(0)
     playerInstance.recoverHP()
     playerInstance.ressurrect()
     playerInstance.save()

@@ -266,7 +266,7 @@ export default class Player extends Entity {
         const playerName = playerInstance.getName()
         const playerData = this.database[`${playerName}`]
 
-        if(!playerData.souls)                   playerData.souls = playerInstance.souls
+        if(!playerData.souls)                   playerData.souls = playerInstance.getSouls()
         if(!playerData.level)                   playerData.level = playerInstance.level
         if(!playerData.attributes)              playerData.attributes = deepCopy(playerInstance.attributes)
         if(!playerData.equipment)               playerData.equipment = deepCopy(playerInstance.currentEquipment)
@@ -354,7 +354,7 @@ export default class Player extends Entity {
         const playerData = Player.database[`${this.getName()}`]
 
         //Replace default values for saved values
-        this.souls      =   playerData.souls
+        this.setSouls(playerData.souls)
         this.level      =   playerData.level
         this.attributes =   playerData.attributes
         this.currentEquipment  =   playerData.equipment
@@ -371,7 +371,7 @@ export default class Player extends Entity {
         /** @type {CS_EntityData} */
         const playerData = {
             name: this.getName(),
-            souls: this.souls,
+            souls: this.getSouls(),
             level: this.level,
             attributes: this.attributes,
             equipment: this.currentEquipment,

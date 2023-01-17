@@ -373,11 +373,19 @@ function instanceMethods() {
             1. give resources and souls
         `, () => {
             
+            //Instantiation
             const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, mapAreas.TEST_AREA))
             const dummyPlayer = new Player("Dummy Player: calculateRewards()")
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
+
+            //Setup
+            dummyPlayer.setSouls(0)
+
+            //Run
             battleInstance.calculateRewards()    
-            expect(dummyPlayer.souls).toBe(dummyEnemie.souls)
+
+            //Test
+            expect(dummyPlayer.getSouls()).toBe(dummyEnemie.getSouls())
             expect(dummyPlayer.inventoryResources).toStrictEqual({
                 "Dummy Resource": {
                     name: "Dummy Resource",

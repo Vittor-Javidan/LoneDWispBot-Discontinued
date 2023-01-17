@@ -56,7 +56,7 @@ function initialization() {
 			//2
 			const playerInstance = Player.getPlayerInstanceByName(DummyGuy.name)
 			expect(playerInstance).toBeInstanceOf(Player)
-			expect(playerInstance.souls).toBe(DummyGuy.souls)
+			expect(playerInstance.getSouls()).toBe(DummyGuy.souls)
 			expect(playerInstance.level).toBe(DummyGuy.level)
 			expect(playerInstance.attributes).toStrictEqual(DummyGuy.attributes)
 			expect(playerInstance.currentEquipment).toStrictEqual(DummyGuy.equipment)
@@ -434,7 +434,7 @@ function instanceMethods() {
 			
 			const dummyPlayer = new Player(DummyGuy.name)
 			dummyPlayer.load()
-			expect(dummyPlayer.souls).toEqual(DummyGuy.souls)
+			expect(dummyPlayer.getSouls()).toEqual(DummyGuy.souls)
 			expect(dummyPlayer.level).toEqual(DummyGuy.level)
 			expect(dummyPlayer.attributes).toStrictEqual(DummyGuy.attributes)
 			expect(dummyPlayer.currentEquipment).toStrictEqual(DummyGuy.equipment)
@@ -452,14 +452,14 @@ function instanceMethods() {
 			//1
 			const dinamicDummy = new Player("Dummy Player: save()")
 			dinamicDummy.attributes = RandomData.attributes()
-			dinamicDummy.souls = RandomData.souls()
+			dinamicDummy.setSouls(RandomData.souls())
 			dinamicDummy.level = RandomData.level()
 			dinamicDummy.currentEquipment = RandomData.equipment()
 			dinamicDummy.inventory = RandomData.inventory()
 			dinamicDummy.save()
 			const newDataBase = DbSystem.loadDb(playerDataBasePath)[dinamicDummy.getName()] //pre-requisite, to get new data from database file
 			expect(newDataBase.name).toEqual(dinamicDummy.getName())
-			expect(newDataBase.souls).toEqual(dinamicDummy.souls)
+			expect(newDataBase.souls).toEqual(dinamicDummy.getSouls())
 			expect(newDataBase.level).toEqual(dinamicDummy.level)
 			expect(newDataBase.equipment).toStrictEqual(dinamicDummy.currentEquipment)
 			expect(newDataBase.attributes).toStrictEqual(dinamicDummy.attributes)

@@ -25,7 +25,7 @@ export default function restoreEnemieHpPvE(data){
     const playerInstance = battleInstance.playerInstance
     if(playerInstance.getName() === data.userName){
         const playerSouls = playerInstance.getSouls()
-        playerInstance.souls = Math.floor(playerSouls/2)
+        playerInstance.setSouls(Math.floor(playerSouls/2))
         playerInstance.save()
         sendMessage(`@${data.userName} tentou recuperar a vida de seu próprio inimigo! Tamanha audacidade o fez perder metade de suas almas *-*`)
         return

@@ -30,7 +30,7 @@ function constructor() {
         const enemieInstance = new Enemie(enemieData)
 
         expect(enemieInstance.level).toEqual(enemieData.level)
-        expect(enemieInstance.souls).toEqual(enemieData.souls)
+        expect(enemieInstance.getSouls()).toEqual(enemieData.souls)
         expect(enemieInstance.attributes).toStrictEqual(enemieData.attributes)
         expect(enemieInstance.currentEquipment).toStrictEqual(enemieData.equipment)
         expect(enemieInstance.inventory).toStrictEqual(enemieData.inventory)

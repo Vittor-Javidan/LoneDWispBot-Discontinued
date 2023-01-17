@@ -13,7 +13,7 @@ export default function exitGame(playerInstance){
     const battleinstance = Battle.getBattle(playerName)
 
     if(battleinstance) {
-        playerInstance.souls = 0
+        playerInstance.setSouls(0)
         playerInstance.save()
         sendMessage(
             `/w ${playerName} Você saiu da batalha de modo forçado e perdeu todas suas almas`

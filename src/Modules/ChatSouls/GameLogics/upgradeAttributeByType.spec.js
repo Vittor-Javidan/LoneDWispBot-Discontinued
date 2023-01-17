@@ -9,7 +9,7 @@ describe(`upgradeAttributeByType`, () => {
     `, () => {
 
         const dummyPlayer = new Player(`Dummy Player: upgradeAttributeByType`)
-        dummyPlayer.souls = 99999 // To Pass souls balance checking
+        dummyPlayer.setSouls(99999) // To Pass souls balance checking
         dummyPlayer.level = 1
 
         expect(() => upgradeAttributeByType({

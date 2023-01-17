@@ -6,15 +6,19 @@ import doHaveEnoughSoulsBalance from "./doHaveEnoughSoulsBalance"
 /**
  * Handles player upgrade attribute proccess
  * 
- * @param {Object} object
- * @param {Player} object.playerInstance
- * @param {string} object.attributePicked
- * @param {string} object.menuMessage
+ * @param {Object} o
+ * @param {Player} o.playerInstance
+ * @param {string} o.attributePicked
+ * @param {string} o.menuMessage
  */
-export default function upgradeAttributeByType(object) {
+export default function upgradeAttributeByType(o) {
 
-    if(!doHaveEnoughSoulsBalance(object.playerInstance)) {
-        sendMessage_UI_AttributeUpgradeMenu(object.playerInstance,
+    //TODO: Refactor this function
+
+    const { playerInstance, attributePicked, menuMessage } = o
+
+    if(!doHaveEnoughSoulsBalance(playerInstance)) {
+        sendMessage_UI_AttributeUpgradeMenu(playerInstance,
             `Você não possui almas suficientes`
         )
         return
@@ -24,16 +28,22 @@ export default function upgradeAttributeByType(object) {
     const attributeTypesArray = Object.values(attributeTypes)
 
     for(let i = 0; i < attributeTypesArray.length; i++) {
-        if(!attributeTypesArray.includes(object.attributePicked)) {
+        if(!attributeTypesArray.includes(attributePicked)) {
             throw Error(`ERROR: upgradeAttributeByType(): Attribute type not recognized`)
         }
     }
 
-    object.playerInstance.upgradeAttributeProcessHandler(object.attributePicked)
-    sendMessage_UI_AttributeUpgradeMenu(object.playerInstance,
-        `${object.menuMessage} 
-        - Novo level: ${object.playerInstance.level} 
-        - Almas restantes: ${object.playerInstance.souls} 
-        - custo próximo nível: ${object.playerInstance.getUpgradeCost()} `
+    playerInstance.upgradeAttributeProcessHandler(attributePicked)
+
+    //Feedback Message
+    const souls = playerInstance.getSouls()
+    const level = playerInstance.level
+    const nextUpgradeCost = playerInstance.getUpgradeCost()
+
+    sendMessage_UI_AttributeUpgradeMenu(playerInstance,
+        `${menuMessage} 
+        - Novo level: ${level} 
+        - Almas restantes: ${souls} 
+        - custo próximo nível: ${nextUpgradeCost} `
     )
 }

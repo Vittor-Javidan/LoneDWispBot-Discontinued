@@ -11,7 +11,7 @@ export function sendMessage_UI_AttributeUpgradeMenu(playerInstance, menuMessage)
 
 	const playerName = playerInstance.getName()
 	const level = playerInstance.level
-	const souls = playerInstance.souls
+	const souls = playerInstance.getSouls()
 	const upgradeCost = playerInstance.getUpgradeCost()
 
 	sendMessage(

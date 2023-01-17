@@ -9,7 +9,7 @@ import Player from "../Classes/EntityChilds/Player";
  */
 export default function doHaveEnoughSoulsBalance(playerInstance) {
 
-    const souls = playerInstance.souls
+    const souls = playerInstance.getSouls()
 	const upgradeCost = playerInstance.getUpgradeCost()
 	const soulsBalance_AfterUpgrade = souls - upgradeCost
 
