@@ -224,7 +224,7 @@ export default class Player extends Entity {
         const playerInstance = new Player(userName)
 
         /**@type {CS_PlayerPayload} */
-        const response = {}
+        const response = {} //TODO: Remove response and find another way to start the game
 
         response.registered = this.register(playerInstance)
         this.updateDataBaseMissingInfo(playerInstance)

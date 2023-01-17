@@ -10,17 +10,15 @@ import sendMessage_UI_Battle from "../sendMessage_UI_Battle"
 export default function flee(battleInstance) {
     
     if(didFlee(battleInstance)) {
-        console.log('Fuga bem sucedida')
         return
     }
     
     const damageFeedback = damageFeedBackAttackPhase(battleInstance)
     
     if(didPlayerDied(battleInstance, damageFeedback)) {
-        console.log('Morte')
         return
     }
-    console.log('Fuga falhou')
+    
     sendMessage_UI_Battle(battleInstance, `sua fuga falhou! ${damageFeedback}`)
 }
 
@@ -58,11 +56,8 @@ function didPlayerDied(battleInstance, attackPhaseMessage) {
 function didFlee(battleInstance) {
 
     const succed = battleInstance.fleePvE()
-
-    console.log(succed)
     
     if(!succed) {
-        console.log('Passou aqui')
         return false
     }
     
@@ -70,7 +65,6 @@ function didFlee(battleInstance) {
     Battle.deleteBattle(playerInstance.name)
     playerInstance.secondaryState = PLAYER_STATES.EXPLORING.SECONDARY.IDLE
     sendMessage_UI_Idle(playerInstance,`Fuga bem sucedida!`)
-    console.log('Passou aqui 2')
     return true
 }
 
