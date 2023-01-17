@@ -61,7 +61,7 @@ function initialization() {
 			expect(playerInstance.getAttributes()).toStrictEqual(DummyGuy.attributes)
 			expect(playerInstance.getCurrentEquipment()).toStrictEqual(DummyGuy.equipment)
 			expect(playerInstance.getInventoryEquipments()).toStrictEqual(DummyGuy.inventoryEquipments)
-			expect(playerInstance.inventoryResources).toStrictEqual(DummyGuy.inventoryResources)
+			expect(playerInstance.getInventoryResources()).toStrictEqual(DummyGuy.inventoryResources)
 
 			// Sanitizer
 			Player.onlinePlayers = []
@@ -439,7 +439,7 @@ function instanceMethods() {
 			expect(dummyPlayer.getAttributes()).toStrictEqual(DummyGuy.attributes)
 			expect(dummyPlayer.getCurrentEquipment()).toStrictEqual(DummyGuy.equipment)
 			expect(dummyPlayer.getInventoryEquipments()).toStrictEqual(DummyGuy.inventoryEquipments)
-			expect(dummyPlayer.inventoryResources).toStrictEqual(DummyGuy.inventoryResources)
+			expect(dummyPlayer.getInventoryResources()).toStrictEqual(DummyGuy.inventoryResources)
 		})
 	})
 

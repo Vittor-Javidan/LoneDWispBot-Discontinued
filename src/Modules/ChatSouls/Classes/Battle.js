@@ -192,7 +192,7 @@ export default class Battle {
      */
     calculateRewards() {
         /**@type {CS_Inventory_Resources} */
-        const resources = this.enemieInstance.inventoryResources
+        const resources = this.enemieInstance.getInventoryResources()
         const resourceKeys = Object.keys(resources)
         for(let  i = 0; i < resourceKeys.length; i++) {
             const randomNumber = Math.random()

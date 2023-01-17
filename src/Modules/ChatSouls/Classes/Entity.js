@@ -339,17 +339,17 @@ export default class Entity {
         this.#inventory.equipments = deepCopy(inventoryEquipmentObject) 
     }
 
-    /**
-     * @returns {CS_Inventory_Resources} Getter
+    /** Getter
+     * @returns {CS_Inventory_Resources} 
      */
-    get inventoryResources() {
+    getInventoryResources() {
         return this.#inventory.resources
     }
 
-    /**
-     * @param {CS_Inventory_Resources} object Setter
+    /** Setter
+     * @param {CS_Inventory_Resources} object 
      */
-    set inventoryResources(object) {
+    setInventoryResources(object) {
 
         if(typeof object !== 'object') {
             throw Error('ERROR: Entity class, "inventoryResources" setter: argument must be an object')
@@ -613,14 +613,13 @@ export default class Entity {
      */
     addResources(resourceObject) {
 
-        this.inventoryResources[resourceObject.name]
-            ? this.inventoryResources[resourceObject.name].amount += resourceObject.amount
-            : this.inventoryResources[resourceObject.name] = {
+        this.getInventoryResources()[resourceObject.name]
+            ? this.getInventoryResources()[resourceObject.name].amount += resourceObject.amount
+            : this.getInventoryResources()[resourceObject.name] = {
                 name: resourceObject.name,
                 amount: resourceObject.amount,
                 type: resourceObject.type
             }
-
     }
 
     /**
@@ -632,7 +631,7 @@ export default class Entity {
 
         //TODO: Refactor this function
         
-        if(!this.inventoryResources[resourceName]) {
+        if(!this.getInventoryResources()[resourceName]) {
             throw Error(`ERROR: Entity class, "removeResources": resource doesn't exist`)
         }
         if (amount > this.getInventory().resources[resourceName].amount) {

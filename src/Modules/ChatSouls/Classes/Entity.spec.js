@@ -349,8 +349,8 @@ function settersAndGetters() {
         it('Can be set normaly', () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: inventoryResources setter/getter")
-            dummyEntity.inventoryResources = Dummy.inventory.resources
-            expect(dummyEntity.inventoryResources).toStrictEqual(deepCopy(Dummy.inventory.resources))
+            dummyEntity.setInventoryResources(Dummy.inventory.resources)
+            expect(dummyEntity.getInventoryResources()).toStrictEqual(deepCopy(Dummy.inventory.resources))
         })
 
         it(`Throws Error: 
@@ -361,12 +361,12 @@ function settersAndGetters() {
             const dummyEntity = new Entity(true, "Dummy Entity: inventoryResources setter/getter")
             
             //1
-            expect(() => dummyEntity.inventoryResources = 'wrong type').toThrow(Error('ERROR: Entity class, "inventoryResources" setter: argument must be an object'))
-            expect(() => dummyEntity.inventoryResources = false).toThrow(Error('ERROR: Entity class, "inventoryResources" setter: argument must be an object'))
-            expect(() => dummyEntity.inventoryResources = 0).toThrow(Error('ERROR: Entity class, "inventoryResources" setter: argument must be an object'))
+            expect(() => dummyEntity.setInventoryResources('wrong type')).toThrow(Error('ERROR: Entity class, "inventoryResources" setter: argument must be an object'))
+            expect(() => dummyEntity.setInventoryResources(false)).toThrow(Error('ERROR: Entity class, "inventoryResources" setter: argument must be an object'))
+            expect(() => dummyEntity.setInventoryResources(0)).toThrow(Error('ERROR: Entity class, "inventoryResources" setter: argument must be an object'))
             
             //2
-            expect(() => dummyEntity.inventoryResources = { "Dummy resource 1": {} }).toThrow(
+            expect(() => dummyEntity.setInventoryResources({ "Dummy resource 1": {} })).toThrow(
                 Error('ERROR: Entity class, "inventoryResources" setter: all properties must be defined')
             )
         })
@@ -684,14 +684,14 @@ function inventoryResources() {
             const dummyEntity = new Entity(true, 'Dummy Entity: addResources()')
             
             //1
-            dummyEntity.inventoryResources = {}
+            dummyEntity.setInventoryResources({})
             dummyEntity.addResources(Dummy.resource["Dummy resource 1"])
-            expect(dummyEntity.inventoryResources).toStrictEqual(deepCopy(Dummy.resource))
+            expect(dummyEntity.getInventoryResources()).toStrictEqual(deepCopy(Dummy.resource))
 
             //2
-            dummyEntity.inventoryResources = Dummy.resource
+            dummyEntity.setInventoryResources(Dummy.resource)
             dummyEntity.addResources(Dummy.resource["Dummy resource 1"])
-            expect(dummyEntity.inventoryResources["Dummy resource 1"].amount).toBe(40)
+            expect(dummyEntity.getInventoryResources()["Dummy resource 1"].amount).toBe(40)
         })
     })
 
@@ -705,14 +705,14 @@ function inventoryResources() {
             const dummyEntity = new Entity(true, 'Dummy Entity: removeResources()')
 
             //1
-            dummyEntity.inventoryResources = Dummy.resource
+            dummyEntity.setInventoryResources(Dummy.resource)
             dummyEntity.removeResources("Dummy resource 1", 10)
-            expect(dummyEntity.inventoryResources["Dummy resource 1"].amount).toBe(10)
+            expect(dummyEntity.getInventoryResources()["Dummy resource 1"].amount).toBe(10)
 
             //2
-            dummyEntity.inventoryResources = Dummy.resource
+            dummyEntity.setInventoryResources(Dummy.resource)
             dummyEntity.removeResources("Dummy resource 1", 20)
-            expect(dummyEntity.inventoryResources["Dummy resource 1"]).toBeUndefined()
+            expect(dummyEntity.getInventoryResources()["Dummy resource 1"]).toBeUndefined()
         })
 
         it(`Throws Error: 
@@ -723,12 +723,12 @@ function inventoryResources() {
             const dummyEntity = new Entity(true, 'Dummy Entity: removeResources()')
             
             //1
-            dummyEntity.inventoryResources = {}
+            dummyEntity.setInventoryResources({})
             expect(() => dummyEntity.removeResources("unexisted resource", 23)
             ).toThrow(Error(`ERROR: Entity class, "removeResources": resource doesn't exist`))
             
             //2
-            dummyEntity.inventoryResources = Dummy.resource
+            dummyEntity.setInventoryResources(Dummy.resource)
             expect(() => dummyEntity.removeResources("Dummy resource 1", 21)
             ).toThrow(Error(`ERROR: Entity class, "removeResources": trying to remove more resource than what is stored`))
         })

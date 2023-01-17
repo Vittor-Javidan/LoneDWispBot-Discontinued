@@ -272,7 +272,7 @@ export default class Player extends Entity {
         if(!playerData.equipment)               playerData.equipment            = deepCopy(playerInstance.getCurrentEquipment())
         if(!playerData.inventory)               playerData.inventory            = deepCopy(playerInstance.getInventory())
         if(!playerData.inventory.equipments)    playerData.inventory.equipments = deepCopy(playerInstance.getInventoryEquipments())
-        if(!playerData.inventory.resources)     playerData.inventory.resources  = deepCopy(playerInstance.inventoryResources)
+        if(!playerData.inventory.resources)     playerData.inventory.resources  = deepCopy(playerInstance.getInventoryResources())
 
         const inventoryEquipments = playerInstance.getInventoryEquipments()
         for(let i = 0; i < equipmentKeys.length; i++){

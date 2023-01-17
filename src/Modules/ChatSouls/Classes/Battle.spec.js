@@ -343,27 +343,27 @@ function instanceMethods() {
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
 
             //1
-            dummyPlayer.inventoryResources = {}
+            dummyPlayer.setInventoryResources({})
             battleInstance.giveLootHandler(givenResource, 0)
-            expect(dummyPlayer.inventoryResources[givenResource.name]).toStrictEqual({
+            expect(dummyPlayer.getInventoryResources()[givenResource.name]).toStrictEqual({
                 name: "Dummy Resource",
                 amount: 1,
                 type: "Test"
             })
 
             //2
-            dummyPlayer.inventoryResources = {}
+            dummyPlayer.setInventoryResources({})
             battleInstance.giveLootHandler(givenResource, 0.5)
-            expect(dummyPlayer.inventoryResources[givenResource.name]).toStrictEqual({
+            expect(dummyPlayer.getInventoryResources()[givenResource.name]).toStrictEqual({
                 name: "Dummy Resource",
                 amount: 1,
                 type: "Test"
             })
 
             //3
-            dummyPlayer.inventoryResources = {}
+            dummyPlayer.setInventoryResources({})
             battleInstance.giveLootHandler(givenResource, 1)
-            expect(dummyPlayer.inventoryResources[givenResource.name]).toBeUndefined()
+            expect(dummyPlayer.getInventoryResources()[givenResource.name]).toBeUndefined()
         })
     })
 
@@ -386,7 +386,7 @@ function instanceMethods() {
 
             //Test
             expect(dummyPlayer.getSouls()).toBe(dummyEnemie.getSouls())
-            expect(dummyPlayer.inventoryResources).toStrictEqual({
+            expect(dummyPlayer.getInventoryResources()).toStrictEqual({
                 "Dummy Resource": {
                     name: "Dummy Resource",
                     amount: 1,
