@@ -1,3 +1,4 @@
+import sendMessage from "../../../../../Twitch/sendMessageHandler";
 import Battle from "../../../Classes/Battle";
 import PLAYER_STATES from "../../../Classes/EntityChilds/PLAYER_STATES";
 import { sendMessage_UI_FirePit } from "../../sendMessage_Customized/sendMessage_UI_firePit";
@@ -20,7 +21,11 @@ export default function playerDied(battleInstance, FINAL_MESSAGE) {
         Você voltou a fogueira
     `
 
+    const playerName = playerInstance.getName()
+    const souls = playerInstance.souls
+    sendMessage(`@${playerName} morreu!!! ${souls} almas foram perdidas *-*`)
     sendMessage_UI_FirePit(playerInstance, FINAL_MESSAGE)
+
 
     playerInstance.souls = 0
     playerInstance.recoverHP()
