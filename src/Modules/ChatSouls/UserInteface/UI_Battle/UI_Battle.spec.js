@@ -38,11 +38,6 @@ describe(`UI_Battle`, () => {
 
     it(`Should flee the battle`, () => {
 
-        //Important References to watch during debugging
-        const __playerDataBase__ = Player.database
-        const __onlinePlayers__ = Player.onlinePlayers
-        const __battles__ = Battle.battlesList
-
         //Instantiation
         const name = `UI_Battle: Should flee the battle`
         Player.startGame(name)
@@ -62,7 +57,7 @@ describe(`UI_Battle`, () => {
         })
 
         //Test
-        expect(__battles__.length).toBe(0)
+        expect(Battle.battlesList.length).toBe(0)
         expect(player.isAlive).toBe(true)
 
         //Sanitizers

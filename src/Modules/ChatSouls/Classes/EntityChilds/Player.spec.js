@@ -479,22 +479,28 @@ function instanceMethods() {
 
 	describe(`upgradeAttributeProcessHandler`, () => {
 
-		// ========================================================================
-		// TODO: refactor this method
-		// ========================================================================
+		/* Pre-requisites
+			- player instance
+		*/
 		
 		it(`Should:
 			1. handle upgrade process for the choosen attribute, and save on database
 		`, () => {
-			
-			//1
-			const initalAttributes = RandomData.attributes()
+
+			//Instantiation
 			const dinamicDummy = new Player("Dummy Player: upgradeAttributeProcessHandler()")
+
+			//Setup
+			const initalAttributes = RandomData.attributes()
 			dinamicDummy.attributes = initalAttributes
+			
+			//Run
 			dinamicDummy.upgradeAttributeProcessHandler(attributeTypes.VITALITY)
 			dinamicDummy.upgradeAttributeProcessHandler(attributeTypes.AGILITY)
 			dinamicDummy.upgradeAttributeProcessHandler(attributeTypes.STRENGHT)
 			dinamicDummy.upgradeAttributeProcessHandler(attributeTypes.INTELLLIGENCE)
+
+			//Test
 			const newSavedDinamicDummy = DbSystem.loadDb(playerDataBasePath)["Dummy Player: upgradeAttributeProcessHandler()"] //pre-requisite, to get new data from database file
 			expect(newSavedDinamicDummy.attributes).toStrictEqual({
 				vitality: 		initalAttributes.vitality		+ 1,
