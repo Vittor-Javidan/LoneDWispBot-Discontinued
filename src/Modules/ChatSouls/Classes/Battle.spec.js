@@ -97,10 +97,10 @@ function classMethods() {
             player.level = 1
             Battle.startBattle(player, enemie)
             expect(Battle.battlesList.length).toBe(1)
-            expect(Battle.battlesList[0].playerInstance.name).toBe(player.name)
+            expect(Battle.battlesList[0].playerInstance.getName()).toBe(player.getName())
 
             //Sanitizer
-            Battle.deleteBattle(player.name)
+            Battle.deleteBattle(player.getName())
         })
     })
 
@@ -117,10 +117,10 @@ function classMethods() {
             Battle.battlesList = []
             Battle.battlesList.push(battleInstance)
             const retrivedBattleInstance = Battle.getBattle("Dummy Player: getBattle()")
-            expect(retrivedBattleInstance.playerInstance.name).toBe("Dummy Player: getBattle()")
+            expect(retrivedBattleInstance.playerInstance.getName()).toBe("Dummy Player: getBattle()")
 
             //Sanitizer
-            Battle.deleteBattle(dummyPlayer.name)
+            Battle.deleteBattle(dummyPlayer.getName())
         })
 
         it(`Throw Error:
@@ -128,7 +128,7 @@ function classMethods() {
         `, () => {
             
             const dummyPlayer = new Player("Dummy Player: getBattle()")
-            expect(() => Battle.getBattle(dummyPlayer.name)).toThrow(
+            expect(() => Battle.getBattle(dummyPlayer.getName())).toThrow(
                 Error(`ERROR: Battle class, "getBattle": Battle doesn't exist`
             ))
         })
@@ -145,7 +145,7 @@ function classMethods() {
             const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, mapAreas.TEST_AREA))
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             Battle.battlesList.push(battleInstance)
-            Battle.deleteBattle(dummyPlayer.name)
+            Battle.deleteBattle(dummyPlayer.getName())
             expect(Battle.battlesList.length).toBe(0)
         })
 
@@ -154,7 +154,7 @@ function classMethods() {
         `, () => {
             
             const dummyPlayer = new Player("Dummy Player: deleteBattle()")
-            expect(() => Battle.deleteBattle(dummyPlayer.name)).toThrow(
+            expect(() => Battle.deleteBattle(dummyPlayer.getName())).toThrow(
                 Error(`ERROR: Battle class, "deleteBattle" method: impossible to delete a Battle that doesn't exist`)
             )
         })
@@ -173,11 +173,11 @@ function classMethods() {
             
             //1
             Battle.battlesList.push(battleInstance)
-            expect(Battle.doesBattleExist(dummyPlayer.name)).toBe(true)
+            expect(Battle.doesBattleExist(dummyPlayer.getName())).toBe(true)
 
             //2
             Battle.battlesList = []
-            expect(Battle.doesBattleExist(dummyPlayer.name)).toBe(false)
+            expect(Battle.doesBattleExist(dummyPlayer.getName())).toBe(false)
         })
     })
 
@@ -195,7 +195,7 @@ function classMethods() {
             //1
             Battle.battlesList.push(battleInstance)
             message = Battle.returnStringWithAllBattles()
-            expect(message).toBe(`Jogadores em batalha nesse momento: | ${dummyPlayer.name}: 1/0 HP vs ${dummyEnemie.name}: 1/0 HP |`)
+            expect(message).toBe(`Jogadores em batalha nesse momento: | ${dummyPlayer.getName()}: 1/0 HP vs ${dummyEnemie.getName()}: 1/0 HP |`)
 
             //2
             Battle.battlesList = []
@@ -449,7 +449,7 @@ function instanceMethods() {
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             dummyPlayer.calculateStats()
             expect(battleInstance.getPlayerStatus()
-            ).toEqual(`${dummyPlayer.name}: ${dummyPlayer.currentHP}/${dummyPlayer.totalStats.hp} HP`)
+            ).toEqual(`${dummyPlayer.getName()}: ${dummyPlayer.currentHP}/${dummyPlayer.totalStats.hp} HP`)
         })
     })
 
@@ -464,7 +464,7 @@ function instanceMethods() {
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             dummyEnemie.calculateStats()
             expect(battleInstance.getEnemieStatus()
-            ).toEqual(`${dummyEnemie.name}: ${dummyEnemie.currentHP}/${dummyEnemie.totalStats.hp} HP`) // Is higher like that because dummy equipments are too op!
+            ).toEqual(`${dummyEnemie.getName()}: ${dummyEnemie.currentHP}/${dummyEnemie.totalStats.hp} HP`) // Is higher like that because dummy equipments are too op!
         })
     })
 
@@ -481,11 +481,11 @@ function instanceMethods() {
             dummyEnemie.calculateStats()
             dummyPlayer.calculateStats()
             
-            const playerName = dummyPlayer.name
+            const playerName = dummyPlayer.getName()
             const playerHP = dummyPlayer.currentHP
             const playerMaxHP = dummyPlayer.totalStats.hp
 
-            const enemyName = dummyEnemie.name
+            const enemyName = dummyEnemie.getName()
             const enemyHP = dummyEnemie.currentHP
             const enemyMaxHP = dummyEnemie.totalStats.hp
 

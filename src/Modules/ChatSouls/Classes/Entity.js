@@ -128,23 +128,23 @@ export default class Entity {
             throw Error('Cannot instantiate "Entity" class directly')
         }
 
-        this.name = name
+        this.setName(name)
     }
 
     //=================================================================================================
     // GETTERS AND SETTERS ============================================================================
     //=================================================================================================
 
-    /** 
-     * @returns {string} Getter
+    /** Getter
+     * @returns {string}
      */
-    get name() { return this.#name }
+    getName() { return this.#name }
 
-    /**
-     * @param {string} entityName  Setter
+    /** Setter
+     * @param {string} entityName
      */
-    set name(entityName) {
-
+    setName(entityName) {
+        
         if(typeof entityName !== 'string')
             throw Error('ERROR: Entity class, name must be a string')
 

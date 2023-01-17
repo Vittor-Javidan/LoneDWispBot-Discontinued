@@ -43,7 +43,7 @@ function didPlayerDied(battleInstance, attackPhaseMessage) {
     playerInstance.recoverHP()
     playerInstance.ressurrect()
     playerInstance.save()
-    Battle.deleteBattle(playerInstance.name)
+    Battle.deleteBattle(playerInstance.getName())
     sendMessage_UI_FirePit(playerInstance, `sua fuga falhou e você morreu! ${attackPhaseMessage}`)
     
     return true
@@ -62,7 +62,7 @@ function didFlee(battleInstance) {
     }
     
     const playerInstance = battleInstance.playerInstance
-    Battle.deleteBattle(playerInstance.name)
+    Battle.deleteBattle(playerInstance.getName())
     playerInstance.secondaryState = PLAYER_STATES.EXPLORING.SECONDARY.IDLE
     sendMessage_UI_Idle(playerInstance,`Fuga bem sucedida!`)
     return true
@@ -85,7 +85,7 @@ function damageFeedBackAttackPhase(battleInstance){
 
     //If attack dodge
     if(didEvade) {
-        return `${enemieInstance.name} errou o ataque.`
+        return `${enemieInstance.getName()} errou o ataque.`
     }
 
     //If not
@@ -94,5 +94,5 @@ function damageFeedBackAttackPhase(battleInstance){
         defender: battleInstance.playerInstance
     })
     playerInstance.inflictDamage(rawDamage)
-    return `${playerInstance.name} Dano sofrido ${rawDamage}.`
+    return `${playerInstance.getName()} Dano sofrido ${rawDamage}.`
 }

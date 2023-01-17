@@ -8,11 +8,17 @@ import Player from "../../Classes/EntityChilds/Player"
  * @param {string} menuMessage
  */
 export function sendMessage_UI_AttributeUpgradeMenu(playerInstance, menuMessage) {
+
+	const playerName = playerInstance.getName()
+	const level = playerInstance.level
+	const souls = playerInstance.souls
+	const upgradeCost = playerInstance.getUpgradeCost()
+
 	sendMessage(
-        `/w ${playerInstance.name} ${menuMessage} 
-		| Seu Level: ${playerInstance.level} 
-		| Suas Almas: ${playerInstance.souls} 
-		| Custo Upgrade: ${playerInstance.getUpgradeCost()} almas 
+        `/w ${playerName} ${menuMessage} 
+		| Seu Level: ${level} 
+		| Suas Almas: ${souls} 
+		| Custo Upgrade: ${upgradeCost} almas 
 		| 0. Voltar 
 		| 1. UP Vitalidade 
 		| 2. UP Agilidade 
@@ -23,4 +29,3 @@ export function sendMessage_UI_AttributeUpgradeMenu(playerInstance, menuMessage)
 	)
 	return
 }
-

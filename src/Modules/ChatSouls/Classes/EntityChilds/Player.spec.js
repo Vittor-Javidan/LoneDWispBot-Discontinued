@@ -36,7 +36,7 @@ function initialization() {
 		`, () => {
 			
 			const dummyPlayer = new Player("Dummy Player: constructor()")
-			expect(dummyPlayer.name).toBe("Dummy Player: constructor()")
+			expect(dummyPlayer.getName()).toBe("Dummy Player: constructor()")
 			expect(dummyPlayer.attributes).toStrictEqual(deepCopy(Default.attributes))
 			expect(dummyPlayer.currentEquipment).toStrictEqual(deepCopy(Default.equipments))
 		})
@@ -103,8 +103,6 @@ function settersAndGetters() {
 		it(`Should:
 			1. set normaly
 		`, () => {
-			
-
 			//1
 			Player.sendToDataBase = DummyData.herobrineData
 			expect(Player.database[DummyData.herobrineData.name]).toBeDefined()
@@ -236,14 +234,22 @@ function classMethods() {
 			1. Force save current information on database
 		`, () => {
 
-			const dummyPlayer = new Player("Dummy Player: forceSaveDataBase()")
-			Player.sendToDataBase = dummyPlayer
+			//Data creation
+			const name = "Dummy Guy"
+			/**@type {CS_EntityData} */
+			const playerData = deepCopy(Player.database[name])
+			playerData.name = "Dummy Guy: forceSaveDataBase"
+			Player.sendToDataBase = playerData
+
+			//Run
 			Player.forceSaveDataBase()
+
+			//Test
 			const newDatabase = DbSystem.loadDb(playerDataBasePath)
-			expect(newDatabase["Dummy Player: forceSaveDataBase()"]).toBeDefined()
+			expect(newDatabase[playerData.name]).toBeDefined()
 
 			//Sanitizer
-			delete Player.database["Dummy Player: forceSaveDataBase()"]
+			delete Player.database[playerData.name]
 			Player.forceSaveDataBase()
 		})
 	})
@@ -344,7 +350,7 @@ function classMethods() {
 			//1
 			const playerInstance = new Player("Dummy Player: loginPlayerInstance()")
 			Player.loginPlayerInstance(playerInstance)
-			expect(Player.onlinePlayers[0].name).toBe("Dummy Player: loginPlayerInstance()")
+			expect(Player.onlinePlayers[0].getName()).toBe("Dummy Player: loginPlayerInstance()")
 
 			//Sanitizer
 			Player.onlinePlayers = []
@@ -400,7 +406,7 @@ function classMethods() {
 			//1
 			const dummyPlayer = new Player("Dummy Player: getPlayerInstanceByName()")
 			Player.onlinePlayers.push(dummyPlayer)
-			expect(Player.getPlayerInstanceByName(dummyPlayer.name).name).toEqual("Dummy Player: getPlayerInstanceByName()")
+			expect(Player.getPlayerInstanceByName(dummyPlayer.getName()).getName()).toEqual("Dummy Player: getPlayerInstanceByName()")
 			
 			//Sanitizer
 			Player.onlinePlayers = []
@@ -411,7 +417,7 @@ function classMethods() {
 		`, () => {
 			
 			const dummyPlayer = new Player("Dummy Player: getPlayerInstanceByName()")
-			expect(() => Player.getPlayerInstanceByName(dummyPlayer.name)).toThrow(
+			expect(() => Player.getPlayerInstanceByName(dummyPlayer.getName())).toThrow(
 				Error(`ERROR: Player class, "getPlayerInstanceByName" method: cannot get a instance that is not inside onlinePlayers array`)
 			)
 		})
@@ -451,8 +457,8 @@ function instanceMethods() {
 			dinamicDummy.currentEquipment = RandomData.equipment()
 			dinamicDummy.inventory = RandomData.inventory()
 			dinamicDummy.save()
-			const newDataBase = DbSystem.loadDb(playerDataBasePath)[dinamicDummy.name] //pre-requisite, to get new data from database file
-			expect(newDataBase.name).toEqual(dinamicDummy.name)
+			const newDataBase = DbSystem.loadDb(playerDataBasePath)[dinamicDummy.getName()] //pre-requisite, to get new data from database file
+			expect(newDataBase.name).toEqual(dinamicDummy.getName())
 			expect(newDataBase.souls).toEqual(dinamicDummy.souls)
 			expect(newDataBase.level).toEqual(dinamicDummy.level)
 			expect(newDataBase.equipment).toStrictEqual(dinamicDummy.currentEquipment)
@@ -460,7 +466,7 @@ function instanceMethods() {
 			expect(newDataBase.inventory).toStrictEqual(dinamicDummy.inventory)
 
 			//Sanitizer
-			delete Player.database[dinamicDummy.name]
+			delete Player.database[dinamicDummy.getName()]
 			Player.forceSaveDataBase()
 		}) 
 	})
@@ -510,7 +516,7 @@ function instanceMethods() {
 			})
 
 			//Sanitizer
-			delete Player.database[dinamicDummy.name]
+			delete Player.database[dinamicDummy.getName()]
 			Player.forceSaveDataBase()
 		})
 	})

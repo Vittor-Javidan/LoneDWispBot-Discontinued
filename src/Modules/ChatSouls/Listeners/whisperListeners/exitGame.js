@@ -9,17 +9,20 @@ import Player from "../../Classes/EntityChilds/Player"
  */
 export default function exitGame(playerInstance){
 
-    const battleinstance = Battle.getBattle(playerInstance.name)
+    const playerName = playerInstance.getName()
+    const battleinstance = Battle.getBattle(playerName)
+
     if(battleinstance) {
         playerInstance.souls = 0
         playerInstance.save()
         sendMessage(
-            `/w ${playerInstance.name} Você saiu da batalha de modo forçado e perdeu todas suas almas`
+            `/w ${playerName} Você saiu da batalha de modo forçado e perdeu todas suas almas`
         )
     }
+    
     Player.logoutPlayerInstance(playerInstance)
     sendMessage(
-        `/w ${playerInstance.name} Jogo encerrado.`
+        `/w ${playerName} Jogo encerrado.`
         , 1000
     )
 }

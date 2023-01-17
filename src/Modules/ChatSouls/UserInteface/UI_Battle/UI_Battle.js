@@ -13,7 +13,7 @@ export default function UI_Battle(data) {
 
     const commandWord = data.message.split(" ")[0]
 	const playerInstance = data.playerInstance
-    const battleInstance = Battle.getBattle(playerInstance.name)
+    const battleInstance = Battle.getBattle(playerInstance.getName())
 
     if (commandWord === '!cs') {
         sendMessage_UI_Battle(battleInstance, `Você está em batalha!!!`)

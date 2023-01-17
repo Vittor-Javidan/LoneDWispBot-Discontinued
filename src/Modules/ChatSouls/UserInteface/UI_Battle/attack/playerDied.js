@@ -26,5 +26,5 @@ export default function playerDied(battleInstance, FINAL_MESSAGE) {
     playerInstance.recoverHP()
     playerInstance.ressurrect()
     playerInstance.save()
-    Battle.deleteBattle(playerInstance.name)
+    Battle.deleteBattle(playerInstance.getName())
 }

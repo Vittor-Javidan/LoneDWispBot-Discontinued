@@ -12,12 +12,12 @@ export default function startBattle(playerInstance) {
     //Battle initialization
     const enemie = Enemie.instantiateRandomEnemie(playerInstance)
     Battle.startBattle(playerInstance, enemie)
-    const battleInstance = Battle.getBattle(playerInstance.name)
+    const battleInstance = Battle.getBattle(playerInstance.getName())
     playerInstance.secondaryState = PLAYER_STATES.EXPLORING.SECONDARY.HUNTING
 
     //Player feedback
     const enemieInstance = battleInstance.enemieInstance
-    let message = `Você encontrou um ${enemieInstance.name} `
+    let message = `Você encontrou um ${enemieInstance.getName()} `
     message += whosTurnString(battleInstance)
     
     sendMessage_UI_Battle(battleInstance, message)

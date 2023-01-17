@@ -244,11 +244,11 @@ export default class Player extends Entity {
      */
     static register(playerInstance){
 
-        if(!Player.database[`${playerInstance.name}`]){
+        if(!Player.database[`${playerInstance.getName()}`]){
             
             playerInstance.isNewPlayer = true
             Player.sendToDataBase = {
-                name: playerInstance.name
+                name: playerInstance.getName()
             }
             return
         }
@@ -263,7 +263,7 @@ export default class Player extends Entity {
      */
     static updateDataBaseMissingInfo(playerInstance){
 
-        const playerName = playerInstance.name
+        const playerName = playerInstance.getName()
         const playerData = this.database[`${playerName}`]
 
         if(!playerData.souls)                   playerData.souls = playerInstance.souls
@@ -291,7 +291,7 @@ export default class Player extends Entity {
      */
     static isLogged(userName){
         for(let i = 0; i < this.onlinePlayers.length; i++){
-            if(userName === this.onlinePlayers[i].name){
+            if(userName === this.onlinePlayers[i].getName()){
                 return true
             }
         }
@@ -304,7 +304,7 @@ export default class Player extends Entity {
     static loginPlayerInstance(playerInstance){
 
         for (let i = 0; i < this.onlinePlayers.length; i++){
-            if (this.onlinePlayers[i].name === playerInstance.name){
+            if (this.onlinePlayers[i].getName() === playerInstance.getName()){
                 throw Error('ERROR: Player is already logged. Use this method only when a player is not logged in the game')
             }
         }
@@ -317,7 +317,7 @@ export default class Player extends Entity {
      */
     static logoutPlayerInstance(playerInstance) {
         for (let i = 0; i < this.onlinePlayers.length; i++) {
-            if (playerInstance.name === this.onlinePlayers[i].name) {
+            if (playerInstance.getName() === this.onlinePlayers[i].getName()) {
                 this.onlinePlayers.splice(i, 1)
                 return
             }
@@ -332,7 +332,7 @@ export default class Player extends Entity {
     */
     static getPlayerInstanceByName(userName) {
         for(let i = 0; i < this.onlinePlayers.length; i++){
-            if(userName === this.onlinePlayers[i].name){
+            if(userName === this.onlinePlayers[i].getName()){
                 return this.onlinePlayers[i]
             }
         }
@@ -351,7 +351,7 @@ export default class Player extends Entity {
 
         //Load saved player data from database
         
-        const playerData = Player.database[`${this.name}`]
+        const playerData = Player.database[`${this.getName()}`]
 
         //Replace default values for saved values
         this.souls      =   playerData.souls
@@ -360,7 +360,7 @@ export default class Player extends Entity {
         this.currentEquipment  =   playerData.equipment
         this.inventory  =   playerData.inventory
         
-        sendMessage(`/w ${this.name} Seu progresso foi restaurado com sucesso`)
+        sendMessage(`/w ${this.getName()} Seu progresso foi restaurado com sucesso`)
     }
 
     /**
@@ -370,7 +370,7 @@ export default class Player extends Entity {
     
         /** @type {CS_EntityData} */
         const playerData = {
-            name: this.name,
+            name: this.getName(),
             souls: this.souls,
             level: this.level,
             attributes: this.attributes,

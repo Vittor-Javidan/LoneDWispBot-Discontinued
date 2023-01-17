@@ -7,9 +7,12 @@ import Battle from "../../Classes/Battle"
  * @param {string} menuMessage 
  */
 export default function sendMessage_UI_Battle(battleInstance, menuMessage) {
+    
     const playerInstance = battleInstance.playerInstance
+    const playerName = playerInstance.getName()
+
 	sendMessage(
-		`/w ${playerInstance.name} ${menuMessage} ${battleInstance.getBattleStatus()}. 
+		`/w ${playerName} ${menuMessage} ${battleInstance.getBattleStatus()}. 
         | 0. Fugir 
         | 1. Atacar 
         |`

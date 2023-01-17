@@ -23,7 +23,7 @@ export default function restorePlayerHpPvE(data) {
     }
 
     const playerInstance = battleInstance.playerInstance
-    if(playerInstance.name === data.userName){
+    if(playerInstance.getName() === data.userName){
         const playerSouls = playerInstance.getSouls()
         playerInstance.souls = Math.floor(playerSouls/2)
         playerInstance.save()

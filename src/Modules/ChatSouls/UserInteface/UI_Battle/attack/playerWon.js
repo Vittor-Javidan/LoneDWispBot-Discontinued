@@ -16,5 +16,5 @@ export default function playerWon(battleInstance, FINAL_MESSAGE) {
     sendMessage_UI_Idle(playerInstance, FINAL_MESSAGE)
 
     battleInstance.calculateRewards()
-    Battle.deleteBattle(playerInstance.name)
+    Battle.deleteBattle(playerInstance.getName())
 }

@@ -7,8 +7,11 @@ import Player from "../../Classes/EntityChilds/Player"
  * @param {string} menuMessage 
  */
 export function sendMessage_UI_FirePit(playerInstance, menuMessage) {
+
+	const playerName = playerInstance.getName()
+
 	sendMessage(
-		`/w ${playerInstance.name} ${menuMessage} 
+		`/w ${playerName} ${menuMessage} 
 		| 0. Levantar da fogueira
 		| 1. Statísticas 
 		| 2. Ver Equipamento 

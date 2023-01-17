@@ -7,8 +7,11 @@ import Player from "../../Classes/EntityChilds/Player"
  * @param {string} menuMessage 
  */
 export function sendMessage_UI_EquipmentsMenu(playerInstance, menuMessage) {
+
+	const playerName = playerInstance.getName()
+
 	sendMessage(
-		`/w ${playerInstance.name} ${menuMessage}. 
+		`/w ${playerName} ${menuMessage}. 
 		| 0. Voltar 
 		| 1. Arma Corpo a Corpo 
 		| 2. Arma Longo alcance 

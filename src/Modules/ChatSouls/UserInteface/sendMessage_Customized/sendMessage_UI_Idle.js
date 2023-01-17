@@ -7,8 +7,11 @@ import Player from "../../Classes/EntityChilds/Player"
  * @param {string} menuMessage 
  */
 export function sendMessage_UI_Idle(playerInstance, menuMessage) {
+
+    const playerName = playerInstance.getName()
+
 	sendMessage(
-		`/w ${playerInstance.name} ${menuMessage} 
+		`/w ${playerName} ${menuMessage} 
         | 0. Voltar a fogueira
         | 1. Explorar 
         | 2. Procurar por recursos (Em progresso)

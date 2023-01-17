@@ -87,7 +87,7 @@ export default class Battle {
     */
     static getBattle(userName) {
         for (let i = 0; i < this.battlesList.length; i++) {
-            if (userName === this.battlesList[i].playerInstance.name) {
+            if (userName === this.battlesList[i].playerInstance.getName()) {
                return this.battlesList[i]
             }
         }
@@ -103,7 +103,7 @@ export default class Battle {
      */
     static deleteBattle(userName) {
         for (let i = 0; i < this.battlesList.length; i++) {
-            if (userName === this.battlesList[i].playerInstance.name) {
+            if (userName === this.battlesList[i].playerInstance.getName()) {
                 this.battlesList.splice(i, 1)
                 return
             }
@@ -118,7 +118,7 @@ export default class Battle {
      */
     static doesBattleExist(userName){
         for (let i = 0; i < this.battlesList.length; i++) {
-            if (userName === this.battlesList[i].playerInstance.name) {
+            if (userName === this.battlesList[i].playerInstance.getName()) {
                 return true
             }
         }
@@ -252,7 +252,7 @@ export default class Battle {
      */
     getPlayerStatus(){
         
-        const playerName = this.playerInstance.name
+        const playerName = this.playerInstance.getName()
         const playerHP = this.playerInstance.currentHP
         const playerMaxHP = this.playerInstance.totalStats[CS_ENUM.KEYS.CS_STATS.HP]
         const playerHPString = `${playerName}: ${playerHP}/${playerMaxHP} HP`
@@ -266,7 +266,7 @@ export default class Battle {
      */
     getEnemieStatus(){
         
-        const enemieName = this.enemieInstance.name
+        const enemieName = this.enemieInstance.getName()
         const enemieHP = this.enemieInstance.currentHP
         const enemieMaxHP = this.enemieInstance.totalStats[CS_ENUM.KEYS.CS_STATS.HP]
         const enemieHPString = `${enemieName}: ${enemieHP}/${enemieMaxHP} HP`

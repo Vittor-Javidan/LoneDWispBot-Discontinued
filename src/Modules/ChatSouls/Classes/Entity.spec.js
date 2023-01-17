@@ -61,8 +61,8 @@ function instantiation() {
         `, () => {
 
             const dummyEntity = new Entity(true, "Dummy Entity: constructor()")
-            expect(dummyEntity.name).toBeTypeOf("string")
-            expect(dummyEntity.name).toBe("Dummy Entity: constructor()")
+            expect(dummyEntity.getName()).toBeTypeOf("string")
+            expect(dummyEntity.getName()).toBe("Dummy Entity: constructor()")
         })
         
         it(`Throws Error:
@@ -87,9 +87,9 @@ function settersAndGetters() {
         it('Can set', () => {
 
             const dummyEntity = new Entity(true, "Dummy Entity: name setter/getter")
-            dummyEntity.name = "noob"
-            expect(dummyEntity.name).toBeTypeOf("string")
-            expect(dummyEntity.name).toBe("noob")
+            dummyEntity.setName("noob")
+            expect(dummyEntity.getName()).toBeTypeOf("string")
+            expect(dummyEntity.getName()).toBe("noob")
         })
 
         it(`Throws Error: 
@@ -97,9 +97,9 @@ function settersAndGetters() {
         `, () => {
 
             const dummyEntity = new Entity(true, "Dummy Entity: name setter/getter")
-            expect(() => dummyEntity.name = false).toThrow(Error('ERROR: Entity class, name must be a string'))
-            expect(() => dummyEntity.name = 10).toThrow(Error('ERROR: Entity class, name must be a string'))
-            expect(() => dummyEntity.name = {}).toThrow(Error('ERROR: Entity class, name must be a string'))
+            expect(() => dummyEntity.setName(false)).toThrow(Error('ERROR: Entity class, name must be a string'))
+            expect(() => dummyEntity.setName(10)).toThrow(Error('ERROR: Entity class, name must be a string'))
+            expect(() => dummyEntity.setName({})).toThrow(Error('ERROR: Entity class, name must be a string'))
         })
     })
     

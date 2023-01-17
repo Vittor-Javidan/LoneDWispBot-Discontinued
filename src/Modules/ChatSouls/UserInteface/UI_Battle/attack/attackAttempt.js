@@ -25,7 +25,7 @@ export default function attackAttempt(battleInstance, o) {
 
         attacker instanceof Player
             ? message = `${message} Você errou o ataque. `
-            : message = `${message} ${attacker.name} errou o ataque. `
+            : message = `${message} ${attacker.getName()} errou o ataque. `
         //
 
         return message
@@ -40,7 +40,7 @@ export default function attackAttempt(battleInstance, o) {
     defensor.inflictDamage(rawDamage)
 
     attacker instanceof Player
-        ? message = `${message} ${defensor.name} sofreu ${rawDamage} de dano. `
+        ? message = `${message} ${defensor.getName()} sofreu ${rawDamage} de dano. `
         : message = `${message} você sofreu ${rawDamage} de dano. `
     //
     

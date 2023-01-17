@@ -109,7 +109,7 @@ function instantiateRandomEnemie() {
 
         //2
         const theWoodsEnemiesNamesArray = Object.values(enemieEntries.theWoods )
-        expect(theWoodsEnemiesNamesArray.includes(randomEnemieInstance.name)).toBe(true)
+        expect(theWoodsEnemiesNamesArray.includes(randomEnemieInstance.getName())).toBe(true)
 
         //3
         const enemieData = getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, CS_ENUM.MAP_AREAS.TEST_AREA)

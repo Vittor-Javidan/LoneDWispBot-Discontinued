@@ -8,8 +8,11 @@ import Player from "../../Classes/EntityChilds/Player"
  * @returns {string} Status response
  */
 export function sendMessage_UI_StatisticsMenu(playerInstance, menuMessage) {
+
+    const playerName = playerInstance.getName()
+
 	sendMessage(
-        `/w ${playerInstance.name} ${menuMessage} 
+        `/w ${playerName} ${menuMessage} 
         | 0. Voltar 
         | 1. Ver Atributos 
         | 2. Upar Atributos 

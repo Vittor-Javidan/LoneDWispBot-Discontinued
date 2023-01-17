@@ -7,7 +7,7 @@ import Player from "../../Classes/EntityChilds/Player"
  * @param {Player} playerInstance 
  */
 export default function checkSouls(playerInstance){
-    const playerName = playerInstance.name
+    const playerName = playerInstance.getName()
     const souls = playerInstance.getSouls()
     sendMessage(`/w ${playerName} suas almas: ${souls}`)
 }

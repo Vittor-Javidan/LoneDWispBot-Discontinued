@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import Player from "../../Classes/EntityChilds/Player";
+import EQUIPMENT_TYPES from "../../Classes/EquipmentChilds/EQUIPMENT_TYPES";
+import { equipmentEntries, getEquipment } from "../../database/equipmentData";
 import returnEquippingMessage from "./returnEquippingMessage";
 
 describe(`returnEquippingMessageByType`, () => {
@@ -8,8 +9,14 @@ describe(`returnEquippingMessageByType`, () => {
         1. Return a formatted message
     `, () => {
 
-        const dummyMelee = new Player(`Dummy Player: returnMenuMessageByType`)
+        //Instantiation
+        const equipmentName = equipmentEntries.WEAPONS.MELEE.DUMMY_EQUIPMENT
+        const dummyMelee = getEquipment(equipmentName, EQUIPMENT_TYPES.MELEE_WEAPON)
+
+        //Run
         const message = returnEquippingMessage(dummyMelee)
+
+        //Test
         expect(message).toBe(`Você equipou ${dummyMelee.name}`)
     })
 })
