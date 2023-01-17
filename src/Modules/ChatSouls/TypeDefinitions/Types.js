@@ -12,6 +12,8 @@
  * @typedef {Object<string, CS_EntityData>} CS_Database
 */
 
+//TODO: create variations of some definiton Types, to use with KV format
+
 //EQUIPMENT DATABASE DEFINITION
 /**
  * - Keys: `database item name string`

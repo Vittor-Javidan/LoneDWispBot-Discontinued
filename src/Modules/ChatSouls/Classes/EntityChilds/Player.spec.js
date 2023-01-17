@@ -60,7 +60,7 @@ function initialization() {
 			expect(playerInstance.getlevel()).toBe(DummyGuy.level)
 			expect(playerInstance.getAttributes()).toStrictEqual(DummyGuy.attributes)
 			expect(playerInstance.getCurrentEquipment()).toStrictEqual(DummyGuy.equipment)
-			expect(playerInstance.inventoryEquipments).toStrictEqual(DummyGuy.inventoryEquipments)
+			expect(playerInstance.getInventoryEquipments()).toStrictEqual(DummyGuy.inventoryEquipments)
 			expect(playerInstance.inventoryResources).toStrictEqual(DummyGuy.inventoryResources)
 
 			// Sanitizer
@@ -438,7 +438,7 @@ function instanceMethods() {
 			expect(dummyPlayer.getlevel()).toEqual(DummyGuy.level)
 			expect(dummyPlayer.getAttributes()).toStrictEqual(DummyGuy.attributes)
 			expect(dummyPlayer.getCurrentEquipment()).toStrictEqual(DummyGuy.equipment)
-			expect(dummyPlayer.inventoryEquipments).toStrictEqual(DummyGuy.inventoryEquipments)
+			expect(dummyPlayer.getInventoryEquipments()).toStrictEqual(DummyGuy.inventoryEquipments)
 			expect(dummyPlayer.inventoryResources).toStrictEqual(DummyGuy.inventoryResources)
 		})
 	})

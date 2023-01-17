@@ -310,22 +310,22 @@ export default class Entity {
     /**
      * @returns {CS_Inventory_Equipments} Getter
      */
-    get inventoryEquipments() {
+    getInventoryEquipments() {
         return this.#inventory.equipments
     }
 
     /**
      * @param {CS_Inventory_Equipments} inventoryEquipmentObject Setter
      */
-    set inventoryEquipments(inventoryEquipmentObject) {
+    setInventoryEquipments(inventoryEquipmentObject) {
 
         if(typeof inventoryEquipmentObject !== 'object') {
             throw Error('ERROR: Entity class, "inventoryEquipments" setter: argument must be an object')
         }
 
-        const objectKeys = Object.keys(inventoryEquipmentObject)
-        for(let i = 0; i < objectKeys.length; i++) {
-            if(!equipmentTypeKeys.includes(objectKeys[i])){
+        const keys = Object.keys(inventoryEquipmentObject)
+        for(let i = 0; i < keys.length; i++) {
+            if(!equipmentTypeKeys.includes(keys[i])){
                 throw Error(`ERROR: Entity class, "inventoryEquipments" setter: given type must be valid`)
             }
         }
@@ -480,7 +480,7 @@ export default class Entity {
      * @param {string} equipmentType 
      */
     sortInventoryEquipments(equipmentType) {
-        this.inventoryEquipments[equipmentType].sort((a, b) => {
+        this.getInventoryEquipments()[equipmentType].sort((a, b) => {
             if (a.name < b.name) return -1
             if (a.name > b.name) return 1
             return 0
@@ -498,7 +498,7 @@ export default class Entity {
             throw Error(`ERROR: Entity class, "isInventoryEquipmentsTypeEmpty": Equipment type must be valid`)
         }
 
-        if(this.inventoryEquipments[equipmentType].length > 0){
+        if(this.getInventoryEquipments()[equipmentType].length > 0){
             return false
         }
         return true
@@ -515,7 +515,7 @@ export default class Entity {
             throw Error(`ERROR: Entity class, "getEquipmentInventoryAmount" method: equipment type not recognized`)
         }
         
-        const amount = this.inventoryEquipments[equipmentType].length
+        const amount = this.getInventoryEquipments()[equipmentType].length
         return amount
     }
 
@@ -541,7 +541,7 @@ export default class Entity {
         /**@type {CS_Equipment_WeaponData | CS_Equipment_ArmorData} */
         const unequippedWeapon = deepCopy(this.getCurrentEquipment()[equipmentType])      
           
-        this.inventoryEquipments[equipmentType].push(unequippedWeapon)
+        this.getInventoryEquipments()[equipmentType].push(unequippedWeapon)
 
         const currentEquipment = this.getCurrentEquipment()
         currentEquipment[equipmentType] = {}
@@ -558,28 +558,31 @@ export default class Entity {
      */
     equipFromInventory(itemIndex, equipmentType) {
 
-        if(itemIndex >= this.inventoryEquipments[equipmentType].length || itemIndex < 0) {
+        //TODO: Find a way to clean this mess
+
+        const inventoryEquipments = this.getInventoryEquipments()
+
+        if(itemIndex >= inventoryEquipments[equipmentType].length || itemIndex < 0) {
             throw Error(`ERROR: Entity class, "equipFromInventory": itemIndex out of boundaries`)
         }
         
         /**@type {CS_Equipment_WeaponData[] | CS_Equipment_ArmorData[]} */
-        const inventoryEquipments = deepCopy(this.inventoryEquipments)
+        const newinventoryEquipments = deepCopy(inventoryEquipments)
         
-        /**@type {CS_Equipment_WeaponData | CS_Equipment_ArmorData} */
         let newCurrentEquipment = this.getCurrentEquipment()
-
+        
         let itemToStore = deepCopy(newCurrentEquipment[equipmentType])
         
         let removedItemArray
         itemToStore.name !== undefined
-            ? removedItemArray = inventoryEquipments[equipmentType].splice(itemIndex, 1, itemToStore)
-            : removedItemArray = inventoryEquipments[equipmentType].splice(itemIndex, 1)
+            ? removedItemArray = newinventoryEquipments[equipmentType].splice(itemIndex, 1, itemToStore)
+            : removedItemArray = newinventoryEquipments[equipmentType].splice(itemIndex, 1)
         //
 
         newCurrentEquipment[equipmentType] = removedItemArray[0]
         
         this.setCurrentEquipment(newCurrentEquipment)
-        this.inventoryEquipments = inventoryEquipments
+        this.setInventoryEquipments(newinventoryEquipments)
     }
 
     /**
@@ -591,7 +594,7 @@ export default class Entity {
      */
     getAllEquipmentInventoryString(equipmentType){
         
-        let equipment = this.inventoryEquipments[equipmentType]
+        let equipment = this.getInventoryEquipments()[equipmentType]
         if (equipment.length <= 0) {
             throw Error(`ERROR: Entity class, "getAllEquipmentInventoryString" method: there is no equipment to format string from`)
         }

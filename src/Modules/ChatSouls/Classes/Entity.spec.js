@@ -317,8 +317,8 @@ function settersAndGetters() {
         it('Can be set normaly', () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: inventoryEquipments setter/getter")
-            dummyEntity.inventoryEquipments = Dummy.inventory.equipments
-            expect(dummyEntity.inventoryEquipments).toStrictEqual(deepCopy(Dummy.inventory.equipments))
+            dummyEntity.setInventoryEquipments(Dummy.inventory.equipments)
+            expect(dummyEntity.getInventoryEquipments()).toStrictEqual(deepCopy(Dummy.inventory.equipments))
         })
 
         it(`Throws Error: 
@@ -330,17 +330,17 @@ function settersAndGetters() {
             const dummyEntity = new Entity(true, "Dummy Entity: inventoryEquipments setter/getter")
             
             //1
-            expect(() => dummyEntity.inventoryEquipments = 'wrong type').toThrow(Error('ERROR: Entity class, "inventoryEquipments" setter: argument must be an object'))
-            expect(() => dummyEntity.inventoryEquipments = false).toThrow(Error('ERROR: Entity class, "inventoryEquipments" setter: argument must be an object'))
-            expect(() => dummyEntity.inventoryEquipments = 0).toThrow(Error('ERROR: Entity class, "inventoryEquipments" setter: argument must be an object'))
+            expect(() => dummyEntity.setInventoryEquipments('wrong type')).toThrow(Error('ERROR: Entity class, "inventoryEquipments" setter: argument must be an object'))
+            expect(() => dummyEntity.setInventoryEquipments(false)).toThrow(Error('ERROR: Entity class, "inventoryEquipments" setter: argument must be an object'))
+            expect(() => dummyEntity.setInventoryEquipments(0)).toThrow(Error('ERROR: Entity class, "inventoryEquipments" setter: argument must be an object'))
 
             //2
-            expect(() => dummyEntity.inventoryEquipments = Dummy.wrongInventory).toThrow(
+            expect(() => dummyEntity.setInventoryEquipments(Dummy.wrongInventory)).toThrow(
                 Error(`ERROR: Entity class, "inventoryEquipments" setter: given type must be valid`)
             )
             
             //3
-            expect(() => dummyEntity.inventoryEquipments = {}).toThrow(Error(`ERROR: Entity class, "inventoryEquipments" setter: all properties must be defined`))
+            expect(() => dummyEntity.setInventoryEquipments({})).toThrow(Error(`ERROR: Entity class, "inventoryEquipments" setter: all properties must be defined`))
         })
     })
 
@@ -495,9 +495,9 @@ function equipmentAndInventoryEquipment(){
         `, () => {
             
             const dummyEntity = new Entity(true, 'Dummy Entity: sortInventoryEquipments()')
-            dummyEntity.inventoryEquipments = Dummy.inventoryEquipmentsUnsorted
+            dummyEntity.setInventoryEquipments(Dummy.inventoryEquipmentsUnsorted)
             dummyEntity.sortInventoryEquipments(EQUIPMENT_TYPES.MELEE_WEAPON)
-            expect(dummyEntity.inventoryEquipments.meleeWeapon).toStrictEqual([
+            expect(dummyEntity.getInventoryEquipments().meleeWeapon).toStrictEqual([
                 { name: 'A dummy equipment' },
                 { name: 'A dummy equipment' },
                 { name: 'B dummy equipment' },
@@ -521,13 +521,13 @@ function equipmentAndInventoryEquipment(){
             const dummyEntity = new Entity(true, 'Dummy Entity: isInventoryEquipmentsTypeEmpty()')
             
             //1
-            dummyEntity.inventoryEquipments = Dummy.inventory.equipments
+            dummyEntity.setInventoryEquipments(Dummy.inventory.equipments)
             for(let i = 0; i < Utils.equipTypeskeys.length; i++) {
                 expect(dummyEntity.isInventoryEquipmentsTypeEmpty(Utils.equipTypeskeys[i])).toBe(false)
             }
 
             //2
-            dummyEntity.inventoryEquipments = Dummy.emptyInventoryEquipments
+            dummyEntity.setInventoryEquipments(Dummy.emptyInventoryEquipments)
             for(let i = 0; i < Utils.equipTypeskeys.length; i++) {
                 expect(dummyEntity.isInventoryEquipmentsTypeEmpty(Utils.equipTypeskeys[i])).toBe(true)
             }
@@ -551,7 +551,7 @@ function equipmentAndInventoryEquipment(){
         `, () => {
 
             const dummyEntity = new Entity(true, "Dummy Entity: getEquipmentInventoryAmount()")
-            dummyEntity.inventoryEquipments = Dummy.inventory.equipments
+            dummyEntity.setInventoryEquipments(Dummy.inventory.equipments)
 
             expect(dummyEntity.getEquipmentInventoryAmount(EQUIPMENT_TYPES.MELEE_WEAPON)).toBe(2)
         })
@@ -596,7 +596,7 @@ function equipmentAndInventoryEquipment(){
                 dummyEntity.unequip(Utils.equipTypeskeys[i])
             }
             
-            expect(dummyEntity.inventoryEquipments).toStrictEqual(Dummy.inventoryEquipments)
+            expect(dummyEntity.getInventoryEquipments()).toStrictEqual(Dummy.inventoryEquipments)
             expect(dummyEntity.getCurrentEquipment()).toStrictEqual(Dummy.emptyEquipments)
         })
     })
@@ -611,21 +611,21 @@ function equipmentAndInventoryEquipment(){
             const dummyEntity = new Entity(true, 'Dummy Entity: equipFromInventory()')
             
             //1
-            dummyEntity.inventoryEquipments = Dummy.inventoryEquipments
+            dummyEntity.setInventoryEquipments(Dummy.inventoryEquipments)
             for (let i = 0; i < Utils.equipTypeskeys.length; i++){
                 dummyEntity.equipFromInventory(0, Utils.equipTypeskeys[i])
             }
             expect(dummyEntity.getCurrentEquipment()).toStrictEqual(deepCopy(Dummy.equipments))
-            expect(dummyEntity.inventoryEquipments).toStrictEqual(Dummy.emptyInventoryEquipments)
+            expect(dummyEntity.getInventoryEquipments()).toStrictEqual(Dummy.emptyInventoryEquipments)
 
             //2
             dummyEntity.setCurrentEquipment(Dummy.equipments_2)
-            dummyEntity.inventoryEquipments = Dummy.inventoryEquipments
+            dummyEntity.setInventoryEquipments(Dummy.inventoryEquipments)
             for (let i = 0; i < Utils.equipTypeskeys.length; i++){
                 dummyEntity.equipFromInventory(0, Utils.equipTypeskeys[i])
             }
             expect(dummyEntity.getCurrentEquipment()).toStrictEqual(deepCopy(Dummy.equipments))
-            expect(dummyEntity.inventoryEquipments).toStrictEqual(deepCopy(Dummy.inventoryEquipments_2))
+            expect(dummyEntity.getInventoryEquipments()).toStrictEqual(deepCopy(Dummy.inventoryEquipments_2))
         })
 
         it(`Throws Error:
@@ -633,7 +633,7 @@ function equipmentAndInventoryEquipment(){
         `, () => {
 
             const dummyEntity = new Entity(true, 'Dummy Entity: equipFromInventory()')
-            dummyEntity.inventoryEquipments = Dummy.emptyInventoryEquipments
+            dummyEntity.setInventoryEquipments(Dummy.emptyInventoryEquipments)
             
             for (let i = 0; i < Utils.equipTypeskeys.length; i++){
                 expect(() => dummyEntity.equipFromInventory(1, Utils.equipTypeskeys[i])).toThrow(
@@ -653,7 +653,7 @@ function equipmentAndInventoryEquipment(){
         `, () => {
             
             const dummyEntity = new Entity(true, 'Dummy Entity: getAllEquipmentInventoryString()')
-            dummyEntity.inventoryEquipments = Dummy.inventory.equipments
+            dummyEntity.setInventoryEquipments(Dummy.inventory.equipments)
             
             expect(dummyEntity.getAllEquipmentInventoryString(EQUIPMENT_TYPES.LONG_RANGE_WEAPON)
             ).toBe(`| 1. dummy equip 1 | 2. dummy equip 2 `)
@@ -664,7 +664,7 @@ function equipmentAndInventoryEquipment(){
         `, () => {
             
             const dummyEntity = new Entity(true, 'Dummy Entity: getAllEquipmentInventoryString()')
-            dummyEntity.inventoryEquipments = Dummy.emptyInventoryEquipments
+            dummyEntity.setInventoryEquipments(Dummy.emptyInventoryEquipments)
 
             expect(() => dummyEntity.getAllEquipmentInventoryString(EQUIPMENT_TYPES.HELMET)
             ).toThrow(Error(`ERROR: Entity class, "getAllEquipmentInventoryString" method: there is no equipment to format string from`))
@@ -673,8 +673,6 @@ function equipmentAndInventoryEquipment(){
 }
 
 function inventoryResources() {
-    
-    const dummyEntity = new Entity(true, "dummy")
 
     describe('addResources', ()=> {
 
