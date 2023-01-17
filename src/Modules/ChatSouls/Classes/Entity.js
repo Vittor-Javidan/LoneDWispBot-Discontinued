@@ -170,15 +170,15 @@ export default class Entity {
         this.#isAlive = boolean
     }
 
-    /**
-     * @returns {number} Getter
+    /** Getter
+     * @returns {number} 
      */
-    get currentHP() { return this.#currentHP }
+    getCurrentHP() { return this.#currentHP }
 
-    /**
-     * @param {number} value Setter
+    /** Setter
+     * @param {number} value 
      */
-    set currentHP(value) {
+    setCurrentHP(value) {
 
         if(typeof value !== 'number' || isNaN(value)) 
             throw Error('ERROR: Entity class, currentHP must be a number')
@@ -633,20 +633,26 @@ export default class Entity {
      * Fully restore the current HP
      */
     recoverHP() {
-        this.currentHP = this.totalStats[statsTypes.HP]
+        this.setCurrentHP(this.totalStats[statsTypes.HP])
     }
 
     /**
+     * TODO: Find a way to not return any boolean
+     * 
      * Reduce current HP and set `isAlive` to `False` if HP becomes less or equal to zero
      * @param {number} value 
      * @returns {boolean} Returns `True` if value reach 0 or less, `False` otherwise
      */
     inflictDamage(value) {
-        this.currentHP -= value
-        if(this.currentHP <= 0){
+
+        const currentHP = this.getCurrentHP()
+        this.setCurrentHP(currentHP - value)
+
+        if(this.getCurrentHP() <= 0){
             this.kill()
             return true
         }
+
         return false
     }
 
@@ -751,8 +757,8 @@ export default class Entity {
         }
         
         //Checks if Maximum HP was reduced
-        if(this.currentHP > this.totalStats.hp) {
-            this.currentHP = this.totalStats.hp
+        if(this.getCurrentHP() > this.totalStats.hp) {
+            this.setCurrentHP(this.totalStats.hp)
         }
     }
 }

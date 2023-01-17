@@ -129,9 +129,9 @@ function settersAndGetters() {
         it('Can set', () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: currentHP setter/getter")
-            dummyEntity.currentHP = 143
-            expect(dummyEntity.currentHP).toBeTypeOf("number")
-            expect(dummyEntity.currentHP).toBe(143)
+            dummyEntity.setCurrentHP(143)
+            expect(dummyEntity.getCurrentHP()).toBeTypeOf("number")
+            expect(dummyEntity.getCurrentHP()).toBe(143)
         })
 
         it(`Throws Error: 
@@ -139,10 +139,10 @@ function settersAndGetters() {
         `, () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: currentHP setter/getter")
-            expect(() => dummyEntity.currentHP = 'wrong type').toThrow(Error('ERROR: Entity class, currentHP must be a number'))
-            expect(() => dummyEntity.currentHP = false).toThrow(Error('ERROR: Entity class, currentHP must be a number'))
-            expect(() => dummyEntity.currentHP = NaN).toThrow(Error('ERROR: Entity class, currentHP must be a number'))
-            expect(() => dummyEntity.currentHP = {}).toThrow(Error('ERROR: Entity class, currentHP must be a number'))
+            expect(() => dummyEntity.setCurrentHP('wrong type')).toThrow(Error('ERROR: Entity class, currentHP must be a number'))
+            expect(() => dummyEntity.setCurrentHP(false)).toThrow(Error('ERROR: Entity class, currentHP must be a number'))
+            expect(() => dummyEntity.setCurrentHP(NaN)).toThrow(Error('ERROR: Entity class, currentHP must be a number'))
+            expect(() => dummyEntity.setCurrentHP({})).toThrow(Error('ERROR: Entity class, currentHP must be a number'))
         })
     })
 
@@ -745,9 +745,9 @@ function lifeAndDamage() {
 
             dummyEntity.attributes = Dummy.attributes
             dummyEntity.totalStats = Dummy.buffedStats
-            dummyEntity.currentHP = 1
+            dummyEntity.setCurrentHP(1)
             dummyEntity.recoverHP()
-            expect(dummyEntity.currentHP).toBe(1000)
+            expect(dummyEntity.getCurrentHP()).toBe(1000)
         })
     })
 
@@ -758,17 +758,17 @@ function lifeAndDamage() {
             2. Kill when damage is more than current hp
         `, () => {
 
-            const dummyEntity = new Entity(true, 'Dummy Entity: inflictDamage()')
+            const entity = new Entity(true, 'Dummy Entity: inflictDamage()')
             
             //1
-            dummyEntity.currentHP = 1000
-            dummyEntity.inflictDamage(400)
-            expect(dummyEntity.currentHP).toBe(600)
+            entity.setCurrentHP(1000)
+            entity.inflictDamage(400)
+            expect(entity.getCurrentHP()).toBe(600)
 
             //2
-            dummyEntity.currentHP = 100
-            dummyEntity.inflictDamage(400)
-            expect(dummyEntity.getIsAlive()).toBe(false)
+            entity.setCurrentHP(100)
+            entity.inflictDamage(400)
+            expect(entity.getIsAlive()).toBe(false)
         })
     })
 
@@ -865,13 +865,13 @@ function statsCalculation() {
             2. it should reduce current hp in case max hp is reduced
         `, () => {
 
-            const dummyEntity = new Entity(true, 'Dummy Entity: calculateStats()') 
+            const entity = new Entity(true, 'Dummy Entity: calculateStats()') 
             
             //1
-            dummyEntity.attributes = Dummy.attributes
-            dummyEntity.currentEquipment = Dummy.dummyEquipments
-            dummyEntity.calculateStats()
-            expect(dummyEntity.totalStats).toStrictEqual({           
+            entity.attributes = Dummy.attributes
+            entity.currentEquipment = Dummy.dummyEquipments
+            entity.calculateStats()
+            expect(entity.totalStats).toStrictEqual({           
                 hp:             (Dummy.attributes.vitality     * Utils.statsWeight.HP         ) + (Utils.statsWeight.HP           * Dummy.attributes.vitality     * 100 * 6),          
                 evasion:        (Dummy.attributes.agility      * Utils.statsWeight.EVASION    ) + (Utils.statsWeight.EVASION      * Dummy.attributes.agility      * 100 * 6),
                 fisicalDamage:  (Dummy.attributes.strenght     * Utils.statsWeight.FISICAL_DMG) + (Utils.statsWeight.FISICAL_DMG  * Dummy.attributes.strenght     * 100 * 2),
@@ -881,9 +881,9 @@ function statsCalculation() {
             })
 
             //2
-            dummyEntity.attributes = Dummy.attributes
-            dummyEntity.currentHP = 1000
-            dummyEntity.currentEquipment = {
+            entity.attributes = Dummy.attributes
+            entity.setCurrentHP(1000)
+            entity.currentEquipment = {
                 longRangeWeapon:    {},
                 meleeWeapon:        {},
                 helmet:             {},
@@ -891,8 +891,8 @@ function statsCalculation() {
                 gloves:             {},
                 boots:              {}
             }
-            dummyEntity.calculateStats()
-            expect(dummyEntity.currentHP).toBe(Dummy.attributes.vitality * Utils.statsWeight.HP)
+            entity.calculateStats()
+            expect(entity.getCurrentHP()).toBe(Dummy.attributes.vitality * Utils.statsWeight.HP)
         })
     })
 }

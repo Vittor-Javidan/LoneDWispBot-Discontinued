@@ -253,7 +253,7 @@ export default class Battle {
     getPlayerStatus(){
         
         const playerName = this.playerInstance.getName()
-        const playerHP = this.playerInstance.currentHP
+        const playerHP = this.playerInstance.getCurrentHP()
         const playerMaxHP = this.playerInstance.totalStats[CS_ENUM.KEYS.CS_STATS.HP]
         const playerHPString = `${playerName}: ${playerHP}/${playerMaxHP} HP`
 
@@ -267,7 +267,7 @@ export default class Battle {
     getEnemieStatus(){
         
         const enemieName = this.enemieInstance.getName()
-        const enemieHP = this.enemieInstance.currentHP
+        const enemieHP = this.enemieInstance.getCurrentHP()
         const enemieMaxHP = this.enemieInstance.totalStats[CS_ENUM.KEYS.CS_STATS.HP]
         const enemieHPString = `${enemieName}: ${enemieHP}/${enemieMaxHP} HP`
 

@@ -126,7 +126,7 @@ function instantiateRandomEnemie() {
         dummyPlayer.level = 1
         const randomEnemieInstance_2 = Enemie.instantiateRandomEnemie(dummyPlayer)
         expect(randomEnemieInstance_2.totalStats).toStrictEqual(expectedTotalStats)
-        expect(randomEnemieInstance_2.currentHP).toBe(expectedTotalStats.hp)
+        expect(randomEnemieInstance_2.getCurrentHP()).toBe(expectedTotalStats.hp)
     })
 }
 

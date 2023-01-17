@@ -449,7 +449,7 @@ function instanceMethods() {
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             dummyPlayer.calculateStats()
             expect(battleInstance.getPlayerStatus()
-            ).toEqual(`${dummyPlayer.getName()}: ${dummyPlayer.currentHP}/${dummyPlayer.totalStats.hp} HP`)
+            ).toEqual(`${dummyPlayer.getName()}: ${dummyPlayer.getCurrentHP()}/${dummyPlayer.totalStats.hp} HP`)
         })
     })
 
@@ -464,7 +464,7 @@ function instanceMethods() {
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             dummyEnemie.calculateStats()
             expect(battleInstance.getEnemieStatus()
-            ).toEqual(`${dummyEnemie.getName()}: ${dummyEnemie.currentHP}/${dummyEnemie.totalStats.hp} HP`) // Is higher like that because dummy equipments are too op!
+            ).toEqual(`${dummyEnemie.getName()}: ${dummyEnemie.getCurrentHP()}/${dummyEnemie.totalStats.hp} HP`) // Is higher like that because dummy equipments are too op!
         })
     })
 
@@ -482,11 +482,11 @@ function instanceMethods() {
             dummyPlayer.calculateStats()
             
             const playerName = dummyPlayer.getName()
-            const playerHP = dummyPlayer.currentHP
+            const playerHP = dummyPlayer.getCurrentHP()
             const playerMaxHP = dummyPlayer.totalStats.hp
 
             const enemyName = dummyEnemie.getName()
-            const enemyHP = dummyEnemie.currentHP
+            const enemyHP = dummyEnemie.getCurrentHP()
             const enemyMaxHP = dummyEnemie.totalStats.hp
 
             expect(battleInstance.getBattleStatus()
