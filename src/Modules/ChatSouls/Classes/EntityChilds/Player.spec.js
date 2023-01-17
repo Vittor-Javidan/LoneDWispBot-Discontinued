@@ -38,7 +38,7 @@ function initialization() {
 			const dummyPlayer = new Player("Dummy Player: constructor()")
 			expect(dummyPlayer.getName()).toBe("Dummy Player: constructor()")
 			expect(dummyPlayer.getAttributes()).toStrictEqual(deepCopy(Default.attributes))
-			expect(dummyPlayer.currentEquipment).toStrictEqual(deepCopy(Default.equipments))
+			expect(dummyPlayer.getCurrentEquipment()).toStrictEqual(deepCopy(Default.equipments))
 		})
 	})
 	
@@ -59,7 +59,7 @@ function initialization() {
 			expect(playerInstance.getSouls()).toBe(DummyGuy.souls)
 			expect(playerInstance.getlevel()).toBe(DummyGuy.level)
 			expect(playerInstance.getAttributes()).toStrictEqual(DummyGuy.attributes)
-			expect(playerInstance.currentEquipment).toStrictEqual(DummyGuy.equipment)
+			expect(playerInstance.getCurrentEquipment()).toStrictEqual(DummyGuy.equipment)
 			expect(playerInstance.inventoryEquipments).toStrictEqual(DummyGuy.inventoryEquipments)
 			expect(playerInstance.inventoryResources).toStrictEqual(DummyGuy.inventoryResources)
 
@@ -437,7 +437,7 @@ function instanceMethods() {
 			expect(dummyPlayer.getSouls()).toEqual(DummyGuy.souls)
 			expect(dummyPlayer.getlevel()).toEqual(DummyGuy.level)
 			expect(dummyPlayer.getAttributes()).toStrictEqual(DummyGuy.attributes)
-			expect(dummyPlayer.currentEquipment).toStrictEqual(DummyGuy.equipment)
+			expect(dummyPlayer.getCurrentEquipment()).toStrictEqual(DummyGuy.equipment)
 			expect(dummyPlayer.inventoryEquipments).toStrictEqual(DummyGuy.inventoryEquipments)
 			expect(dummyPlayer.inventoryResources).toStrictEqual(DummyGuy.inventoryResources)
 		})
@@ -454,14 +454,14 @@ function instanceMethods() {
 			dinamicDummy.setSouls(RandomData.souls())
 			dinamicDummy.setlevel(RandomData.level())
 			dinamicDummy.setAttributes(RandomData.attributes())
-			dinamicDummy.currentEquipment = RandomData.equipment()
+			dinamicDummy.setCurrentEquipment(RandomData.equipment())
 			dinamicDummy.inventory = RandomData.inventory()
 			dinamicDummy.save()
 			const newDataBase = DbSystem.loadDb(playerDataBasePath)[dinamicDummy.getName()] //pre-requisite, to get new data from database file
 			expect(newDataBase.name).toBe(dinamicDummy.getName())
 			expect(newDataBase.souls).toBe(dinamicDummy.getSouls())
 			expect(newDataBase.level).toBe(dinamicDummy.getlevel())
-			expect(newDataBase.equipment).toStrictEqual(dinamicDummy.currentEquipment)
+			expect(newDataBase.equipment).toStrictEqual(dinamicDummy.getCurrentEquipment())
 			expect(newDataBase.attributes).toStrictEqual(dinamicDummy.getAttributes())
 			expect(newDataBase.inventory).toStrictEqual(dinamicDummy.inventory)
 

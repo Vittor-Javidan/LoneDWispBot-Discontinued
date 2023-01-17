@@ -26,7 +26,7 @@ import Weapon from './EquipmentChilds/Weapon'
 const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
 const statsTypes = CS_ENUM.KEYS.CS_STATS
 const attributeKeys = Object.values(attributeTypes)
-const equipmentKeys = Object.values(EQUIPMENT_TYPES)
+const equipmentTypeKeys = Object.values(EQUIPMENT_TYPES)
 const statsKeys = Object.values(statsTypes)
 
 export default class Entity {
@@ -243,34 +243,34 @@ export default class Entity {
         this.#attributes = deepCopy(object)
     }
 
-    /** 
-     * @returns {CS_Entity_Equipment} Getter
+    /** Getter
+     * @returns {CS_Entity_Equipment} 
      */
-    get currentEquipment() { return this.#currentEquipment }
+    getCurrentEquipment() { return this.#currentEquipment }
 
-    /**
-     * @param {CS_Entity_Equipment} object Setter
+    /** Setter
+     * @param {CS_Entity_Equipment} newCurrentEquipment 
      */
-    set currentEquipment(object) {
+    setCurrentEquipment(newCurrentEquipment) {
         
-        if(typeof object !== 'object'){
+        if(typeof newCurrentEquipment !== 'object'){
             throw Error('ERROR: Entity class, "currentEquipment": argument must be an object')
         }
 
-        const objectKeys = Object.keys(object)
-        for(let i = 0; i < objectKeys.length; i++) {
-            if(!equipmentKeys.includes(objectKeys[i])){
+        const newCurrentEquipment_Keys = Object.keys(newCurrentEquipment)
+        for(let i = 0; i < newCurrentEquipment_Keys.length; i++) {
+            if(!equipmentTypeKeys.includes(newCurrentEquipment_Keys[i])){
                 throw Error(`ERROR: Entity class, "currentEquipment" setter: Equipment type must be valid`)
             }
         }
 
-        for(let i = 0; i < equipmentKeys.length; i++) {
-            if (!this.currentEquipment[equipmentKeys[i]]) {
+        for(let i = 0; i < equipmentTypeKeys.length; i++) {
+            if (!newCurrentEquipment[equipmentTypeKeys[i]]) {
                 throw Error(`ERROR: Entity class, "currentEquipment": All properties must be defined`)
             }
         }
                 
-        this.#currentEquipment = deepCopy(object) 
+        this.#currentEquipment = deepCopy(newCurrentEquipment) 
     }
 
     /**
@@ -293,13 +293,13 @@ export default class Entity {
 
         const objectKeys = Object.keys(inventoryObject.equipments)
         for(let i = 0; i < objectKeys.length; i++) {
-            if(!equipmentKeys.includes(objectKeys[i])){
+            if(!equipmentTypeKeys.includes(objectKeys[i])){
                 throw Error(`ERROR: Entity class, "inventory" setter: inventory equipments type must be valid`)
             }
         }
 
-        for(let i = 0; i < equipmentKeys.length; i++) {
-            if (!inventoryObject.equipments[equipmentKeys[i]]) {
+        for(let i = 0; i < equipmentTypeKeys.length; i++) {
+            if (!inventoryObject.equipments[equipmentTypeKeys[i]]) {
                 throw Error(`ERROR: Entity class, "inventory setter": all inventory equipments properties must be defined`)
             }
         }
@@ -325,13 +325,13 @@ export default class Entity {
 
         const objectKeys = Object.keys(inventoryEquipmentObject)
         for(let i = 0; i < objectKeys.length; i++) {
-            if(!equipmentKeys.includes(objectKeys[i])){
+            if(!equipmentTypeKeys.includes(objectKeys[i])){
                 throw Error(`ERROR: Entity class, "inventoryEquipments" setter: given type must be valid`)
             }
         }
 
-        for(let i = 0; i < equipmentKeys.length; i++) {
-            if (!inventoryEquipmentObject[equipmentKeys[i]]) {
+        for(let i = 0; i < equipmentTypeKeys.length; i++) {
+            if (!inventoryEquipmentObject[equipmentTypeKeys[i]]) {
                 throw Error(`ERROR: Entity class, "inventoryEquipments" setter: all properties must be defined`)
             }
         }
@@ -494,7 +494,7 @@ export default class Entity {
      */
     isInventoryEquipmentsTypeEmpty(equipmentType){
 
-        if(!equipmentKeys.includes(equipmentType)) {
+        if(!equipmentTypeKeys.includes(equipmentType)) {
             throw Error(`ERROR: Entity class, "isInventoryEquipmentsTypeEmpty": Equipment type must be valid`)
         }
 
@@ -511,7 +511,7 @@ export default class Entity {
      */
     getEquipmentInventoryAmount(equipmentType) {
 
-        if(!equipmentKeys.includes(equipmentType)) {
+        if(!equipmentTypeKeys.includes(equipmentType)) {
             throw Error(`ERROR: Entity class, "getEquipmentInventoryAmount" method: equipment type not recognized`)
         }
         
@@ -526,9 +526,9 @@ export default class Entity {
      */
     equip(equipmentType, equipmentObject){
 
-        const newObject = this.currentEquipment 
-        newObject[equipmentType] = equipmentObject
-        this.currentEquipment = deepCopy(newObject)
+        const newCurrentEquipment = this.getCurrentEquipment() 
+        newCurrentEquipment[equipmentType] = equipmentObject
+        this.setCurrentEquipment(deepCopy(newCurrentEquipment))
     }
 
     /**
@@ -538,9 +538,15 @@ export default class Entity {
      */
     unequip(equipmentType){
 
-        const unequippedWeapon = deepCopy(this.currentEquipment[equipmentType])        
+        /**@type {CS_Equipment_WeaponData | CS_Equipment_ArmorData} */
+        const unequippedWeapon = deepCopy(this.getCurrentEquipment()[equipmentType])      
+          
         this.inventoryEquipments[equipmentType].push(unequippedWeapon)
-        this.currentEquipment[equipmentType] = {}
+
+        const currentEquipment = this.getCurrentEquipment()
+        currentEquipment[equipmentType] = {}
+        
+        this.setCurrentEquipment(currentEquipment)
         this.sortInventoryEquipments(equipmentType)
     }
 
@@ -560,18 +566,19 @@ export default class Entity {
         const inventoryEquipments = deepCopy(this.inventoryEquipments)
         
         /**@type {CS_Equipment_WeaponData | CS_Equipment_ArmorData} */
-        let currentEquipment = deepCopy(this.currentEquipment)
+        let newCurrentEquipment = this.getCurrentEquipment()
 
-        let itemToStore = deepCopy(currentEquipment[equipmentType])
+        let itemToStore = deepCopy(newCurrentEquipment[equipmentType])
         
         let removedItemArray
         itemToStore.name !== undefined
             ? removedItemArray = inventoryEquipments[equipmentType].splice(itemIndex, 1, itemToStore)
             : removedItemArray = inventoryEquipments[equipmentType].splice(itemIndex, 1)
+        //
 
-        currentEquipment[equipmentType] = removedItemArray[0]
+        newCurrentEquipment[equipmentType] = removedItemArray[0]
         
-        this.currentEquipment = currentEquipment
+        this.setCurrentEquipment(newCurrentEquipment)
         this.inventoryEquipments = inventoryEquipments
     }
 
@@ -723,10 +730,12 @@ export default class Entity {
      */
     bonusFromEquippment(EquipmentClass, equipmentType){
 
-        if(!this.currentEquipment[equipmentType].name) return
+        const currentEquipment = this.getCurrentEquipment()
+
+        if(!currentEquipment[equipmentType].name) return
         
         /**@type {Equipment} */
-        const equipmentInstance = new EquipmentClass(this.currentEquipment[equipmentType])
+        const equipmentInstance = new EquipmentClass(currentEquipment[equipmentType])
         const equipMultipliers = equipmentInstance.multipliers
         const statsWeightValues    = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
         const attributes = this.getAttributes()

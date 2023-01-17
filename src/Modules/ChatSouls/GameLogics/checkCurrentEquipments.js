@@ -13,9 +13,13 @@ export default function checkCurrentEquipments(data, menuMessage) {
     sendMessage_UI_EquipmentsMenu(data.playerInstance, `${menuMessage} - ${message} `)
 }
 
+/**
+ * @param {Player} playerInstance 
+ * @returns 
+ */
 export function buildMessage(playerInstance) {
     
-    const playerEquipments = playerInstance.currentEquipment
+    const playerEquipments = playerInstance.getCurrentEquipment()
     const playerEquipmentProperties = Object.keys(playerEquipments)
     const playerEquipmentArray = Object.values(playerEquipments)
     

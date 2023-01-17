@@ -68,14 +68,14 @@ export default class Player extends Entity {
         })
 
         const playerEquips = CS_ENUM.BALANCE_VALUES.PLAYER_START.EQUIPMENTS
-        this.currentEquipment = {
+        this.setCurrentEquipment({
             longRangeWeapon:    playerEquips.LONG_RANGE_WEAPON,
             meleeWeapon:        playerEquips.MELEE_WEAPON,
             helmet:             playerEquips.HELMET,
             bodyArmor:          playerEquips.BODY_ARMOR,
             gloves:             playerEquips.GLOVES,
             boots:              playerEquips.BOOTS
-        }
+        })
     }
 
     //=================================================================================================
@@ -269,7 +269,7 @@ export default class Player extends Entity {
         if(!playerData.souls)                   playerData.souls = playerInstance.getSouls()
         if(!playerData.level)                   playerData.level = playerInstance.getlevel()
         if(!playerData.attributes)              playerData.attributes = deepCopy(playerInstance.getAttributes())
-        if(!playerData.equipment)               playerData.equipment = deepCopy(playerInstance.currentEquipment)
+        if(!playerData.equipment)               playerData.equipment = deepCopy(playerInstance.getCurrentEquipment())
         if(!playerData.inventory)               playerData.inventory = deepCopy(playerInstance.inventory)
         if(!playerData.inventory.equipments)    playerData.inventory.equipments = deepCopy(playerInstance.inventoryEquipments)
         if(!playerData.inventory.resources)     playerData.inventory.resources = deepCopy(playerInstance.inventoryResources)
@@ -357,7 +357,7 @@ export default class Player extends Entity {
         this.setSouls(playerData.souls)
         this.setlevel(playerData.level)
         this.setAttributes(playerData.attributes)
-        this.currentEquipment  =   playerData.equipment
+        this.setCurrentEquipment(playerData.equipment)
         this.inventory  =   playerData.inventory
         
         sendMessage(`/w ${this.getName()} Seu progresso foi restaurado com sucesso`)
@@ -374,7 +374,7 @@ export default class Player extends Entity {
             souls: this.getSouls(),
             level: this.getlevel(),
             attributes: this.getAttributes(),
-            equipment: this.currentEquipment,
+            equipment: this.getCurrentEquipment(),
             inventory: this.inventory
         }
         

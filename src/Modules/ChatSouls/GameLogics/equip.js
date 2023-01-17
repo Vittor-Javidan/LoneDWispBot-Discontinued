@@ -18,7 +18,7 @@ export default function equipAndReturnToEquipmentTypeMenu(playerInstance, itemIn
     playerInstance.save()
     playerInstance.secondaryState = returnEquipmentMenuStateByType(equipmentType)
 
-    const equippedEquipment = playerInstance.currentEquipment[equipmentType]
+    const equippedEquipment = playerInstance.getCurrentEquipment()[equipmentType]
     sendMessage_UI_EquipmentTypeMenu(playerInstance, 
         `${returnEquippingMessage(equippedEquipment)}. ${returnMenuEquipmentMessageByType(equipmentType)}`
     )

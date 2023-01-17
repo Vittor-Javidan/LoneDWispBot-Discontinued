@@ -35,7 +35,7 @@ function instantiation() {
         `, () => {
 
             const dummyEntity = new Entity(true, "Dummy Entity: Instance Default Properties")
-            expect(dummyEntity.currentEquipment).toBeTypeOf("object")
+            expect(dummyEntity.getCurrentEquipment()).toBeTypeOf("object")
             expect(dummyEntity.statsFromEquips).toBeTypeOf("object")
             expect(dummyEntity.totalStats).toBeTypeOf("object")
             expect(dummyEntity.getAttributes()).toBeTypeOf("object")
@@ -46,7 +46,7 @@ function instantiation() {
             expect(dummyEntity.getIsAlive()).toBe(true)
             expect(dummyEntity.getlevel()).toBe(1)
             expect(dummyEntity.getAttributes()).toStrictEqual(Default.attributes)
-            expect(dummyEntity.currentEquipment).toStrictEqual(Default.equipments)
+            expect(dummyEntity.getCurrentEquipment()).toStrictEqual(Default.equipments)
             expect(dummyEntity.inventory).toStrictEqual(Default.inventoryEquipments)
             expect(dummyEntity.totalStats).toStrictEqual(deepCopy(Default.stats))
             expect(dummyEntity.baseStats).toStrictEqual(deepCopy(Default.stats))
@@ -237,8 +237,8 @@ function settersAndGetters() {
         it('Can set', () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: currentEquipment setter/getter")
-            dummyEntity.currentEquipment = Dummy.equipments
-            expect(dummyEntity.currentEquipment).toStrictEqual(deepCopy(Dummy.equipments))
+            dummyEntity.setCurrentEquipment(Dummy.equipments)
+            expect(dummyEntity.getCurrentEquipment()).toStrictEqual(deepCopy(Dummy.equipments))
         })
 
         it(`Throws error: 
@@ -250,19 +250,21 @@ function settersAndGetters() {
             const dummyEntity = new Entity(true, "Dummy Entity: currentEquipment setter/getter")
 
             //1
-            expect(() => dummyEntity.currentEquipment = 'wrong type').toThrow(Error('ERROR: Entity class, "currentEquipment": argument must be an object'))    
-            expect(() => dummyEntity.currentEquipment = false).toThrow(Error('ERROR: Entity class, "currentEquipment": argument must be an object'))
-            expect(() => dummyEntity.currentEquipment = 0).toThrow(Error('ERROR: Entity class, "currentEquipment": argument must be an object'))
+            expect(() => dummyEntity.setCurrentEquipment('wrong type')).toThrow(Error('ERROR: Entity class, "currentEquipment": argument must be an object'))    
+            expect(() => dummyEntity.setCurrentEquipment(false)).toThrow(Error('ERROR: Entity class, "currentEquipment": argument must be an object'))
+            expect(() => dummyEntity.setCurrentEquipment(0)).toThrow(Error('ERROR: Entity class, "currentEquipment": argument must be an object'))
 
             //2
-            expect(() => dummyEntity.currentEquipment = Dummy.wrongEquipment).toThrow(
+            expect(() => dummyEntity.setCurrentEquipment(Dummy.wrongEquipment)).toThrow(
                 Error(`ERROR: Entity class, "currentEquipment" setter: Equipment type must be valid`)
             )
 
             //3
             expect(() => { for(let i = 0; i < Utils.equipTypeskeys.length; i++){               
-                dummyEntity.currentEquipment = { [Utils.equipTypeskeys[i]]: 10 }
-            }}).toThrow(Error(`ERROR: Entity class, "currentEquipment": All properties must be defined`))
+                dummyEntity.setCurrentEquipment({ [Utils.equipTypeskeys[i]]: 10 })
+            }}).toThrow(
+                Error(`ERROR: Entity class, "currentEquipment": All properties must be defined`)
+            )
 
         })
     })
@@ -575,7 +577,7 @@ function equipmentAndInventoryEquipment(){
                 dummyEntity.equip(Utils.equipTypeskeys[i], deepCopy(Dummy.equipmentObject))
             }
             
-            expect(dummyEntity.currentEquipment).toStrictEqual(Dummy.equipments)
+            expect(dummyEntity.getCurrentEquipment()).toStrictEqual(Dummy.equipments)
         })
     })
 
@@ -586,14 +588,14 @@ function equipmentAndInventoryEquipment(){
         `, () => {
             
             const dummyEntity = new Entity(true, 'Dummy Entity: unequip()')
-            dummyEntity.currentEquipment = Dummy.equipments
+            dummyEntity.setCurrentEquipment(Dummy.equipments)
             
             for (let i = 0; i < Utils.equipTypeskeys.length; i++){
                 dummyEntity.unequip(Utils.equipTypeskeys[i])
             }
             
             expect(dummyEntity.inventoryEquipments).toStrictEqual(Dummy.inventoryEquipments)
-            expect(dummyEntity.currentEquipment).toStrictEqual(Dummy.emptyEquipments)
+            expect(dummyEntity.getCurrentEquipment()).toStrictEqual(Dummy.emptyEquipments)
         })
     })
 
@@ -611,16 +613,16 @@ function equipmentAndInventoryEquipment(){
             for (let i = 0; i < Utils.equipTypeskeys.length; i++){
                 dummyEntity.equipFromInventory(0, Utils.equipTypeskeys[i])
             }
-            expect(dummyEntity.currentEquipment).toStrictEqual(deepCopy(Dummy.equipments))
+            expect(dummyEntity.getCurrentEquipment()).toStrictEqual(deepCopy(Dummy.equipments))
             expect(dummyEntity.inventoryEquipments).toStrictEqual(Dummy.emptyInventoryEquipments)
 
             //2
-            dummyEntity.currentEquipment = Dummy.equipments_2
+            dummyEntity.setCurrentEquipment(Dummy.equipments_2)
             dummyEntity.inventoryEquipments = Dummy.inventoryEquipments
             for (let i = 0; i < Utils.equipTypeskeys.length; i++){
                 dummyEntity.equipFromInventory(0, Utils.equipTypeskeys[i])
             }
-            expect(dummyEntity.currentEquipment).toStrictEqual(deepCopy(Dummy.equipments))
+            expect(dummyEntity.getCurrentEquipment()).toStrictEqual(deepCopy(Dummy.equipments))
             expect(dummyEntity.inventoryEquipments).toStrictEqual(deepCopy(Dummy.inventoryEquipments_2))
         })
 
@@ -844,7 +846,7 @@ function statsCalculation() {
                
             const dummyEntity = new Entity(true, 'Dummy Entity: calculateStatsFromEquips()')  
             dummyEntity.setAttributes(Dummy.attributes)
-            dummyEntity.currentEquipment = Dummy.dummyEquipments 
+            dummyEntity.setCurrentEquipment(Dummy.dummyEquipments) 
             dummyEntity.initializeStats()
             dummyEntity.calculateStatsFromEquips()
             expect(dummyEntity.statsFromEquips).toStrictEqual({                   // Each "Dummy Equipment" give 100 for each multiplier
@@ -869,7 +871,7 @@ function statsCalculation() {
             
             //1
             entity.setAttributes(Dummy.attributes)
-            entity.currentEquipment = Dummy.dummyEquipments
+            entity.setCurrentEquipment(Dummy.dummyEquipments)
             entity.calculateStats()
             expect(entity.totalStats).toStrictEqual({           
                 hp:             (Dummy.attributes.vitality     * Utils.statsWeight.HP         ) + (Utils.statsWeight.HP           * Dummy.attributes.vitality     * 100 * 6),          
@@ -883,14 +885,14 @@ function statsCalculation() {
             //2
             entity.setAttributes(Dummy.attributes)
             entity.setCurrentHP(1000)
-            entity.currentEquipment = {
+            entity.setCurrentEquipment({
                 longRangeWeapon:    {},
                 meleeWeapon:        {},
                 helmet:             {},
                 bodyArmor:          {},
                 gloves:             {},
                 boots:              {}
-            }
+            })
             entity.calculateStats()
             expect(entity.getCurrentHP()).toBe(Dummy.attributes.vitality * Utils.statsWeight.HP)
         })

@@ -36,12 +36,12 @@ describe(`buildMessage`, () => {
         let returnedString = ''
 
         //1
-        dummyPlayer.currentEquipment = emptyEquipments
+        dummyPlayer.setCurrentEquipment(emptyEquipments)
         returnedString = buildMessage(dummyPlayer)
         expect(returnedString).toBe(`Você está completamente nu!! Shame on you`)
 
         //2
-        dummyPlayer.currentEquipment = equipments
+        dummyPlayer.setCurrentEquipment(equipments)
         returnedString = buildMessage(dummyPlayer)
         expect(returnedString).toBe(`Atualmente você está equipando: Dummy Equipment, Dummy Equipment, Dummy Equipment, Dummy Equipment, Dummy Equipment, Dummy Equipment`)
     })

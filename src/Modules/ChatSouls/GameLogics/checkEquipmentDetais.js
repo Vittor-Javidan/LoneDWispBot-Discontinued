@@ -10,7 +10,7 @@ import { sendMessage_UI_EquipmentTypeMenu } from "../UserInteface/sendMessage_Cu
 export default function checkEquipmentDetais(playerInstance) {
 
     const equipmentType = getEquipmentTypeByPlayerState(playerInstance)
-    const equippedEquipment = playerInstance.currentEquipment[equipmentType]   
+    const equippedEquipment = playerInstance.getCurrentEquipment()[equipmentType]   
 
     if(!equippedEquipment.name) {
         sendMessage_UI_EquipmentTypeMenu(playerInstance,`você está sem capacete equipado`)
