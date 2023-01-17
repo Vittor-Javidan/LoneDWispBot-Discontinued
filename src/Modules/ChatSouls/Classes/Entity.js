@@ -618,21 +618,19 @@ export default class Entity {
      * @returns {boolean} `False` if oparation is invalid, `True` otherwise.
      */
     removeResources(resourceName, amount){
-
-        //TODO: Refactor this function
         
-        if(!this.getInventoryResources()[resourceName]) {
+        const resource = this.getInventory().resources[resourceName]
+
+        if(!resource) {
             throw Error(`ERROR: Entity class, "removeResources": resource doesn't exist`)
         }
-        if (amount > this.getInventory().resources[resourceName].amount) {
+
+        if (amount > resource.amount) {
             throw Error(`ERROR: Entity class, "removeResources": trying to remove more resource than what is stored`)
         }
 
-        //Removes the specify amount
-        this.getInventory().resources[resourceName].amount -= amount
-
-        //Delete item if amount reachs zero
-        if (this.getInventory().resources[resourceName].amount === 0) {
+        resource.amount -= amount
+        if (resource.amount === 0) {
             delete this.getInventory().resources[resourceName]
         }
     }
