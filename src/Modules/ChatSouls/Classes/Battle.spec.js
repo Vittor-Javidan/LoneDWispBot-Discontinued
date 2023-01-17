@@ -220,18 +220,18 @@ function instanceMethods() {
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
 
             //1
-            dummyPlayer.isAlive = true
-            dummyEnemie.isAlive = true
+            dummyPlayer.setIsAlive(true) 
+            dummyEnemie.setIsAlive(true) 
             expect(battleInstance.isBothAlive()).toBe(true)
 
             //2
-            dummyPlayer.isAlive = false
-            dummyEnemie.isAlive = true
+            dummyPlayer.setIsAlive(false) 
+            dummyEnemie.setIsAlive(true) 
             expect(battleInstance.isBothAlive()).toBe(false)
 
             //3
-            dummyPlayer.isAlive = true
-            dummyEnemie.isAlive = false
+            dummyPlayer.setIsAlive(true) 
+            dummyEnemie.setIsAlive(false) 
             expect(battleInstance.isBothAlive()).toBe(false)
         })
     })

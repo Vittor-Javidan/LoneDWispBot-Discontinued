@@ -56,7 +56,7 @@ describe(`UI_Battle`, () => {
 
         //Test
         expect(Battle.battlesList.length).toBe(0)
-        expect(player.isAlive).toBe(true)
+        expect(player.getIsAlive()).toBe(true)
 
         //Sanitizers
         Player.logoutPlayerInstance(player)

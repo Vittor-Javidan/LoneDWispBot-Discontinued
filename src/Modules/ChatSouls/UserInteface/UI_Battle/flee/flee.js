@@ -29,7 +29,7 @@ export default function flee(battleInstance) {
 function didPlayerDied(battleInstance, attackPhaseMessage) {
 
     const playerInstance = battleInstance.playerInstance
-    const isPlayerAlive = playerInstance.isAlive
+    const isPlayerAlive = playerInstance.getIsAlive()
 
     if(isPlayerAlive){
         return false 

@@ -41,9 +41,9 @@ function instantiation() {
             expect(dummyEntity.attributes).toBeTypeOf("object")
             expect(dummyEntity.inventory).toBeTypeOf("object")
             expect(dummyEntity.baseStats).toBeTypeOf("object")
-            expect(dummyEntity.isAlive).toBeTypeOf("boolean")
+            expect(dummyEntity.getIsAlive()).toBeTypeOf("boolean")
             expect(dummyEntity.level).toBeTypeOf("number")
-            expect(dummyEntity.isAlive).toBe(true)
+            expect(dummyEntity.getIsAlive()).toBe(true)
             expect(dummyEntity.level).toBe(1)
             expect(dummyEntity.attributes).toStrictEqual(Default.attributes)
             expect(dummyEntity.currentEquipment).toStrictEqual(Default.equipments)
@@ -108,9 +108,9 @@ function settersAndGetters() {
         it('Can set', () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: isAlive setter/getter")
-            dummyEntity.isAlive = false
-            expect(dummyEntity.isAlive).toBeTypeOf("boolean")
-            expect(dummyEntity.isAlive).toBe(false)
+            dummyEntity.setIsAlive(false)
+            expect(dummyEntity.getIsAlive()).toBeTypeOf("boolean")
+            expect(dummyEntity.getIsAlive()).toBe(false)
         })
 
         it(`Throws Error: 
@@ -118,9 +118,9 @@ function settersAndGetters() {
         `, () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: isAlive setter/getter")
-            expect(() => dummyEntity.isAlive = 'wrong type').toThrow(Error('ERROR: Entity class, isAlive must be a boolean'))
-            expect(() => dummyEntity.isAlive = {}).toThrow(Error('ERROR: Entity class, isAlive must be a boolean'))
-            expect(() => dummyEntity.isAlive = 0).toThrow(Error('ERROR: Entity class, isAlive must be a boolean'))
+            expect(() => dummyEntity.setIsAlive('wrong type')).toThrow(Error('ERROR: Entity class, isAlive must be a boolean'))
+            expect(() => dummyEntity.setIsAlive({})).toThrow(Error('ERROR: Entity class, isAlive must be a boolean'))
+            expect(() => dummyEntity.setIsAlive(0)).toThrow(Error('ERROR: Entity class, isAlive must be a boolean'))
         })
     })
 
@@ -768,7 +768,7 @@ function lifeAndDamage() {
             //2
             dummyEntity.currentHP = 100
             dummyEntity.inflictDamage(400)
-            expect(dummyEntity.isAlive).toBe(false)
+            expect(dummyEntity.getIsAlive()).toBe(false)
         })
     })
 
@@ -779,9 +779,9 @@ function lifeAndDamage() {
         `, () => {
           
             const dummyEntity = new Entity(true, 'Dummy Entity: ressurrect()')
-            dummyEntity.isAlive = false
+            dummyEntity.setIsAlive(false)
             dummyEntity.ressurrect()
-            expect(dummyEntity.isAlive).toBe(true)
+            expect(dummyEntity.getIsAlive()).toBe(true)
         })
     })
 
@@ -792,9 +792,9 @@ function lifeAndDamage() {
         `, () => {
             
             const dummyEntity = new Entity(true, 'Dummy Entity: kill()')
-            dummyEntity.isAlive = true
+            dummyEntity.setIsAlive(true)
             dummyEntity.kill()
-            expect(dummyEntity.isAlive).toBe(false)
+            expect(dummyEntity.getIsAlive()).toBe(false)
         })
     })
 }

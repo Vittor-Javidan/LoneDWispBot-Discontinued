@@ -21,7 +21,7 @@ export default function playerAdvantage(battleInstance) {
         evasionWeight: 1
     })
 
-    if(!enemieInstance.isAlive) {
+    if(!enemieInstance.getIsAlive()) {
         playerWon(battleInstance, feedBackMessage)
         return   
     }
@@ -35,7 +35,7 @@ export default function playerAdvantage(battleInstance) {
         evasionWeight: 1
     }) 
 
-    if(!playerInstance.isAlive) {
+    if(!playerInstance.getIsAlive()) {
         playerDied(battleInstance, feedBackMessage)
         return
     }

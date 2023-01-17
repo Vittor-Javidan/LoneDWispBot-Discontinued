@@ -154,7 +154,7 @@ export default class Battle {
      * @returns {boolean}
      */
     isBothAlive(){
-        return this.playerInstance.isAlive && this.enemieInstance.isAlive
+        return this.playerInstance.getIsAlive() && this.enemieInstance.getIsAlive()
     }
 
     /**

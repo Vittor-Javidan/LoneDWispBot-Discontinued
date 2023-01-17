@@ -151,18 +151,18 @@ export default class Entity {
         this.#name = entityName
     }
 
-    /**
-     * @returns {boolean} Getter
+    /** Getter
+     * @returns {boolean} 
      */
-    get isAlive() {
-        
+    getIsAlive() {
+    
         return this.#isAlive
     }
 
-    /**
-     * @param {boolean} boolean Setter
+    /** Setter
+     * @param {boolean} boolean 
      */
-    set isAlive(boolean) {
+    setIsAlive(boolean) {
         
         if(typeof boolean !== 'boolean')
             throw Error('ERROR: Entity class, isAlive must be a boolean')
@@ -655,7 +655,7 @@ export default class Entity {
      * @returns {void}
      */
     ressurrect(){
-        this.isAlive = true
+        this.setIsAlive(true)
     }
 
     /**
@@ -663,7 +663,7 @@ export default class Entity {
      * @returns {void}
      */
     kill(){
-        this.isAlive = false
+        this.setIsAlive(false)
     }
 
     initializeStats(){
