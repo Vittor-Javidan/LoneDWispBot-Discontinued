@@ -37,7 +37,7 @@ function initialization() {
 			
 			const dummyPlayer = new Player("Dummy Player: constructor()")
 			expect(dummyPlayer.getName()).toBe("Dummy Player: constructor()")
-			expect(dummyPlayer.attributes).toStrictEqual(deepCopy(Default.attributes))
+			expect(dummyPlayer.getAttributes()).toStrictEqual(deepCopy(Default.attributes))
 			expect(dummyPlayer.currentEquipment).toStrictEqual(deepCopy(Default.equipments))
 		})
 	})
@@ -58,7 +58,7 @@ function initialization() {
 			expect(playerInstance).toBeInstanceOf(Player)
 			expect(playerInstance.getSouls()).toBe(DummyGuy.souls)
 			expect(playerInstance.getlevel()).toBe(DummyGuy.level)
-			expect(playerInstance.attributes).toStrictEqual(DummyGuy.attributes)
+			expect(playerInstance.getAttributes()).toStrictEqual(DummyGuy.attributes)
 			expect(playerInstance.currentEquipment).toStrictEqual(DummyGuy.equipment)
 			expect(playerInstance.inventoryEquipments).toStrictEqual(DummyGuy.inventoryEquipments)
 			expect(playerInstance.inventoryResources).toStrictEqual(DummyGuy.inventoryResources)
@@ -436,7 +436,7 @@ function instanceMethods() {
 			dummyPlayer.load()
 			expect(dummyPlayer.getSouls()).toEqual(DummyGuy.souls)
 			expect(dummyPlayer.getlevel()).toEqual(DummyGuy.level)
-			expect(dummyPlayer.attributes).toStrictEqual(DummyGuy.attributes)
+			expect(dummyPlayer.getAttributes()).toStrictEqual(DummyGuy.attributes)
 			expect(dummyPlayer.currentEquipment).toStrictEqual(DummyGuy.equipment)
 			expect(dummyPlayer.inventoryEquipments).toStrictEqual(DummyGuy.inventoryEquipments)
 			expect(dummyPlayer.inventoryResources).toStrictEqual(DummyGuy.inventoryResources)
@@ -451,9 +451,9 @@ function instanceMethods() {
 			
 			//1
 			const dinamicDummy = new Player("Dummy Player: save()")
-			dinamicDummy.attributes = RandomData.attributes()
 			dinamicDummy.setSouls(RandomData.souls())
 			dinamicDummy.setlevel(RandomData.level())
+			dinamicDummy.setAttributes(RandomData.attributes())
 			dinamicDummy.currentEquipment = RandomData.equipment()
 			dinamicDummy.inventory = RandomData.inventory()
 			dinamicDummy.save()
@@ -462,7 +462,7 @@ function instanceMethods() {
 			expect(newDataBase.souls).toBe(dinamicDummy.getSouls())
 			expect(newDataBase.level).toBe(dinamicDummy.getlevel())
 			expect(newDataBase.equipment).toStrictEqual(dinamicDummy.currentEquipment)
-			expect(newDataBase.attributes).toStrictEqual(dinamicDummy.attributes)
+			expect(newDataBase.attributes).toStrictEqual(dinamicDummy.getAttributes())
 			expect(newDataBase.inventory).toStrictEqual(dinamicDummy.inventory)
 
 			//Sanitizer
@@ -498,7 +498,7 @@ function instanceMethods() {
 
 			//Setup
 			const initalAttributes = RandomData.attributes()
-			dinamicDummy.attributes = initalAttributes
+			dinamicDummy.setAttributes(initalAttributes)
 			
 			//Run
 			dinamicDummy.upgradeAttributeProcessHandler(attributeTypes.VITALITY)
@@ -507,8 +507,8 @@ function instanceMethods() {
 			dinamicDummy.upgradeAttributeProcessHandler(attributeTypes.INTELLLIGENCE)
 
 			//Test
-			const newSavedDinamicDummy = DbSystem.loadDb(playerDataBasePath)["Dummy Player: upgradeAttributeProcessHandler()"] //pre-requisite, to get new data from database file
-			expect(newSavedDinamicDummy.attributes).toStrictEqual({
+			const newSavedData_DinamicDummy = DbSystem.loadDb(playerDataBasePath)["Dummy Player: upgradeAttributeProcessHandler()"] //pre-requisite, to get new data from database file
+			expect(newSavedData_DinamicDummy.attributes).toStrictEqual({
 				vitality: 		initalAttributes.vitality		+ 1,
 				agility: 		initalAttributes.agility		+ 1,
 				strenght: 		initalAttributes.strenght		+ 1,

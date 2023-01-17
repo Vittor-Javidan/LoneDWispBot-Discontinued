@@ -38,14 +38,14 @@ function instantiation() {
             expect(dummyEntity.currentEquipment).toBeTypeOf("object")
             expect(dummyEntity.statsFromEquips).toBeTypeOf("object")
             expect(dummyEntity.totalStats).toBeTypeOf("object")
-            expect(dummyEntity.attributes).toBeTypeOf("object")
+            expect(dummyEntity.getAttributes()).toBeTypeOf("object")
             expect(dummyEntity.inventory).toBeTypeOf("object")
             expect(dummyEntity.baseStats).toBeTypeOf("object")
             expect(dummyEntity.getIsAlive()).toBeTypeOf("boolean")
             expect(dummyEntity.getlevel()).toBeTypeOf("number")
             expect(dummyEntity.getIsAlive()).toBe(true)
             expect(dummyEntity.getlevel()).toBe(1)
-            expect(dummyEntity.attributes).toStrictEqual(Default.attributes)
+            expect(dummyEntity.getAttributes()).toStrictEqual(Default.attributes)
             expect(dummyEntity.currentEquipment).toStrictEqual(Default.equipments)
             expect(dummyEntity.inventory).toStrictEqual(Default.inventoryEquipments)
             expect(dummyEntity.totalStats).toStrictEqual(deepCopy(Default.stats))
@@ -207,8 +207,8 @@ function settersAndGetters() {
         it('Can set', () => {
 
             const dummyEntity = new Entity(true, "Dummy Entity: attributes setter/getter")
-            dummyEntity.attributes = Dummy.attributes
-            expect(dummyEntity.attributes).toStrictEqual(Dummy.attributes)
+            dummyEntity.setAttributes(Dummy.attributes)
+            expect(dummyEntity.getAttributes()).toStrictEqual(Dummy.attributes)
         })
 
         it(`Throws error:
@@ -219,14 +219,14 @@ function settersAndGetters() {
             const dummyEntity = new Entity(true, "Dummy Entity: Attributes setter/getter")
 
             //1
-            expect(() => dummyEntity.attributes = 'wrong type').toThrow(Error(`ERROR: Entity class, attribute must be an object`))
-            expect(() => dummyEntity.attributes = false).toThrow(Error(`ERROR: Entity class, attribute must be an object`))
-            expect(() => dummyEntity.attributes = 0).toThrow(Error(`ERROR: Entity class, attribute must be an object`))
+            expect(() => dummyEntity.setAttributes('wrong type')).toThrow(Error(`ERROR: Entity class, attribute must be an object`))
+            expect(() => dummyEntity.setAttributes(false)).toThrow(Error(`ERROR: Entity class, attribute must be an object`))
+            expect(() => dummyEntity.setAttributes(0)).toThrow(Error(`ERROR: Entity class, attribute must be an object`))
 
             //2
             expect(() => { 
                 for(let i = 0; i < Utils.attributeTypesKeys.length; i++){
-                    dummyEntity.attributes = { [Utils.attributeTypesKeys[i]]: 10 }
+                    dummyEntity.setAttributes({ [Utils.attributeTypesKeys[i]]: 10 })
                 }
             }).toThrow(Error(`ERROR: Entity class, all attributes must be defined`))
         })
@@ -467,12 +467,12 @@ function utilMethods(){
         `, () => {
 
             const dummyEntity = new Entity(true, "Dummy Entity: addAttributes()")            
-            dummyEntity.attributes = Dummy.attributes
+            dummyEntity.setAttributes(Dummy.attributes)
             dummyEntity.addAttributes(Utils.attributeTypes.VITALITY)
             dummyEntity.addAttributes(Utils.attributeTypes.AGILITY)
             dummyEntity.addAttributes(Utils.attributeTypes.STRENGHT)
             dummyEntity.addAttributes(Utils.attributeTypes.INTELLLIGENCE)
-            expect(dummyEntity.attributes).toStrictEqual({
+            expect(dummyEntity.getAttributes()).toStrictEqual({
                 vitality:           11,
                 agility:            11,
                 intelligence:       11,
@@ -743,7 +743,7 @@ function lifeAndDamage() {
             
             const dummyEntity = new Entity(true, 'Dummy Entity: recoverHP()')
 
-            dummyEntity.attributes = Dummy.attributes
+            dummyEntity.setAttributes(Dummy.attributes)
             dummyEntity.totalStats = Dummy.buffedStats
             dummyEntity.setCurrentHP(1)
             dummyEntity.recoverHP()
@@ -822,7 +822,7 @@ function statsCalculation() {
         `, () => {
 
             const dummyEntity = new Entity(true, 'Dummy Entity: calculateBaseStats()')            
-            dummyEntity.attributes = Dummy.attributes 
+            dummyEntity.setAttributes(Dummy.attributes )
             dummyEntity.initializeStats()
             dummyEntity.calculateBaseStats()
             expect(dummyEntity.baseStats).toStrictEqual({
@@ -843,7 +843,7 @@ function statsCalculation() {
         `, () => {
                
             const dummyEntity = new Entity(true, 'Dummy Entity: calculateStatsFromEquips()')  
-            dummyEntity.attributes = Dummy.attributes 
+            dummyEntity.setAttributes(Dummy.attributes)
             dummyEntity.currentEquipment = Dummy.dummyEquipments 
             dummyEntity.initializeStats()
             dummyEntity.calculateStatsFromEquips()
@@ -868,7 +868,7 @@ function statsCalculation() {
             const entity = new Entity(true, 'Dummy Entity: calculateStats()') 
             
             //1
-            entity.attributes = Dummy.attributes
+            entity.setAttributes(Dummy.attributes)
             entity.currentEquipment = Dummy.dummyEquipments
             entity.calculateStats()
             expect(entity.totalStats).toStrictEqual({           
@@ -881,7 +881,7 @@ function statsCalculation() {
             })
 
             //2
-            entity.attributes = Dummy.attributes
+            entity.setAttributes(Dummy.attributes)
             entity.setCurrentHP(1000)
             entity.currentEquipment = {
                 longRangeWeapon:    {},

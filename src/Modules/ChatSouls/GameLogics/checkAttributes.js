@@ -11,13 +11,17 @@ import { sendMessage_UI_StatisticsMenu } from "../UserInteface/sendMessage_Custo
  */
 export default function consultAttributes(data, menuMessage) {
 
-    const playerAttributes = data.playerInstance.attributes
+    const playerAttributes = data.playerInstance.getAttributes()
+    const vitality = playerAttributes.vitality
+    const agility = playerAttributes.agility
+    const strenght = playerAttributes.strenght
+    const intelligence = playerAttributes.intelligence
     
     sendMessage_UI_StatisticsMenu(data.playerInstance, 
         `${menuMessage}. Seus attributos:
-        Vitalidade: ${playerAttributes.vitality} 
-        - Agilidade: ${playerAttributes.agility} 
-        - Força: ${playerAttributes.strenght} 
-        - Inteligência: ${playerAttributes.intelligence}`
+        Vitalidade: ${vitality} 
+        - Agilidade: ${agility} 
+        - Força: ${strenght} 
+        - Inteligência: ${intelligence}`
     )
 }

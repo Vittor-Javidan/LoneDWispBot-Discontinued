@@ -222,15 +222,15 @@ export default class Entity {
         this.#level = level
     }
 
-    /**
-     * @returns {CS_Attributes} Getter
+    /** Getter
+     * @returns {CS_Attributes} 
      */
-    get attributes() { return this.#attributes }
+    getAttributes() { return this.#attributes }
 
-    /** 
-     * @param {CS_Attributes} object Setter
+    /** Setter
+     * @param {CS_Attributes} object 
      */
-    set attributes(object) {
+    setAttributes(object) {
         
         if(typeof object !== 'object'){
             throw Error(`ERROR: Entity class, attribute must be an object`)
@@ -466,11 +466,13 @@ export default class Entity {
     }
 
     /**
-     * Add attributes points by 1 to the specified type.
-     * @param {string} equipmentType
+     * Add the given attributeType by 1 point.
+     * @param {string} attributeType
      */
-    addAttributes(equipmentType){
-        this.attributes[equipmentType] += 1
+    addAttributes(attributeType){
+        const newAttributes = this.getAttributes()
+        newAttributes[attributeType] += 1
+        this.setAttributes(newAttributes)
     }
 
     /**
@@ -692,15 +694,17 @@ export default class Entity {
     calculateBaseStats(){
 
         const balanceStatsValues = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
-        const statsTypes = CS_ENUM.KEYS.CS_STATS
-        const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
+        const attributes = this.getAttributes()
+        const stats = this.baseStats
 
-        this.baseStats[statsTypes.HP]             += this.attributes[attributeTypes.VITALITY]        * balanceStatsValues.HP
-        this.baseStats[statsTypes.EVASION]        += this.attributes[attributeTypes.AGILITY]         * balanceStatsValues.EVASION
-        this.baseStats[statsTypes.FISICAL_DMG]    += this.attributes[attributeTypes.STRENGHT]        * balanceStatsValues.FISICAL_DMG
-        this.baseStats[statsTypes.FISICAL_DEF]    += this.attributes[attributeTypes.STRENGHT]        * balanceStatsValues.FISICAL_DEF
-        this.baseStats[statsTypes.MAGICAL_DMG]    += this.attributes[attributeTypes.INTELLLIGENCE]   * balanceStatsValues.MAGICAL_DMG
-        this.baseStats[statsTypes.MAGICAL_DEF]    += this.attributes[attributeTypes.INTELLLIGENCE]   * balanceStatsValues.MAGICAL_DEF
+        stats.hp                += attributes.vitality      * balanceStatsValues.HP
+        stats.evasion           += attributes.agility       * balanceStatsValues.EVASION
+        stats.fisicalDamage     += attributes.strenght      * balanceStatsValues.FISICAL_DMG
+        stats.fisicalDefense    += attributes.strenght      * balanceStatsValues.FISICAL_DEF
+        stats.magicalDamage     += attributes.intelligence  * balanceStatsValues.MAGICAL_DMG
+        stats.magicalDefense    += attributes.intelligence  * balanceStatsValues.MAGICAL_DEF
+
+        this.baseStats = stats
     }
 
     calculateStatsFromEquips(){
@@ -719,29 +723,34 @@ export default class Entity {
      */
     bonusFromEquippment(EquipmentClass, equipmentType){
 
-        if(
-            !this.currentEquipment[equipmentType].name    //Right after checks is this.equipment[EQUIPMENT_TYPE_ENUM] is define.
-        ) return
+        if(!this.currentEquipment[equipmentType].name) return
         
         /**@type {Equipment} */
         const equipmentInstance = new EquipmentClass(this.currentEquipment[equipmentType])
         const equipMultipliers = equipmentInstance.multipliers
         const statsWeightValues    = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
+        const attributes = this.getAttributes()
+        const stats = this.statsFromEquips
 
-        this.statsFromEquips.hp           += this.attributes.vitality        * equipMultipliers.vitality   * statsWeightValues.HP
-        this.statsFromEquips.evasion      += this.attributes.agility         * equipMultipliers.agility    * statsWeightValues.EVASION
+        stats.hp           += attributes.vitality        * equipMultipliers.vitality   * statsWeightValues.HP
+        stats.evasion      += attributes.agility         * equipMultipliers.agility    * statsWeightValues.EVASION
 
         switch (true) {
+
             case equipmentInstance instanceof Weapon:
-                this.statsFromEquips.fisicalDamage += this.attributes.strenght      * equipMultipliers.strenght     * statsWeightValues.FISICAL_DMG
-                this.statsFromEquips.magicalDamage += this.attributes.intelligence  * equipMultipliers.intelligence * statsWeightValues.MAGICAL_DMG
+                stats.fisicalDamage += attributes.strenght      * equipMultipliers.strenght     * statsWeightValues.FISICAL_DMG
+                stats.magicalDamage += attributes.intelligence  * equipMultipliers.intelligence * statsWeightValues.MAGICAL_DMG
                 break
+            //
+                
             case equipmentInstance instanceof Armor:
-                this.statsFromEquips.fisicalDefense += this.attributes.strenght     * equipMultipliers.strenght     * statsWeightValues.FISICAL_DEF
-                this.statsFromEquips.magicalDefense += this.attributes.intelligence * equipMultipliers.intelligence * statsWeightValues.MAGICAL_DEF
+                stats.fisicalDefense += attributes.strenght     * equipMultipliers.strenght     * statsWeightValues.FISICAL_DEF
+                stats.magicalDefense += attributes.intelligence * equipMultipliers.intelligence * statsWeightValues.MAGICAL_DEF
                 break
             //
         }
+
+        this.statsFromEquips = stats
     }
 
     /**

@@ -60,12 +60,12 @@ export default class Player extends Entity {
         super(true, name)
         
         const playerAttributes = CS_ENUM.BALANCE_VALUES.PLAYER_START.ATTRIBUTES
-        this.attributes = {
+        this.setAttributes({
             vitality:       playerAttributes.VITALITY,
             agility:        playerAttributes.AGILITY,
             strenght:       playerAttributes.STRENGHT,
             intelligence:   playerAttributes.INTELLLIGENCE
-        }
+        })
 
         const playerEquips = CS_ENUM.BALANCE_VALUES.PLAYER_START.EQUIPMENTS
         this.currentEquipment = {
@@ -268,7 +268,7 @@ export default class Player extends Entity {
 
         if(!playerData.souls)                   playerData.souls = playerInstance.getSouls()
         if(!playerData.level)                   playerData.level = playerInstance.getlevel()
-        if(!playerData.attributes)              playerData.attributes = deepCopy(playerInstance.attributes)
+        if(!playerData.attributes)              playerData.attributes = deepCopy(playerInstance.getAttributes())
         if(!playerData.equipment)               playerData.equipment = deepCopy(playerInstance.currentEquipment)
         if(!playerData.inventory)               playerData.inventory = deepCopy(playerInstance.inventory)
         if(!playerData.inventory.equipments)    playerData.inventory.equipments = deepCopy(playerInstance.inventoryEquipments)
@@ -356,7 +356,7 @@ export default class Player extends Entity {
         //Replace default values for saved values
         this.setSouls(playerData.souls)
         this.setlevel(playerData.level)
-        this.attributes =   playerData.attributes
+        this.setAttributes(playerData.attributes)
         this.currentEquipment  =   playerData.equipment
         this.inventory  =   playerData.inventory
         
@@ -373,7 +373,7 @@ export default class Player extends Entity {
             name: this.getName(),
             souls: this.getSouls(),
             level: this.getlevel(),
-            attributes: this.attributes,
+            attributes: this.getAttributes(),
             equipment: this.currentEquipment,
             inventory: this.inventory
         }
