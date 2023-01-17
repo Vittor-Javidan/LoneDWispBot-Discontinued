@@ -45,14 +45,13 @@ function initialization() {
 	describe('startGame', () => {
 		
 		it(`Should: 
-			1. Send a payload response on the right data type
+			1. Return a player instance
 			2. handle initialization,
 		`, () => {
 			
 			//1
-			const response = Player.startGame(DummyGuy.name)
-			expect(response).toBeTypeOf('object')
-			expect(response.registered).toBeTypeOf('boolean')
+			const returnedPlayer = Player.startGame(DummyGuy.name)
+			expect(returnedPlayer).instanceOf(Player)
 			
 			//2
 			const playerInstance = Player.getPlayerInstanceByName(DummyGuy.name)
@@ -252,17 +251,22 @@ function classMethods() {
 	describe('register', () => {
 
 		it(`Should:
-			1. register player and send a true response if player was registered.
+			1. Change isNewPlayer propertie to true when a new player is register.
 			2. send False response when register is not necessary
 		`, () => {
+
+			const dummyPlayer = new Player(DummyData.herobrineData.name)
 			
 			//1
-			const dummyPlayer = new Player(DummyData.herobrineData.name)
-			expect(Player.register(dummyPlayer)).toBe(true)
+			Player.register(dummyPlayer)
+			expect(dummyPlayer.isNewPlayer).toBe(true)
 			expect(Player.database[DummyData.herobrineData.name]).toStrictEqual(DummyData.herobrineData)
 
 			//2
-			expect(Player.register(dummyPlayer)).toBe(false)
+			Player.register(dummyPlayer)
+			expect(dummyPlayer.isNewPlayer).toBe(false)
+
+			//Sanitizer
 			delete Player.database[DummyData.herobrineData.name]
 		})
 	})

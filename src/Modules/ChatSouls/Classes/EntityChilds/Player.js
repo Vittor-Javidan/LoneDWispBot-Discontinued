@@ -48,6 +48,9 @@ export default class Player extends Entity {
      */
     #canPlay = true
 
+    /**@type {boolean} */
+    isNewPlayer = false
+
     /**
      * Create a instance of Player
      * @returns {Player}
@@ -217,23 +220,21 @@ export default class Player extends Entity {
 
     /**
      * @param {string} userName 
-     * @returns {CS_PlayerPayload}
+     * @returns {Player}
      */
     static startGame(userName){
 
         const playerInstance = new Player(userName)
 
-        /**@type {CS_PlayerPayload} */
-        const response = {} //TODO: Remove response and find another way to start the game
-
-        response.registered = this.register(playerInstance)
+        this.register(playerInstance)
         this.updateDataBaseMissingInfo(playerInstance)
         this.loginPlayerInstance(playerInstance)
 
         playerInstance.load()
         playerInstance.calculateStats()
         playerInstance.recoverHP()
-        return response
+
+        return playerInstance
     }
 
     /**
@@ -245,12 +246,14 @@ export default class Player extends Entity {
 
         if(!Player.database[`${playerInstance.name}`]){
             
+            playerInstance.isNewPlayer = true
             Player.sendToDataBase = {
                 name: playerInstance.name
             }
-            return true
+            return
         }
-        return false
+        
+        playerInstance.isNewPlayer = false
     }
 
     /**

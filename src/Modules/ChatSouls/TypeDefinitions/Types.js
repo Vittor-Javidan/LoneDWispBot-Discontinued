@@ -12,12 +12,6 @@
  * @typedef {Object<string, CS_EntityData>} CS_Database
 */
 
-//STATUS RESPONSE
-/**
- * A string containing feedback response, for action confirmation.
- * @typedef {string} CS_STATUS_RESPONSE
-*/
-
 //EQUIPMENT DATABASE DEFINITION
 /**
  * - Keys: `database item name string`

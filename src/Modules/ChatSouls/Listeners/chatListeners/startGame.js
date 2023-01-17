@@ -14,11 +14,10 @@ export default function startGame(userName){
         return
     }
 
-    const response = Player.startGame(userName)
-    const playerInstance = Player.getPlayerInstanceByName(userName)
+    const playerInstance = Player.startGame(userName)
     
     let message = ''
-    response.registered
+    playerInstance.isNewPlayer
         ? message = `@${userName} acabou de se cadastrar em ChatSouls Muahaha *-*`
         : message = `@${userName} acabou de entrar em ChatSouls *-*`
     //

@@ -13,5 +13,8 @@ export default function chatSoulsChatListener(data){
     const userName = data.userName
     const message = data.message.toLowerCase()
 
-    if(message.startsWith('!chatsouls start')) {startGame(userName); return}
+    if(message.startsWith('!chatsouls start')) {
+        startGame(userName) 
+        return
+    }
 }
