@@ -7,14 +7,15 @@ import Player from "../../Classes/EntityChilds/Player"
  * @param {object} o
  * @param {Player | Enemie} o.attacker
  * @param {Player | Enemie} o.defensor
+ * @param {number} o.evasionWeight
  */
 export default function didDodge(battleInstance, o) {
 
-    const { attacker, defensor } = o
+    const { attacker, defensor, evasionWeight } = o
 
     return battleInstance.evasionEvent({
         from: defensor,
         against: attacker,
-        evasionWeight: 1
+        evasionWeight: evasionWeight
     })
 }

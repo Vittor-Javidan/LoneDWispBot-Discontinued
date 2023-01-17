@@ -5,6 +5,10 @@ import client from "./connect"
  */
 function sendMessage(message, delay_milisseconds) {
 
+    if (process.env.NODE_ENV === 'test') {
+        return
+    }
+
     if(delay_milisseconds) {
 
         setTimeout(()=> {

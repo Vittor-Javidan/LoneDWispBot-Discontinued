@@ -1,7 +1,5 @@
 import Battle from "../../Classes/Battle";
-import Enemie from "../../Classes/EntityChilds/Enemie";
-import Player from "../../Classes/EntityChilds/Player";
-import didDodge from "./didDogge";
+import attackAttempt from "./attackAttempt";
 import playerDied from "./playerDied";
 import playerWon from "./playerWon";
 import sendMessage_UI_Battle from "./sendMessage_UI_Battle";
@@ -30,7 +28,8 @@ function playerAdvantage(battleInstance) {
     //Player Turn ========================================
     feedBackMessage += attackAttempt(battleInstance, {
         attacker: playerInstance,
-        defensor: enemieInstance
+        defensor: enemieInstance,
+        evasionWeight: 1
     })
 
     if(!enemieInstance.isAlive) {
@@ -43,7 +42,8 @@ function playerAdvantage(battleInstance) {
     //Enemie Turn ========================================
     feedBackMessage += attackAttempt(battleInstance, {
         attacker: enemieInstance,
-        defensor: playerInstance
+        defensor: playerInstance,
+        evasionWeight: 1
     }) 
 
     if(!playerInstance.isAlive) {
@@ -68,7 +68,8 @@ function enemieAdvantage(battleInstance) {
     //Enemie Turn ========================================
     feedBackMessage += attackAttempt(battleInstance, {
         attacker: enemieInstance,
-        defensor: playerInstance
+        defensor: playerInstance,
+        evasionWeight: 1
     })
 
     if(!playerInstance.isAlive) {
@@ -81,7 +82,8 @@ function enemieAdvantage(battleInstance) {
     //Player Turn ========================================
     feedBackMessage += attackAttempt(battleInstance, {
         attacker: playerInstance,
-        defensor: enemieInstance
+        defensor: enemieInstance,
+        evasionWeight: 1
     }, feedBackMessage)
     
     if(!enemieInstance.isAlive) {
@@ -92,47 +94,3 @@ function enemieAdvantage(battleInstance) {
     //End turn message ===================================
     sendMessage_UI_Battle(battleInstance, feedBackMessage)
 }
-
-/**
- * @param {Battle} battleInstance
- * @param {object} o
- * @param {Player | Enemie} o.attacker
- * @param {Player | Enemie} o.defensor
- * @returns {string} action feedback message
- */
-function attackAttempt(battleInstance, o) {
-
-    const { attacker, defensor } = o
-    let message = ''
-    
-    //Dodge Phase =========================================================
-    if(didDodge(battleInstance, {
-        attacker: attacker,
-        defensor: defensor
-    })) {
-
-        attacker instanceof Player
-            ? message = `${message} Você errou o ataque. `
-            : message = `${message} ${attacker.name} errou o ataque. `
-        //
-
-        return message
-    }
-
-    //Damage Phase ========================================================
-    const rawDamage = battleInstance.calculateRawDamage({
-        attacker: attacker,
-        defender: defensor
-    })
-
-    defensor.inflictDamage(rawDamage)
-
-    attacker instanceof Player
-        ? message = `${message} ${defensor.name} sofreu ${rawDamage} de dano. `
-        : message = `${message} você sofreu ${rawDamage} de dano. `
-    //
-    
-    return message
-}
-
-
