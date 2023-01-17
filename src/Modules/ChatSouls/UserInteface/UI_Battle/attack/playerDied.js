@@ -9,19 +9,15 @@ import { sendMessage_UI_FirePit } from "../../sendMessage_Customized/sendMessage
  */
 export default function playerDied(battleInstance, FINAL_MESSAGE) {
 
-    //TODO: Refactor this function
-
     const playerInstance = battleInstance.playerInstance
-    
-    //Feedback message
     const playerName = playerInstance.getName()
     const souls = playerInstance.getSouls()
+
     FINAL_MESSAGE = `
-    VOCÊ MORREU!! e ${souls} almas foram perdidas. 
-    últimos momentos: ${FINAL_MESSAGE}.
-    Você voltou a fogueira
+        VOCÊ MORREU!! e ${souls} almas foram perdidas. 
+        últimos momentos: ${FINAL_MESSAGE}.
+        Você voltou a fogueira
     `
-    
     sendMessage_UI_FirePit(playerInstance, FINAL_MESSAGE)
     sendMessage(`@${playerName} morreu!!! ${souls} almas foram perdidas *-*`)
 

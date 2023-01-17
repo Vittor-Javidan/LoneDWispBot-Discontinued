@@ -3,6 +3,9 @@ import CS_ENUM from "../Classes/ENUM"
 import { sendMessage_UI_AttributeUpgradeMenu } from "../UserInteface/sendMessage_Customized/sendMessage_UI_AttributeUpgradeMenu"
 import doHaveEnoughSoulsBalance from "./doHaveEnoughSoulsBalance"
 
+const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
+const attributeTypesArray = Object.values(attributeTypes)
+
 /**
  * Handles player upgrade attribute proccess
  * 
@@ -13,8 +16,6 @@ import doHaveEnoughSoulsBalance from "./doHaveEnoughSoulsBalance"
  */
 export default function upgradeAttributeByType(o) {
 
-    //TODO: Refactor this function
-
     const { playerInstance, attributePicked, menuMessage } = o
 
     if(!doHaveEnoughSoulsBalance(playerInstance)) {
@@ -24,9 +25,6 @@ export default function upgradeAttributeByType(o) {
         return
     }
 
-    const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
-    const attributeTypesArray = Object.values(attributeTypes)
-
     for(let i = 0; i < attributeTypesArray.length; i++) {
         if(!attributeTypesArray.includes(attributePicked)) {
             throw Error(`ERROR: upgradeAttributeByType(): Attribute type not recognized`)
@@ -34,8 +32,6 @@ export default function upgradeAttributeByType(o) {
     }
 
     playerInstance.upgradeAttributeProcessHandler(attributePicked)
-
-    //Feedback Message
     const souls = playerInstance.getSouls()
     const level = playerInstance.getlevel()
     const nextUpgradeCost = playerInstance.getUpgradeCost()
