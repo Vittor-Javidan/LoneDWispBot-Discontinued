@@ -1,6 +1,6 @@
-import Battle from "../../Classes/Battle"
-import Enemie from "../../Classes/EntityChilds/Enemie"
-import Player from "../../Classes/EntityChilds/Player"
+import Battle from "../../../Classes/Battle"
+import Enemie from "../../../Classes/EntityChilds/Enemie"
+import Player from "../../../Classes/EntityChilds/Player"
 
 /**
  * @param {Battle} battleInstance

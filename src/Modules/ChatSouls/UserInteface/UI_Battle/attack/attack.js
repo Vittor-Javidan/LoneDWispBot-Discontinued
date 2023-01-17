@@ -1,4 +1,4 @@
-import Battle from "../../Classes/Battle";
+import Battle from "../../../Classes/Battle";
 import enemieAdvantage from "./enemieAdvantage";
 import playerAdvantage from "./playerAdvantage";
 

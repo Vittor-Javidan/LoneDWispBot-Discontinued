@@ -1,6 +1,6 @@
-import Battle from "../../Classes/Battle"
-import PLAYER_STATES from "../../Classes/EntityChilds/PLAYER_STATES"
-import { sendMessage_UI_Idle } from "../sendMessage_Customized/sendMessage_UI_Idle"
+import Battle from "../../../Classes/Battle"
+import PLAYER_STATES from "../../../Classes/EntityChilds/PLAYER_STATES"
+import { sendMessage_UI_Idle } from "../../sendMessage_Customized/sendMessage_UI_Idle"
 
 /**
  * @param {Battle} battleInstance
