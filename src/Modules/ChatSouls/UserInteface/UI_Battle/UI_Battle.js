@@ -1,7 +1,7 @@
 import Battle from "../../Classes/Battle";
 import Player from "../../Classes/EntityChilds/Player";
 import attack from "./attack/attack";
-import flee from "./flee";
+import flee from "./flee/flee";
 import sendMessage_UI_Battle from "./sendMessage_UI_Battle";
 
 /**

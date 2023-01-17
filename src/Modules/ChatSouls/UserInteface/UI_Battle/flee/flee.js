@@ -1,8 +1,8 @@
-import Battle from "../../Classes/Battle"
-import PLAYER_STATES from "../../Classes/EntityChilds/PLAYER_STATES"
-import { sendMessage_UI_FirePit } from "../sendMessage_Customized/sendMessage_UI_firePit"
-import { sendMessage_UI_Idle } from "../sendMessage_Customized/sendMessage_UI_Idle"
-import sendMessage_UI_Battle from "./sendMessage_UI_Battle"
+import Battle from "../../../Classes/Battle"
+import PLAYER_STATES from "../../../Classes/EntityChilds/PLAYER_STATES"
+import { sendMessage_UI_FirePit } from "../../sendMessage_Customized/sendMessage_UI_firePit"
+import { sendMessage_UI_Idle } from "../../sendMessage_Customized/sendMessage_UI_Idle"
+import sendMessage_UI_Battle from "../sendMessage_UI_Battle"
 
 /**
  * @param {Battle} battleInstance 
