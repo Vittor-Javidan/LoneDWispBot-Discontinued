@@ -642,24 +642,19 @@ export default class Entity {
         this.setCurrentHP(this.getTotalStats()[statsTypes.HP])
     }
 
-    /**
-     * TODO: Find a way to not return any boolean
-     * 
+    /** 
      * Reduce current HP and set `isAlive` to `False` if HP becomes less or equal to zero
      * @param {number} value 
-     * @returns {boolean} Returns `True` if value reach 0 or less, `False` otherwise
+     * @returns {boolean}
      */
     inflictDamage(value) {
 
         const currentHP = this.getCurrentHP()
         this.setCurrentHP(currentHP - value)
-
+        
         if(this.getCurrentHP() <= 0){
             this.kill()
-            return true
         }
-
-        return false
     }
 
     /**
