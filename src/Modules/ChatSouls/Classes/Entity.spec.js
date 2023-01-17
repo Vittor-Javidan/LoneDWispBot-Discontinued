@@ -37,7 +37,7 @@ function instantiation() {
             const dummyEntity = new Entity(true, "Dummy Entity: Instance Default Properties")
             expect(dummyEntity.getCurrentEquipment()).toBeTypeOf("object")
             expect(dummyEntity.statsFromEquips).toBeTypeOf("object")
-            expect(dummyEntity.totalStats).toBeTypeOf("object")
+            expect(dummyEntity.getTotalStats()).toBeTypeOf("object")
             expect(dummyEntity.getAttributes()).toBeTypeOf("object")
             expect(dummyEntity.getInventory()).toBeTypeOf("object")
             expect(dummyEntity.baseStats).toBeTypeOf("object")
@@ -48,7 +48,7 @@ function instantiation() {
             expect(dummyEntity.getAttributes()).toStrictEqual(Default.attributes)
             expect(dummyEntity.getCurrentEquipment()).toStrictEqual(Default.equipments)
             expect(dummyEntity.getInventory()).toStrictEqual(Default.intentory)
-            expect(dummyEntity.totalStats).toStrictEqual(deepCopy(Default.stats))
+            expect(dummyEntity.getTotalStats()).toStrictEqual(deepCopy(Default.stats))
             expect(dummyEntity.baseStats).toStrictEqual(deepCopy(Default.stats))
             expect(dummyEntity.statsFromEquips).toStrictEqual(deepCopy(Default.stats))
         })
@@ -381,10 +381,10 @@ function settersAndGetters() {
         it('Can be set normaly', () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: stats (total/base/fromEquips) setter/getter")
-            dummyEntity.totalStats = Dummy.stats
+            dummyEntity.setTotalStats(Dummy.stats)
             dummyEntity.baseStats = Dummy.stats
             dummyEntity.statsFromEquips = Dummy.stats
-            expect(dummyEntity.totalStats).toStrictEqual(Dummy.stats)
+            expect(dummyEntity.getTotalStats()).toStrictEqual(Dummy.stats)
             expect(dummyEntity.baseStats).toStrictEqual(Dummy.stats)
             expect(dummyEntity.statsFromEquips).toStrictEqual(Dummy.stats)
         })
@@ -397,19 +397,19 @@ function settersAndGetters() {
             const dummyEntity = new Entity(true, "Dummy Entity: stats (total/base/fromEquips) setter/getter")
             
             //1
-            expect(() => dummyEntity.totalStats         = 'wrong type').toThrow(Error('ERROR: Entity class, stats must be objects'))
+            expect(() => dummyEntity.setTotalStats('wrong type')).toThrow(Error('ERROR: Entity class, stats must be objects'))
             expect(() => dummyEntity.statsFromEquips    = 'wrong type').toThrow(Error('ERROR: Entity class, stats must be objects'))
             expect(() => dummyEntity.baseStats          = 'wrong type').toThrow(Error('ERROR: Entity class, stats must be objects'))
             expect(() => dummyEntity.statsFromEquips    = false).toThrow(Error('ERROR: Entity class, stats must be objects'))
-            expect(() => dummyEntity.totalStats         = false).toThrow(Error('ERROR: Entity class, stats must be objects'))
+            expect(() => dummyEntity.setTotalStats(false)).toThrow(Error('ERROR: Entity class, stats must be objects'))
             expect(() => dummyEntity.baseStats          = false).toThrow(Error('ERROR: Entity class, stats must be objects'))
             expect(() => dummyEntity.statsFromEquips    = 0).toThrow(Error('ERROR: Entity class, stats must be objects'))
-            expect(() => dummyEntity.totalStats         = 0).toThrow(Error('ERROR: Entity class, stats must be objects'))
+            expect(() => dummyEntity.setTotalStats(0)).toThrow(Error('ERROR: Entity class, stats must be objects'))
             expect(() => dummyEntity.baseStats          = 0).toThrow(Error('ERROR: Entity class, stats must be objects'))
 
             //2
             expect(() => dummyEntity.statsFromEquips = {}).toThrow(Error(`ERROR: Entity class, stats obejcts must have all properties defined`))
-            expect(() => dummyEntity.totalStats = {}).toThrow(Error(`ERROR: Entity class, stats obejcts must have all properties defined`))
+            expect(() => dummyEntity.setTotalStats({})).toThrow(Error(`ERROR: Entity class, stats obejcts must have all properties defined`))
             expect(() => dummyEntity.baseStats = {}).toThrow(Error(`ERROR: Entity class, stats obejcts must have all properties defined`))
         })
     })
@@ -746,7 +746,7 @@ function lifeAndDamage() {
             const dummyEntity = new Entity(true, 'Dummy Entity: recoverHP()')
 
             dummyEntity.setAttributes(Dummy.attributes)
-            dummyEntity.totalStats = Dummy.buffedStats
+            dummyEntity.setTotalStats(Dummy.buffedStats)
             dummyEntity.setCurrentHP(1)
             dummyEntity.recoverHP()
             expect(dummyEntity.getCurrentHP()).toBe(1000)
@@ -803,19 +803,14 @@ function lifeAndDamage() {
 
 function statsCalculation() {
 
-    describe('initializeStats', () => {
-
-        it(`Should:
-            1. Initialize each stat type with 0 value
-        `, () => {
-
-            const dummyEntity = new Entity(true, 'Dummy Entity: initializeStats()')
-            dummyEntity.initializeStats()
-            expect(dummyEntity.totalStats).toStrictEqual(Dummy.stats)
-            expect(dummyEntity.baseStats).toStrictEqual(Dummy.stats)
-            expect(dummyEntity.statsFromEquips).toStrictEqual(Dummy.stats)
-        })
-    })
+    const referenceStats = {
+        hp: 1000,
+        evasion: 1000,
+        fisicalDamage: 1000,
+        fisicalDefense: 1000,
+        magicalDamage: 1000,
+        magicalDefense: 1000
+    }
 
     describe("calculateBaseStats", () => {
 
@@ -825,7 +820,6 @@ function statsCalculation() {
 
             const dummyEntity = new Entity(true, 'Dummy Entity: calculateBaseStats()')            
             dummyEntity.setAttributes(Dummy.attributes )
-            dummyEntity.initializeStats()
             dummyEntity.calculateBaseStats()
             expect(dummyEntity.baseStats).toStrictEqual({
                 hp:             10 * Utils.statsWeight.HP,
@@ -847,7 +841,6 @@ function statsCalculation() {
             const dummyEntity = new Entity(true, 'Dummy Entity: calculateStatsFromEquips()')  
             dummyEntity.setAttributes(Dummy.attributes)
             dummyEntity.setCurrentEquipment(Dummy.dummyEquipments) 
-            dummyEntity.initializeStats()
             dummyEntity.calculateStatsFromEquips()
             expect(dummyEntity.statsFromEquips).toStrictEqual({                   // Each "Dummy Equipment" give 100 for each multiplier
                 hp:             Utils.statsWeight.HP           * Dummy.attributes.vitality      * 100 * 6, // 6 "Dummy Equipment" amount
@@ -873,7 +866,7 @@ function statsCalculation() {
             entity.setAttributes(Dummy.attributes)
             entity.setCurrentEquipment(Dummy.dummyEquipments)
             entity.calculateStats()
-            expect(entity.totalStats).toStrictEqual({           
+            expect(entity.getTotalStats()).toStrictEqual({           
                 hp:             (Dummy.attributes.vitality     * Utils.statsWeight.HP         ) + (Utils.statsWeight.HP           * Dummy.attributes.vitality     * 100 * 6),          
                 evasion:        (Dummy.attributes.agility      * Utils.statsWeight.EVASION    ) + (Utils.statsWeight.EVASION      * Dummy.attributes.agility      * 100 * 6),
                 fisicalDamage:  (Dummy.attributes.strenght     * Utils.statsWeight.FISICAL_DMG) + (Utils.statsWeight.FISICAL_DMG  * Dummy.attributes.strenght     * 100 * 2),

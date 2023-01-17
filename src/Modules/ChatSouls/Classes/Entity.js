@@ -368,15 +368,15 @@ export default class Entity {
         this.#inventory.resources = deepCopy(object) 
     }
 
-    /**
-     * @returns {CS_Stats} Getter
+    /** Getter
+     * @returns {CS_Stats} 
      */
-    get totalStats() { return this.#totalStats }
+    getTotalStats() { return this.#totalStats }
 
-    /**
-     * @param {CS_Stats} object Setter
+    /** Setter
+     * @param {CS_Stats} object 
      */
-    set totalStats(object) {
+    setTotalStats(object) {
 
         if(typeof object !== 'object')
             throw Error('ERROR: Entity class, stats must be objects')
@@ -651,7 +651,7 @@ export default class Entity {
      * Fully restore the current HP
      */
     recoverHP() {
-        this.setCurrentHP(this.totalStats[statsTypes.HP])
+        this.setCurrentHP(this.getTotalStats()[statsTypes.HP])
     }
 
     /**
@@ -690,35 +690,31 @@ export default class Entity {
         this.setIsAlive(false)
     }
 
-    initializeStats(){
-
-        const statsKeys = Object.values(CS_ENUM.KEYS.CS_STATS)
-        const statsObject = {}
-        for(let i = 0; i < statsKeys.length; i++){
-            statsObject[statsKeys[i]] = 0
-        }
-        this.totalStats = deepCopy(statsObject)
-        this.baseStats = deepCopy(statsObject)
-        this.statsFromEquips = deepCopy(statsObject)
-    }
-
     calculateBaseStats(){
 
         const balanceStatsValues = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
         const attributes = this.getAttributes()
-        const stats = this.baseStats
 
-        stats.hp                += attributes.vitality      * balanceStatsValues.HP
-        stats.evasion           += attributes.agility       * balanceStatsValues.EVASION
-        stats.fisicalDamage     += attributes.strenght      * balanceStatsValues.FISICAL_DMG
-        stats.fisicalDefense    += attributes.strenght      * balanceStatsValues.FISICAL_DEF
-        stats.magicalDamage     += attributes.intelligence  * balanceStatsValues.MAGICAL_DMG
-        stats.magicalDefense    += attributes.intelligence  * balanceStatsValues.MAGICAL_DEF
-
-        this.baseStats = stats
+        this.baseStats = {
+            hp:             attributes.vitality     * balanceStatsValues.HP,
+            evasion:        attributes.agility      * balanceStatsValues.EVASION,
+            fisicalDamage:  attributes.strenght     * balanceStatsValues.FISICAL_DMG,
+            fisicalDefense: attributes.strenght     * balanceStatsValues.FISICAL_DEF,
+            magicalDamage:  attributes.intelligence * balanceStatsValues.MAGICAL_DMG,
+            magicalDefense: attributes.intelligence * balanceStatsValues.MAGICAL_DEF
+        }
     }
 
     calculateStatsFromEquips(){
+
+        this.statsFromEquips = {
+            hp:             0,
+            evasion:        0,
+            fisicalDamage:  0,
+            fisicalDefense: 0,
+            magicalDamage:  0,
+            magicalDefense: 0
+        }
 
         this.bonusFromEquippment(   MeleeWeapon        ,EQUIPMENT_TYPES.MELEE_WEAPON      )
         this.bonusFromEquippment(   LongRangeWeapon    ,EQUIPMENT_TYPES.LONG_RANGE_WEAPON )
@@ -743,6 +739,7 @@ export default class Entity {
         const equipMultipliers = equipmentInstance.multipliers
         const statsWeightValues    = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
         const attributes = this.getAttributes()
+
         const stats = this.statsFromEquips
 
         stats.hp           += attributes.vitality        * equipMultipliers.vitality   * statsWeightValues.HP
@@ -771,21 +768,21 @@ export default class Entity {
      */
     calculateStats() {
 
-        this.initializeStats()
         this.calculateBaseStats()
         this.calculateStatsFromEquips()
-        
-        const statsKeys = CS_ENUM.KEYS.CS_STATS
-        const statsKeysArray = Object.values(statsKeys)
-        
-        //Sum base stats + stats from equipments
-        for(let i = 0; i < statsKeysArray.length; i++){
-            this.totalStats[statsKeysArray[i]] += this.baseStats[statsKeysArray[i]] + this.statsFromEquips[statsKeysArray[i]]
-        }
+
+        this.setTotalStats({
+            hp:             this.baseStats.hp               + this.statsFromEquips.hp,
+            evasion:        this.baseStats.evasion          + this.statsFromEquips.evasion,
+            fisicalDamage:  this.baseStats.fisicalDamage    + this.statsFromEquips.fisicalDamage,
+            fisicalDefense: this.baseStats.fisicalDefense   + this.statsFromEquips.fisicalDefense,
+            magicalDamage:  this.baseStats.magicalDamage    + this.statsFromEquips.magicalDamage,
+            magicalDefense: this.baseStats.magicalDefense   + this.statsFromEquips.magicalDefense
+        })
         
         //Checks if Maximum HP was reduced
-        if(this.getCurrentHP() > this.totalStats.hp) {
-            this.setCurrentHP(this.totalStats.hp)
+        if(this.getCurrentHP() > this.getTotalStats().hp) {
+            this.setCurrentHP(this.getTotalStats().hp)
         }
     }
 }

@@ -45,8 +45,8 @@ describe(`UI_Battle`, () => {
         Battle.startBattle(player, enemie)
 
         //Setup
-        player.totalStats = buffedStats
-        enemie.totalStats = nerfedStats
+        player.setTotalStats(buffedStats)
+        enemie.setTotalStats(nerfedStats)
 
         //Run
         UI_Battle({

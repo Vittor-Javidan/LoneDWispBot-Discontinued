@@ -67,8 +67,8 @@ function classMethods() {
             dummyPlayerAttributes.evasion = 1000
             dummyEnemieAttributes.evasion = 0
             dummyPlayer.currentLocation = mapAreas.THE_WOODS
-            dummyEnemie.totalStats = dummyEnemieAttributes
-            dummyPlayer.totalStats = dummyPlayerAttributes
+            dummyEnemie.setTotalStats(dummyEnemieAttributes)
+            dummyPlayer.setTotalStats(dummyPlayerAttributes)
             Battle.determineFirstTurn(battleInstance)
             expect(battleInstance.turn).toBe(1)
 
@@ -77,8 +77,8 @@ function classMethods() {
             dummyEnemieAttributes.evasion = 1000
             dummyPlayerAttributes.evasion = 0
             dummyPlayer.currentLocation = mapAreas.THE_WOODS
-            dummyPlayer.totalStats = dummyPlayerAttributes
-            dummyEnemie.totalStats = dummyEnemieAttributes
+            dummyPlayer.setTotalStats(dummyPlayerAttributes)
+            dummyEnemie.setTotalStats(dummyEnemieAttributes)
             Battle.determineFirstTurn(battleInstance)
             expect(battleInstance.turn).toBe(2)
         })
@@ -262,13 +262,13 @@ function instanceMethods() {
             nerfedStats.evasion = 0 // this make sure to aways lose on evasion event
 
             //1
-            dummyPlayer.totalStats = buffedStats
-            dummyEnemie.totalStats = nerfedStats
+            dummyPlayer.setTotalStats(buffedStats)
+            dummyEnemie.setTotalStats(nerfedStats)
             expect(battleInstance.fleePvE()).toBe(true)
 
             //2
-            dummyPlayer.totalStats = nerfedStats
-            dummyEnemie.totalStats = buffedStats
+            dummyPlayer.setTotalStats(nerfedStats)
+            dummyEnemie.setTotalStats(buffedStats)
             expect(battleInstance.fleePvE()).toBe(false)
         })
     })
@@ -304,16 +304,16 @@ function instanceMethods() {
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             
             //1
-            dummyPlayer.totalStats = buffedAttack
-            dummyEnemie.totalStats = nerfedDefense
+            dummyPlayer.setTotalStats(buffedAttack)
+            dummyEnemie.setTotalStats(nerfedDefense)
             expect(battleInstance.calculateRawDamage({
                 attacker: battleInstance.playerInstance,
                 defender: battleInstance.enemieInstance
             })).toBe(50)
 
             //2
-            dummyPlayer.totalStats = nerfedAttack
-            dummyEnemie.totalStats = buffedDefense
+            dummyPlayer.setTotalStats(nerfedAttack)
+            dummyEnemie.setTotalStats(buffedDefense)
             buffedAttack.fisicalDamage = 1
             expect(battleInstance.calculateRawDamage({
                 attacker: battleInstance.playerInstance,
@@ -427,8 +427,8 @@ function instanceMethods() {
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
 
             //1
-            dummyEnemie.totalStats = nerfedStats
-            dummyPlayer.totalStats = buffedStats
+            dummyEnemie.setTotalStats(nerfedStats)
+            dummyPlayer.setTotalStats(buffedStats)
             expect(battleInstance.evasionEvent({
                 from: dummyPlayer,
                 against: dummyEnemie,
@@ -436,8 +436,8 @@ function instanceMethods() {
             })).toBe(true)
 
             //2
-            dummyEnemie.totalStats = buffedStats
-            dummyPlayer.totalStats = nerfedStats
+            dummyEnemie.setTotalStats(buffedStats)
+            dummyPlayer.setTotalStats(nerfedStats)
             expect(battleInstance.evasionEvent({
                 from: dummyPlayer,
                 against: dummyEnemie,
@@ -457,7 +457,7 @@ function instanceMethods() {
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             dummyPlayer.calculateStats()
             expect(battleInstance.getPlayerStatus()
-            ).toEqual(`${dummyPlayer.getName()}: ${dummyPlayer.getCurrentHP()}/${dummyPlayer.totalStats.hp} HP`)
+            ).toEqual(`${dummyPlayer.getName()}: ${dummyPlayer.getCurrentHP()}/${dummyPlayer.getTotalStats().hp} HP`)
         })
     })
 
@@ -472,7 +472,7 @@ function instanceMethods() {
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             dummyEnemie.calculateStats()
             expect(battleInstance.getEnemieStatus()
-            ).toEqual(`${dummyEnemie.getName()}: ${dummyEnemie.getCurrentHP()}/${dummyEnemie.totalStats.hp} HP`) // Is higher like that because dummy equipments are too op!
+            ).toEqual(`${dummyEnemie.getName()}: ${dummyEnemie.getCurrentHP()}/${dummyEnemie.getTotalStats().hp} HP`) // Is higher like that because dummy equipments are too op!
         })
     })
 
@@ -491,11 +491,11 @@ function instanceMethods() {
             
             const playerName = dummyPlayer.getName()
             const playerHP = dummyPlayer.getCurrentHP()
-            const playerMaxHP = dummyPlayer.totalStats.hp
+            const playerMaxHP = dummyPlayer.getTotalStats().hp
 
             const enemyName = dummyEnemie.getName()
             const enemyHP = dummyEnemie.getCurrentHP()
-            const enemyMaxHP = dummyEnemie.totalStats.hp
+            const enemyMaxHP = dummyEnemie.getTotalStats().hp
 
             expect(battleInstance.getBattleStatus()
             ).toEqual(`| ${playerName}: ${playerHP}/${playerMaxHP} HP | ${enemyName}: ${enemyHP}/${enemyMaxHP} HP`) // Is higher like that because dummy equipments are too op!

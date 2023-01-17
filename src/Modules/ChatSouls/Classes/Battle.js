@@ -177,8 +177,8 @@ export default class Battle {
      */
     calculateRawDamage(object) {
 
-        const attacker_fisicalDmg = object.attacker.totalStats.fisicalDamage
-        const defender_fisicalDef = object.defender.totalStats.fisicalDefense
+        const attacker_fisicalDmg = object.attacker.getTotalStats().fisicalDamage
+        const defender_fisicalDef = object.defender.getTotalStats().fisicalDefense
         let rawDamage = attacker_fisicalDmg - defender_fisicalDef
         if (rawDamage < 1) {
             rawDamage = 1
@@ -226,8 +226,8 @@ export default class Battle {
      */
     evasionEvent(object){
         
-        const evasion = object.from.totalStats.evasion
-        const oponent_evasion = object.against.totalStats.evasion
+        const evasion = object.from.getTotalStats().evasion
+        const oponent_evasion = object.against.getTotalStats().evasion
 
         const evasionChance = (evasion * object.evasionWeight) / (oponent_evasion + evasion)
         const randomNumber = Math.random()
@@ -254,7 +254,7 @@ export default class Battle {
         
         const playerName = this.playerInstance.getName()
         const playerHP = this.playerInstance.getCurrentHP()
-        const playerMaxHP = this.playerInstance.totalStats[CS_ENUM.KEYS.CS_STATS.HP]
+        const playerMaxHP = this.playerInstance.getTotalStats()[CS_ENUM.KEYS.CS_STATS.HP]
         const playerHPString = `${playerName}: ${playerHP}/${playerMaxHP} HP`
 
         return `${playerHPString}`
@@ -268,7 +268,7 @@ export default class Battle {
         
         const enemieName = this.enemieInstance.getName()
         const enemieHP = this.enemieInstance.getCurrentHP()
-        const enemieMaxHP = this.enemieInstance.totalStats[CS_ENUM.KEYS.CS_STATS.HP]
+        const enemieMaxHP = this.enemieInstance.getTotalStats()[CS_ENUM.KEYS.CS_STATS.HP]
         const enemieHPString = `${enemieName}: ${enemieHP}/${enemieMaxHP} HP`
 
         return `${enemieHPString}`
