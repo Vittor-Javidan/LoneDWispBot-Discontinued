@@ -52,12 +52,12 @@ export default class Player extends Entity {
     isNewPlayer = false
 
     /**
-     * Create a instance of Player
+     * @param {string} name
      * @returns {Player}
      * @constructor
      */
-    constructor(userName){
-        super(true, userName)
+    constructor(name){
+        super(true, name)
         
         const playerAttributes = CS_ENUM.BALANCE_VALUES.PLAYER_START.ATTRIBUTES
         this.attributes = {

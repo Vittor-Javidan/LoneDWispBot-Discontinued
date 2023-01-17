@@ -41,75 +41,6 @@ function constructor() {
 
 function classMethods() {
 
-    describe(`getPossibleEnemies`, () => {
-        
-        const theWoodsEnemiesEntries = enemieEntries.theWoods
-        const unexpectedEnemie_L10 = theWoodsEnemiesEntries.LOBO
-
-        const expectedEnemies_L5 = [
-            theWoodsEnemiesEntries.JAVALI,
-            theWoodsEnemiesEntries.BANDIDO
-        ]
-        
-        it(`Should:
-            1. get enemies by given level
-        `, () => {
-            
-            const dummyPlayer = new Player("Dummy Player: getPossibleEnemies()")
-            dummyPlayer.currentLocation = mapAreas.THE_WOODS
-            dummyPlayer.level = 5
-            
-            const enemiesDataArray_L5 = Battle.getPossibleEnemies(dummyPlayer)
-            const enemiesNamesArray = []
-            for(let i = 0; i < enemiesDataArray_L5.length; i++){
-                enemiesNamesArray.push(enemiesDataArray_L5[i].name)
-            }
-
-            expect(enemiesNamesArray.includes(expectedEnemies_L5[0])).toBe(true)
-            expect(enemiesNamesArray.includes(expectedEnemies_L5[1])).toBe(true)
-            expect(enemiesNamesArray.includes(unexpectedEnemie_L10)).toBe(false)
-        })
-    })
-
-    describe(`instantiateRandomEnemie`, () => {
-
-        it(`Should:
-            1. retrieve a enemie instance
-            2. retrieve just enemies from player current map area
-            3. retrive a enemie with all stats calculated
-        `, () => {
-
-            const dummyPlayer = new Player("Dummy Player: instantiateRandomEnemie()")
-            
-            //1
-            dummyPlayer.currentLocation = mapAreas.THE_WOODS
-            dummyPlayer.level = 10
-            const randomEnemieInstance = Battle.instantiateRandomEnemie(dummyPlayer)
-            expect(randomEnemieInstance).toBeInstanceOf(Enemie)
-
-            //2
-            const theWoodsEnemiesNamesArray = Object.values(enemieEntries.theWoods )
-            expect(theWoodsEnemiesNamesArray.includes(randomEnemieInstance.name)).toBe(true)
-
-            //3
-            const enemieData = getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, CS_ENUM.MAP_AREAS.TEST_AREA)
-            const expectedTotalStats = {
-                hp:             (statsWeight.HP          * enemieData.attributes.vitality    ) + statsWeight.HP          * 100 * 6,
-                evasion:        (statsWeight.EVASION     * enemieData.attributes.agility     ) + statsWeight.EVASION     * 100 * 6,
-                fisicalDamage:  (statsWeight.FISICAL_DMG * enemieData.attributes.strenght    ) + statsWeight.FISICAL_DMG * 100 * 2, 
-                fisicalDefense: (statsWeight.FISICAL_DEF * enemieData.attributes.strenght    ) + statsWeight.FISICAL_DEF * 100 * 4,
-                magicalDamage:  (statsWeight.MAGICAL_DMG * enemieData.attributes.intelligence) + statsWeight.MAGICAL_DMG * 100 * 2,
-                magicalDefense: (statsWeight.MAGICAL_DEF * enemieData.attributes.intelligence) + statsWeight.MAGICAL_DEF * 100 * 4
-            }
-
-            dummyPlayer.currentLocation = mapAreas.TEST_AREA
-            dummyPlayer.level = 1
-            const randomEnemieInstance_2 = Battle.instantiateRandomEnemie(dummyPlayer)
-            expect(randomEnemieInstance_2.totalStats).toStrictEqual(expectedTotalStats)
-            expect(randomEnemieInstance_2.currentHP).toBe(expectedTotalStats.hp)
-        })
-    })
-
     describe(`determineFirstTurn`, () => {
 
         const givenAttributes = {
@@ -160,15 +91,16 @@ function classMethods() {
         `, () => {
             
             //1
-            const dummyPlayer = new Player("Dummy Player: startBattle()")
-            dummyPlayer.currentLocation = mapAreas.THE_WOODS
-            dummyPlayer.level = 1
-            Battle.startBattle(dummyPlayer)
+            const player = new Player("Dummy Player: startBattle()")
+            const enemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, mapAreas.TEST_AREA))
+            player.currentLocation = mapAreas.THE_WOODS
+            player.level = 1
+            Battle.startBattle(player, enemie)
             expect(Battle.battlesList.length).toBe(1)
-            expect(Battle.battlesList[0].playerInstance.name).toBe(dummyPlayer.name)
+            expect(Battle.battlesList[0].playerInstance.name).toBe(player.name)
 
             //Sanitizer
-            Battle.deleteBattle(dummyPlayer.name)
+            Battle.deleteBattle(player.name)
         })
     })
 

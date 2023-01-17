@@ -1,4 +1,5 @@
 import Battle from "../../Classes/Battle";
+import Enemie from "../../Classes/EntityChilds/Enemie";
 import Player from "../../Classes/EntityChilds/Player";
 import PLAYER_STATES from "../../Classes/EntityChilds/PLAYER_STATES";
 import sendMessage_UI_Battle from "./sendMessage_UI_Battle";
@@ -9,7 +10,8 @@ import sendMessage_UI_Battle from "./sendMessage_UI_Battle";
 export default function startBattle(playerInstance) {
 
     //Battle initialization
-    Battle.startBattle(playerInstance)
+    const enemie = Enemie.instantiateRandomEnemie(playerInstance)
+    Battle.startBattle(playerInstance, enemie)
     const battleInstance = Battle.getBattle(playerInstance.name)
     playerInstance.secondaryState = PLAYER_STATES.EXPLORING.SECONDARY.HUNTING
 

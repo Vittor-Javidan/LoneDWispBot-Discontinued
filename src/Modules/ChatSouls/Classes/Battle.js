@@ -56,25 +56,14 @@ export default class Battle {
     /**
      * Starts a PvE battle for a given player
      * @param {Player} playerInstance 
+     * @param {Enemie} enemieInstance
+     * @param {Battle}
      */
-    static startBattle(playerInstance) {
-        const enemieInstance = this.instantiateRandomEnemie(playerInstance)
+    static startBattle(playerInstance, enemieInstance) {
         const battleInstance = new Battle(playerInstance, enemieInstance)
         this.determineFirstTurn(battleInstance)
         this.battlesList.push(battleInstance)
-    }
-
-    /**
-     * Instantiate and return a random enemie according to player instance level
-     * @param  {Player} playerInstance
-     * @returns {Enemie}
-     */
-    static instantiateRandomEnemie(playerInstance) {
-        const possibleEnemies = this.getPossibleEnemies(playerInstance)
-        const randomIndex = Math.floor(Math.random() * possibleEnemies.length);
-        const randomEnemie = possibleEnemies[randomIndex];
-
-        return Enemie.initialize(randomEnemie)
+        return battleInstance
     }
 
     /**
@@ -90,29 +79,6 @@ export default class Battle {
             evasionWeight: 1
         }) ? battleInstance.turn = 1 : battleInstance.turn = 2
     }
-
-    /**
-     * Get possible enemies related playerInstance current area and level
-     * @param  {Player} playerInstance
-     * @returns {CS_EntityData[]}
-     */
-    static getPossibleEnemies(playerInstance){
-
-        const playerMapArea = playerInstance.currentLocation
-        const playerLevel = playerInstance.level
-        const areaEnemies = enemiesDataBase[playerMapArea]
-
-        const enemiesArray = Object.values(areaEnemies)
-        const possibleEnemies = []
-        for (let i = 0; i < enemiesArray.length; i++){
-            if (playerLevel >= enemiesArray[i].level) {
-                possibleEnemies.push(enemiesArray[i])
-            }
-        }
-        
-        return possibleEnemies
-    }
-
     
     /**
      * Return a PvE battle instance for a specific username
