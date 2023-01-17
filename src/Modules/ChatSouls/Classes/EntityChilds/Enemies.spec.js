@@ -29,7 +29,7 @@ function constructor() {
         
         const enemieInstance = new Enemie(enemieData)
 
-        expect(enemieInstance.level).toEqual(enemieData.level)
+        expect(enemieInstance.getlevel()).toEqual(enemieData.level)
         expect(enemieInstance.getSouls()).toEqual(enemieData.souls)
         expect(enemieInstance.attributes).toStrictEqual(enemieData.attributes)
         expect(enemieInstance.currentEquipment).toStrictEqual(enemieData.equipment)
@@ -77,7 +77,7 @@ function getPossibleEnemies() {
         
         const dummyPlayer = new Player("Dummy Player: getPossibleEnemies()")
         dummyPlayer.currentLocation = mapAreas.THE_WOODS
-        dummyPlayer.level = 5
+        dummyPlayer.setlevel(5)
         
         const enemiesDataArray_L5 = Enemie.getPossibleEnemies(dummyPlayer)
         const enemiesNamesArray = []
@@ -103,7 +103,7 @@ function instantiateRandomEnemie() {
         
         //1
         dummyPlayer.currentLocation = mapAreas.THE_WOODS
-        dummyPlayer.level = 10
+        dummyPlayer.setlevel(10)
         const randomEnemieInstance = Enemie.instantiateRandomEnemie(dummyPlayer)
         expect(randomEnemieInstance).toBeInstanceOf(Enemie)
 
@@ -123,7 +123,7 @@ function instantiateRandomEnemie() {
         }
 
         dummyPlayer.currentLocation = mapAreas.TEST_AREA
-        dummyPlayer.level = 1
+        dummyPlayer.setlevel(1)
         const randomEnemieInstance_2 = Enemie.instantiateRandomEnemie(dummyPlayer)
         expect(randomEnemieInstance_2.totalStats).toStrictEqual(expectedTotalStats)
         expect(randomEnemieInstance_2.getCurrentHP()).toBe(expectedTotalStats.hp)

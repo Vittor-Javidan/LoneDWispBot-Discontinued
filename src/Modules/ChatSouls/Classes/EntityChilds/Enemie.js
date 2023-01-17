@@ -17,8 +17,8 @@ export default class Enemie extends Entity{
     constructor(enemieData){
 
         super(true, enemieData.name)
-        this.level = enemieData.level
         this.setSouls(enemieData.souls)
+        this.setlevel(enemieData.level)
         this.attributes = enemieData.attributes
         this.currentEquipment = enemieData.equipment
         this.inventory = enemieData.inventory
@@ -60,7 +60,7 @@ export default class Enemie extends Entity{
     static getPossibleEnemies(playerInstance){
 
         const playerMapArea = playerInstance.currentLocation
-        const playerLevel = playerInstance.level
+        const playerLevel = playerInstance.getlevel()
         const areaEnemies = enemiesDataBase[playerMapArea]
         const enemiesArray = Object.values(areaEnemies)
         const possibleEnemies = []

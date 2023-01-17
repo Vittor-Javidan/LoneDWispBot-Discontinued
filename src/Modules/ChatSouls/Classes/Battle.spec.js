@@ -94,7 +94,7 @@ function classMethods() {
             const player = new Player("Dummy Player: startBattle()")
             const enemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, mapAreas.TEST_AREA))
             player.currentLocation = mapAreas.THE_WOODS
-            player.level = 1
+            player.setlevel(1)
             Battle.startBattle(player, enemie)
             expect(Battle.battlesList.length).toBe(1)
             expect(Battle.battlesList[0].playerInstance.getName()).toBe(player.getName())

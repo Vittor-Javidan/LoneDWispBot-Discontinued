@@ -13,12 +13,12 @@ describe(`doHaveEnoughSoulsBalance`, () => {
 
         //1
         dummyPlayer.setSouls(0)
-        dummyPlayer.level = 1
+        dummyPlayer.setlevel(1)
         expect(doHaveEnoughSoulsBalance(dummyPlayer)).toBe(false)
 
         //2
         dummyPlayer.setSouls(9999)
-        dummyPlayer.level = 1
+        dummyPlayer.setlevel(1)
         expect(doHaveEnoughSoulsBalance(dummyPlayer)).toBe(true)
     })
 })

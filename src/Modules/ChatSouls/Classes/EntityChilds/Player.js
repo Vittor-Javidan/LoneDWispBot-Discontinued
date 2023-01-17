@@ -267,7 +267,7 @@ export default class Player extends Entity {
         const playerData = this.database[`${playerName}`]
 
         if(!playerData.souls)                   playerData.souls = playerInstance.getSouls()
-        if(!playerData.level)                   playerData.level = playerInstance.level
+        if(!playerData.level)                   playerData.level = playerInstance.getlevel()
         if(!playerData.attributes)              playerData.attributes = deepCopy(playerInstance.attributes)
         if(!playerData.equipment)               playerData.equipment = deepCopy(playerInstance.currentEquipment)
         if(!playerData.inventory)               playerData.inventory = deepCopy(playerInstance.inventory)
@@ -355,7 +355,7 @@ export default class Player extends Entity {
 
         //Replace default values for saved values
         this.setSouls(playerData.souls)
-        this.level      =   playerData.level
+        this.setlevel(playerData.level)
         this.attributes =   playerData.attributes
         this.currentEquipment  =   playerData.equipment
         this.inventory  =   playerData.inventory
@@ -372,7 +372,7 @@ export default class Player extends Entity {
         const playerData = {
             name: this.getName(),
             souls: this.getSouls(),
-            level: this.level,
+            level: this.getlevel(),
             attributes: this.attributes,
             equipment: this.currentEquipment,
             inventory: this.inventory
@@ -387,7 +387,7 @@ export default class Player extends Entity {
      * @returns {number}
      */
     getUpgradeCost(){
-        return this.level * 100
+        return this.getlevel() * 100
     }
 
     /**

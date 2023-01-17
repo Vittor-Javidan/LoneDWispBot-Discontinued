@@ -10,7 +10,7 @@ import Player from "../../Classes/EntityChilds/Player"
 export function sendMessage_UI_AttributeUpgradeMenu(playerInstance, menuMessage) {
 
 	const playerName = playerInstance.getName()
-	const level = playerInstance.level
+	const level = playerInstance.getlevel()
 	const souls = playerInstance.getSouls()
 	const upgradeCost = playerInstance.getUpgradeCost()
 

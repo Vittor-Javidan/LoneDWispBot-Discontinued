@@ -204,22 +204,22 @@ export default class Entity {
         this.#souls = amount
     }
 
-    /**
-     * @return {number} Getter
+    /** Getter
+     * @return {number} 
      */
-    get level() { return this.#level }
+    getlevel() { return this.#level }
 
-    /**
-     * @param {number} level  Setter
+    /** Setter
+     * @param {number} level  
      */
-    set level(amount) {
+    setlevel(level) {
 
-        if(typeof amount !== 'number' || isNaN(amount))
+        if(typeof level !== 'number' || isNaN(level))
             throw Error('ERROR: Entity class, level must be a number')
-        if(amount < 0)
+        if(level < 0)
             throw Error('Error: Entity class, level cannot be negative')
         
-        this.#level = amount
+        this.#level = level
     }
 
     /**
@@ -461,7 +461,8 @@ export default class Entity {
      * Add level by 1
      */
     addLevel(){
-        this.level += 1
+        const level = this.getlevel()
+        this.setlevel(level + 1)
     }
 
     /**

@@ -37,7 +37,7 @@ export default function upgradeAttributeByType(o) {
 
     //Feedback Message
     const souls = playerInstance.getSouls()
-    const level = playerInstance.level
+    const level = playerInstance.getlevel()
     const nextUpgradeCost = playerInstance.getUpgradeCost()
 
     sendMessage_UI_AttributeUpgradeMenu(playerInstance,

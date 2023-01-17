@@ -42,9 +42,9 @@ function instantiation() {
             expect(dummyEntity.inventory).toBeTypeOf("object")
             expect(dummyEntity.baseStats).toBeTypeOf("object")
             expect(dummyEntity.getIsAlive()).toBeTypeOf("boolean")
-            expect(dummyEntity.level).toBeTypeOf("number")
+            expect(dummyEntity.getlevel()).toBeTypeOf("number")
             expect(dummyEntity.getIsAlive()).toBe(true)
-            expect(dummyEntity.level).toBe(1)
+            expect(dummyEntity.getlevel()).toBe(1)
             expect(dummyEntity.attributes).toStrictEqual(Default.attributes)
             expect(dummyEntity.currentEquipment).toStrictEqual(Default.equipments)
             expect(dummyEntity.inventory).toStrictEqual(Default.inventoryEquipments)
@@ -179,9 +179,9 @@ function settersAndGetters() {
         it('Can set', () => {
 
             const dummyEntity = new Entity(true, "Dummy Entity: level setter/getter")
-            dummyEntity.level = 64
-            expect(dummyEntity.level).toBeTypeOf("number")
-            expect(dummyEntity.level).toBe(64)
+            dummyEntity.setlevel(64)
+            expect(dummyEntity.getlevel()).toBeTypeOf("number")
+            expect(dummyEntity.getlevel()).toBe(64)
         })
 
         it(`Throws error:
@@ -192,13 +192,13 @@ function settersAndGetters() {
             const dummyEntity = new Entity(true, "Dummy Entity: level setter/getter")
 
             //1
-            expect(() => dummyEntity.level = 'wrong type').toThrow(Error('ERROR: Entity class, level must be a number'))
-            expect(() => dummyEntity.level = false).toThrow(Error('ERROR: Entity class, level must be a number'))
-            expect(() => dummyEntity.level = NaN).toThrow(Error('ERROR: Entity class, level must be a number'))
-            expect(() => dummyEntity.level = {}).toThrow(Error('ERROR: Entity class, level must be a number'))
+            expect(() => dummyEntity.setlevel('wrong type')).toThrow(Error('ERROR: Entity class, level must be a number'))
+            expect(() => dummyEntity.setlevel(false)).toThrow(Error('ERROR: Entity class, level must be a number'))
+            expect(() => dummyEntity.setlevel(NaN)).toThrow(Error('ERROR: Entity class, level must be a number'))
+            expect(() => dummyEntity.setlevel({})).toThrow(Error('ERROR: Entity class, level must be a number'))
 
             //2
-            expect(() => dummyEntity.level = -10).toThrow(Error('Error: Entity class, level cannot be negative'))
+            expect(() => dummyEntity.setlevel(-10)).toThrow(Error('Error: Entity class, level cannot be negative'))
         })
     })
 
@@ -454,9 +454,9 @@ function utilMethods(){
         `, () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: addLevel()")
-            dummyEntity.level = 1
+            dummyEntity.setlevel(1)
             dummyEntity.addLevel()
-            expect(dummyEntity.level).toBe(2)
+            expect(dummyEntity.getlevel()).toBe(2)
         })
 	})
 
