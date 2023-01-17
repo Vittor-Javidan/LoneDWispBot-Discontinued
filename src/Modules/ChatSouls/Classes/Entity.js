@@ -558,31 +558,21 @@ export default class Entity {
      */
     equipFromInventory(itemIndex, equipmentType) {
 
-        //TODO: Find a way to clean this mess
-
-        const inventoryEquipments = this.getInventoryEquipments()
-
-        if(itemIndex >= inventoryEquipments[equipmentType].length || itemIndex < 0) {
+        if(itemIndex >= this.getEquipmentInventoryAmount(equipmentType) || itemIndex < 0) {
             throw Error(`ERROR: Entity class, "equipFromInventory": itemIndex out of boundaries`)
         }
         
-        /**@type {CS_Equipment_WeaponData[] | CS_Equipment_ArmorData[]} */
-        const newinventoryEquipments = deepCopy(inventoryEquipments)
-        
-        let newCurrentEquipment = this.getCurrentEquipment()
-        
-        let itemToStore = deepCopy(newCurrentEquipment[equipmentType])
-        
-        let removedItemArray
+        const newinventoryEquipments = this.getInventoryEquipments()
+        const newCurrentEquipment = this.getCurrentEquipment()
+        const itemToStore = newCurrentEquipment[equipmentType]
+
+        let itemToEquip
         itemToStore.name !== undefined
-            ? removedItemArray = newinventoryEquipments[equipmentType].splice(itemIndex, 1, itemToStore)
-            : removedItemArray = newinventoryEquipments[equipmentType].splice(itemIndex, 1)
+            ? itemToEquip = newinventoryEquipments[equipmentType].splice(itemIndex, 1, itemToStore)[0]
+            : itemToEquip = newinventoryEquipments[equipmentType].splice(itemIndex, 1)[0]
         //
 
-        newCurrentEquipment[equipmentType] = removedItemArray[0]
-        
-        this.setCurrentEquipment(newCurrentEquipment)
-        this.setInventoryEquipments(newinventoryEquipments)
+        newCurrentEquipment[equipmentType] = itemToEquip
     }
 
     /**
