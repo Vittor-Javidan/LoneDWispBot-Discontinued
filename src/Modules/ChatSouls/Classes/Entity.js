@@ -273,15 +273,15 @@ export default class Entity {
         this.#currentEquipment = deepCopy(newCurrentEquipment) 
     }
 
-    /**
-     * @returns {CS_Entity_Inventory} Getter
+    /** Getter
+     * @returns {CS_Entity_Inventory} 
      */
-    get inventory() { return this.#inventory }
+    getInventory() { return this.#inventory }
 
-    /**
-     * @param {CS_Entity_Inventory} inventoryObject Setter
+    /** Setter
+     * @param {CS_Entity_Inventory} inventoryObject 
      */
-    set inventory(inventoryObject) {
+    setInventory(inventoryObject) {
 
         if(typeof inventoryObject !== 'object') {
             throw Error('ERROR: Entity class, "inventory" setter: inventory must be a object')
@@ -291,9 +291,9 @@ export default class Entity {
             throw Error('ERROR: Entity class, "inventory" setter: object property "resources" and "equipments" must be defined')
         }
 
-        const objectKeys = Object.keys(inventoryObject.equipments)
-        for(let i = 0; i < objectKeys.length; i++) {
-            if(!equipmentTypeKeys.includes(objectKeys[i])){
+        const newInventory_EquipmentKeys = Object.keys(inventoryObject.equipments)
+        for(let i = 0; i < newInventory_EquipmentKeys.length; i++) {
+            if(!equipmentTypeKeys.includes(newInventory_EquipmentKeys[i])){
                 throw Error(`ERROR: Entity class, "inventory" setter: inventory equipments type must be valid`)
             }
         }
@@ -626,20 +626,22 @@ export default class Entity {
      * @returns {boolean} `False` if oparation is invalid, `True` otherwise.
      */
     removeResources(resourceName, amount){
+
+        //TODO: Refactor this function
         
         if(!this.inventoryResources[resourceName]) {
             throw Error(`ERROR: Entity class, "removeResources": resource doesn't exist`)
         }
-        if (amount > this.inventory.resources[resourceName].amount) {
+        if (amount > this.getInventory().resources[resourceName].amount) {
             throw Error(`ERROR: Entity class, "removeResources": trying to remove more resource than what is stored`)
         }
 
         //Removes the specify amount
-        this.inventory.resources[resourceName].amount -= amount
+        this.getInventory().resources[resourceName].amount -= amount
 
         //Delete item if amount reachs zero
-        if (this.inventory.resources[resourceName].amount === 0) {
-            delete this.inventory.resources[resourceName]
+        if (this.getInventory().resources[resourceName].amount === 0) {
+            delete this.getInventory().resources[resourceName]
         }
     }
 

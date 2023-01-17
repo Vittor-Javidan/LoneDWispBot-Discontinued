@@ -43,7 +43,7 @@
  * @property {CS_Entity_Inventory} inventory
  * 
  * @typedef {Object} CS_Entity_Inventory
- * @property {CS_Inventory_Equipments | CS_Inventory_Equipments_KV} equipments
+ * @property {CS_Inventory_Equipments} equipments
  * @property {CS_Inventory_Resources} resources
 */
 

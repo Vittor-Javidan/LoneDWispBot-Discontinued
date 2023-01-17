@@ -455,7 +455,7 @@ function instanceMethods() {
 			dinamicDummy.setlevel(RandomData.level())
 			dinamicDummy.setAttributes(RandomData.attributes())
 			dinamicDummy.setCurrentEquipment(RandomData.equipment())
-			dinamicDummy.inventory = RandomData.inventory()
+			dinamicDummy.setInventory(RandomData.inventory())
 			dinamicDummy.save()
 			const newDataBase = DbSystem.loadDb(playerDataBasePath)[dinamicDummy.getName()] //pre-requisite, to get new data from database file
 			expect(newDataBase.name).toBe(dinamicDummy.getName())
@@ -463,7 +463,7 @@ function instanceMethods() {
 			expect(newDataBase.level).toBe(dinamicDummy.getlevel())
 			expect(newDataBase.equipment).toStrictEqual(dinamicDummy.getCurrentEquipment())
 			expect(newDataBase.attributes).toStrictEqual(dinamicDummy.getAttributes())
-			expect(newDataBase.inventory).toStrictEqual(dinamicDummy.inventory)
+			expect(newDataBase.inventory).toStrictEqual(dinamicDummy.getInventory())
 
 			//Sanitizer
 			delete Player.database[dinamicDummy.getName()]

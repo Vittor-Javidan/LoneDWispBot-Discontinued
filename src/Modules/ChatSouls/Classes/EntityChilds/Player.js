@@ -266,13 +266,13 @@ export default class Player extends Entity {
         const playerName = playerInstance.getName()
         const playerData = this.database[`${playerName}`]
 
-        if(!playerData.souls)                   playerData.souls = playerInstance.getSouls()
-        if(!playerData.level)                   playerData.level = playerInstance.getlevel()
-        if(!playerData.attributes)              playerData.attributes = deepCopy(playerInstance.getAttributes())
-        if(!playerData.equipment)               playerData.equipment = deepCopy(playerInstance.getCurrentEquipment())
-        if(!playerData.inventory)               playerData.inventory = deepCopy(playerInstance.inventory)
+        if(!playerData.souls)                   playerData.souls                = playerInstance.getSouls()
+        if(!playerData.level)                   playerData.level                = playerInstance.getlevel()
+        if(!playerData.attributes)              playerData.attributes           = deepCopy(playerInstance.getAttributes())
+        if(!playerData.equipment)               playerData.equipment            = deepCopy(playerInstance.getCurrentEquipment())
+        if(!playerData.inventory)               playerData.inventory            = deepCopy(playerInstance.getInventory())
         if(!playerData.inventory.equipments)    playerData.inventory.equipments = deepCopy(playerInstance.inventoryEquipments)
-        if(!playerData.inventory.resources)     playerData.inventory.resources = deepCopy(playerInstance.inventoryResources)
+        if(!playerData.inventory.resources)     playerData.inventory.resources  = deepCopy(playerInstance.inventoryResources)
 
         
         for(let i = 0; i < equipmentKeys.length; i++){
@@ -358,7 +358,7 @@ export default class Player extends Entity {
         this.setlevel(playerData.level)
         this.setAttributes(playerData.attributes)
         this.setCurrentEquipment(playerData.equipment)
-        this.inventory  =   playerData.inventory
+        this.setInventory(playerData.inventory)
         
         sendMessage(`/w ${this.getName()} Seu progresso foi restaurado com sucesso`)
     }
@@ -370,12 +370,12 @@ export default class Player extends Entity {
     
         /** @type {CS_EntityData} */
         const playerData = {
-            name: this.getName(),
-            souls: this.getSouls(),
-            level: this.getlevel(),
+            name:       this.getName(),
+            souls:      this.getSouls(),
+            level:      this.getlevel(),
             attributes: this.getAttributes(),
-            equipment: this.getCurrentEquipment(),
-            inventory: this.inventory
+            equipment:  this.getCurrentEquipment(),
+            inventory:  this.getInventory()
         }
         
         Player.sendToDataBase = playerData

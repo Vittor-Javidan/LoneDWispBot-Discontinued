@@ -39,7 +39,7 @@ function instantiation() {
             expect(dummyEntity.statsFromEquips).toBeTypeOf("object")
             expect(dummyEntity.totalStats).toBeTypeOf("object")
             expect(dummyEntity.getAttributes()).toBeTypeOf("object")
-            expect(dummyEntity.inventory).toBeTypeOf("object")
+            expect(dummyEntity.getInventory()).toBeTypeOf("object")
             expect(dummyEntity.baseStats).toBeTypeOf("object")
             expect(dummyEntity.getIsAlive()).toBeTypeOf("boolean")
             expect(dummyEntity.getlevel()).toBeTypeOf("number")
@@ -47,7 +47,7 @@ function instantiation() {
             expect(dummyEntity.getlevel()).toBe(1)
             expect(dummyEntity.getAttributes()).toStrictEqual(Default.attributes)
             expect(dummyEntity.getCurrentEquipment()).toStrictEqual(Default.equipments)
-            expect(dummyEntity.inventory).toStrictEqual(Default.inventoryEquipments)
+            expect(dummyEntity.getInventory()).toStrictEqual(Default.intentory)
             expect(dummyEntity.totalStats).toStrictEqual(deepCopy(Default.stats))
             expect(dummyEntity.baseStats).toStrictEqual(deepCopy(Default.stats))
             expect(dummyEntity.statsFromEquips).toStrictEqual(deepCopy(Default.stats))
@@ -274,8 +274,8 @@ function settersAndGetters() {
         it('Can be set normaly', () => {
             
             const dummyEntity = new Entity(true, "Dummy Entity: inventory setter/getter")
-            dummyEntity.inventory = Dummy.inventory
-            expect(dummyEntity.inventory).toStrictEqual(deepCopy(Dummy.inventory))
+            dummyEntity.setInventory(Dummy.inventory)
+            expect(dummyEntity.getInventory()).toStrictEqual(deepCopy(Dummy.inventory))
         })
 
         it(`throws error: 
@@ -288,25 +288,27 @@ function settersAndGetters() {
             const dummyEntity = new Entity(true, "Dummy Entity: inventory setter/getter")
             
             //1
-            expect(() => dummyEntity.inventory = 'wrong type').toThrow(Error('ERROR: Entity class, "inventory" setter: inventory must be a object'))
-            expect(() => dummyEntity.inventory = false).toThrow(Error('ERROR: Entity class, "inventory" setter: inventory must be a object'))
-            expect(() => dummyEntity.inventory = 0).toThrow(Error('ERROR: Entity class, "inventory" setter: inventory must be a object'))
+            expect(() => dummyEntity.setInventory('wrong type')).toThrow(Error('ERROR: Entity class, "inventory" setter: inventory must be a object'))
+            expect(() => dummyEntity.setInventory(false)).toThrow(Error('ERROR: Entity class, "inventory" setter: inventory must be a object'))
+            expect(() => dummyEntity.setInventory(0)).toThrow(Error('ERROR: Entity class, "inventory" setter: inventory must be a object'))
 
             //2
-            expect(() => dummyEntity.inventory = {}).toThrow(
+            expect(() => dummyEntity.setInventory({})).toThrow(
                 Error('ERROR: Entity class, "inventory" setter: object property "resources" and "equipments" must be defined')
             )
 
             //3
-            expect(() => dummyEntity.inventory = Dummy.wrongInventory).toThrow(
+            expect(() => dummyEntity.setInventory(Dummy.wrongInventory)).toThrow(
                 Error(`ERROR: Entity class, "inventory" setter: inventory equipments type must be valid`)
             )
             
             //4
-            expect(() => dummyEntity.inventory = {
+            expect(() => dummyEntity.setInventory({
                 equipments: {},
                 resources: {}
-            }).toThrow(Error(`ERROR: Entity class, "inventory setter": all inventory equipments properties must be defined`))
+            })).toThrow(
+                Error(`ERROR: Entity class, "inventory setter": all inventory equipments properties must be defined`)
+            )
         })
     })
 
@@ -929,7 +931,7 @@ class Default {
     }
 
     /**@type {CS_Entity_Inventory} */
-    static inventoryEquipments = {
+    static intentory = {
         equipments: {
             longRangeWeapon: [],
             meleeWeapon: [],

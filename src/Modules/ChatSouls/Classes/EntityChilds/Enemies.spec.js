@@ -33,7 +33,7 @@ function constructor() {
         expect(enemieInstance.getSouls()).toEqual(enemieData.souls)
         expect(enemieInstance.getAttributes()).toStrictEqual(enemieData.attributes)
         expect(enemieInstance.getCurrentEquipment()).toStrictEqual(enemieData.equipment)
-        expect(enemieInstance.inventory).toStrictEqual(enemieData.inventory)
+        expect(enemieInstance.getInventory()).toStrictEqual(enemieData.inventory)
     })
 }
 

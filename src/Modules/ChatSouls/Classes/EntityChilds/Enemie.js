@@ -21,7 +21,7 @@ export default class Enemie extends Entity{
         this.setlevel(enemieData.level)
         this.setAttributes(enemieData.attributes)
         this.setCurrentEquipment(enemieData.equipment)
-        this.inventory = enemieData.inventory
+        this.setInventory(enemieData.inventory)
     }
 
     /**
