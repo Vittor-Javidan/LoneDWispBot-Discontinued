@@ -1,3 +1,4 @@
+import forceUpdateUsers from "./chatListeners/forceUpdateUsers";
 import startGame from "./chatListeners/startGame";
 
 /**
@@ -16,5 +17,9 @@ export default function chatSoulsChatListener(data){
     if(message.startsWith('!chatsouls start')) {
         startGame(userName) 
         return
+    }
+
+    if(message.startsWith('!chatsouls force update')) {
+        forceUpdateUsers(userName)
     }
 }

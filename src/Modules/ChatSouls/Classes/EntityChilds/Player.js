@@ -212,6 +212,26 @@ export default class Player extends Entity {
     // CLASS METHODS ==================================================================================
     //=================================================================================================
 
+
+    static updateUsersDatabaseStructure() {
+
+        const users = Object.keys(Player.database)
+
+        for(let i = 0; i < users.length; i++) {
+            if(users[i] !== "Authorization") {
+                this.startGame(users[i])
+            }
+        }
+
+        this.forceSaveDataBase()
+
+        for(let i = 0; i < users.length; i++) {
+            if(users[i] !== "Authorization") {
+                this.logoutPlayerInstance(Player.getPlayerInstanceByName(users[i]))
+            }
+        }
+    }
+
     /**
      * Force save database current info.
      * Use with caution.
