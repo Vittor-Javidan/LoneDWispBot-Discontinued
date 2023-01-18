@@ -1,5 +1,5 @@
 import Player from "../../Classes/EntityChilds/Player";
-import startBattle from "../UI_Battle/startBattle";
+import startBattle from "../randomEvents/startBattle";
 
 /**
  * @param {Player} playerInstance 
