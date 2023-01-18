@@ -1,7 +1,7 @@
 import Battle from "../../../Classes/Battle"
-import attackAttempt from "../attack/attackAttempt"
-import playerDied from "../attack/playerDied"
+import attackAttempt from "../battleScripts/attackAttempt"
 import fleeAttempt from "../battleScripts/fleeAttempt"
+import playerDied from "../battleScripts/playerDied"
 import sendMessage_UI_Battle from "../sendMessage_UI_Battle"
 
 /**

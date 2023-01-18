@@ -1,8 +1,8 @@
 import Battle from "../../../Classes/Battle"
+import attackAttempt from "../battleScripts/attackAttempt"
+import playerDied from "../battleScripts/playerDied"
+import playerWon from "../battleScripts/playerWon"
 import sendMessage_UI_Battle from "../sendMessage_UI_Battle"
-import attackAttempt from "./attackAttempt"
-import playerDied from "./playerDied"
-import playerWon from "./playerWon"
 
 /**
  * @param {Battle} battleInstance
