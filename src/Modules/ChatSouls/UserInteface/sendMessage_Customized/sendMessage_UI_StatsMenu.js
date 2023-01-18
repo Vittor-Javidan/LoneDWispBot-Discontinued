@@ -10,8 +10,10 @@ export function sendMessage_UI_StatsMenu(playerInstance, menuMessage) {
 
     const playerName = playerInstance.getName()
 
+    const emoji = `Squid1 Squid3 Squid4`
+
 	sendMessage(
-        `/w ${playerName} ${menuMessage} 
+        `/w ${playerName} ${emoji} ${menuMessage} 
         | 0. Voltar 
         | 1. Ver Atributos 
         | 2. Upar Atributos 

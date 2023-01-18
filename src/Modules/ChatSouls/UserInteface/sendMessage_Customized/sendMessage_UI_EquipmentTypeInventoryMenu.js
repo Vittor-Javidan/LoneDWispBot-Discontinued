@@ -12,8 +12,10 @@ export function sendMessage_UI_EquipmentTypeInventoryMenu(playerInstance, menuMe
     const playerName = playerInstance.getName()
     const equipmentCodes = playerInstance.getAllEquipmentInventoryString(equipmentype)
 
+    const emoji = `SirShield`
+
     sendMessage(
-        `/w @${playerName} ${menuMessage}: 
+        `/w @${playerName} ${emoji} ${menuMessage}: 
         | 0. Voltar ${equipmentCodes}
         |`
     )

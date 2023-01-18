@@ -17,7 +17,9 @@ export default function startBattle(playerInstance) {
 
     //Player feedback
     const enemieInstance = battleInstance.enemieInstance
-    let message = `Você encontrou um ${enemieInstance.getName()} `
+    const emoji = `SMOrc`
+
+    let message = `${emoji} Você encontrou um ${enemieInstance.getName()} `
     message += whosTurnString(battleInstance)
     
     sendMessage_UI_Battle(battleInstance, message)

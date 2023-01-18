@@ -16,7 +16,9 @@ export default function playerWon(battleInstance, FINAL_MESSAGE) {
     battleInstance.calculateRewards()
     const resourcesEarner = battleInstance.returnResourcesRewardsString()
 
-    FINAL_MESSAGE = `VOCÊ GANHOU!! e recebeu ${souls} almas. ${resourcesEarner} . últimos momentos: ${FINAL_MESSAGE}`
+    const emoji = `SirUwU`
+
+    FINAL_MESSAGE = `${emoji} VOCÊ GANHOU!! e recebeu ${souls} almas. ${resourcesEarner} . últimos momentos: ${FINAL_MESSAGE}`
     sendMessage_UI_Idle(playerInstance, FINAL_MESSAGE)
 
     playerInstance.save()

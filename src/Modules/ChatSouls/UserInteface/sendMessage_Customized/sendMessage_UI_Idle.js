@@ -10,8 +10,10 @@ export function sendMessage_UI_Idle(playerInstance, menuMessage) {
 
     const playerName = playerInstance.getName()
 
+    const emoji = `CoolStoryBob`
+
 	sendMessage(
-		`/w ${playerName} ${menuMessage} 
+		`/w ${playerName} ${emoji} ${menuMessage} 
         | 0. Voltar a fogueira
         | 1. Explorar 
         | 2. Procurar por recursos (Em progresso)

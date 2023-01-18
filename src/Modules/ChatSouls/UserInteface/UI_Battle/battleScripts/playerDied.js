@@ -13,13 +13,16 @@ export default function playerDied(battleInstance, FINAL_MESSAGE) {
     const playerName = playerInstance.getName()
     const souls = playerInstance.getSouls()
 
+    const emoji = `PowerUpL`
+    const emoji_2 = `PowerUpR`
+
     FINAL_MESSAGE = `
-        VOCÊ MORREU!! e ${souls} almas foram perdidas. 
+        ${emoji} VOCÊ MORREU!! ${emoji_2} e ${souls} almas foram perdidas. 
         últimos momentos: ${FINAL_MESSAGE}.
         Você voltou a fogueira
     `
     sendMessage_UI_FirePit(playerInstance, FINAL_MESSAGE)
-    sendMessage(`@${playerName} morreu!!! ${souls} almas foram perdidas *-*`)
+    sendMessage(`${emoji} @${playerName} morreu!!! ${emoji_2} ${souls} almas foram perdidas *-*`)
 
     playerInstance.setSouls(0)
     playerInstance.recoverHP()

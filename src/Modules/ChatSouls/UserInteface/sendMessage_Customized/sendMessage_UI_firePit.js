@@ -9,9 +9,10 @@ import Player from "../../Classes/EntityChilds/Player"
 export function sendMessage_UI_FirePit(playerInstance, menuMessage) {
 
 	const playerName = playerInstance.getName()
+	const emoji = `Getcamped`
 
 	sendMessage(
-		`/w ${playerName} ${menuMessage} 
+		`/w ${playerName} ${emoji} ${menuMessage} 
 		| 0. Levantar da fogueira
 		| 1. Statísticas 
 		| 2. Ver Equipamento 

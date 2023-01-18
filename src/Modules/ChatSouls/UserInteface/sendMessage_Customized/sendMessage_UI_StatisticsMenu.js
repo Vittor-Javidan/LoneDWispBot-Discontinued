@@ -11,8 +11,10 @@ export function sendMessage_UI_StatisticsMenu(playerInstance, menuMessage) {
 
     const playerName = playerInstance.getName()
 
+    const emoji = `HSCheers`
+
 	sendMessage(
-        `/w ${playerName} ${menuMessage} 
+        `/w ${playerName} ${emoji} ${menuMessage} 
         | 0. Voltar 
         | 1. Ver Atributos 
         | 2. Upar Atributos 

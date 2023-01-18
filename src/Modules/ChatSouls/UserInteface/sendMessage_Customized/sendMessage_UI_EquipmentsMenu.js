@@ -10,8 +10,10 @@ export function sendMessage_UI_EquipmentsMenu(playerInstance, menuMessage) {
 
 	const playerName = playerInstance.getName()
 
+	const emoji = `SirShield`
+
 	sendMessage(
-		`/w ${playerName} ${menuMessage}. 
+		`/w ${playerName} ${emoji} ${menuMessage}. 
 		| 0. Voltar 
 		| 1. Arma Corpo a Corpo 
 		| 2. Arma Longo alcance 

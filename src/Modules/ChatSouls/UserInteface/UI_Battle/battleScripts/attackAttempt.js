@@ -23,9 +23,12 @@ export default function attackAttempt(battleInstance, o) {
         evasionWeight: evasionWeight
     })) {
 
+        const emoji = `SirMad`
+        const emoji_2 = `SirPrise`
+
         attacker instanceof Player
-            ? message = `${message} Você errou o ataque. `
-            : message = `${message} ${attacker.getName()} errou o ataque. `
+            ? message = `${message} ${emoji} Você errou o ataque `
+            : message = `${message} ${emoji_2} ${attacker.getName()} errou o ataque `
         //
 
         return message
@@ -42,9 +45,12 @@ export default function attackAttempt(battleInstance, o) {
 
     defensor.inflictDamage(effectiveDamage)
 
+    const emoji = `SirSword`
+    const emoji_2 = `BibleThump`
+
     attacker instanceof Player
-        ? message = `${message} ${defensor.getName()} sofreu ${effectiveDamage} de dano. `
-        : message = `${message} você sofreu ${effectiveDamage} de dano. `
+        ? message = `${message} ${emoji} ${defensor.getName()} sofreu ${effectiveDamage} de dano `
+        : message = `${message} ${emoji_2} você sofreu ${effectiveDamage} de dano `
     //
     
     return message

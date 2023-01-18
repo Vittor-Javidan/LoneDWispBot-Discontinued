@@ -23,7 +23,10 @@ export default function fleeAttempt(battleInstance, o) {
         primary: PLAYER_STATES.EXPLORING.PRIMARY,
         secondary: PLAYER_STATES.EXPLORING.SECONDARY.IDLE
     }
-    sendMessage_UI_Idle(coward,`Fuga bem sucedida!`)
+
+    const emoji = `SirSad`
+
+    sendMessage_UI_Idle(coward,`${emoji} Fuga bem sucedida!`)
     
     return true
 }
