@@ -73,6 +73,9 @@ function fleeOption() {
             UI_Battle({
                 playerInstance: player,
                 message: "0"
+            },{
+                dodgeWeight: 1,
+                fleeWeight: 1
             })
 
             //Test
@@ -113,6 +116,9 @@ function fleeOption() {
             UI_Battle({
                 playerInstance: player,
                 message: "0"
+            },{
+                dodgeWeight: 1,
+                fleeWeight: 1
             })
 
             //Test 1
@@ -157,6 +163,9 @@ function fleeOption() {
             UI_Battle({
                 playerInstance: player,
                 message: "0"
+            },{
+                dodgeWeight: 1,
+                fleeWeight: 1
             })
 
             //Test 1

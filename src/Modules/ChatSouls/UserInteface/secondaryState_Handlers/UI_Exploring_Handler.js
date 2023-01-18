@@ -18,7 +18,10 @@ export default function UI_Exploring_Handler(data){
     
     switch(playerState.secondary) {
 
-        case exploringStates.IDLE: UI_Idle(data)        ;break
-        case exploringStates.HUNTING: UI_Battle(data)   ;break
+        case exploringStates.IDLE: UI_Idle(data);break
+        case exploringStates.HUNTING: UI_Battle(data, {
+            fleeWeight: 1.25, 
+            dodgeWeight: 0.5}
+        );break
     }
 }

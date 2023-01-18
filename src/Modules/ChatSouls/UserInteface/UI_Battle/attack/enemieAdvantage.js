@@ -18,7 +18,7 @@ export default function enemieAdvantage(battleInstance) {
     feedBackMessage += attackAttempt(battleInstance, {
         attacker: enemieInstance,
         defensor: playerInstance,
-        evasionWeight: 1
+        evasionWeight: 0.5
     })
 
     if(!playerInstance.getIsAlive()) {
@@ -32,7 +32,7 @@ export default function enemieAdvantage(battleInstance) {
     feedBackMessage += attackAttempt(battleInstance, {
         attacker: playerInstance,
         defensor: enemieInstance,
-        evasionWeight: 1
+        evasionWeight: 0.5
     }, feedBackMessage)
     
     if(!enemieInstance.getIsAlive()) {

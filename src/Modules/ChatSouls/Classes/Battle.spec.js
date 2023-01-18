@@ -264,12 +264,12 @@ function instanceMethods() {
             //1
             dummyPlayer.setTotalStats(buffedStats)
             dummyEnemie.setTotalStats(nerfedStats)
-            expect(battleInstance.fleePvE()).toBe(true)
+            expect(battleInstance.fleePvE(1)).toBe(true)
 
             //2
             dummyPlayer.setTotalStats(nerfedStats)
             dummyEnemie.setTotalStats(buffedStats)
-            expect(battleInstance.fleePvE()).toBe(false)
+            expect(battleInstance.fleePvE(1)).toBe(false)
         })
     })
 

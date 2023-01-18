@@ -8,8 +8,11 @@ import sendMessage_UI_Battle from "./sendMessage_UI_Battle";
  * @param {Object} data
  * @param {Player} data.playerInstance
  * @param {string} data.message
+ * @param {Object} options
+ * @param {number} options.fleeWeight
+ * @param {number} options.dodgeWeight
  */
-export default function UI_Battle(data) {
+export default function UI_Battle(data, options) {
 
     const commandWord = data.message.split(" ")[0]
 	const playerInstance = data.playerInstance
@@ -23,7 +26,7 @@ export default function UI_Battle(data) {
 	const commandCode = Number(commandWord)
 	switch (commandCode) {
 
-		case 0: flee(battleInstance)	;break
+		case 0: flee(battleInstance, options)	;break
 		case 1: attack(battleInstance)	;break
 
 		default: sendMessage_UI_Battle(battleInstance,`opção inválida`)	;break

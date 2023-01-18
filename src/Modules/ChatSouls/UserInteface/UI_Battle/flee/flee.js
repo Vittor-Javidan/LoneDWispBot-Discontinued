@@ -1,101 +1,68 @@
 import Battle from "../../../Classes/Battle"
-import PLAYER_STATES from "../../../Classes/EntityChilds/PLAYER_STATES"
-import { sendMessage_UI_FirePit } from "../../sendMessage_Customized/sendMessage_UI_firePit"
-import { sendMessage_UI_Idle } from "../../sendMessage_Customized/sendMessage_UI_Idle"
+import attackAttempt from "../attack/attackAttempt"
+import playerDied from "../attack/playerDied"
+import fleeAttempt from "../battleScripts/fleeAttempt"
 import sendMessage_UI_Battle from "../sendMessage_UI_Battle"
 
 /**
  * @param {Battle} battleInstance 
+ * @param {Object} options
+ * @param {number} options.fleeWeight
+ * @param {number} options.dodgeWeight
  */
-export default function flee(battleInstance) {
-    
-    if(didFlee(battleInstance)) {
-        return
-    }
-    
-    const damageFeedback = damageFeedBackAttackPhase(battleInstance)
-    
-    if(didPlayerDied(battleInstance, damageFeedback)) {
-        return
-    }
-    
-    sendMessage_UI_Battle(battleInstance, `sua fuga falhou! ${damageFeedback}`)
-}
+export default function flee(battleInstance, options) {
 
-/**
- * @param {Battle} battleInstance 
- * @returns {boolean} `True` if success, `False` otherwise
- */
-function didFlee(battleInstance) {
-
-    const succed = battleInstance.fleePvE()
-    
-    if(!succed) {
-        return false
-    }
-    
-    const playerInstance = battleInstance.playerInstance
-    Battle.deleteBattle(playerInstance.getName())
-    playerInstance.currentState = {
-        primary: PLAYER_STATES.EXPLORING.PRIMARY,
-        secondary: PLAYER_STATES.EXPLORING.SECONDARY.IDLE
-    }
-    sendMessage_UI_Idle(playerInstance,`Fuga bem sucedida!`)
-    return true
-}
-
-/**
- * @param {Battle} battleInstance 
- * @returns {boolean} `True` if success, `False` otherwise
- */
-function didPlayerDied(battleInstance, attackPhaseMessage) {
-
-    const playerInstance = battleInstance.playerInstance
-    const isPlayerAlive = playerInstance.getIsAlive()
-
-    if(isPlayerAlive){
-        return false 
-    }
-    
-    playerInstance.currentState = {
-        primary: PLAYER_STATES.FIRE_PIT.PRIMARY,
-        secondary: PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT
-    }
-    playerInstance.setSouls(0)
-    playerInstance.recoverHP()
-    playerInstance.ressurrect()
-    playerInstance.save()
-    Battle.deleteBattle(playerInstance.getName())
-    sendMessage_UI_FirePit(playerInstance, `sua fuga falhou e você morreu! ${attackPhaseMessage}`)
-    
-    return true
-}
-
-/**
- * @param {Battle} battleInstance 
- * @returns {string} message with a damage feedback
- */
-function damageFeedBackAttackPhase(battleInstance){
+    options = checkOptions()
 
     const playerInstance = battleInstance.playerInstance
     const enemieInstance = battleInstance.enemieInstance
-
-    const didEvade = battleInstance.evasionEvent({
-        from: playerInstance,
-        against: enemieInstance,
-        evasionWeight: 2
+    
+    if(fleeAttempt(battleInstance, {
+        coward: playerInstance,
+        evasionWeight: options.fleeWeight,
+    })) {
+        return
+    }
+    
+    const feedBackMessage = attackAttempt(battleInstance, {
+        attacker: enemieInstance,
+        defensor: playerInstance,
+        evasionWeight: options.dodgeWeight
     })
+    
+    if(!playerInstance.getIsAlive()) {
+        playerDied(battleInstance, `${feedBackMessage}`)
+        return
+    }
+    
+    sendMessage_UI_Battle(battleInstance, `sua fuga falhou! ${feedBackMessage}`)
+}
 
-    //If attack dodge
-    if(didEvade) {
-        return `${enemieInstance.getName()} errou o ataque.`
+/**
+ * @param {Object} options
+ * @param {number} options.fleeWeight
+ * @param {number} options.dodgeWeight
+ * @returns {{
+ *      fleeWeight: number,
+ *      dodgeWeight: number
+ * }}
+ */
+function checkOptions(options) {
+
+    if(options == undefined) {
+        options = {
+            fleeWeight: 1,
+            dodgeWeight: 1
+        }
     }
 
-    //If not
-    const rawDamage = battleInstance.calculateRawDamage({
-        attacker: battleInstance.enemieInstance, 
-        defender: battleInstance.playerInstance
-    })
-    playerInstance.inflictDamage(rawDamage)
-    return `${playerInstance.getName()} Dano sofrido ${rawDamage}.`
+    if(options.fleeWeight == undefined) {
+        options.fleeWeight = 1
+    }
+
+    if(options.fleeWeight == undefined) {
+        options.dodgeWeight = 1
+    }
+
+    return options
 }

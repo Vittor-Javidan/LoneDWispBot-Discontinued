@@ -158,13 +158,14 @@ export default class Battle {
     }
 
     /**
+     * @param {number} evasionWeight
      * @returns {boolean} `True` if flee succed, `False` otherwise
      */
-    fleePvE() {
+    fleePvE(evasionWeight) {
         return this.evasionEvent({
             from: this.playerInstance, 
             against: this.enemieInstance, 
-            evasionWeight: 1
+            evasionWeight: evasionWeight
         })
     }
 
