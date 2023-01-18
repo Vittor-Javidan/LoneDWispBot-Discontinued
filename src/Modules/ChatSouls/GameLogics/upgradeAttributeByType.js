@@ -1,3 +1,4 @@
+import sendMessage from "../../../Twitch/sendMessageHandler"
 import Player from "../Classes/EntityChilds/Player"
 import CS_ENUM from "../Classes/ENUM"
 import { sendMessage_UI_AttributeUpgradeMenu } from "../UserInteface/sendMessage_Customized/sendMessage_UI_AttributeUpgradeMenu"
@@ -32,10 +33,12 @@ export default function upgradeAttributeByType(o) {
     }
 
     playerInstance.upgradeAttributeProcessHandler(attributePicked)
+    const playerName = playerInstance.getName()
     const souls = playerInstance.getSouls()
     const level = playerInstance.getlevel()
     const nextUpgradeCost = playerInstance.getUpgradeCost()
 
+    sendMessage(`@${playerName} upou para o nível ${level}!!`)
     sendMessage_UI_AttributeUpgradeMenu(playerInstance,
         `${menuMessage} 
         - Novo level: ${level} 
