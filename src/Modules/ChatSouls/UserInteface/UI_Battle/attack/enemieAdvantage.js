@@ -6,8 +6,10 @@ import sendMessage_UI_Battle from "../sendMessage_UI_Battle"
 
 /**
  * @param {Battle} battleInstance
+ * @param {Object} options
+ * @param {number} options.dodgeWeight
  */
-export default function enemieAdvantage(battleInstance) {
+export default function enemieAdvantage(battleInstance, options) {
 
     const playerInstance = battleInstance.playerInstance
     const enemieInstance = battleInstance.enemieInstance
@@ -18,7 +20,7 @@ export default function enemieAdvantage(battleInstance) {
     feedBackMessage += attackAttempt(battleInstance, {
         attacker: enemieInstance,
         defensor: playerInstance,
-        evasionWeight: 0.5
+        evasionWeight: options.dodgeWeight
     })
 
     if(!playerInstance.getIsAlive()) {
@@ -32,7 +34,7 @@ export default function enemieAdvantage(battleInstance) {
     feedBackMessage += attackAttempt(battleInstance, {
         attacker: playerInstance,
         defensor: enemieInstance,
-        evasionWeight: 0.5
+        evasionWeight: options.dodgeWeight
     }, feedBackMessage)
     
     if(!enemieInstance.getIsAlive()) {

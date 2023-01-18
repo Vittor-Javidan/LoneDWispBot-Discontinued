@@ -27,7 +27,7 @@ export default function UI_Battle(data, options) {
 	switch (commandCode) {
 
 		case 0: flee(battleInstance, options)	;break
-		case 1: attack(battleInstance)	;break
+		case 1: attack(battleInstance, options)	;break
 
 		default: sendMessage_UI_Battle(battleInstance,`opção inválida`)	;break
 	}

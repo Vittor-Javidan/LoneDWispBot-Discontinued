@@ -233,7 +233,12 @@ export default class Battle {
         const evasion = from.getTotalStats().evasion
         const oponent_evasion = against.getTotalStats().evasion
 
-        const evasionChance = (evasion * evasionWeight) / (oponent_evasion + evasion)
+        let sharedEvasion = oponent_evasion + evasion
+        if(sharedEvasion <= 0) {
+            sharedEvasion = 100
+        }
+
+        const evasionChance = (evasion * evasionWeight) / (sharedEvasion)
         const randomNumber = Math.random()
 
         if(evasionChance >= randomNumber) {
