@@ -502,8 +502,8 @@ function instanceMethods() {
 		`, () => {
 			
 			const dummyPlayer = new Player("Dummy Player: getUpgradeCost()")
-			dummyPlayer.setlevel(50)
-			expect(dummyPlayer.getUpgradeCost()).toEqual(50 * 100)
+			dummyPlayer.setlevel(1)
+			expect(dummyPlayer.getUpgradeCost()).toEqual(550)
 		})
 	})
 

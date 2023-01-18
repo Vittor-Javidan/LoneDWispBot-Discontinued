@@ -418,7 +418,7 @@ export default class Player extends Entity {
      * @returns {number}
      */
     getUpgradeCost(){
-        return this.getlevel() * 100
+        return Math.round(500 * Math.pow(1.10, this.getlevel()))
     }
 
     /**
