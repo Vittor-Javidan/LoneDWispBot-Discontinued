@@ -63,7 +63,10 @@ function didFlee(battleInstance) {
     
     const playerInstance = battleInstance.playerInstance
     Battle.deleteBattle(playerInstance.getName())
-    playerInstance.secondaryState = PLAYER_STATES.EXPLORING.SECONDARY.IDLE
+    playerInstance.currentState = {
+        primary: PLAYER_STATES.EXPLORING.PRIMARY,
+        secondary: PLAYER_STATES.EXPLORING.SECONDARY.IDLE
+    }
     sendMessage_UI_Idle(playerInstance,`Fuga bem sucedida!`)
     return true
 }

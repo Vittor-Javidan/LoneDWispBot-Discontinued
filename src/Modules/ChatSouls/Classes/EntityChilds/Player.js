@@ -221,6 +221,18 @@ export default class Player extends Entity {
     }
 
     /**
+     * Deletes Player From LOCAL database, use with caution.
+     * To delete for good, force save right after.
+     * @param {string} userName
+     * @param {boolean} areYouSure 
+     */
+    static deletePlayer(userName, areYouSure){
+        if(areYouSure) {
+            delete Player.#database[userName]
+        }
+    }
+
+    /**
      * @param {string} userName 
      * @returns {Player}
      */

@@ -254,6 +254,27 @@ function classMethods() {
 		})
 	})
 
+	describe(`deletePlayer`, () => {
+
+		it(`Should:
+			1. Delete Player From Local Database
+		`, () => {
+
+			//Instanttiation
+			const name = `Dummy Player: deletePlayer`
+			const player = Player.startGame(name)
+
+			//Run
+			Player.deletePlayer(name, true)
+
+			//Test
+			expect(Player.database[name]).toBeUndefined()
+
+			//Sanitizer
+			Player.logoutPlayerInstance(player)
+		})
+	})
+
 	describe('register', () => {
 
 		it(`Should:
