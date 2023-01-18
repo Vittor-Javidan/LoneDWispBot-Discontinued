@@ -37,11 +37,14 @@ export default function attackAttempt(battleInstance, o) {
         defender: defensor
     })
 
-    defensor.inflictDamage(rawDamage)
+    const luck = Math.floor((Math.random() * 6) + 1)
+    const effectiveDamage = Battle.returnEffectiveDamage(rawDamage, luck)
+
+    defensor.inflictDamage(effectiveDamage)
 
     attacker instanceof Player
-        ? message = `${message} ${defensor.getName()} sofreu ${rawDamage} de dano. `
-        : message = `${message} você sofreu ${rawDamage} de dano. `
+        ? message = `${message} ${defensor.getName()} sofreu ${effectiveDamage} de dano. `
+        : message = `${message} você sofreu ${effectiveDamage} de dano. `
     //
     
     return message

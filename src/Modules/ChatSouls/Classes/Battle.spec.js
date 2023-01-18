@@ -41,6 +41,47 @@ function constructor() {
 
 function classMethods() {
 
+    describe(`returnEffectiveDamage`, () => {
+
+        it(`Should:
+            1. Return the right value in all cases
+            2. Return initial raw damage when luck is not recognized
+        `, () => {
+
+            const damage = 1000
+            const luck_1 =  Battle.returnEffectiveDamage(damage, 1)
+            const luck_2 =  Battle.returnEffectiveDamage(damage, 2)
+            const luck_3 =  Battle.returnEffectiveDamage(damage, 3)
+            const luck_4 =  Battle.returnEffectiveDamage(damage, 4)
+            const luck_5 =  Battle.returnEffectiveDamage(damage, 5)
+            const luck_6 =  Battle.returnEffectiveDamage(damage, 6)
+            const no_Luck = Battle.returnEffectiveDamage(damage, 7)
+        
+            expect(luck_1).toBe(500)
+            expect(luck_2).toBe(750)
+            expect(luck_3).toBe(900)
+            expect(luck_4).toBe(1100)
+            expect(luck_5).toBe(1250)
+            expect(luck_6).toBe(1500)
+            expect(no_Luck).toBe(1000)
+        })
+
+        it(`Throws Error:
+            1. When damage is not a valid number
+        `, () => {
+
+            expect(() => Battle.returnEffectiveDamage(-500, 1)).toThrow(
+                Error(`ERROR: damageValue must be a valid number`)
+            )
+            expect(() => Battle.returnEffectiveDamage(`Wrong Type`, 1)).toThrow(
+                Error(`ERROR: damageValue must be a valid number`)
+            )
+            expect(() => Battle.returnEffectiveDamage(NaN, 1)).toThrow(
+                Error(`ERROR: damageValue must be a valid number`)
+            )
+        })
+    })
+
     describe(`determineFirstTurn`, () => {
 
         const givenAttributes = {

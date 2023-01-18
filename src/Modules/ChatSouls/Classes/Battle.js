@@ -145,6 +145,40 @@ export default class Battle {
         return message
     }
 
+    /**
+     * @param {number} damageValue 
+     * @param {number} luck Int number between 1 to 6
+     * @returns {number}
+     */
+    static returnEffectiveDamage(damageValue, luck) {
+
+        if(
+            typeof damageValue !== 'number' || 
+            isNaN(damageValue)              ||
+            damageValue < 0
+        ) {
+            throw Error(`ERROR: damageValue must be a valid number`)
+        }
+
+        switch(luck) {
+            
+            case 1: damageValue = damageValue * 0.5     ;break
+            case 2: damageValue = damageValue * 0.75    ;break
+            case 3: damageValue = damageValue * 0.9     ;break
+            case 4: damageValue = damageValue * 1.1     ;break
+            case 5: damageValue = damageValue * 1.25    ;break
+            case 6: damageValue = damageValue * 1.5     ;break
+        }
+
+        damageValue = Math.floor(damageValue)
+
+        if(damageValue < 1) {
+            damageValue = 1
+        }
+
+        return damageValue
+    }
+
     //=================================================================================================
     // INSTANCE METHODS ===============================================================================
     //=================================================================================================
