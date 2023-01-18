@@ -437,6 +437,37 @@ function instanceMethods() {
         })
     })
 
+    describe(`returnResourcesRewardsString`, () => {
+
+        /**@type {CS_ResourceData[]} */
+        const earnedResources = [
+            {
+                name: 'Fake Item',
+                amount: 2,
+                dropChance: 1
+            },
+            {
+                name: 'Another Fake Item',
+                amount: 4,
+                dropChance: 1
+            }
+        ]
+
+        it(`Should:
+            1. Return a string
+        `, () => {
+
+            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, mapAreas.TEST_AREA))
+            const dummyPlayer = new Player("Dummy Player: calculateRewards()")
+            const battleInstance = new Battle(dummyPlayer, dummyEnemie)
+            battleInstance.earnerResources = earnedResources
+
+            const message = battleInstance.returnResourcesRewardsString()
+
+            expect(message).toBe(`Recursos ganhos: 2x Fake Item, 4x Another Fake Item, `)
+        })
+    })
+
     describe(`evasionEvent`, ()=> {
 
         /**@type {CS_Stats} */

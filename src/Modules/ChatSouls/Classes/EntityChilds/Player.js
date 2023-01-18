@@ -1,4 +1,3 @@
-import sendMessage from "../../../../Twitch/sendMessageHandler"
 import deepCopy from "../../../../Utils/deepCopy"
 import DbSystem, { playerDataBasePath } from "../../database/DbSystem"
 import Entity from "../Entity"
@@ -393,8 +392,6 @@ export default class Player extends Entity {
         this.setAttributes(playerData.attributes)
         this.setCurrentEquipment(playerData.equipment)
         this.setInventory(playerData.inventory)
-        
-        sendMessage(`/w ${this.getName()} Seu progresso foi restaurado com sucesso`)
     }
 
     /**
