@@ -31,8 +31,8 @@ export default class DbSystem {
 		try {
 			return JSON.parse(data)
 		} catch (error) {
-			fs.writeFileSync(errorLogDataBasePath, error)
 			fs.writeFileSync(errorContentDataBasePath, data)
+			fs.writeFileSync(errorLogDataBasePath, JSON.stringify(error))
 		}
 	}
 

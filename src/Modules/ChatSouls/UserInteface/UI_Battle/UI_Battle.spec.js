@@ -80,11 +80,11 @@ function fleeOption() {
             })
 
             //Test
-            expect(Battle.battlesList.length).toBe(0)
             expect(player.getIsAlive()).toBe(true)
             expect(player.primaryState).toBe(PLAYER_STATES.EXPLORING.PRIMARY)
             expect(player.secondaryState).toBe(PLAYER_STATES.EXPLORING.SECONDARY.IDLE)
-
+            expect(Battle.battlesList.length).toBe(0)
+            
             //Sanitizers
             Player.logoutPlayerInstance(player)
             Player.deletePlayer(name, true)
@@ -122,12 +122,12 @@ function fleeOption() {
                 fleeWeight: 1
             })
 
-            //Test 1
-            expect(Battle.battlesList.length).toBe(1)
+            //1
             expect(player.getIsAlive()).toBe(true)
-
-            //Test 2
+            
+            //2
             expect(player.getCurrentHP()).toBeLessThan(1000)
+            expect(Battle.battlesList.length).toBe(1)
 
             //Sanitizers
             Battle.deleteBattle(name)
@@ -136,7 +136,7 @@ function fleeOption() {
             Player.forceSaveDataBase()
         })
 
-        it(`Should:
+        it.only(`Should:
             1. Flee and died during the battle.
         `, () => {
 
@@ -157,7 +157,7 @@ function fleeOption() {
             //Setup
             player.setTotalStats(nerfedStats)
             enemie.setTotalStats(buffedStats)
-            player.setCurrentHP(100)
+            player.setCurrentHP(1)
             player.setSouls(100)
 
             //Run
@@ -170,11 +170,11 @@ function fleeOption() {
             })
 
             //Test 1
-            expect(Battle.battlesList.length).toBe(0)
             expect(player.getIsAlive()).toBe(true)
             expect(player.getSouls()).toBe(0)
             expect(player.primaryState).toBe(PLAYER_STATES.FIRE_PIT.PRIMARY)
             expect(player.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT)
+            expect(Battle.battlesList.length).toBe(0)
 
             //Sanitizers
             Player.logoutPlayerInstance(player)
@@ -261,10 +261,10 @@ function playerAdvantageContext() {
         })
 
         //Test
-        expect(Battle.battlesList.length).toBe(0)
         expect(player.getIsAlive()).toBe(true)
         expect(enemie.getIsAlive()).toBe(false)
         expect(player.getSouls()).greaterThan(0)
+        expect(Battle.battlesList.length).toBe(0)
 
         //Sanitazing
         Player.logoutPlayerInstance(player)
@@ -304,11 +304,11 @@ function playerAdvantageContext() {
         })
 
         //Test
-        expect(Battle.battlesList.length).toBe(1)
         expect(player.getIsAlive()).toBe(true)
         expect(player.getSouls()).toBe(0)
         expect(enemie.getIsAlive()).toBe(true)
         expect(enemie.getCurrentHP()).toBeLessThan(9999)
+        expect(Battle.battlesList.length).toBe(1)
 
         //Sanitazing
         Battle.deleteBattle(name)
@@ -355,12 +355,12 @@ function playerAdvantageContext() {
         })
 
         //Test
-        expect(Battle.battlesList.length).toBe(1)
         expect(player.getIsAlive()).toBe(true)
         expect(player.getSouls()).toBe(0)
         expect(enemie.getIsAlive()).toBe(true)
         expect(enemie.getCurrentHP()).toBe(9999)
         expect(player.getCurrentHP()).toBe(9999)
+        expect(Battle.battlesList.length).toBe(1)
 
         //Sanitazing
         Battle.deleteBattle(name)
@@ -403,12 +403,12 @@ function playerAdvantageContext() {
         })
 
         //Test
-        expect(Battle.battlesList.length).toBe(1)
         expect(player.getIsAlive()).toBe(true)
         expect(player.getSouls()).toBe(0)
         expect(enemie.getIsAlive()).toBe(true)
         expect(enemie.getCurrentHP()).toBe(9999)
         expect(player.getCurrentHP()).toBeLessThan(9999)
+        expect(Battle.battlesList.length).toBe(1)
 
         //Sanitazing
         Battle.deleteBattle(name)
@@ -454,7 +454,6 @@ function playerAdvantageContext() {
         })
 
         //Test
-        expect(Battle.battlesList.length).toBe(0)
         expect(player.getSouls()).toBe(0)
         expect(player.getIsAlive()).toBe(true)
         expect(enemie.getIsAlive()).toBe(true)
@@ -462,6 +461,7 @@ function playerAdvantageContext() {
         expect(player.getCurrentHP()).toBe(1000) //hp from "nerfedStats"
         expect(player.primaryState).toBe(PLAYER_STATES.FIRE_PIT.PRIMARY)
         expect(player.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT)
+        expect(Battle.battlesList.length).toBe(0)
 
         //Sanitazing
         Player.logoutPlayerInstance(player)

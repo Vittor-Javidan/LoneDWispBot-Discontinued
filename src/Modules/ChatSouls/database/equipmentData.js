@@ -96,8 +96,8 @@ const equipmentDataBase = {
             name: "Roupa de caçador",
             defense_multipliers: {
                 vitality: 0.1,
-                strenght: 0.1,
                 agility: 0,
+                strenght: 0.1,
                 intelligence: 0,
             },
             description: "Roupa de caçador. Usado para se camuflar na floresta."
@@ -119,8 +119,8 @@ const equipmentDataBase = {
             name: "Luvas de caçador",
             defense_multipliers: {
                 vitality: 0.1,
-                strenght: 0.1,
                 agility: 0,
+                strenght: 0.1,
                 intelligence: 0,
             },
             description: "Luvas de caçador. Usado para se camuflar na floresta."
@@ -141,8 +141,8 @@ const equipmentDataBase = {
         "Botas de caçador": {
             name: "Botas de caçador",
             defense_multipliers: {
-                vitality: 0.1,
-                strenght: 0.1,
+                vitality: 0.0,
+                strenght: 0.0,
                 agility: 0.2,
                 intelligence: 0,
             },

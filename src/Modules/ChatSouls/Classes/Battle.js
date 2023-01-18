@@ -1,3 +1,4 @@
+import deepCopy from '../../../Utils/deepCopy';
 import enemiesDataBase from '../database/enemiesData';
 import Entity from './Entity';
 import Enemie from './EntityChilds/Enemie';
@@ -31,6 +32,11 @@ export default class Battle {
      * @type {Enemie}
      */
     enemieInstance
+
+    /**
+     * @type {CS_ResourceData[]}
+    */
+    earnerResources = []
 
     /**
      * `1` if its player turn, `2` if its the enemie turn
@@ -223,7 +229,7 @@ export default class Battle {
 
     /**
      * Calculate the rewards when battle ends
-     * @returns {void}
+     * @returns {CS_Inventory_Resources}
      */
     calculateRewards() {
         
@@ -245,12 +251,34 @@ export default class Battle {
     giveLootHandler(resources, randomNumber){
         
         if(resources.dropChance >= randomNumber) {
-            this.playerInstance.addResources({
+            const newResourceObject = {
                 name: resources.name,
                 amount: resources.amount,
                 type: resources.type
-            })
+            }
+            this.playerInstance.addResources(newResourceObject)
+            this.earnerResources.push(deepCopy(newResourceObject))
         }
+    }
+
+    /**
+     * @returns {string}
+     */
+    returnResourcesRewardsString(){
+
+        let message = `Recursos ganhos: `
+
+        if(this.earnerResources.length <= 0) {
+            message += `nenhum :(`
+        }
+
+        for(let i = 0; i < this.earnerResources.length; i++) {
+            const amount = this.earnerResources[i].amount
+            const resourceName = this.earnerResources[i].name
+            message += `${amount}x ${resourceName}, `
+        }
+
+        return message
     }
 
     /**

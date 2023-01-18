@@ -12,10 +12,13 @@ export default function playerWon(battleInstance, FINAL_MESSAGE) {
     const enemieInstance = battleInstance.enemieInstance
     const souls = enemieInstance.getSouls()
     
-    FINAL_MESSAGE = `VOCÊ GANHOU!! e recebeu ${souls} almas. últimos momentos: ${FINAL_MESSAGE}`
-    sendMessage_UI_Idle(playerInstance, FINAL_MESSAGE)
-    
     playerInstance.secondaryState = PLAYER_STATES.EXPLORING.SECONDARY.IDLE
     battleInstance.calculateRewards()
+    const resourcesEarner = battleInstance.returnResourcesRewardsString()
+
+    FINAL_MESSAGE = `VOCÊ GANHOU!! e recebeu ${souls} almas. ${resourcesEarner} . últimos momentos: ${FINAL_MESSAGE}`
+    sendMessage_UI_Idle(playerInstance, FINAL_MESSAGE)
+
+    playerInstance.save()
     Battle.deleteBattle(playerInstance.getName())
 }
