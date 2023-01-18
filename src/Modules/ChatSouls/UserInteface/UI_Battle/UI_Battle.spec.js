@@ -136,7 +136,7 @@ function fleeOption() {
             Player.forceSaveDataBase()
         })
 
-        it.only(`Should:
+        it(`Should:
             1. Flee and died during the battle.
         `, () => {
 

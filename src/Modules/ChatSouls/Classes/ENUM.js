@@ -2,7 +2,7 @@
 const CS_ENUM = {
     BALANCE_VALUES: {
         STATS_WEIGHT: {
-            HP:             10,
+            HP:             30,
             EVASION:        1,
             FISICAL_DMG:    5,
             FISICAL_DEF:    1,
