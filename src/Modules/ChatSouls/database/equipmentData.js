@@ -55,6 +55,15 @@ const equipmentDataBase = {
                 intelligence: 0
             },
             description: "Uma adaga comum. Tão especial quanto uma pedra na estrada."
+        },
+        "Espada enferrujada": {
+            name: "Espada enferrujada",
+            damage_multipliers: {
+                vitality: 0,
+                agility: 0,
+                strenght: 0.3,
+                intelligence: 0
+            }
         }
     },
 
@@ -78,6 +87,15 @@ const equipmentDataBase = {
                 intelligence: 0,
             },
             description: "Chapéu de caçador. Usado para se camuflar na floresta."
+        },
+        "Elmo enferrujado": {
+            name: "Elmo enferrujado",
+            defense_multipliers: {
+                vitality: 0.1,
+                agility: 0,
+                strenght: 0.1,
+                intelligence: 0
+            }
         }
     },
 
@@ -101,6 +119,15 @@ const equipmentDataBase = {
                 intelligence: 0,
             },
             description: "Roupa de caçador. Usado para se camuflar na floresta."
+        },
+        "Armadura enferrujada": {
+            name: "Armadura enferrujada",
+            defense_multipliers: {
+                vitality: 0.1,
+                agility: 0,
+                strenght: 0.1,
+                intelligence: 0
+            }
         }
     },
 
@@ -124,6 +151,15 @@ const equipmentDataBase = {
                 intelligence: 0,
             },
             description: "Luvas de caçador. Usado para se camuflar na floresta."
+        },
+        "Luvas enferrujadas": {
+            name: "Luvas enferrujadas",
+            defense_multipliers: {
+                vitality: 0.1,
+                agility: 0,
+                strenght: 0.1,
+                intelligence: 0
+            }
         }
     },
 
@@ -142,11 +178,20 @@ const equipmentDataBase = {
             name: "Botas de caçador",
             defense_multipliers: {
                 vitality: 0.0,
-                strenght: 0.0,
                 agility: 0.2,
+                strenght: 0.0,
                 intelligence: 0,
             },
             description: "Botas de caçador. Usado para se camuflar na floresta."
+        },
+        "Botas enferrujadas": {
+            name: "Botas enferrujadas",
+            defense_multipliers: {
+                vitality: 0.1,
+                agility: 0,
+                strenght: 0.1,
+                intelligence: 0
+            }
         }
     }
 }
@@ -160,25 +205,30 @@ export const equipmentEntries = {
         },
         MELEE: {
             DUMMY_EQUIPMENT: "Dummy Equipment",
-            ADAGA: "Adaga"
+            ADAGA: "Adaga",
+            ESPADA_ENFERRUJADA: "Espada enferrujada"
         },
     },
     ARMORS:  {
         HELMETS: {
             DUMMY_EQUIPMENT: "Dummy Equipment",
-            CHAPEU_DE_CACADOR: "Chapéu de caçador"
+            CHAPEU_DE_CACADOR: "Chapéu de caçador",
+            ELMO_ENFERRUJADO: "Elmo enferrujado"
         },
         BODY_ARMOR: {
             DUMMY_EQUIPMENT: "Dummy Equipment",
-            ROUPA_DE_CACADOR: "Roupa de caçador"
+            ROUPA_DE_CACADOR: "Roupa de caçador",
+            ARMADURA_ENFERRUJADA: "Armadura enferrujada"
         },
         GLOVES: {
             DUMMY_EQUIPMENT: "Dummy Equipment",
-            LUVAS_DE_CACADOR: "Luvas de caçador"
+            LUVAS_DE_CACADOR: "Luvas de caçador",
+            LUVAS_ENFERRUJADAS: "Luvas enferrujadas"
         },
         BOOTS: {
             DUMMY_EQUIPMENT: "Dummy Equipment",
-            BOTAS_DE_CACADOR: "Botas de caçador"
+            BOTAS_DE_CACADOR: "Botas de caçador",
+            BOTAS_ENFERRUJADAS: "Botas enferrujadas"
         }
     }
 }

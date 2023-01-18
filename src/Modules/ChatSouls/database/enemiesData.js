@@ -1,5 +1,4 @@
 import deepCopy from '../../../Utils/deepCopy';
-import CS_ENUM from '../Classes/ENUM';
 
 /**
  * @typedef {import('../TypeDefinitions/Types').CS_Database} CS_Database - Keys: `enemie name string`
@@ -154,10 +153,10 @@ const enemiesDataBase = {
             name: "Lobo",
             souls: 1000,
             attributes: {
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.VITALITY]: 13,
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.AGILITY]: 13,
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.STRENGHT]: 14,
-                [CS_ENUM.KEYS.CS_ATTRIBUTES.INTELLLIGENCE]: 10
+                vitality: 13,
+                agility: 13,
+                strenght: 14,
+                intelligence: 10
             },
             equipment: {
                 longRangeWeapon: {},
@@ -200,6 +199,58 @@ const enemiesDataBase = {
                     }
                 }
             }
+        },
+        "Esqueleto": {
+            level: 20,
+            name: "Esqueleto",
+            souls: 2000,
+            attributes: {
+                vitality: 10,
+                agility: 20,
+                strenght: 20,
+                intelligence: 10
+            },
+            equipment: {
+                longRangeWeapon: {},
+                meleeWeapon: { name: "Espada enferrujada" },
+                helmet: { name: "Elmo enferrujado" },
+                bodyArmor: { name: "Armadura enferrujada" },
+                gloves: { name: "Luvas enferrujadas" },
+                boots: { name: "Botas enferrujadas" }
+            },
+            inventory: {
+                equipments: {
+                    longRangeWeapon: [],
+                    meleeWeapon: [],
+                    helmet: [],
+                    bodyArmor: [],
+                    gloves: [],
+                    boots: []
+                },
+                resources: {
+                    "Ossos": {
+                        name: "Ossos",
+                        amount: 1,
+                        type: "recurso",
+                        dropChance: 1,
+                        description: "Ossos apodrecidos. Uma aura sinistra é sentida."
+                    },
+                    "Metal Enferrujado": {
+                        name: "Metal Enferrujado",
+                        amount: 1,
+                        type: "recurso",
+                        dropChance: 0.3,
+                        description: "Metal com muita ferrugem. Apesar de forte, possui um peso muito grande."
+                    },
+                    "Dente de ouro": {
+                        name: "Dente de ouro",
+                        amount: 1,
+                        dropChance: 0.05,
+                        type: "recurso",
+                        description: "Dentes de ouro! talvez encontrará algum uso a eles."
+                    }
+                }
+            }
         }
     }
 }
@@ -212,7 +263,8 @@ export const enemieEntries = {
     theWoods: {
         JAVALI: "Javali",
         BANDIDO: "Bandido",
-        LOBO: "Lobo"
+        LOBO: "Lobo",
+        ESQUELETO: "Esqueleto"
     }
 }
 
