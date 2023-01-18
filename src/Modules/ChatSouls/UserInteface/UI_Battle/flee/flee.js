@@ -26,6 +26,28 @@ export default function flee(battleInstance) {
  * @param {Battle} battleInstance 
  * @returns {boolean} `True` if success, `False` otherwise
  */
+function didFlee(battleInstance) {
+
+    const succed = battleInstance.fleePvE()
+    
+    if(!succed) {
+        return false
+    }
+    
+    const playerInstance = battleInstance.playerInstance
+    Battle.deleteBattle(playerInstance.getName())
+    playerInstance.currentState = {
+        primary: PLAYER_STATES.EXPLORING.PRIMARY,
+        secondary: PLAYER_STATES.EXPLORING.SECONDARY.IDLE
+    }
+    sendMessage_UI_Idle(playerInstance,`Fuga bem sucedida!`)
+    return true
+}
+
+/**
+ * @param {Battle} battleInstance 
+ * @returns {boolean} `True` if success, `False` otherwise
+ */
 function didPlayerDied(battleInstance, attackPhaseMessage) {
 
     const playerInstance = battleInstance.playerInstance
@@ -46,28 +68,6 @@ function didPlayerDied(battleInstance, attackPhaseMessage) {
     Battle.deleteBattle(playerInstance.getName())
     sendMessage_UI_FirePit(playerInstance, `sua fuga falhou e você morreu! ${attackPhaseMessage}`)
     
-    return true
-}
-
-/**
- * @param {Battle} battleInstance 
- * @returns {boolean} `True` if success, `False` otherwise
- */
-function didFlee(battleInstance) {
-
-    const succed = battleInstance.fleePvE()
-    
-    if(!succed) {
-        return false
-    }
-    
-    const playerInstance = battleInstance.playerInstance
-    Battle.deleteBattle(playerInstance.getName())
-    playerInstance.currentState = {
-        primary: PLAYER_STATES.EXPLORING.PRIMARY,
-        secondary: PLAYER_STATES.EXPLORING.SECONDARY.IDLE
-    }
-    sendMessage_UI_Idle(playerInstance,`Fuga bem sucedida!`)
     return true
 }
 

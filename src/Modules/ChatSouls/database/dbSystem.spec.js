@@ -17,7 +17,7 @@ describe(`Db System Class`, () => {
 
     describe(`writeDb`, () => {
 
-        const randomNumber = Math.random()
+        const randomNumber = Math.abs(Math.floor(Math.random() * 100))
 
         it(`Should:
             1. save normaly, when data has the safet key
