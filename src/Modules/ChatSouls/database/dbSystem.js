@@ -11,6 +11,8 @@ import fs from 'fs'
  * @private
  */
 export const playerDataBasePath = `${__dirname}/playersData.json`
+export const errorContentDataBasePath = `${__dirname}/errorContentDataBase.md`
+export const errorLogDataBasePath = `${__dirname}/errorLogDataBase.md`
 
 export default class DbSystem {
 
@@ -25,7 +27,13 @@ export default class DbSystem {
 	static loadDb(directory) {
 
 		const data = fs.readFileSync(directory, 'utf-8')
-		return JSON.parse(data)
+
+		try {
+			return JSON.parse(data)
+		} catch (error) {
+			fs.writeFileSync(errorLogDataBasePath, error)
+			fs.writeFileSync(errorContentDataBasePath, data)
+		}
 	}
 
 	/**
