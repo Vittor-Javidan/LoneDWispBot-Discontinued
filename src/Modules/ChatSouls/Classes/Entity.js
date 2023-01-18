@@ -564,15 +564,14 @@ export default class Entity {
     /**
      * Sets entity current equipment for a given type
      * @param {string} equipmentType 
-     * @param {CS_Equipment_WeaponData} equipmentObject 
+     * @param {CS_Equipment_WeaponData | CS_Equipment_ArmorData} equipmentObject 
      */
     equip(equipmentType, equipmentObject){
 
-        //TODO: Implement a way to store the item o inventory when there is something already equipped
-
-        const newCurrentEquipment = this.getCurrentEquipment_KV() 
-        newCurrentEquipment[equipmentType] = equipmentObject
-        this.setCurrentEquipment(deepCopy(newCurrentEquipment))
+        if(this.getCurrentEquipment_KV()[equipmentType].name) {
+            this.unequip(equipmentType)
+        }
+        this.getCurrentEquipment_KV()[equipmentType] = deepCopy(equipmentObject)
     }
 
     /**
@@ -582,15 +581,9 @@ export default class Entity {
      */
     unequip(equipmentType){
 
-        /**@type {CS_Equipment_WeaponData | CS_Equipment_ArmorData} */
-        const unequippedWeapon = deepCopy(this.getCurrentEquipment()[equipmentType])      
-          
-        this.getInventoryEquipments_KV()[equipmentType].push(unequippedWeapon)
-
-        const currentEquipment = this.getCurrentEquipment_KV()
-        currentEquipment[equipmentType] = {}
-        
-        this.setCurrentEquipment(currentEquipment)
+        const itemToUnequip = this.getCurrentEquipment_KV()[equipmentType]   
+        this.getInventoryEquipments_KV()[equipmentType].push(deepCopy(itemToUnequip))
+        this.getCurrentEquipment_KV()[equipmentType] = {}
         this.sortInventoryEquipments(equipmentType)
     }
 
@@ -605,14 +598,8 @@ export default class Entity {
         if(itemIndex >= this.getEquipmentInventoryAmount(equipmentType) || itemIndex < 0) {
             throw Error(`ERROR: Entity class, "equipFromInventory": itemIndex out of boundaries`)
         }
-        
-        const newinventoryEquipments = this.getInventoryEquipments_KV()
-        const currentEquipment = this.getCurrentEquipment_KV()
-        const itemToStore = currentEquipment[equipmentType]
-
-        itemToStore.name !== undefined
-            ? currentEquipment[equipmentType] = newinventoryEquipments[equipmentType].splice(itemIndex, 1, itemToStore)[0]
-            : currentEquipment[equipmentType] = newinventoryEquipments[equipmentType].splice(itemIndex, 1)[0]
+        const itemToEquip = this.getInventoryEquipments_KV()[equipmentType].splice(itemIndex, 1)[0]
+        this.equip(equipmentType, itemToEquip)
     }
 
     /**

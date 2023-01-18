@@ -570,16 +570,29 @@ function equipmentAndInventoryEquipment(){
     describe('equip', () => {
 
         it(`Should:
-            1. Equip given item
+            1. Equip given item,
+            2. If there is something equipped already, the item must be stored on inventory
         `, () => {
 
-            const dummyEntity = new Entity(true, 'Dummy Entity: equip()')
+            //Instantiation
+            const entity = new Entity(true, 'Dummy Entity: equip()')
+            const entity_2 = new Entity(true, 'Dummy Entity: equip()')
 
-            for (let i = 0; i < Utils.equipTypeskeys.length; i++){
-                dummyEntity.equip(Utils.equipTypeskeys[i], deepCopy(Dummy.equipmentObject))
-            }
+            //Setup
+            entity_2.setCurrentEquipment(Dummy.equipments_2)
             
-            expect(dummyEntity.getCurrentEquipment()).toStrictEqual(Dummy.equipments)
+            //Run
+            for (let i = 0; i < Utils.equipTypeskeys.length; i++){
+                entity.equip(Utils.equipTypeskeys[i], deepCopy(Dummy.equipmentObject))
+                entity_2.equip(Utils.equipTypeskeys[i], deepCopy(Dummy.equipmentObject))
+            }
+
+            //1
+            expect(entity.getCurrentEquipment()).toStrictEqual(Dummy.equipments)
+            
+            //2
+            expect(entity.getInventoryEquipments()).toStrictEqual(Dummy.emptyInventoryEquipments)
+            expect(entity_2.getInventoryEquipments()).toStrictEqual(Dummy.inventoryEquipments_2)
         })
     })
 
