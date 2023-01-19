@@ -8,10 +8,6 @@
     --hidebutton-border-hover: rgba(255, 0, 238, 0.5);
 }
 
-#webcam-widget {
-    border: 1px solid red;
-}
-
 #webcam-container {
     box-shadow: 0px 5px 15px var(--chat-shadow);
     border-radius: 50%;
