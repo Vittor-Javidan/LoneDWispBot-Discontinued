@@ -1,24 +1,27 @@
 :root {
     --chat-background: rgba(15, 15, 15, 0.3);
     --chat-shadow: rgb(2, 4, 24);
-    --chat-border: rgba(15, 15, 15, 0.5)
+    --chat-border: rgba(15, 15, 15, 0.5);
+    --chat-border-hover: rgba(255, 0, 238, 0.5)
 }
 
 #chatbox-widget {
-    top: 400px
+    top: 400px;
 }
 
 #chatbox-widget .reference-div {
-    height: 252px;
-    width: 422px;
+    height: 250px;
+    width: 420px;
     position: relative;
 
     background: var(--chat-background);
-    border: 1px solid var(--chat-border);
-    border-radius: 5px;
+    border: 2px solid var(--chat-border);
+    border-radius: 10px;
 
     backdrop-filter: blur(6px);
     box-shadow: -3px 3px 5px var(--chat-shadow);
+
+    transition: 0.2s linear;
 }
 
 #chatbox-widget iframe {
@@ -32,4 +35,10 @@
     height: 250px;
     width: 420px;
     position: absolute;
+}
+
+#chatbox-widget .reference-div:hover {
+    border: 2px solid var(--chat-border-hover);
+    border-radius: 10px;
+    transition: 0.2s linear;
 }
