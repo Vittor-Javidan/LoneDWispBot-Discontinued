@@ -1,5 +1,5 @@
-import { app, BrowserWindow } from 'electron'
-import env from '../env'
+import { app, BrowserWindow, screen } from 'electron';
+import env from '../env';
 
 //OVERLAY ==========================================================================
 /* 
@@ -21,11 +21,13 @@ export default function createWindow() {
 
     let myWindow
 
+    
     app.on('ready', () => {
-
+        
+        const { width, height } = screen.getPrimaryDisplay().workAreaSize;
         myWindow = new BrowserWindow({
-            width: 1920,
-            height: 1040,
+            width: width,
+            height: height,
             frame: false,
             transparent: true,
 
