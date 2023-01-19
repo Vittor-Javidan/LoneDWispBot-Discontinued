@@ -1,5 +1,5 @@
 import Player from "../../Classes/EntityChilds/Player";
-import PLAYER_STATES from "../../Classes/EntityChilds/PLAYER_STATES";
+import PLAYER_STATES from "../../Global/PLAYER_STATES";
 import UI_EquipmentInventoryTypeMenu from "../UI_EquipmentsMenu/UI_EquipmentInventoryTypeMenu";
 import UI_Equipments_Menu from "../UI_EquipmentsMenu/UI_EquipmentsMenu";
 import UI_EquipmentTypeMenu from "../UI_EquipmentsMenu/UI_EquipmentTypeMenu";

@@ -1,5 +1,5 @@
 import Player from "../../Classes/EntityChilds/Player";
-import PLAYER_STATES, { getEquipmentTypeByPlayerState, returnEquipmentMenuStateByType } from "../../Classes/EntityChilds/PLAYER_STATES";
+import PLAYER_STATES, { getEquipmentTypeByPlayerState, returnEquipmentMenuStateByType } from "../../Global/PLAYER_STATES";
 import { sendMessage_UI_EquipmentTypeMenu } from "../../UserInteface/sendMessage_Customized/sendMessage_UI_EquipmentTypeMenu";
 
 /**

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import deepCopy from '../../../../Utils/deepCopy'
 import DbSystem, { playerDataBasePath } from '../../database/DbSystem'
-import CS_ENUM from '../ENUM'
+import CS_ENUM from '../../Global/ENUM'
 import Player from './Player'
 
 /**

@@ -1,7 +1,7 @@
-import CS_ENUM from "../../Classes/ENUM"
 import consultAttributesDescription from "../../GameLogics/consultAttributesDescription"
 import to_StatisticsMenu from "../../GameLogics/SendPlayer/to_StatisticsMenu"
 import upgradeAttributeByType from "../../GameLogics/upgradeAttributeByType"
+import CS_ENUM from "../../Global/ENUM"
 import { sendMessage_UI_AttributeUpgradeMenu } from "../sendMessage_Customized/sendMessage_UI_AttributeUpgradeMenu"
 
 /**

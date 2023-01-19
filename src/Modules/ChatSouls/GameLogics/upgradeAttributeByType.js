@@ -1,6 +1,6 @@
 import sendMessage from "../../../Twitch/sendMessageHandler"
 import Player from "../Classes/EntityChilds/Player"
-import CS_ENUM from "../Classes/ENUM"
+import CS_ENUM from "../Global/ENUM"
 import { sendMessage_UI_AttributeUpgradeMenu } from "../UserInteface/sendMessage_Customized/sendMessage_UI_AttributeUpgradeMenu"
 import doHaveEnoughSoulsBalance from "./doHaveEnoughSoulsBalance"
 

@@ -1,6 +1,6 @@
 import { getAllEquipmentByType } from "../../database/equipmentData"
+import EQUIPMENT_TYPES from "../../Global/EQUIPMENT_TYPES"
 import Armor from "./Armor"
-import EQUIPMENT_TYPES from "./EQUIPMENT_TYPES"
 
 /** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_ArmorData} CS_Equipment_ArmorData */
 

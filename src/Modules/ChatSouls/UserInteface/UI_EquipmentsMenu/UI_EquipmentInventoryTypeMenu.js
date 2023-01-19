@@ -1,7 +1,7 @@
 import Player from "../../Classes/EntityChilds/Player"
-import { getEquipmentTypeByPlayerState } from "../../Classes/EntityChilds/PLAYER_STATES"
 import equipAndReturnToEquipmentTypeMenu from "../../GameLogics/equip"
 import to_EquipmentTypeMenu from "../../GameLogics/SendPlayer/to_EquipmentTypeMenu"
+import { getEquipmentTypeByPlayerState } from "../../Global/PLAYER_STATES"
 import returnMenuEquipmentMessageByType from "../sendMessage_Customized/returnMenuEquipmentMessageByType"
 import { sendMessage_UI_EquipmentTypeInventoryMenu } from "../sendMessage_Customized/sendMessage_UI_EquipmentTypeInventoryMenu"
 

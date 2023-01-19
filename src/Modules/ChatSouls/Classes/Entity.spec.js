@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 import deepCopy from "../../../Utils/deepCopy"
+import CS_ENUM from "../Global/ENUM"
+import EQUIPMENT_TYPES from "../Global/EQUIPMENT_TYPES"
 import Entity from "./Entity"
-import CS_ENUM from "./ENUM"
-import EQUIPMENT_TYPES from "./EquipmentChilds/EQUIPMENT_TYPES"
 
 /**
  * @typedef {import("../TypeDefinitions/Types").CS_Stats} CS_Stats

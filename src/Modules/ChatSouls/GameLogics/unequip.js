@@ -1,6 +1,6 @@
 import Player from "../Classes/EntityChilds/Player"
-import { getEquipmentTypeByPlayerState } from "../Classes/EntityChilds/PLAYER_STATES"
-import EQUIPMENT_TYPES from "../Classes/EquipmentChilds/EQUIPMENT_TYPES"
+import EQUIPMENT_TYPES from "../Global/EQUIPMENT_TYPES"
+import { getEquipmentTypeByPlayerState } from "../Global/PLAYER_STATES"
 import { sendMessage_UI_EquipmentTypeMenu } from "../UserInteface/sendMessage_Customized/sendMessage_UI_EquipmentTypeMenu"
 
 /**

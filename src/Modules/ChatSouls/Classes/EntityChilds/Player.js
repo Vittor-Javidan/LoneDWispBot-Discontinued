@@ -1,9 +1,9 @@
 import deepCopy from "../../../../Utils/deepCopy"
 import DbSystem, { playerDataBasePath } from "../../database/DbSystem"
+import CS_ENUM from "../../Global/ENUM"
+import EQUIPMENT_TYPES from "../../Global/EQUIPMENT_TYPES"
+import PLAYER_STATES from "../../Global/PLAYER_STATES"
 import Entity from "../Entity"
-import CS_ENUM from "../ENUM"
-import EQUIPMENT_TYPES from "../EquipmentChilds/EQUIPMENT_TYPES"
-import PLAYER_STATES from "./PLAYER_STATES"
 
 /**
  * @typedef {import ('../../TypeDefinitions/Types').CS_Database} CS_Database

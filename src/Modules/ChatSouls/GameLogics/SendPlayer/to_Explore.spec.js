@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import Player from "../../Classes/EntityChilds/Player"
-import PLAYER_STATES from "../../Classes/EntityChilds/PLAYER_STATES"
+import PLAYER_STATES from "../../Global/PLAYER_STATES"
 import to_Explore from "./to_Explore"
 
 describe(`to_Explore`, () => {

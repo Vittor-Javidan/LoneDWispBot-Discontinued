@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { enemieEntries, getEnemie } from "../../database/enemiesData"
-import CS_ENUM from "../ENUM"
+import CS_ENUM from "../../Global/ENUM"
 import Enemie from "./Enemie"
 import Player from "./Player"
 

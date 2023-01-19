@@ -1,5 +1,5 @@
 import Player from "../Classes/EntityChilds/Player";
-import PLAYER_STATES from "../Classes/EntityChilds/PLAYER_STATES";
+import PLAYER_STATES from "../Global/PLAYER_STATES";
 import UI_Exploring_Handler from "./secondaryState_Handlers/UI_Exploring_Handler";
 import UI_FirePit_Handler from "./secondaryState_Handlers/UI_FirePit_Handler";
 import { sendMessage_UI_FirePit } from "./sendMessage_Customized/sendMessage_UI_firePit";

@@ -1,10 +1,10 @@
 import BodyArmor from "../../Classes/EquipmentChilds/BodyArmor";
 import Boots from "../../Classes/EquipmentChilds/Boots";
-import EQUIPMENT_TYPES from "../../Classes/EquipmentChilds/EQUIPMENT_TYPES";
 import Gloves from "../../Classes/EquipmentChilds/Gloves";
 import Helmet from "../../Classes/EquipmentChilds/Helmet";
 import LongRangeWeapon from "../../Classes/EquipmentChilds/LongRangeWeapon";
 import MeleeWeapon from "../../Classes/EquipmentChilds/MeleeWeapon";
+import EQUIPMENT_TYPES from "../../Global/EQUIPMENT_TYPES";
 
 /**
  * @typedef {import("../../TypeDefinitions/Types").CS_Equipment_WeaponData} CS_Equipment_WeaponData

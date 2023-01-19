@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest"
 import deepCopy from "../../../Utils/deepCopy"
 import { enemieEntries, getEnemie } from "../database/enemiesData"
+import CS_ENUM from "../Global/ENUM"
 import Battle from "./Battle"
 import Enemie from "./EntityChilds/Enemie"
 import Player from "./EntityChilds/Player"
-import CS_ENUM from "./ENUM"
 
 /**
  * @typedef {import("../TypeDefinitions/Types").CS_EntityData} CS_EntityData

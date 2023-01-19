@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { equipmentEntries, getEquipment } from "../../database/equipmentData"
-import EQUIPMENT_TYPES from "./EQUIPMENT_TYPES"
+import EQUIPMENT_TYPES from "../../Global/EQUIPMENT_TYPES"
 import LongRangeWeapon from "./LongRangeWeapon"
 
 const armorEntries = equipmentEntries.WEAPONS.LONG_RANGE

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import EQUIPMENT_TYPES from "../Classes/EquipmentChilds/EQUIPMENT_TYPES"
+import EQUIPMENT_TYPES from "../Global/EQUIPMENT_TYPES"
 import { choseMessageByEquipmentType } from "./unequip"
 
 describe(`choseMessageByEquipmentType`, () => {

@@ -1,5 +1,5 @@
-import EQUIPMENT_TYPES from "../EquipmentChilds/EQUIPMENT_TYPES"
-import Player from "./Player"
+import Player from "../Classes/EntityChilds/Player"
+import EQUIPMENT_TYPES from "./EQUIPMENT_TYPES"
 
 const PLAYER_STATES = {
     FIRE_PIT: {

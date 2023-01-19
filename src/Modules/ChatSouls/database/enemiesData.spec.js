@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import CS_ENUM from "../Classes/ENUM"
+import CS_ENUM from "../Global/ENUM"
 import { enemieEntries, getEnemie } from "./enemiesData"
 
 const enemieName = enemieEntries.theWoods.JAVALI

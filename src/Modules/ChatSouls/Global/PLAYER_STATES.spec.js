@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import EQUIPMENT_TYPES from "../EquipmentChilds/EQUIPMENT_TYPES";
-import Player from "./Player";
+import Player from "../Classes/EntityChilds/Player";
+import EQUIPMENT_TYPES from "./EQUIPMENT_TYPES";
 import PLAYER_STATES, { getEquipmentTypeByPlayerState, returnEquipmentMenuInventoryStateByType, returnEquipmentMenuStateByType } from "./PLAYER_STATES";
 
 describe(`returnEquipmentMenuStateByType`, () => {

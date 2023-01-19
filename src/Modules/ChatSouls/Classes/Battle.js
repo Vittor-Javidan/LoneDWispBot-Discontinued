@@ -1,9 +1,9 @@
 import deepCopy from '../../../Utils/deepCopy';
 import enemiesDataBase from '../database/enemiesData';
+import CS_ENUM from '../Global/ENUM';
 import Entity from './Entity';
 import Enemie from './EntityChilds/Enemie';
 import Player from './EntityChilds/Player';
-import CS_ENUM from './ENUM';
 
 /**
  * @typedef {import('../TypeDefinitions/Types').CS_EntityData} CS_EntityData

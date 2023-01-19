@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import EQUIPMENT_TYPES from "../../Classes/EquipmentChilds/EQUIPMENT_TYPES";
 import { equipmentEntries, getEquipment } from "../../database/equipmentData";
+import EQUIPMENT_TYPES from "../../Global/EQUIPMENT_TYPES";
 import returnMenuEquipmentMessageByType from "./returnMenuEquipmentMessageByType";
 
 describe(`returnMenuMessageByType`, () => {
