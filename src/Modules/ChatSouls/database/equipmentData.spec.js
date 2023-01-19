@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import EQUIPMENT_TYPES from "../Global/EQUIPMENT_TYPES"
+import EQUIPMENT_TYPES from "../Globals/EQUIPMENT_TYPES"
 import { equipmentEntries, getAllEquipmentByType, getEquipment } from "./equipmentData"
 
 const equipmentKeys = Object.values(EQUIPMENT_TYPES)

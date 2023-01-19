@@ -1,8 +1,7 @@
 import deepCopy from "../../../../Utils/deepCopy"
 import DbSystem, { playerDataBasePath } from "../../database/DbSystem"
-import CS_ENUM from "../../Global/ENUM"
-import EQUIPMENT_TYPES from "../../Global/EQUIPMENT_TYPES"
-import PLAYER_STATES from "../../Global/PLAYER_STATES"
+import EQUIPMENT_TYPES from "../../Globals/EQUIPMENT_TYPES"
+import { PLAYER_DEFAULT } from "../../Globals/PLAYER_DEFAULT"
 import Entity from "../Entity"
 
 /**
@@ -29,19 +28,6 @@ export default class Player extends Entity {
     static #onlinePlayers = []
 
     /**
-     * @type {CS_playerState}
-     */
-    #currentState = {
-        primary: PLAYER_STATES.FIRE_PIT.PRIMARY,
-        secondary: PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT
-    }
-
-    /**
-     * @type {string} - type: `MAP_AREAS ENUM`
-     */
-    #currentLocation = CS_ENUM.MAP_AREAS.THE_WOODS
-
-    /**
      * used to define if player can play in some situations
      * @type {boolean}
      */
@@ -51,30 +37,24 @@ export default class Player extends Entity {
     isNewPlayer = false
 
     /**
+     * @type {CS_playerState}
+     */
+    #currentState = deepCopy(PLAYER_DEFAULT.STATES)
+
+    /**
+     * @type {string} - type: `MAP_AREAS ENUM`
+     */
+    #currentLocation = PLAYER_DEFAULT.CURRENT_LOCATION
+
+    /**
      * @param {string} name
      * @returns {Player}
      * @constructor
      */
     constructor(name){
         super(true, name)
-        
-        const playerAttributes = CS_ENUM.BALANCE_VALUES.PLAYER_START.ATTRIBUTES
-        this.setAttributes({
-            vitality:       playerAttributes.VITALITY,
-            agility:        playerAttributes.AGILITY,
-            strenght:       playerAttributes.STRENGHT,
-            intelligence:   playerAttributes.INTELLLIGENCE
-        })
-
-        const playerEquips = CS_ENUM.BALANCE_VALUES.PLAYER_START.EQUIPMENTS
-        this.setCurrentEquipment({
-            longRangeWeapon:    playerEquips.LONG_RANGE_WEAPON,
-            meleeWeapon:        playerEquips.MELEE_WEAPON,
-            helmet:             playerEquips.HELMET,
-            bodyArmor:          playerEquips.BODY_ARMOR,
-            gloves:             playerEquips.GLOVES,
-            boots:              playerEquips.BOOTS
-        })
+        this.setAttributes(deepCopy(PLAYER_DEFAULT.ATTRIBUTES))
+        this.setCurrentEquipment(deepCopy(PLAYER_DEFAULT.EQUIPMENTS))
     }
 
     //=================================================================================================

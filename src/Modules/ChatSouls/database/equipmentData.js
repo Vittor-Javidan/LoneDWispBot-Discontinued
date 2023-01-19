@@ -1,5 +1,5 @@
 import deepCopy from '../../../Utils/deepCopy'
-import EQUIPMENT_TYPES from '../Global/EQUIPMENT_TYPES'
+import EQUIPMENT_TYPES from '../Globals/EQUIPMENT_TYPES'
 
 /**
  * @typedef {import ('../TypeDefinitions/Types').CS_EquipmentDataBase} CS_EquipmentDataBase

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { enemieEntries, getEnemie } from "../../database/enemiesData"
-import CS_ENUM from "../../Global/ENUM"
+import { GAME_BALANCE } from "../../Globals/GAME_BALANCE"
+import { MAP_AREAS } from "../../Globals/MAP_AREAS"
 import Enemie from "./Enemie"
 import Player from "./Player"
 
@@ -8,8 +9,7 @@ import Player from "./Player"
  * @typedef {import("../../TypeDefinitions/Types").CS_EntityData} CS_EntityData
 */
 
-const mapAreas = CS_ENUM.MAP_AREAS
-const statsWeight = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
+const statsWeight = GAME_BALANCE.STATS_WEIGHT
 
 describe(`Enemie class`, () => {
 
@@ -21,7 +21,7 @@ describe(`Enemie class`, () => {
 
 function constructor() {
 
-    const enemieData = getEnemie("Javali", mapAreas.THE_WOODS)
+    const enemieData = getEnemie("Javali", MAP_AREAS.THE_WOODS)
         
     it(`Should:
         1. instantiate with default values
@@ -39,7 +39,7 @@ function constructor() {
 
 function initialize() {
 
-    const enemieData = getEnemie("Javali", mapAreas.THE_WOODS)
+    const enemieData = getEnemie("Javali", MAP_AREAS.THE_WOODS)
 
     it(`Should: 
         1. initialize the enemie
@@ -76,7 +76,7 @@ function getPossibleEnemies() {
     `, () => {
         
         const dummyPlayer = new Player("Dummy Player: getPossibleEnemies()")
-        dummyPlayer.currentLocation = mapAreas.THE_WOODS
+        dummyPlayer.currentLocation = MAP_AREAS.THE_WOODS
         dummyPlayer.setlevel(5)
         
         const enemiesDataArray_L5 = Enemie.getPossibleEnemies(dummyPlayer)
@@ -102,7 +102,7 @@ function instantiateRandomEnemie() {
         const dummyPlayer = new Player("Dummy Player: instantiateRandomEnemie()")
         
         //1
-        dummyPlayer.currentLocation = mapAreas.THE_WOODS
+        dummyPlayer.currentLocation = MAP_AREAS.THE_WOODS
         dummyPlayer.setlevel(10)
         const randomEnemieInstance = Enemie.instantiateRandomEnemie(dummyPlayer)
         expect(randomEnemieInstance).toBeInstanceOf(Enemie)
@@ -112,7 +112,7 @@ function instantiateRandomEnemie() {
         expect(theWoodsEnemiesNamesArray.includes(randomEnemieInstance.getName())).toBe(true)
 
         //3
-        const enemieData = getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, CS_ENUM.MAP_AREAS.TEST_AREA)
+        const enemieData = getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA)
         const expectedTotalStats = {
             hp:             (statsWeight.HP          * enemieData.attributes.vitality    ) + statsWeight.HP          * 100 * 6,
             evasion:        (statsWeight.EVASION     * enemieData.attributes.agility     ) + statsWeight.EVASION     * 100 * 6,
@@ -122,7 +122,7 @@ function instantiateRandomEnemie() {
             magicalDefense: (statsWeight.MAGICAL_DEF * enemieData.attributes.intelligence) + statsWeight.MAGICAL_DEF * 100 * 4
         }
 
-        dummyPlayer.currentLocation = mapAreas.TEST_AREA
+        dummyPlayer.currentLocation = MAP_AREAS.TEST_AREA
         dummyPlayer.setlevel(1)
         const randomEnemieInstance_2 = Enemie.instantiateRandomEnemie(dummyPlayer)
         expect(randomEnemieInstance_2.getTotalStats()).toStrictEqual(expectedTotalStats)

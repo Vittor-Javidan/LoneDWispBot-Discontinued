@@ -1,4 +1,4 @@
-import EQUIPMENT_TYPES from "../../Global/EQUIPMENT_TYPES";
+import EQUIPMENT_TYPES from "../../Globals/EQUIPMENT_TYPES";
 
 /**
  * @param {string} equipmentType 

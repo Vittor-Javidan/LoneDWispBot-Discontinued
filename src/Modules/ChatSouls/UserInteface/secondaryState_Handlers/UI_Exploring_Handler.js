@@ -1,5 +1,5 @@
 import Player from "../../Classes/EntityChilds/Player";
-import PLAYER_STATES from "../../Global/PLAYER_STATES";
+import PLAYER_STATES from "../../Globals/PLAYER_STATES";
 import UI_Battle from "../UI_Battle/UI_Battle";
 
 import UI_Idle from "../UI_Idle/UI_Idle";

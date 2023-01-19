@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { equipmentEntries, getEquipment } from "../../database/equipmentData"
-import EQUIPMENT_TYPES from "../../Global/EQUIPMENT_TYPES"
+import EQUIPMENT_TYPES from "../../Globals/EQUIPMENT_TYPES"
 import Gloves from "./Gloves"
 
 const dummyGloves = equipmentEntries.ARMORS.GLOVES.DUMMY_EQUIPMENT

@@ -4,7 +4,7 @@ import Gloves from "../../Classes/EquipmentChilds/Gloves";
 import Helmet from "../../Classes/EquipmentChilds/Helmet";
 import LongRangeWeapon from "../../Classes/EquipmentChilds/LongRangeWeapon";
 import MeleeWeapon from "../../Classes/EquipmentChilds/MeleeWeapon";
-import EQUIPMENT_TYPES from "../../Global/EQUIPMENT_TYPES";
+import EQUIPMENT_TYPES from "../../Globals/EQUIPMENT_TYPES";
 
 /**
  * @typedef {import("../../TypeDefinitions/Types").CS_Equipment_WeaponData} CS_Equipment_WeaponData

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 import deepCopy from "../../../Utils/deepCopy"
-import CS_ENUM from "../Global/ENUM"
-import EQUIPMENT_TYPES from "../Global/EQUIPMENT_TYPES"
+import EQUIPMENT_TYPES from "../Globals/EQUIPMENT_TYPES"
+import { GAME_BALANCE } from "../Globals/GAME_BALANCE"
+import { TYPE_DEFINITIONS_KEYS } from "../Globals/TYPE_DEFINITIONS_KEYS"
 import Entity from "./Entity"
 
 /**
@@ -907,11 +908,10 @@ function statsCalculation() {
 
 class Utils {
 
-    static keys =  CS_ENUM.KEYS
-    static attributeTypes = this.keys.CS_ATTRIBUTES
+    static attributeTypes = TYPE_DEFINITIONS_KEYS.CS_ATTRIBUTES
     static attributeTypesKeys = Object.values(this.attributeTypes)
     static equipTypeskeys = Object.values(EQUIPMENT_TYPES)
-    static statsWeight = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
+    static statsWeight = GAME_BALANCE.STATS_WEIGHT
 }
 
 class Default {

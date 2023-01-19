@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import deepCopy from '../../../../Utils/deepCopy'
 import DbSystem, { playerDataBasePath } from '../../database/DbSystem'
-import CS_ENUM from '../../Global/ENUM'
+import { TYPE_DEFINITIONS_KEYS } from '../../Globals/TYPE_DEFINITIONS_KEYS'
 import Player from './Player'
 
 /**
@@ -17,7 +17,7 @@ import Player from './Player'
  * @typedef {import('../../TypeDefinitions/Types').CS_EntityData} CS_EntityData
 */
 
-const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
+const attributeTypes = TYPE_DEFINITIONS_KEYS.CS_ATTRIBUTES
 
 describe('Player class', () => {
 	

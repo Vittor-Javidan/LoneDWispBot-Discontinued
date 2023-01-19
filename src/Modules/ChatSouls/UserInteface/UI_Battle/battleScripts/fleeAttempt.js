@@ -1,6 +1,6 @@
 import Battle from "../../../Classes/Battle"
 import Player from "../../../Classes/EntityChilds/Player"
-import PLAYER_STATES from "../../../Global/PLAYER_STATES"
+import PLAYER_STATES from "../../../Globals/PLAYER_STATES"
 import { sendMessage_UI_Idle } from "../../sendMessage_Customized/sendMessage_UI_Idle"
 
 /**

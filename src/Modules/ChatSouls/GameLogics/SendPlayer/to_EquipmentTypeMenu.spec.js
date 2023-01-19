@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import Player from "../../Classes/EntityChilds/Player";
-import PLAYER_STATES from "../../Global/PLAYER_STATES";
+import PLAYER_STATES from "../../Globals/PLAYER_STATES";
 import {
     to_BodyArmorMenu, to_BootsMenu, to_GlovesMenu, to_HelmetMenu, to_LongRangeMenu, to_MeleeMenu
 } from "./to_EquipmentTypeMenu";

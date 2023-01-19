@@ -1,6 +1,8 @@
 import deepCopy from '../../../Utils/deepCopy'
-import CS_ENUM from '../Global/ENUM'
-import EQUIPMENT_TYPES from '../Global/EQUIPMENT_TYPES'
+import { ENTITY_DEFAULT } from '../Globals/ENTITY_DEFAULT'
+import EQUIPMENT_TYPES from '../Globals/EQUIPMENT_TYPES'
+import { GAME_BALANCE } from '../Globals/GAME_BALANCE'
+import { TYPE_DEFINITIONS_KEYS } from '../Globals/TYPE_DEFINITIONS_KEYS'
 import Equipment from './Equipment'
 import Armor from './EquipmentChilds/Armor'
 import BodyArmor from './EquipmentChilds/BodyArmor'
@@ -12,24 +14,24 @@ import MeleeWeapon from './EquipmentChilds/MeleeWeapon'
 import Weapon from './EquipmentChilds/Weapon'
 
 /**
- * @typedef {import ('../TypeDefinitions/Types').CS_Attributes} CS_Attributes
+ * @typedef {import('../TypeDefinitions/Types').CS_Attributes} CS_Attributes
  * @typedef {import('../TypeDefinitions/Types').CS_Attributes_KV} CS_Attributes_KV
- * @typedef {import ('../TypeDefinitions/Types').CS_Entity_Equipment} CS_Entity_Equipment
+ * @typedef {import('../TypeDefinitions/Types').CS_Entity_Equipment} CS_Entity_Equipment
  * @typedef {import('../TypeDefinitions/Types').CS_Entity_Equipment_KV} CS_Entity_Equipment_KV
- * @typedef {import ('../TypeDefinitions/Types').CS_Entity_Inventory} CS_Entity_Inventory
+ * @typedef {import('../TypeDefinitions/Types').CS_Entity_Inventory} CS_Entity_Inventory
  * @typedef {import('../TypeDefinitions/Types').CS_Entity_Inventory_KV} CS_Entity_Inventory_KV
- * @typedef {import ('../TypeDefinitions/Types').CS_Inventory_Equipments} CS_Inventory_Equipments
+ * @typedef {import('../TypeDefinitions/Types').CS_Inventory_Equipments} CS_Inventory_Equipments
  * @typedef {import('../TypeDefinitions/Types').CS_Inventory_Equipments_KV} CS_Inventory_Equipments_KV
  * @typedef {import('../TypeDefinitions/Types').CS_Inventory_Resources} CS_Inventory_Resources
  * @typedef {import('../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData
  * @typedef {import('../TypeDefinitions/Types').CS_Equipment_ArmorData} CS_Equipment_ArmorData
- * @typedef {import ('../TypeDefinitions/Types').CS_Stats} CS_Stats
+ * @typedef {import('../TypeDefinitions/Types').CS_Stats} CS_Stats
  * @typedef {import('../TypeDefinitions/Types').CS_Stats_KV} CS_Stats_KV
- * @typedef {import ('../TypeDefinitions/Types').CS_ResourceData} CS_ResourceData
+ * @typedef {import('../TypeDefinitions/Types').CS_ResourceData} CS_ResourceData
 */
 
-const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
-const statsTypes = CS_ENUM.KEYS.CS_STATS
+const attributeTypes = TYPE_DEFINITIONS_KEYS.CS_ATTRIBUTES
+const statsTypes = TYPE_DEFINITIONS_KEYS.CS_STATS
 const attributeKeys = Object.values(attributeTypes)
 const equipmentTypeKeys = Object.values(EQUIPMENT_TYPES)
 const statsKeys = Object.values(statsTypes)
@@ -44,77 +46,34 @@ export default class Entity {
     #name = ''
 
     /** @type {boolean}*/
-    #isAlive = true
+    #isAlive = ENTITY_DEFAULT.IS_ALIVE
 
     /** @type {number}*/
-    #souls = 0
+    #souls = ENTITY_DEFAULT.SOULS
 
     /** @type {number}*/
-    #level = 1
+    #level = ENTITY_DEFAULT.LEVEL
 
     /** @type {number}*/
-    #currentHP = 1
+    #currentHP = ENTITY_DEFAULT.CURRENT_HP
 
     /** @type {CS_Attributes} - Keys: `ATTRIBUTE_TYPE ENUM`*/
-    #attributes = {
-        vitality: 0,
-        agility: 0,
-        strenght: 0,
-        intelligence: 0
-    }
+    #attributes = deepCopy(ENTITY_DEFAULT.ATTRIBUTES)
 
     /** @type {CS_Entity_Equipment}*/
-    #currentEquipment = {
-        longRangeWeapon: {},
-        meleeWeapon: {},
-        helmet: {},
-        bodyArmor: {},
-        gloves: {},
-        boots: {},
-    }
+    #currentEquipment = deepCopy(ENTITY_DEFAULT.EQUIPMENT)
 
     /** @type {CS_Entity_Inventory}*/
-    #inventory = {
-        equipments: {
-            longRangeWeapon: [],
-            meleeWeapon: [],
-            helmet: [],
-            bodyArmor: [],
-            gloves: [],
-            boots: [],
-        },
-        resources: {},
-    }
+    #inventory = deepCopy(ENTITY_DEFAULT.INVENTORY)
 
     /** @type {CS_Stats}*/
-    #totalStats = {
-        hp: 0,
-        evasion: 0,
-        fisicalDamage: 0,
-        fisicalDefense: 0,
-        magicalDamage: 0,
-        magicalDefense: 0
-    }
+    #totalStats = deepCopy(ENTITY_DEFAULT.TOTAL_STATS)
 
     /** @type {CS_Stats}*/
-    #baseStats = {
-        hp: 0,
-        evasion: 0,
-        fisicalDamage: 0,
-        fisicalDefense: 0,
-        magicalDamage: 0,
-        magicalDefense: 0
-    }
+    #baseStats = deepCopy(ENTITY_DEFAULT.BASE_STATS)
 
     /** @type {CS_Stats}*/
-    #statsFromEquips = {
-        hp: 0,
-        evasion: 0,
-        fisicalDamage: 0,
-        fisicalDefense: 0,
-        magicalDamage: 0,
-        magicalDefense: 0
-    }
+    #statsFromEquips = deepCopy(ENTITY_DEFAULT.STATS_FROM_EQUIPS)
 
     //=================================================================================================
     // CONSTRUCTOR ====================================================================================
@@ -703,7 +662,7 @@ export default class Entity {
 
     calculateBaseStats(){
 
-        const balanceStatsValues = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
+        const balanceStatsValues = GAME_BALANCE.STATS_WEIGHT
         const attributes = this.getAttributes()
 
         this.setBaseStats({
@@ -748,7 +707,7 @@ export default class Entity {
         /**@type {Equipment} */
         const equipmentInstance = new EquipmentClass(currentEquipment[equipmentType])
         const equipMultipliers = equipmentInstance.multipliers
-        const statsWeightValues    = CS_ENUM.BALANCE_VALUES.STATS_WEIGHT
+        const statsWeightValues    = GAME_BALANCE.STATS_WEIGHT
         const attributes = this.getAttributes()
 
         const stats = this.getEquipmentStats()

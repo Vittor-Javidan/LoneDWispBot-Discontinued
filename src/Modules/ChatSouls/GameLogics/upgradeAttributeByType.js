@@ -1,10 +1,10 @@
 import sendMessage from "../../../Twitch/sendMessageHandler"
 import Player from "../Classes/EntityChilds/Player"
-import CS_ENUM from "../Global/ENUM"
+import { TYPE_DEFINITIONS_KEYS } from "../Globals/TYPE_DEFINITIONS_KEYS"
 import { sendMessage_UI_AttributeUpgradeMenu } from "../UserInteface/sendMessage_Customized/sendMessage_UI_AttributeUpgradeMenu"
 import doHaveEnoughSoulsBalance from "./doHaveEnoughSoulsBalance"
 
-const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
+const attributeTypes = TYPE_DEFINITIONS_KEYS.CS_ATTRIBUTES
 const attributeTypesArray = Object.values(attributeTypes)
 
 /**

@@ -1,7 +1,7 @@
 import consultAttributesDescription from "../../GameLogics/consultAttributesDescription"
 import to_StatisticsMenu from "../../GameLogics/SendPlayer/to_StatisticsMenu"
 import upgradeAttributeByType from "../../GameLogics/upgradeAttributeByType"
-import CS_ENUM from "../../Global/ENUM"
+import { TYPE_DEFINITIONS_KEYS } from "../../Globals/TYPE_DEFINITIONS_KEYS"
 import { sendMessage_UI_AttributeUpgradeMenu } from "../sendMessage_Customized/sendMessage_UI_AttributeUpgradeMenu"
 
 /**
@@ -21,7 +21,7 @@ export default function UI_AttributeUpgradeMenu(data) {
 		return
 	}
     
-    const attributeTypes = CS_ENUM.KEYS.CS_ATTRIBUTES
+    const attributeTypes = TYPE_DEFINITIONS_KEYS.CS_ATTRIBUTES
 
 	const commandCode = Number(commandWord)
 	switch(commandCode){

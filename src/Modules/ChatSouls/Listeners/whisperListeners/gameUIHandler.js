@@ -1,5 +1,5 @@
 import Player from "../../Classes/EntityChilds/Player"
-import PLAYER_STATES from "../../Global/PLAYER_STATES"
+import PLAYER_STATES from "../../Globals/PLAYER_STATES"
 import exploring from "../UI_Components/exploringHandler"
 import firePit_UI_Handler from "../UI_Components/firePit_UI_Handler"
 

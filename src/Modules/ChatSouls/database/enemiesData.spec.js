@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest"
-import CS_ENUM from "../Global/ENUM"
+import { MAP_AREAS } from "../Globals/MAP_AREAS"
 import { enemieEntries, getEnemie } from "./enemiesData"
 
 const enemieName = enemieEntries.theWoods.JAVALI
-const mapAreas = CS_ENUM.MAP_AREAS
 
 describe(`getEnemie`, () => {
 
@@ -11,7 +10,7 @@ describe(`getEnemie`, () => {
         1. Return a deepcopy enemie data with all properties defined
     `, () => {
 
-        const enemieData = getEnemie(enemieName, mapAreas.THE_WOODS)
+        const enemieData = getEnemie(enemieName, MAP_AREAS.THE_WOODS)
         expect(enemieData.level).toBeDefined()
         expect(enemieData.name).toBeDefined()
         expect(enemieData.souls).toBeDefined()
@@ -31,7 +30,7 @@ describe(`getEnemie`, () => {
         )
 
         //2
-        expect(() => getEnemie("Wrong Enemie", mapAreas.TEST_AREA)).toThrow(
+        expect(() => getEnemie("Wrong Enemie", MAP_AREAS.TEST_AREA)).toThrow(
             Error(`ERROR: getEnemie function: Enemie doesn't exist`)
         )
     })

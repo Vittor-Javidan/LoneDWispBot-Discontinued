@@ -1,6 +1,6 @@
 import sendMessage from "../../../../../Twitch/sendMessageHandler";
 import Battle from "../../../Classes/Battle";
-import PLAYER_STATES from "../../../Global/PLAYER_STATES";
+import PLAYER_STATES from "../../../Globals/PLAYER_STATES";
 import { sendMessage_UI_FirePit } from "../../sendMessage_Customized/sendMessage_UI_firePit";
 
 /**

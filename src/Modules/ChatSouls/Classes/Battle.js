@@ -1,6 +1,6 @@
 import deepCopy from '../../../Utils/deepCopy';
 import enemiesDataBase from '../database/enemiesData';
-import CS_ENUM from '../Global/ENUM';
+import { TYPE_DEFINITIONS_KEYS } from '../Globals/TYPE_DEFINITIONS_KEYS';
 import Entity from './Entity';
 import Enemie from './EntityChilds/Enemie';
 import Player from './EntityChilds/Player';
@@ -325,7 +325,7 @@ export default class Battle {
         
         const playerName = this.playerInstance.getName()
         const playerHP = this.playerInstance.getCurrentHP()
-        const playerMaxHP = this.playerInstance.getTotalStats()[CS_ENUM.KEYS.CS_STATS.HP]
+        const playerMaxHP = this.playerInstance.getTotalStats()[TYPE_DEFINITIONS_KEYS.CS_STATS.HP]
         const playerHPString = `${playerName}: ${playerHP}/${playerMaxHP} HP`
 
         return `${playerHPString}`
@@ -339,7 +339,7 @@ export default class Battle {
         
         const enemieName = this.enemieInstance.getName()
         const enemieHP = this.enemieInstance.getCurrentHP()
-        const enemieMaxHP = this.enemieInstance.getTotalStats()[CS_ENUM.KEYS.CS_STATS.HP]
+        const enemieMaxHP = this.enemieInstance.getTotalStats()[TYPE_DEFINITIONS_KEYS.CS_STATS.HP]
         const enemieHPString = `${enemieName}: ${enemieHP}/${enemieMaxHP} HP`
 
         return `${enemieHPString}`
