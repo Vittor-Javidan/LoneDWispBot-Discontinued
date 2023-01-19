@@ -1,9 +1,20 @@
+/**
+ * @typedef {import('../../../TypeDefinitions/Types').CS_Database} CS_Database
+ * @typedef {import('../../../TypeDefinitions/Types').CS_EntityData} CS_EntityData
+*/
+
+/**
+ * @returns {CS_Database}
+ */
 export default function get_TEST_AREA_ENEMIES_DATA() {
     return {
         "Dummy Enemie": get_DUMMY_ENEMIE()
     }
 }
 
+/**
+ * @returns {CS_EntityData}
+*/
 export function get_DUMMY_ENEMIE() {
     return {
         level: 1,

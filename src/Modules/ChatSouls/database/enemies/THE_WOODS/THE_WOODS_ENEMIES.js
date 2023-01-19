@@ -1,3 +1,11 @@
+/**
+ * @typedef {import("../../../TypeDefinitions/Types").CS_Database} CS_Database
+ * @typedef {import("../../../TypeDefinitions/Types").CS_EntityData} CS_EntityData
+*/
+
+/**
+ * @returns {CS_Database}
+ */
 export default function get_THE_WOODS_ENEMIES_DATA() {
     return {
         "Javali": get_JAVALI(),
@@ -7,6 +15,9 @@ export default function get_THE_WOODS_ENEMIES_DATA() {
     }
 }
 
+/**
+ * @returns {CS_EntityData}
+*/
 export function get_JAVALI() {
     return {
         level: 1,
@@ -62,6 +73,9 @@ export function get_JAVALI() {
     }
 }
 
+/**
+ * @returns {CS_EntityData}
+*/
 export function get_BANDIDO() {
     return {
         level: 5,
@@ -110,6 +124,9 @@ export function get_BANDIDO() {
     }
 } 
 
+/**
+ * @returns {CS_EntityData}
+*/
 export function get_LOBO() {
     return {
         level: 10,
@@ -165,6 +182,9 @@ export function get_LOBO() {
     }
 }
 
+/**
+ * @returns {CS_EntityData}
+*/
 export function get_ESQUELETO() {
     return {
         level: 20,

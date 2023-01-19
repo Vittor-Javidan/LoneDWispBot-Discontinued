@@ -1,7 +1,8 @@
-//ENITITY DATABASE DEFINITION
+//ENTITY DATABASE DEFINITION
 /**
- * keys: `entity name string`. Can be a viewer name, in the case of 
+ * - keys: `entity name string`. Can be a viewer name, in the case of 
  * player database, or an enemy name, in the case of enemies database
+ * - values: `entity data`
  * 
  * WARNING: If you refactor properties of this type, keep in mind 
  * you have to change the already saved database structure for each entity. 
@@ -10,6 +11,12 @@
  * data structure as the one being used in the source code.
  * 
  * @typedef {Object<string, CS_EntityData>} CS_Database
+*/
+
+/**AREA MAPS DATABASE DEFINITION
+ * - Keys: `Area Map name string`.
+ * - Values: `Area database`
+ * @typedef {Object<string, CS_Database>} CS_AreaMaps_Database
 */
 
 //EQUIPMENT DATABASE DEFINITION
