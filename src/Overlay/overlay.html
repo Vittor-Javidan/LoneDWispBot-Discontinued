@@ -36,14 +36,26 @@
 		</div>
 
 		<div class="widget" id="webcam-widget">
-			<div id="webcam-container">
-				<video autoplay="true" id="webcam"></video>
+			<div class="inverted r300" id="webcam-container">
+				<video class="r300" autoplay="true" id="webcam"></video>
 			</div>
-			<button class="webcam-button" id="invert-button">Invert</button>
-			<button class="webcam-button" id="hide-button">Hide</button>
+			<div id="webcam-button-container">
+				<div>
+					<button class="webcam-button" id="invert-button">Invert</button>
+					<button class="webcam-button" id="hide-button">Hide</button>
+				</div>
+				<div>
+					<button class="webcam-button ajust-button" id="increase-button">+</button>
+					<button class="webcam-button ajust-button" id="decrease-button">-</button>
+				</div>
+			</div>
 		</div>
 
-		<script src="scripts/webcamAccess.js"></script>
+		<!-- Webcam -->
+		<script src="scripts/webcam/webcamAccess.js"></script>
+		<script src="scripts/webcam/webcamButtons.js"></script>
+
+		<!-- Draggable -->
 		<script src="scripts/draggable.js"></script>
 	</body>
 </html>
