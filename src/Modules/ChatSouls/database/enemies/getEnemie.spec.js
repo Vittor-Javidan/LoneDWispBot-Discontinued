@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest"
-import { MAP_AREAS } from "../Globals/MAP_AREAS"
-import { enemieEntries, getEnemie } from "./enemiesData"
+import { MAP_AREAS } from "../../Globals/MAP_AREAS"
+import { ENEMIES_CATALOG } from "./ENEMIES_CATALOG"
+import getEnemie from "./getEnemie"
 
-const enemieName = enemieEntries.theWoods.JAVALI
+const enemieName = ENEMIES_CATALOG.theWoods.JAVALI
 
 describe(`getEnemie`, () => {
 

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
-import { enemieEntries, getEnemie } from "../../database/enemiesData"
+import { ENEMIES_CATALOG } from "../../database/enemies/ENEMIES_CATALOG"
+import { get_DUMMY_ENEMIE } from "../../database/enemies/TEST_AREA/TEST_AREA_ENEMIES"
 import { GAME_BALANCE } from "../../Globals/GAME_BALANCE"
 import { MAP_AREAS } from "../../Globals/MAP_AREAS"
 import Enemie from "./Enemie"
@@ -21,12 +22,11 @@ describe(`Enemie class`, () => {
 
 function constructor() {
 
-    const enemieData = getEnemie("Javali", MAP_AREAS.THE_WOODS)
-        
     it(`Should:
-        1. instantiate with default values
+    1. instantiate with default values
     `, () => {
         
+        const enemieData = get_DUMMY_ENEMIE()
         const enemieInstance = new Enemie(enemieData)
 
         expect(enemieInstance.getlevel()).toEqual(enemieData.level)
@@ -39,15 +39,14 @@ function constructor() {
 
 function initialize() {
 
-    const enemieData = getEnemie("Javali", MAP_AREAS.THE_WOODS)
-
+    
     it(`Should: 
-        1. initialize the enemie
+    1. initialize the enemie
     `, () => {
-
+        
         /*
             No complex thinking here. Init is just a handle.
-
+        
             static init(enemieData){
                 const enemie = new Enemie(enemieData)   // constructor was just tested above
                 enemie.calculateStats()                 // tested on Entity.spec.js
@@ -55,7 +54,7 @@ function initialize() {
                 return enemie
             }
         */
-
+        const enemieData = get_DUMMY_ENEMIE()
         const enemieInstance = Enemie.initialize(enemieData)
         expect(enemieInstance instanceof Enemie).toEqual(true)
     })
@@ -63,28 +62,31 @@ function initialize() {
 
 function getPossibleEnemies() {
 
-    const theWoodsEnemiesEntries = enemieEntries.theWoods
-    const unexpectedEnemie_L10 = theWoodsEnemiesEntries.LOBO
-
+    const theWoodsEnemiesNames = ENEMIES_CATALOG.theWoods
+    const unexpectedEnemie_L10 = theWoodsEnemiesNames.LOBO
     const expectedEnemies_L5 = [
-        theWoodsEnemiesEntries.JAVALI,
-        theWoodsEnemiesEntries.BANDIDO
+        theWoodsEnemiesNames.JAVALI,
+        theWoodsEnemiesNames.BANDIDO
     ]
     
     it(`Should:
         1. get enemies by given level
     `, () => {
         
+        //Instantiation
         const dummyPlayer = new Player("Dummy Player: getPossibleEnemies()")
+
+        //Setup
         dummyPlayer.currentLocation = MAP_AREAS.THE_WOODS
         dummyPlayer.setlevel(5)
-        
-        const enemiesDataArray_L5 = Enemie.getPossibleEnemies(dummyPlayer)
-        const enemiesNamesArray = []
-        for(let i = 0; i < enemiesDataArray_L5.length; i++){
-            enemiesNamesArray.push(enemiesDataArray_L5[i].name)
-        }
 
+        //Run
+        const enemiesDataArray_L5 = Enemie.getPossibleEnemies(dummyPlayer)
+
+        //Filtering enemies names
+        const enemiesNamesArray = enemiesDataArray_L5.map((entityData) => entityData.name)
+
+        //Test
         expect(enemiesNamesArray.includes(expectedEnemies_L5[0])).toBe(true)
         expect(enemiesNamesArray.includes(expectedEnemies_L5[1])).toBe(true)
         expect(enemiesNamesArray.includes(unexpectedEnemie_L10)).toBe(false)
@@ -108,11 +110,11 @@ function instantiateRandomEnemie() {
         expect(randomEnemieInstance).toBeInstanceOf(Enemie)
 
         //2
-        const theWoodsEnemiesNamesArray = Object.values(enemieEntries.theWoods )
+        const theWoodsEnemiesNamesArray = Object.values(ENEMIES_CATALOG.theWoods )
         expect(theWoodsEnemiesNamesArray.includes(randomEnemieInstance.getName())).toBe(true)
 
         //3
-        const enemieData = getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA)
+        const enemieData = get_DUMMY_ENEMIE()
         const expectedTotalStats = {
             hp:             (statsWeight.HP          * enemieData.attributes.vitality    ) + statsWeight.HP          * 100 * 6,
             evasion:        (statsWeight.EVASION     * enemieData.attributes.agility     ) + statsWeight.EVASION     * 100 * 6,

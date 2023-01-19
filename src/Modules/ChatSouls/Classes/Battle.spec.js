@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import deepCopy from "../../../Utils/deepCopy"
-import { enemieEntries, getEnemie } from "../database/enemiesData"
+import { get_DUMMY_ENEMIE } from "../database/enemies/TEST_AREA/TEST_AREA_ENEMIES"
 import { MAP_AREAS } from "../Globals/MAP_AREAS"
 import Battle from "./Battle"
 import Enemie from "./EntityChilds/Enemie"
@@ -28,7 +28,7 @@ function constructor() {
     `, () => {
         
         const dummyPlayer = new Player("Dummy Player: constructor()")
-        const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+        const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
         const battleInstance = new Battle(dummyPlayer, dummyEnemie)
         expect(battleInstance.playerInstance).toBeInstanceOf(Player)
         expect(battleInstance.enemieInstance).toBeInstanceOf(Enemie)
@@ -97,7 +97,7 @@ function classMethods() {
             
             const dummyEnemieAttributes = deepCopy(givenAttributes)
             const dummyPlayerAttributes = deepCopy(givenAttributes)
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const dummyPlayer = new Player("Dummy Player: determineFirstTurn()")
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
 
@@ -130,7 +130,7 @@ function classMethods() {
             
             //1
             const player = new Player("Dummy Player: startBattle()")
-            const enemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const enemie = new Enemie(get_DUMMY_ENEMIE())
             player.currentLocation = MAP_AREAS.THE_WOODS
             player.setlevel(1)
             Battle.startBattle(player, enemie)
@@ -150,7 +150,7 @@ function classMethods() {
             
             //1
             const dummyPlayer = new Player("Dummy Player: getBattle()")
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             Battle.battlesList = []
             Battle.battlesList.push(battleInstance)
@@ -180,7 +180,7 @@ function classMethods() {
         `, () => {
             
             const dummyPlayer = new Player("Dummy Player: deleteBattle()")
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             Battle.battlesList.push(battleInstance)
             Battle.deleteBattle(dummyPlayer.getName())
@@ -206,7 +206,7 @@ function classMethods() {
         `, () => {
             
             const dummyPlayer = new Player("Dummy Player: doesBattleExist()")
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             
             //1
@@ -226,7 +226,7 @@ function classMethods() {
         `, () => {
                 
             const dummyPlayer = new Player("Dummy Player: returnStringWithAllBattles()")
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             let message = ''
 
@@ -254,7 +254,7 @@ function instanceMethods() {
         `, () => {
             
             const dummyPlayer = new Player("Dummy Player: isBothAlive()")
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
 
             //1
@@ -292,7 +292,7 @@ function instanceMethods() {
         `, () => {
             
             const dummyPlayer = new Player("Dummy Guy")
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             const buffedStats = deepCopy(givenStats)
             const nerfedStats = deepCopy(givenStats)
@@ -338,7 +338,7 @@ function instanceMethods() {
         `,() => {
             
             const dummyPlayer = new Player("Dummy Player: calculateRawDamage()")
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             
             //1
@@ -377,7 +377,7 @@ function instanceMethods() {
         `, () => {
             
             const dummyPlayer = new Player("Dummy Player: giveLootHandler()")
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
 
             //1
@@ -412,7 +412,7 @@ function instanceMethods() {
         `, () => {
             
             //Instantiation
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const dummyPlayer = new Player("Dummy Player: calculateRewards()")
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
 
@@ -454,7 +454,7 @@ function instanceMethods() {
             1. Return a string
         `, () => {
 
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const dummyPlayer = new Player("Dummy Player: calculateRewards()")
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             battleInstance.earnerResources = earnedResources
@@ -492,7 +492,7 @@ function instanceMethods() {
         `, () => {
             
             const dummyPlayer = new Player("Dummy Player: evasionEvent()")
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
 
             //1
@@ -521,7 +521,7 @@ function instanceMethods() {
             1. return a formated string containing Player battle infor
         `, () => {
             
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const dummyPlayer = new Player("Dummy Player: getPlayerStatus()")
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             dummyPlayer.calculateStats()
@@ -536,7 +536,7 @@ function instanceMethods() {
             1. return a formated string containing Enemie battle info
         `, () => {
             
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const dummyPlayer = new Player("Dummy Player: getEnemieStatus()")
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
             dummyEnemie.calculateStats()
@@ -551,7 +551,7 @@ function instanceMethods() {
             1. return a formated string containing battle info
         `, () => {
             
-            const dummyEnemie = new Enemie(getEnemie(enemieEntries.testArea.DUMMY_ENEMIE, MAP_AREAS.TEST_AREA))
+            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
             const dummyPlayer = new Player("Dummy Player: getBattleStatus")
             const battleInstance = new Battle(dummyPlayer, dummyEnemie)
 

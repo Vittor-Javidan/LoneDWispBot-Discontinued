@@ -1,4 +1,4 @@
-import enemiesDataBase from '../../database/enemiesData'
+import enemiesDataBase from '../../database/enemies/enemiesData'
 import Entity from '../Entity'
 import Player from './Player'
 

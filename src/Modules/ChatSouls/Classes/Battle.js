@@ -1,5 +1,5 @@
 import deepCopy from '../../../Utils/deepCopy';
-import enemiesDataBase from '../database/enemiesData';
+import enemiesDataBase from '../database/enemies/enemiesData';
 import { TYPE_DEFINITIONS_KEYS } from '../Globals/TYPE_DEFINITIONS_KEYS';
 import Entity from './Entity';
 import Enemie from './EntityChilds/Enemie';
