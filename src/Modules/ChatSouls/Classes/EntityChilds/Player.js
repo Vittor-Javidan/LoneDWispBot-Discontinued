@@ -4,8 +4,7 @@ import EQUIPMENT_TYPES from "../../Globals/EQUIPMENT_TYPES"
 import { PLAYER_DEFAULT } from "../../Globals/PLAYER_DEFAULT"
 import Entity from "../Entity"
 
-/**
- * @typedef {import ('../../TypeDefinitions/Types').CS_Database} CS_Database
+/** See `Types.js` to understand the types
  * @typedef {import ('../../TypeDefinitions/Types').CS_EntityData} CS_EntityData
  * @typedef {import ('../../TypeDefinitions/Types').CS_Attributes} CS_Attributes
  * @typedef {import ('../../TypeDefinitions/Types').CS_Entity_Equipment} CS_Entity_Equipment

@@ -5,7 +5,7 @@ import Player from "../../Classes/EntityChilds/Player";
 import PLAYER_STATES from "../../Globals/PLAYER_STATES";
 import UI_Battle from "./UI_Battle";
 
-/**
+/** See `Types.js` to understand the types
  * @typedef {import("../../TypeDefinitions/Types").CS_Stats} CS_Stats
 */
 

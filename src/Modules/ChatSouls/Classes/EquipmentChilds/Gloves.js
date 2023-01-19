@@ -2,7 +2,9 @@ import { getAllEquipmentByType } from "../../database/equipmentData"
 import EQUIPMENT_TYPES from "../../Globals/EQUIPMENT_TYPES"
 import Armor from "./Armor"
 
-/** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_ArmorData} CS_Equipment_ArmorData */
+/** See `Types.js` to understand the types
+ * @typedef {import('../../TypeDefinitions/Types').CS_Equipment_ArmorData} CS_Equipment_ArmorData 
+*/
 
 export default class Gloves extends Armor {
 

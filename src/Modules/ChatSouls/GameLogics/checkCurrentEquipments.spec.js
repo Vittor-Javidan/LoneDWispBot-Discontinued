@@ -3,7 +3,9 @@ import Player from "../Classes/EntityChilds/Player"
 import { equipmentEntries } from "../database/equipmentData"
 import { buildMessage } from "./checkCurrentEquipments"
 
-/**@typedef {import("../TypeDefinitions/Types").CS_Entity_Equipment} CS_Entity_Equipment*/
+/** See `Types.js` to understand the types
+ * @typedef {import("../TypeDefinitions/Types").CS_Entity_Equipment} CS_Entity_Equipment
+*/
 
 describe(`buildMessage`, () => {
 

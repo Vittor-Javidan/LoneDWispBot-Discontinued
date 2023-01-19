@@ -1,7 +1,7 @@
 import deepCopy from '../../../../Utils/deepCopy'
 import enemiesDataBase from './enemiesData'
 
-/**
+/** See `Types.js` to understand the types
  * @typedef {import('../../TypeDefinitions/Types').CS_EntityData} CS_EntityData
 */
 

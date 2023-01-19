@@ -1,4 +1,4 @@
-/**
+/** See `Types.js` to understand the types
  * @typedef {import('../../../TypeDefinitions/Types').CS_Database} CS_Database
  * @typedef {import('../../../TypeDefinitions/Types').CS_EntityData} CS_EntityData
 */

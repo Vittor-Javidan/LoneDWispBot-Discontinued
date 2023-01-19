@@ -1,7 +1,7 @@
 import deepCopy from '../../../Utils/deepCopy'
 import EQUIPMENT_TYPES from '../Globals/EQUIPMENT_TYPES'
 
-/**
+/** See `Types.js` to understand the types
  * @typedef {import ('../TypeDefinitions/Types').CS_EquipmentDataBase} CS_EquipmentDataBase
  * @typedef {import ('../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData
  * @typedef {import ('../TypeDefinitions/Types').CS_Equipment_ArmorData} CS_Equipment_ArmorData

@@ -6,7 +6,7 @@ import { MAP_AREAS } from "../../Globals/MAP_AREAS"
 import Enemie from "./Enemie"
 import Player from "./Player"
 
-/**
+/** See `Types.js` to understand the types
  * @typedef {import("../../TypeDefinitions/Types").CS_EntityData} CS_EntityData
 */
 

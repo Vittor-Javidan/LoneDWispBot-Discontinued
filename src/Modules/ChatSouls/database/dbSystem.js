@@ -1,15 +1,9 @@
 import fs from 'fs'
 
-/**
- * - keys: `entity name string`
+/** See `Types.js` to understand the types
  * @typedef {import('../TypeDefinitions/Types').CS_Database} CS_Database
 */
 
-/**
- * Database path (directory + fileName)
- * @type {string}
- * @private
- */
 export const playerDataBasePath = `${__dirname}/playersData.json`
 export const errorContentDataBasePath = `${__dirname}/errorContentDataBase.md`
 export const errorLogDataBasePath = `${__dirname}/errorLogDataBase.md`

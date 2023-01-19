@@ -5,7 +5,7 @@ import { GAME_BALANCE } from "../Globals/GAME_BALANCE"
 import { TYPE_DEFINITIONS_KEYS } from "../Globals/TYPE_DEFINITIONS_KEYS"
 import Entity from "./Entity"
 
-/**
+/** See `Types.js` to understand the types
  * @typedef {import("../TypeDefinitions/Types").CS_Stats} CS_Stats
  * @typedef {import("../TypeDefinitions/Types").CS_Inventory_Equipments} CS_Inventory_Equipments
  * @typedef {import("../TypeDefinitions/Types").CS_Entity_Inventory} CS_Entity_Inventory

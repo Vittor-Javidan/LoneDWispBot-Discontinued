@@ -6,7 +6,7 @@ import Battle from "./Battle"
 import Enemie from "./EntityChilds/Enemie"
 import Player from "./EntityChilds/Player"
 
-/**
+/** See `Types.js` to understand the types
  * @typedef {import("../TypeDefinitions/Types").CS_EntityData} CS_EntityData
  * @typedef {import("../TypeDefinitions/Types").CS_Attributes} CS_Attributes
  * @typedef {import("../TypeDefinitions/Types").CS_Stats} CS_Stats

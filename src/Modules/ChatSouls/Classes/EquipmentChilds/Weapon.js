@@ -1,6 +1,8 @@
 import Equipment from "../Equipment"
 
-/** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData */
+/** See `Types.js` to understand the types 
+ * @typedef {import('../../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData 
+*/
 
 export default class Weapon extends Equipment {
 

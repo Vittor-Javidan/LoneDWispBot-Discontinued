@@ -13,7 +13,7 @@ import LongRangeWeapon from './EquipmentChilds/LongRangeWeapon'
 import MeleeWeapon from './EquipmentChilds/MeleeWeapon'
 import Weapon from './EquipmentChilds/Weapon'
 
-/**
+/** See `Types.js` to understand the types
  * @typedef {import('../TypeDefinitions/Types').CS_Attributes} CS_Attributes
  * @typedef {import('../TypeDefinitions/Types').CS_Attributes_KV} CS_Attributes_KV
  * @typedef {import('../TypeDefinitions/Types').CS_Entity_Equipment} CS_Entity_Equipment

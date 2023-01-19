@@ -2,7 +2,9 @@ import { getAllEquipmentByType } from "../../database/equipmentData"
 import EQUIPMENT_TYPES from "../../Globals/EQUIPMENT_TYPES"
 import Weapon from "./Weapon"
 
-/** @typedef {import('../../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData */
+/** See `Types.js` to understand the types 
+ * @typedef {import('../../TypeDefinitions/Types').CS_Equipment_WeaponData} CS_Equipment_WeaponData 
+*/
 
 export default class MeleeWeapon extends Weapon {
 

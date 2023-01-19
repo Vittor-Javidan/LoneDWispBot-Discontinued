@@ -2,7 +2,7 @@ import enemiesDataBase from '../../database/enemies/enemiesData'
 import Entity from '../Entity'
 import Player from './Player'
 
-/**
+/** See `Types.js` to understand the types
  * @typedef {import ('../../TypeDefinitions/Types').CS_EntityData} CS_EntityData
  * @typedef {import('../../TypeDefinitions/Types').CS_ResourceData} CS_ResourceData
 */
