@@ -10,8 +10,8 @@ describe(`to_EquipmentsMenu`, () => {
     `, () => {
 
         const dummyPlayer = new Player(`Dummy Player: to_EquipmentsMenu`)
-        dummyPlayer.secondaryState = `Fake Secondary State`
+        dummyPlayer.setSecondaryState(`Fake Secondary State`)
         to_EquipmentsMenu(dummyPlayer, "Menu Message")
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.EQUIPMENT)
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.EQUIPMENT)
     })
 })

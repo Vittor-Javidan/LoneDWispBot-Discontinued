@@ -7,9 +7,9 @@ import { sendMessage_UI_Idle } from "../../UserInteface/sendMessage_Customized/s
  * @param {string} menuMessage
  */
 export default function to_Explore(playerInstance, menuMessage) {
-    playerInstance.currentState = {
+    playerInstance.setCurrentState({
         primary: PLAYER_STATES.EXPLORING.PRIMARY,
         secondary: PLAYER_STATES.EXPLORING.SECONDARY.IDLE
-    }
+    })
     sendMessage_UI_Idle(playerInstance, menuMessage)
 }

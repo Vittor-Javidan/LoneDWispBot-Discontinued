@@ -12,9 +12,9 @@ import firePit_UI_Handler from "../UI_Components/firePit_UI_Handler"
  */
 export default function gameUIHandler(data){
 
-    const playerState = data.playerInstance.currentState
+    const primaryState = data.playerInstance.getPrimaryState()
     
-    switch (playerState.primary){
+    switch (primaryState){
         case PLAYER_STATES.FIRE_PIT.PRIMARY: firePit_UI_Handler(data); break
         case PLAYER_STATES.EXPLORING.PRIMARY: exploring(data); break
     }

@@ -13,10 +13,10 @@ import UI_Idle from "../UI_Idle/UI_Idle";
  */
 export default function UI_Exploring_Handler(data){
 
-    const playerState = data.playerInstance.currentState
+    const secondaryState = data.playerInstance.getSecondaryState()
     const exploringStates = PLAYER_STATES.EXPLORING.SECONDARY
     
-    switch(playerState.secondary) {
+    switch(secondaryState) {
 
         case exploringStates.IDLE: UI_Idle(data);break
         case exploringStates.HUNTING: UI_Battle(data, {

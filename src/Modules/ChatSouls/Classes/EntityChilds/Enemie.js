@@ -59,7 +59,7 @@ export default class Enemie extends Entity{
      */
     static getPossibleEnemies(playerInstance){
 
-        const playerMapArea = playerInstance.currentLocation
+        const playerMapArea = playerInstance.getCurrentLocation()
         const playerLevel = playerInstance.getlevel()
         const areaEnemies = enemiesDataBase[playerMapArea]
         const enemiesArray = Object.values(areaEnemies)

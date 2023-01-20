@@ -10,9 +10,9 @@ describe(`to_StatsMenu`, () => {
     `, () => {
         
         const dummyPlayer = new Player(`Dummy Player: to_StatsMenu`)
-        dummyPlayer.secondaryState = `Fake secondary state`
+        dummyPlayer.setSecondaryState(`Fake secondary state`)
 
         to_StatisticsMenu(dummyPlayer ,"menu message")
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.STATS_MENU)
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.STATS_MENU)
     })
 })

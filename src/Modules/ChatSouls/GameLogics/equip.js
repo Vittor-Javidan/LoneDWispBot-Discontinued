@@ -12,11 +12,11 @@ export default function equipAndReturnToEquipmentTypeMenu(playerInstance, itemIn
 
     const equipmentType = getEquipmentTypeByPlayerState(playerInstance)
 
+    playerInstance.setSecondaryState(returnEquipmentMenuStateByType(equipmentType))
     playerInstance.equipFromInventory(itemIndex, equipmentType)
     playerInstance.calculateStats()
     playerInstance.recoverHP()
     playerInstance.save()
-    playerInstance.secondaryState = returnEquipmentMenuStateByType(equipmentType)
 
     const equippedEquipment = playerInstance.getCurrentEquipment_KV()[equipmentType]
     sendMessage_UI_EquipmentTypeMenu(playerInstance, 

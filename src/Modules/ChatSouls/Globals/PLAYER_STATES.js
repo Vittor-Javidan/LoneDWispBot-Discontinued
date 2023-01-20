@@ -57,7 +57,7 @@ export function returnEquipmentMenuInventoryStateByType(equipmentType) {
  */
 export function getEquipmentTypeByPlayerState(playerInstance) {
 
-    const equipmentType = playerInstance.secondaryState.split(" ")[0]
+    const equipmentType = playerInstance.getSecondaryState().split(" ")[0]
     
     const equipmentTypesArray = Object.values(EQUIPMENT_TYPES)
     if(!equipmentTypesArray.includes(equipmentType)) {

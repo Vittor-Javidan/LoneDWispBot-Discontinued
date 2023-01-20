@@ -7,10 +7,11 @@ import { sendMessage_UI_FirePit } from "../../UserInteface/sendMessage_Customize
  * @param {string} menuMessage
  */
 export default function to_FirePit(playerInstance, menuMessage) {
-    playerInstance.currentState = {
+    
+    playerInstance.setCurrentState({
         primary: PLAYER_STATES.FIRE_PIT.PRIMARY,
         secondary: PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT
-    }
+    })
 
     playerInstance.recoverHP()
 

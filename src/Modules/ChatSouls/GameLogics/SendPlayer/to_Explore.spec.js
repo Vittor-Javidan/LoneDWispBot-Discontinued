@@ -10,17 +10,20 @@ describe(`to_Explore`, () => {
         2. Set Player secondary state to IDLE
     `, () => {
 
+        //Instantiation
         const dummyPlayer = new Player(`Dummy player: to_Explore`)
-        dummyPlayer.currentState = {
+        
+        //Setup
+        dummyPlayer.setCurrentState({
             primary: `Fake Primary State`,
             secondary: `Fake Secondary State`
-        }
+        })
+
+        //Run
         to_Explore(dummyPlayer, "Menu Message")
 
-        //1
-        expect(dummyPlayer.primaryState).toBe(PLAYER_STATES.EXPLORING.PRIMARY)
-
-        //2
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.EXPLORING.SECONDARY.IDLE)
+        //Tests
+        expect(dummyPlayer.getPrimaryState()).toBe(PLAYER_STATES.EXPLORING.PRIMARY) //1        
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.EXPLORING.SECONDARY.IDLE) //2
     })
 })

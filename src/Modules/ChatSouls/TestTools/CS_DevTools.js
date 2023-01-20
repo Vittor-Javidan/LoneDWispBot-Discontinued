@@ -6,9 +6,9 @@ export class CS_DevTools {
     static importantReferences(){
 
         return {
-            __PlayerDataBase__: Player.database,
-            __OnlinePlayers__: Player.onlinePlayers,
+            __PlayerDataBase__: Player.getDatabase(),
+            __OnlinePlayers__: Player.getOnlinePlayers(),
             __Battle__: Battle.battlesList
         }
     }
-} 
+}

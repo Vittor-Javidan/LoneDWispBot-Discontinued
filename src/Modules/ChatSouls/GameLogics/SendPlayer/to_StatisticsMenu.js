@@ -6,12 +6,11 @@ import { sendMessage_UI_StatisticsMenu } from "../../UserInteface/sendMessage_Cu
 /**
  * Handles State Change Process to Stats Menu.
  *  
- * @param {Object} data
- * @param {Player} data.playerInstance
- * @param {string} data.message
+ * @param {Player} playerInstance
  * @param {string} menuMessage
  */
 export default function to_StatisticsMenu(playerInstance, menuMessage) {
-    playerInstance.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.STATS_MENU
+    
+    playerInstance.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.STATS_MENU)
     sendMessage_UI_StatisticsMenu(playerInstance, menuMessage)
 }

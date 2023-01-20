@@ -28,9 +28,9 @@ export default function playerDied(battleInstance, FINAL_MESSAGE) {
     playerInstance.recoverHP()
     playerInstance.ressurrect()
     playerInstance.save()
-    playerInstance.currentState = {
+    playerInstance.setCurrentState({
         primary: PLAYER_STATES.FIRE_PIT.PRIMARY,
         secondary: PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT
-    }
+    })
     Battle.deleteBattle(playerInstance.getName())
 }

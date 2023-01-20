@@ -104,7 +104,7 @@ function classMethods() {
             //1
             dummyPlayerAttributes.evasion = 1000
             dummyEnemieAttributes.evasion = 0
-            dummyPlayer.currentLocation = MAP_AREAS.THE_WOODS
+            dummyPlayer.setCurrentLocation(MAP_AREAS.THE_WOODS)
             dummyEnemie.setTotalStats(dummyEnemieAttributes)
             dummyPlayer.setTotalStats(dummyPlayerAttributes)
             Battle.determineFirstTurn(battleInstance)
@@ -114,7 +114,7 @@ function classMethods() {
             battleInstance.turn = undefined
             dummyEnemieAttributes.evasion = 1000
             dummyPlayerAttributes.evasion = 0
-            dummyPlayer.currentLocation = MAP_AREAS.THE_WOODS
+            dummyPlayer.setCurrentLocation(MAP_AREAS.THE_WOODS)
             dummyPlayer.setTotalStats(dummyPlayerAttributes)
             dummyEnemie.setTotalStats(dummyEnemieAttributes)
             Battle.determineFirstTurn(battleInstance)
@@ -128,17 +128,24 @@ function classMethods() {
             1. start the battle and push it to battle static list
         `, () => {
             
-            //1
-            const player = new Player("Dummy Player: startBattle()")
+            //Instantiation
+            const name = "Dummy Player: startBattle()"
+            const player = new Player(name)
             const enemie = new Enemie(get_DUMMY_ENEMIE())
-            player.currentLocation = MAP_AREAS.THE_WOODS
+
+            //Setup
+            player.setCurrentLocation(MAP_AREAS.THE_WOODS)
             player.setlevel(1)
+            
+            //Run
             Battle.startBattle(player, enemie)
+            
+            //Test
             expect(Battle.battlesList.length).toBe(1)
-            expect(Battle.battlesList[0].playerInstance.getName()).toBe(player.getName())
+            expect(Battle.battlesList[0].playerInstance.getName()).toBe(name)
 
             //Sanitizer
-            Battle.deleteBattle(player.getName())
+            Battle.deleteBattle(name)
         })
     })
 
@@ -271,43 +278,6 @@ function instanceMethods() {
             dummyPlayer.setIsAlive(true) 
             dummyEnemie.setIsAlive(false) 
             expect(battleInstance.isBothAlive()).toBe(false)
-        })
-    })
-
-    describe(`fleePvE`, () => {
-
-        /**@type {CS_Stats} */
-        const givenStats = {
-            hp:             1,
-            evasion:        0,
-            fisicalDamage:  0,
-            fisicalDefense: 0,
-            magicalDamage:  0,
-            magicalDefense: 0
-        }
-
-        it(`Should:
-            1. return true when flee action succed,
-            2. return false when flee action failed,
-        `, () => {
-            
-            const dummyPlayer = new Player("Dummy Guy")
-            const dummyEnemie = new Enemie(get_DUMMY_ENEMIE())
-            const battleInstance = new Battle(dummyPlayer, dummyEnemie)
-            const buffedStats = deepCopy(givenStats)
-            const nerfedStats = deepCopy(givenStats)
-            buffedStats.evasion = 1000 // this make sure to aways won on evasion event
-            nerfedStats.evasion = 0 // this make sure to aways lose on evasion event
-
-            //1
-            dummyPlayer.setTotalStats(buffedStats)
-            dummyEnemie.setTotalStats(nerfedStats)
-            expect(battleInstance.fleePvE(1)).toBe(true)
-
-            //2
-            dummyPlayer.setTotalStats(nerfedStats)
-            dummyEnemie.setTotalStats(buffedStats)
-            expect(battleInstance.fleePvE(1)).toBe(false)
         })
     })
 

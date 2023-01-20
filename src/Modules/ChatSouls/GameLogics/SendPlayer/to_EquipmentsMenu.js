@@ -7,6 +7,6 @@ import { sendMessage_UI_EquipmentsMenu } from "../../UserInteface/sendMessage_Cu
  * @param {string} menuMessage
  */
 export default function to_EquipmentsMenu(playerInstance, menuMessage) {
-    playerInstance.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.EQUIPMENT
+    playerInstance.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.EQUIPMENT)
     sendMessage_UI_EquipmentsMenu(playerInstance, menuMessage)
 }

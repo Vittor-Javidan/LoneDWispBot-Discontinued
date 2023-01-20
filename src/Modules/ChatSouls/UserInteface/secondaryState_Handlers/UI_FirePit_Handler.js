@@ -17,10 +17,10 @@ import UI_StatisticsMenu from "../UI_StatisticsMenu/UI_StatisticsMenu";
  */
 export default function UI_FirePit_Handler(data){
 
-    const playerState = data.playerInstance.currentState
+    const secondaryState = data.playerInstance.getSecondaryState()
     const firePitStates = PLAYER_STATES.FIRE_PIT.SECONDARY
     
-    switch(playerState.secondary) {
+    switch(secondaryState) {
         
         //Main Menu
         case firePitStates.RESTING_ON_FIRE_PIT:     UI_firePit(data)                    ;break

@@ -37,12 +37,12 @@ describe(`getEquipmentTypeByPlayerState`, () => {
         let equipmentType = undefined
 
         //1
-        dummyPlayer.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.BOOTS_MENU
+        dummyPlayer.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.BOOTS_MENU)
         equipmentType = getEquipmentTypeByPlayerState(dummyPlayer)
         expect(equipmentType).toBe(EQUIPMENT_TYPES.BOOTS)
 
         //2
-        dummyPlayer.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.BOOTS_INVENTORY
+        dummyPlayer.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.BOOTS_INVENTORY)
         equipmentType = getEquipmentTypeByPlayerState(dummyPlayer)
         expect(equipmentType).toBe(EQUIPMENT_TYPES.BOOTS)
     })
@@ -52,7 +52,7 @@ describe(`getEquipmentTypeByPlayerState`, () => {
     `, () => {
 
         const dummyPlayer = new Player(`Dummy Player: getEquipmentTypeByPlayerState`)
-        dummyPlayer.secondaryState = `Invalid State`
+        dummyPlayer.setSecondaryState(`Invalid State`)
         expect(() => getEquipmentTypeByPlayerState(dummyPlayer)).toThrow(
             Error(`ERROR: getEquipmentTypeByPlayerState: equipment type is not recognized`)
         )

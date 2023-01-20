@@ -13,16 +13,20 @@ import { sendMessage_UI_Idle } from "../../sendMessage_Customized/sendMessage_UI
 export default function fleeAttempt(battleInstance, o) {
 
     const { evasionWeight, coward } = o
+    const playerInstance = battleInstance.playerInstance
+    const enemieInstance = battleInstance.enemieInstance
     
-    if(!battleInstance.fleePvE(evasionWeight)) {
-        return false
-    }
+    if(!battleInstance.evasionEvent({
+        from: playerInstance,
+        against: enemieInstance,
+        evasionWeight: evasionWeight
+    })) return false
 
     Battle.deleteBattle(coward.getName())
-    coward.currentState = {
+    coward.setCurrentState({
         primary: PLAYER_STATES.EXPLORING.PRIMARY,
         secondary: PLAYER_STATES.EXPLORING.SECONDARY.IDLE
-    }
+    })
 
     const emoji = `SirSad`
 

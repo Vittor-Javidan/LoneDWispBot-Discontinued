@@ -16,7 +16,7 @@ export default function to_EquipmentTypeInventoryMenu(playerInstance, menuMessag
 		return
 	}
 
-    playerInstance.secondaryState = returnEquipmentMenuInventoryStateByType(inventoryType)
+    playerInstance.setSecondaryState(returnEquipmentMenuInventoryStateByType(inventoryType))
 	sendMessage_UI_EquipmentTypeInventoryMenu(
         playerInstance,
         menuMessage

@@ -11,6 +11,6 @@ import { sendMessage_UI_AttributeUpgradeMenu } from "../../UserInteface/sendMess
  */
 export default function to_AttributeUpgradeMenu(playerInstance, menuMessage) {
 
-    playerInstance.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.ATRIBUTE_UPGRADE
+    playerInstance.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.ATRIBUTE_UPGRADE)
     sendMessage_UI_AttributeUpgradeMenu(playerInstance, menuMessage)
 }

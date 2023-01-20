@@ -10,8 +10,8 @@ describe(`to_AttributeUpgradeMenu`, () => {
     `, () => {
 
         const dummyPlayer = new Player(`Dummy Player: to_AttributeUpgradeMenu`)
-        dummyPlayer.secondaryState = `Fake Secondary State`
+        dummyPlayer.setSecondaryState(`Fake Secondary State`)
         to_AttributeUpgradeMenu(dummyPlayer, `Menu Message`)
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.ATRIBUTE_UPGRADE)
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.ATRIBUTE_UPGRADE)
     })
 })

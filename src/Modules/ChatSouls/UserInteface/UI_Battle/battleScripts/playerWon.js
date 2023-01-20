@@ -12,7 +12,7 @@ export default function playerWon(battleInstance, FINAL_MESSAGE) {
     const enemieInstance = battleInstance.enemieInstance
     const souls = enemieInstance.getSouls()
     
-    playerInstance.secondaryState = PLAYER_STATES.EXPLORING.SECONDARY.IDLE
+    playerInstance.setSecondaryState(PLAYER_STATES.EXPLORING.SECONDARY.IDLE)
     battleInstance.calculateRewards()
     const resourcesEarner = battleInstance.returnResourcesRewardsString()
 

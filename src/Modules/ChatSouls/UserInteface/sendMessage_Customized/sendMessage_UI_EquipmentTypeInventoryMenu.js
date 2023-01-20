@@ -8,7 +8,7 @@ import Player from "../../Classes/EntityChilds/Player"
  */
 export function sendMessage_UI_EquipmentTypeInventoryMenu(playerInstance, menuMessage) {
 
-    const equipmentype = playerInstance.secondaryState.split(" ")[0]
+    const equipmentype = playerInstance.getSecondaryState().split(" ")[0]
     const playerName = playerInstance.getName()
     const equipmentCodes = playerInstance.getAllEquipmentInventoryString(equipmentype)
 

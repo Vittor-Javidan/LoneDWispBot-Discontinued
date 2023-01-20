@@ -6,22 +6,24 @@ import to_FirePit from "./to_FirePit"
 describe(`to_FirePit`, () => {
 
     it(`Should:
-    1. Set Player primary state to FIRE_PIT,
-    2. Set Player secondary state to RESTING_ON_FIRE_PIT
+        1. Set Player primary state to FIRE_PIT,
+        2. Set Player secondary state to RESTING_ON_FIRE_PIT
     `, () => {
 
+        //Instantiation
         const dummyPlayer = new Player(`Dummy Player: to_FirePit`)
-        dummyPlayer.currentState = {
+        
+        //Setup
+        dummyPlayer.setCurrentState({
             primary: `Fake Primary State`,
             secondary: `Fake Secondary State`
-        }
+        })
         
+        //Run
         to_FirePit(dummyPlayer, `Menu Message`)
 
-        //1
-        expect(dummyPlayer.primaryState).toBe(PLAYER_STATES.FIRE_PIT.PRIMARY)
-        
-        //2
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT)
+        //Tests
+        expect(dummyPlayer.getPrimaryState()).toBe(PLAYER_STATES.FIRE_PIT.PRIMARY) //1
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT) //2
     })
 })

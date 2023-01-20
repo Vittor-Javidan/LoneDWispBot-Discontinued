@@ -12,9 +12,9 @@ describe(`to_MeleeMenu`, () => {
     `, () => {
 
         const dummyPlayer = new Player(`Dummy Player: to_MeleeMenu`)
-        dummyPlayer.secondaryState = `Fake State`
+        dummyPlayer.setSecondaryState(`Fake State`) 
         to_MeleeMenu(dummyPlayer, `Menu Message`)
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.MELEE_MENU)
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.MELEE_MENU)
     })
 })
 
@@ -25,9 +25,9 @@ describe(`to_LongRangeMenu`, () => {
     `, () => {
 
         const dummyPlayer = new Player(`Dummy Player: to_LongRangeMenu`)
-        dummyPlayer.secondaryState = `Fake State`
+        dummyPlayer.setSecondaryState(`Fake State`)
         to_LongRangeMenu(dummyPlayer, `Menu Message`)
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.LONG_RANGE_MENU)
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.LONG_RANGE_MENU)
     })
 })
 
@@ -38,9 +38,9 @@ describe(`to_HelmetMenu`, () => {
     `, () => {
 
         const dummyPlayer = new Player(`Dummy Player: to_HelmetMenu`)
-        dummyPlayer.secondaryState = `Fake State`
+        dummyPlayer.setSecondaryState(`Fake State`) 
         to_HelmetMenu(dummyPlayer, `Menu Message`)
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.HELMET_MENU)
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.HELMET_MENU)
     })
 })
 
@@ -51,9 +51,9 @@ describe(`to_BodyArmorMenu`, () => {
     `, () => {
 
         const dummyPlayer = new Player(`Dummy Player: to_BodyArmorMenu`)
-        dummyPlayer.secondaryState = `Fake State`
+        dummyPlayer.setSecondaryState(`Fake State`)
         to_BodyArmorMenu(dummyPlayer, `Menu Message`)
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.BODY_ARMOR_MENU)
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.BODY_ARMOR_MENU)
     })
 })
 
@@ -64,9 +64,9 @@ describe(`to_GlovesMenu`, () => {
     `, () => {
 
         const dummyPlayer = new Player(`Dummy Player: to_GlovesMenu`)
-        dummyPlayer.secondaryState = `Fake State`
+        dummyPlayer.setSecondaryState(`Fake State`)
         to_GlovesMenu(dummyPlayer, `Menu Message`)
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.GLOVES_MENU)
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.GLOVES_MENU)
     })
 })
 
@@ -77,8 +77,8 @@ describe(`to_BootsMenu`, () => {
     `, () => {
 
         const dummyPlayer = new Player(`Dummy Player: to_BootsMenu`)
-        dummyPlayer.secondaryState = `Fake State`
+        dummyPlayer.setSecondaryState(`Fake State`)
         to_BootsMenu(dummyPlayer, `Menu Message`)
-        expect(dummyPlayer.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.BOOTS_MENU)
+        expect(dummyPlayer.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.BOOTS_MENU)
     })
 })

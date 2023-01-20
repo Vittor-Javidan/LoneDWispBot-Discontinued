@@ -8,12 +8,12 @@ import sendMessage_UI_Battle from "../UI_Battle/sendMessage_UI_Battle";
  * @param {Player} playerInstance 
  */
 export default function startBattle(playerInstance) {
+    
+    playerInstance.setSecondaryState(PLAYER_STATES.EXPLORING.SECONDARY.HUNTING)
 
     //Battle initialization
     const enemie = Enemie.instantiateRandomEnemie(playerInstance)
-    Battle.startBattle(playerInstance, enemie)
-    const battleInstance = Battle.getBattle(playerInstance.getName())
-    playerInstance.secondaryState = PLAYER_STATES.EXPLORING.SECONDARY.HUNTING
+    const battleInstance = Battle.startBattle(playerInstance, enemie)
 
     //Player feedback
     const enemieInstance = battleInstance.enemieInstance

@@ -60,18 +60,18 @@ export default class Player extends Entity {
     // GETTERS AND SETTERS ============================================================================
     //=================================================================================================
 
-    /**
+    /** Getter
      * - keys: `player name string`
      * @return {CS_Database} Getter
      */
-    static get database() {
+    static getDatabase() {
         return this.#database
     }
 
-    /**
+    /** Setter
      * @param {CS_Database} data
      */
-    static set database(data) {
+    static setDatabase(data) {
 
         if(!data.Authorization || !data.Authorization.key) {
             throw Error(`ERROR: Player class, "database" setter. You probably sending wrong data to replace the actual data base.`)
@@ -79,31 +79,37 @@ export default class Player extends Entity {
         this.#database = data
     }
 
-    /**
-     * Setter only. Sets the player info inside class pre loaded database. 
-     * To really save the player data, use the instance method save() after set 
-     * the player data using this.
+    /** Getter
+     * @param {string} playerName
+     * @returns {CS_EntityData}
+     */
+    static getPlayerData(playerName) {
+
+        return this.#database[playerName]
+    }
+
+    /** Setter
      * @param {CS_EntityData} playerData
      */
-    static set sendToDataBase(playerData) {
+    static setPlayerData(playerData) {
 
         if(!playerData.name) {
-            throw Error(`ERROR: Player class, "sendToDataBase" setter: playerData must have at least a name.`)
+            throw Error(`ERROR: Player class, "playerData" setter: playerData must have at least a name.`)
         }
         this.#database[playerData.name] = deepCopy(playerData)
     }
 
-    /**
-     * @returns {Player[]} Getter
+    /** Getter
+     * @returns {Player[]} 
      */ 
-    static get onlinePlayers() {
+    static getOnlinePlayers() {
         return this.#onlinePlayers
     }
 
-    /**
-     * @param {Player[]} playerArray Setter
+    /** Setter
+     * @param {Player[]} playerArray 
      */
-    static set onlinePlayers(playerArray) {
+    static setOnlinePlayers(playerArray) {
 
         for(let i = 0; i < playerArray.length; i++) {
             if(!(playerArray[i] instanceof Player)) {
@@ -113,73 +119,73 @@ export default class Player extends Entity {
         this.#onlinePlayers = playerArray
     }
 
-    /**
-     * @returns {CS_playerState} Getter
+    /** Getter
+     * @returns {CS_playerState}
      */
-    get currentState() {
+    getCurrentState() {
         return this.#currentState
     }
 
-    /**
-     * @param {CS_playerState} stateObject Setter
+    /** Setter
+     * @param {CS_playerState} stateObject
      */
-    set currentState(stateObject) {
+    setCurrentState(stateObject) {
         this.#currentState = deepCopy(stateObject)
     }
 
-    /**
-     * @returns {string} Getter
+    /** Getter
+     * @returns {string} 
      */
-    get primaryState() {
+    getPrimaryState() {
         return this.#currentState.primary
     }
 
-    /**
-     * @param {string} state Setter
+    /** Setter
+     * @param {string} state 
      */
-    set primaryState(state) {
+    setPrimaryState(state) {
         this.#currentState.primary = state
     }
 
-    /**
-     * @returns {string} Getter
+    /** Getter
+     * @returns {string} 
      */
-    get secondaryState() {
+    getSecondaryState() {
         return this.#currentState.secondary
     }
 
-    /**
-     * @param {string} state Setter
+    /** Setter
+     * @param {string} state 
      */
-    set secondaryState(state) {
+    setSecondaryState(state) {
         this.#currentState.secondary = state
     }
 
     /**
      * @returns {string} Getter
      */
-    get currentLocation() {
+    getCurrentLocation() {
         return this.#currentLocation
     }
 
     /**
      * @param {string} mapName Setter
      */
-    set currentLocation(mapName) {
+    setCurrentLocation(mapName) {
         this.#currentLocation = mapName
     }
 
     /**
      * @returns {boolean} Getter
      */
-    get canPlay() {
+    getCanPlay() {
         return this.#canPlay
     }
 
     /**
      * @param {boolean} boolean Setter
      */
-    set canPlay(boolean) {
+    setCanPlay(boolean) {
 
         if(typeof boolean !== 'boolean') throw Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`)
 
@@ -190,10 +196,9 @@ export default class Player extends Entity {
     // CLASS METHODS ==================================================================================
     //=================================================================================================
 
-
     static updateUsersDatabaseStructure() {
 
-        const users = Object.keys(Player.database)
+        const users = Object.keys(Player.getDatabase())
 
         for(let i = 0; i < users.length; i++) {
             if(users[i] !== "Authorization") {
@@ -211,11 +216,11 @@ export default class Player extends Entity {
     }
 
     /**
-     * Force save database current info.
+     * Force save local database current info.
      * Use with caution.
      */
     static forceSaveDataBase(){
-        DbSystem.writeDb(this.database, playerDataBasePath)
+        DbSystem.writeDb(this.getDatabase(), playerDataBasePath)
     }
 
     /**
@@ -256,12 +261,12 @@ export default class Player extends Entity {
      */
     static register(playerInstance){
 
-        if(!Player.database[`${playerInstance.getName()}`]){
+        if(!Player.getPlayerData(`${playerInstance.getName()}`)){
             
             playerInstance.isNewPlayer = true
-            Player.sendToDataBase = {
+            Player.setPlayerData({
                 name: playerInstance.getName()
-            }
+            })
             return
         }
         
@@ -276,7 +281,7 @@ export default class Player extends Entity {
     static updateDataBaseMissingInfo(playerInstance){
 
         const playerName = playerInstance.getName()
-        const playerData = this.database[`${playerName}`]
+        const playerData = this.getPlayerData(`${playerName}`)
 
         if(!playerData.souls)                   playerData.souls                = playerInstance.getSouls()
         if(!playerData.level)                   playerData.level                = playerInstance.getlevel()
@@ -293,7 +298,7 @@ export default class Player extends Entity {
             }
         }
         
-        this.sendToDataBase = playerData
+        this.setPlayerData(playerData) 
     }
 
     /**
@@ -302,8 +307,8 @@ export default class Player extends Entity {
      * @returns {boolean}
      */
     static isLogged(userName){
-        for(let i = 0; i < this.onlinePlayers.length; i++){
-            if(userName === this.onlinePlayers[i].getName()){
+        for(let i = 0; i < this.getOnlinePlayers().length; i++){
+            if(userName === this.getOnlinePlayers()[i].getName()){
                 return true
             }
         }
@@ -315,12 +320,12 @@ export default class Player extends Entity {
      */
     static loginPlayerInstance(playerInstance){
 
-        for (let i = 0; i < this.onlinePlayers.length; i++){
-            if (this.onlinePlayers[i].getName() === playerInstance.getName()){
+        this.getOnlinePlayers().forEach(player => {
+            if(player.getName() === playerInstance.getName()) {
                 throw Error('ERROR: Player is already logged. Use this method only when a player is not logged in the game')
             }
-        }
-        this.onlinePlayers.push(playerInstance)
+        })
+        this.getOnlinePlayers().push(playerInstance)
     }
 
     /**
@@ -328,9 +333,10 @@ export default class Player extends Entity {
      * @param {Player} playerInstance 
      */
     static logoutPlayerInstance(playerInstance) {
-        for (let i = 0; i < this.onlinePlayers.length; i++) {
-            if (playerInstance.getName() === this.onlinePlayers[i].getName()) {
-                this.onlinePlayers.splice(i, 1)
+
+        for (let i = 0; i < this.getOnlinePlayers().length; i++) {
+            if (playerInstance.getName() === this.getOnlinePlayers()[i].getName()) {
+                this.getOnlinePlayers().splice(i, 1)
                 return
             }
         }
@@ -343,9 +349,10 @@ export default class Player extends Entity {
      * @returns {Player | undefined} If undefined, that means no player was found
     */
     static getPlayerInstanceByName(userName) {
-        for(let i = 0; i < this.onlinePlayers.length; i++){
-            if(userName === this.onlinePlayers[i].getName()){
-                return this.onlinePlayers[i]
+        
+        for(let i = 0; i < this.getOnlinePlayers().length; i++){
+            if(userName === this.getOnlinePlayers()[i].getName()){
+                return this.getOnlinePlayers()[i]
             }
         }
         throw Error(`ERROR: Player class, "getPlayerInstanceByName" method: cannot get a instance that is not inside onlinePlayers array`)
@@ -362,8 +369,7 @@ export default class Player extends Entity {
     load(){
 
         //Load saved player data from database
-        
-        const playerData = Player.database[`${this.getName()}`]
+        const playerData = Player.getPlayerData(`${this.getName()}`)
 
         //Replace default values for saved values
         this.setSouls(playerData.souls)
@@ -388,8 +394,8 @@ export default class Player extends Entity {
             inventory:  this.getInventory()
         }
         
-        Player.sendToDataBase = playerData
-        DbSystem.writeDb(Player.database, playerDataBasePath)
+        Player.setPlayerData(playerData)
+        DbSystem.writeDb(Player.getDatabase(), playerDataBasePath)
     }
 
     /**
@@ -428,9 +434,9 @@ export default class Player extends Entity {
      */
     delayPlayerAction(milisseconds){
         
-        this.canPlay = false
+        this.setCanPlay(false)
         const delay = setInterval(() => {
-            this.canPlay = true
+            this.setCanPlay(true)
             clearDelayTimer()
         }, milisseconds)
 

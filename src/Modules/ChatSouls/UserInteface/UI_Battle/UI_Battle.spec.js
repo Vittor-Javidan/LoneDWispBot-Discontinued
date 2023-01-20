@@ -81,8 +81,8 @@ function fleeOption() {
 
             //Test
             expect(player.getIsAlive()).toBe(true)
-            expect(player.primaryState).toBe(PLAYER_STATES.EXPLORING.PRIMARY)
-            expect(player.secondaryState).toBe(PLAYER_STATES.EXPLORING.SECONDARY.IDLE)
+            expect(player.getPrimaryState()).toBe(PLAYER_STATES.EXPLORING.PRIMARY)
+            expect(player.getSecondaryState()).toBe(PLAYER_STATES.EXPLORING.SECONDARY.IDLE)
             expect(Battle.battlesList.length).toBe(0)
             
             //Sanitizers
@@ -172,8 +172,8 @@ function fleeOption() {
             //Test 1
             expect(player.getIsAlive()).toBe(true)
             expect(player.getSouls()).toBe(0)
-            expect(player.primaryState).toBe(PLAYER_STATES.FIRE_PIT.PRIMARY)
-            expect(player.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT)
+            expect(player.getPrimaryState()).toBe(PLAYER_STATES.FIRE_PIT.PRIMARY)
+            expect(player.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT)
             expect(Battle.battlesList.length).toBe(0)
 
             //Sanitizers
@@ -459,8 +459,8 @@ function playerAdvantageContext() {
         expect(enemie.getIsAlive()).toBe(true)
         expect(enemie.getCurrentHP()).toBe(9999)
         expect(player.getCurrentHP()).toBe(1000) //hp from "nerfedStats"
-        expect(player.primaryState).toBe(PLAYER_STATES.FIRE_PIT.PRIMARY)
-        expect(player.secondaryState).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT)
+        expect(player.getPrimaryState()).toBe(PLAYER_STATES.FIRE_PIT.PRIMARY)
+        expect(player.getSecondaryState()).toBe(PLAYER_STATES.FIRE_PIT.SECONDARY.RESTING_ON_FIRE_PIT)
         expect(Battle.battlesList.length).toBe(0)
 
         //Sanitazing

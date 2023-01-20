@@ -10,7 +10,7 @@ import { sendMessage_UI_EquipmentTypeMenu } from "../../UserInteface/sendMessage
 export default function to_EquipmentTypeMenu(playerInstance, menuMessage) {
 
     const equipmentType = getEquipmentTypeByPlayerState(playerInstance)
-    playerInstance.secondaryState = returnEquipmentMenuStateByType(equipmentType)
+    playerInstance.setSecondaryState(returnEquipmentMenuStateByType(equipmentType))
     sendMessage_UI_EquipmentTypeMenu(playerInstance, menuMessage)
 }
 
@@ -20,7 +20,7 @@ export default function to_EquipmentTypeMenu(playerInstance, menuMessage) {
  */
 export function to_MeleeMenu(playerInstance, menuMessage) {
 
-    playerInstance.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.MELEE_MENU
+    playerInstance.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.MELEE_MENU)
     sendMessage_UI_EquipmentTypeMenu(playerInstance, menuMessage)
 }
 
@@ -30,7 +30,7 @@ export function to_MeleeMenu(playerInstance, menuMessage) {
  */
 export function to_LongRangeMenu(playerInstance, menuMessage) {
 
-    playerInstance.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.LONG_RANGE_MENU
+    playerInstance.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.LONG_RANGE_MENU)
     sendMessage_UI_EquipmentTypeMenu(playerInstance, menuMessage)
 }
 
@@ -40,7 +40,7 @@ export function to_LongRangeMenu(playerInstance, menuMessage) {
  */
 export function to_HelmetMenu(playerInstance, menuMessage) {
 
-    playerInstance.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.HELMET_MENU
+    playerInstance.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.HELMET_MENU)
     sendMessage_UI_EquipmentTypeMenu(playerInstance, menuMessage)
 }
 
@@ -51,7 +51,7 @@ export function to_HelmetMenu(playerInstance, menuMessage) {
  */
 export function to_BodyArmorMenu(playerInstance, menuMessage) {
 
-    playerInstance.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.BODY_ARMOR_MENU
+    playerInstance.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.BODY_ARMOR_MENU)
     sendMessage_UI_EquipmentTypeMenu(playerInstance, menuMessage)
 }
 
@@ -61,7 +61,7 @@ export function to_BodyArmorMenu(playerInstance, menuMessage) {
  */
 export function to_GlovesMenu(playerInstance, menuMessage) {
 
-    playerInstance.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.GLOVES_MENU
+    playerInstance.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.GLOVES_MENU)
     sendMessage_UI_EquipmentTypeMenu(playerInstance, menuMessage)
 }
 
@@ -71,6 +71,6 @@ export function to_GlovesMenu(playerInstance, menuMessage) {
  */
 export function to_BootsMenu(playerInstance, menuMessage) {
 
-    playerInstance.secondaryState = PLAYER_STATES.FIRE_PIT.SECONDARY.BOOTS_MENU
+    playerInstance.setSecondaryState(PLAYER_STATES.FIRE_PIT.SECONDARY.BOOTS_MENU)
     sendMessage_UI_EquipmentTypeMenu(playerInstance, menuMessage)
 }

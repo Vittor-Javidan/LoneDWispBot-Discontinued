@@ -5,6 +5,7 @@ import { TYPE_DEFINITIONS_KEYS } from '../../Globals/TYPE_DEFINITIONS_KEYS'
 import Player from './Player'
 
 /** See `Types.js` to understand the types
+ * @typedef {import('../../TypeDefinitions/Types').CS_Database} CS_Database
  * @typedef {import("../../TypeDefinitions/Types").CS_Stats} CS_Stats
  * @typedef {import("../../TypeDefinitions/Types").CS_Inventory_Equipments} CS_Inventory_Equipments
  * @typedef {import("../../TypeDefinitions/Types").CS_Entity_Inventory} CS_Entity_Inventory
@@ -64,7 +65,7 @@ function initialization() {
 			expect(playerInstance.getInventoryResources()).toStrictEqual(DummyGuy.inventoryResources)
 
 			// Sanitizer
-			Player.onlinePlayers = []
+			Player.setOnlinePlayers([])
 		})
 	})
 }
@@ -77,14 +78,21 @@ function settersAndGetters() {
 			1. set normaly
 		`, () => {
 			
-			//1
-			const database = Player.database
+			// Instantiation
+			/**@type {CS_Database} */
+			const database = deepCopy(Player.getDatabase()) // To unlink any references from Class database
+
+			//Setup
 			database[DummyData.herobrineData.name] = DummyData.herobrineData
-			Player.database = database
-			expect(Player.database[DummyData.herobrineData.name]).toBeDefined()
+
+			//Run
+			Player.setDatabase(database)
+
+			//Test
+			expect(Player.getPlayerData(DummyData.herobrineData.name)).toBeDefined()
 
 			//Sanitizer
-			delete Player.database[DummyData.herobrineData.name]
+			Player.deletePlayer(DummyData.herobrineData.name, true)
 			Player.forceSaveDataBase()
 		})
 		
@@ -92,23 +100,29 @@ function settersAndGetters() {
 			1. when tring to save wrong data base
 		`, () => {
 			
-			expect(() => Player.database = DummyData.wrongDataBase).toThrow(
+			expect(() => Player.setDatabase(DummyData.wrongDataBase)).toThrow(
 				Error(`ERROR: Player class, "database" setter. You probably sending wrong data to replace the actual data base.`)
 			)
 		})
 	})
 
-	describe("send To DataBase", () => {
+	describe("playerData", () => {
 
 		it(`Should:
 			1. set normaly
 		`, () => {
-			//1
-			Player.sendToDataBase = DummyData.herobrineData
-			expect(Player.database[DummyData.herobrineData.name]).toBeDefined()
+
+			//Instantiation
+			const playerData = DummyData.herobrineData
+			
+			//Run
+			Player.setPlayerData(playerData) 
+
+			//Test
+			expect(Player.getPlayerData(playerData.name)).toStrictEqual(playerData)
 
 			//Sanitizer
-			delete Player.database[DummyData.herobrineData.name]
+			Player.deletePlayer(playerData.name, true)
 			Player.forceSaveDataBase()
 		})
 		
@@ -116,8 +130,8 @@ function settersAndGetters() {
 			1. when player data has no name
 		`, () => {
 			
-			expect(() => Player.sendToDataBase = DummyData.playerWithNoName).toThrow(
-				Error(`ERROR: Player class, "sendToDataBase" setter: playerData must have at least a name.`)
+			expect(() => Player.setPlayerData(DummyData.playerWithNoName)).toThrow(
+				Error(`ERROR: Player class, "playerData" setter: playerData must have at least a name.`)
 			)
 		})
 	})
@@ -136,20 +150,20 @@ function settersAndGetters() {
 			instancesArray.push(dummyPlayer_1)
 			instancesArray.push(dummyPlayer_2)
 			instancesArray.push(dummyPlayer_3)
-			Player.onlinePlayers = instancesArray
-			expect(Player.onlinePlayers[0] instanceof Player).toEqual(true)
-			expect(Player.onlinePlayers[1] instanceof Player).toEqual(true)
-			expect(Player.onlinePlayers[2] instanceof Player).toEqual(true)
+			Player.setOnlinePlayers(instancesArray)
+			expect(Player.getOnlinePlayers()[0] instanceof Player).toEqual(true)
+			expect(Player.getOnlinePlayers()[1] instanceof Player).toEqual(true)
+			expect(Player.getOnlinePlayers()[2] instanceof Player).toEqual(true)
 
 			//Sanitizer
-			Player.onlinePlayers = []
+			Player.setOnlinePlayers([])
 		})
 
 		it(`Throws Error:
 			1. when array is not a array of Players
 		`, () => {
 			
-			expect(() => Player.onlinePlayers = ["We", "will", "we", "will", "rock you!"]).toThrow(
+			expect(() => Player.setOnlinePlayers(["We", "will", "we", "will", "rock you!"])).toThrow(
 				Error(`ERROR, Player class, "onlinePlayer" setter: only array of players are allowed`)
 			)
 		})
@@ -162,8 +176,8 @@ function settersAndGetters() {
 		`, () => {
 			
 			const dummyPlayer = new Player("Dummy Player: currentState setter/getter")
-			dummyPlayer.currentState = DummyData.playerState
-			expect(dummyPlayer.currentState).toStrictEqual(DummyData.playerState)
+			dummyPlayer.setCurrentState(DummyData.playerState)
+			expect(dummyPlayer.getCurrentState()).toStrictEqual(DummyData.playerState)
 		})
 	})
 
@@ -174,8 +188,8 @@ function settersAndGetters() {
 		`, () => {
 			
 			const dummyPlayer = new Player("Dummy Player: primaryState setter/getter")
-			dummyPlayer.primaryState = DummyData.playerState.primary
-			expect(dummyPlayer.primaryState).toEqual(DummyData.playerState.primary)
+			dummyPlayer.setPrimaryState(DummyData.playerState.primary)
+			expect(dummyPlayer.getPrimaryState()).toEqual(DummyData.playerState.primary)
 		})
 	})
 
@@ -186,8 +200,8 @@ function settersAndGetters() {
 		`, () => {
 			
 			const dummyPlayer = new Player("Dummy Player: secondaryState setter/getter")
-			dummyPlayer.secondaryState = DummyData.playerState.secondary
-			expect(dummyPlayer.secondaryState).toEqual(DummyData.playerState.secondary)
+			dummyPlayer.setSecondaryState(DummyData.playerState.secondary)
+			expect(dummyPlayer.getSecondaryState()).toEqual(DummyData.playerState.secondary)
 		})
 	})
 
@@ -197,9 +211,11 @@ function settersAndGetters() {
 			1. be set normally
 		`, () => {
 			
-			const dummyPlayer = new Player("Dummy Player")
-			dummyPlayer.currentLocation = DummyData.dummyLocation
-			expect(dummyPlayer.currentLocation).toEqual(DummyData.dummyLocation)
+			const name = "Dummy Player: currentLocation setter/getter"
+			const dummyPlayer = new Player(name)
+			const location = "Fake Location"
+			dummyPlayer.setCurrentLocation(location)
+			expect(dummyPlayer.getCurrentLocation()).toEqual(location)
 		})
 	})
 
@@ -210,8 +226,8 @@ function settersAndGetters() {
 		`, () => {
 			
 			const dummyPlayer = new Player("Dummy Player: canPlay setter/getter")
-			dummyPlayer.canPlay = true
-			expect(dummyPlayer.canPlay).toEqual(true)
+			dummyPlayer.setCanPlay(true)
+			expect(dummyPlayer.getCanPlay()).toEqual(true)
 		})
 
 		it(`Throws Error:
@@ -219,9 +235,9 @@ function settersAndGetters() {
 		`, () => {
 			
 			const dummyPlayer = new Player("Dummy Player: canPlay setter/getter")
-			expect(() => dummyPlayer.canPlay = `Wrong Type`).toThrow(Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`))
-			expect(() => dummyPlayer.canPlay = 0).toThrow(Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`))
-			expect(() => dummyPlayer.canPlay = {}).toThrow(Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`))
+			expect(() => dummyPlayer.setCanPlay(`Wrong Type`)).toThrow(Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`))
+			expect(() => dummyPlayer.setCanPlay(0)).toThrow(Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`))
+			expect(() => dummyPlayer.setCanPlay({})).toThrow(Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`))
 		})
 	})
 }
@@ -234,12 +250,13 @@ function classMethods() {
 			1. Force save current information on database
 		`, () => {
 
-			//Data creation
-			const name = "Dummy Guy"
-			/**@type {CS_EntityData} */
-			const playerData = deepCopy(Player.database[name])
-			playerData.name = "Dummy Guy: forceSaveDataBase"
-			Player.sendToDataBase = playerData
+			//Instantiation
+			const playerData = {
+				name: "Dummy Guy: forceSaveDataBase"
+			}
+
+			//Setup
+			Player.setPlayerData(playerData)
 
 			//Run
 			Player.forceSaveDataBase()
@@ -249,7 +266,7 @@ function classMethods() {
 			expect(newDatabase[playerData.name]).toBeDefined()
 
 			//Sanitizer
-			delete Player.database[playerData.name]
+			Player.deletePlayer(playerData.name, true)
 			Player.forceSaveDataBase()
 		})
 	})
@@ -268,7 +285,7 @@ function classMethods() {
 			Player.deletePlayer(name, true)
 
 			//Test
-			expect(Player.database[name]).toBeUndefined()
+			expect(Player.getPlayerData(name)).toBeUndefined()
 
 			//Sanitizer
 			Player.logoutPlayerInstance(player)
@@ -282,19 +299,22 @@ function classMethods() {
 			2. send False response when register is not necessary
 		`, () => {
 
-			const dummyPlayer = new Player(DummyData.herobrineData.name)
+			//Instantiation
+			const playerData = DummyData.herobrineData
+			const name = DummyData.herobrineData.name
+			const dummyPlayer = new Player(name)
 			
 			//1
 			Player.register(dummyPlayer)
 			expect(dummyPlayer.isNewPlayer).toBe(true)
-			expect(Player.database[DummyData.herobrineData.name]).toStrictEqual(DummyData.herobrineData)
+			expect(Player.getPlayerData(name)).toStrictEqual(playerData)
 
 			//2
 			Player.register(dummyPlayer)
 			expect(dummyPlayer.isNewPlayer).toBe(false)
 
 			//Sanitizer
-			delete Player.database[DummyData.herobrineData.name]
+			Player.deletePlayer(name, true)
 		})
 	})
 
@@ -305,41 +325,50 @@ function classMethods() {
 			2. Update when there is inventory information missing,
 			3. Update when there is only inventory equipments information missing
 		`, () => {
+
+			//Instantiation
+			const name_1 = DummyData.outdatedPlayerData_1.name
+			const name_2 = DummyData.outdatedPlayerData_2.name
+			const name_3 = DummyData.outdatedPlayerData_3.name
+			const dummyPlayer_1 = new Player(name_1)
+			const dummyPlayer_2 = new Player(name_2)
+			const dummyPlayer_3 = new Player(name_3)
+
+			//Setup
+			Player.setPlayerData(DummyData.outdatedPlayerData_1)
+			Player.setPlayerData(DummyData.outdatedPlayerData_2)
+			Player.setPlayerData(DummyData.outdatedPlayerData_3)
+
+			//Run
+			Player.updateDataBaseMissingInfo(dummyPlayer_1)
+			Player.updateDataBaseMissingInfo(dummyPlayer_2)
+			Player.updateDataBaseMissingInfo(dummyPlayer_3)
 			
 			//1
-			const dummyPlayer_1 = new Player(DummyData.outdatedPlayerData_1.name)
-			Player.sendToDataBase = DummyData.outdatedPlayerData_1
-			Player.updateDataBaseMissingInfo(dummyPlayer_1)
-			expect(Player.database[DummyData.outdatedPlayerData_1.name].name).toEqual(DummyData.outdatedPlayerData_1.name)
-			expect(Player.database[DummyData.outdatedPlayerData_1.name].souls).toEqual(0)
-			expect(Player.database[DummyData.outdatedPlayerData_1.name].attributes).toStrictEqual(Default.attributes)
-			expect(Player.database[DummyData.outdatedPlayerData_1.name].equipment).toStrictEqual(Default.equipments)
-			expect(Player.database[DummyData.outdatedPlayerData_1.name].inventory).toStrictEqual(Default.inventory)
+			expect(Player.getPlayerData(name_1).name).toEqual(name_1)
+			expect(Player.getPlayerData(name_1).souls).toEqual(0)
+			expect(Player.getPlayerData(name_1).attributes).toStrictEqual(Default.attributes)
+			expect(Player.getPlayerData(name_1).equipment).toStrictEqual(Default.equipments)
+			expect(Player.getPlayerData(name_1).inventory).toStrictEqual(Default.inventory)
 			
 			//2
-			const dummyPlayer_2 = new Player(DummyData.outdatedPlayerData_2.name)
-			Player.sendToDataBase = DummyData.outdatedPlayerData_2
-			Player.updateDataBaseMissingInfo(dummyPlayer_2)
-			expect(Player.database[DummyData.outdatedPlayerData_2.name].name).toEqual(DummyData.outdatedPlayerData_2.name)
-			expect(Player.database[DummyData.outdatedPlayerData_2.name].souls).toEqual(0)
-			expect(Player.database[DummyData.outdatedPlayerData_2.name].attributes).toStrictEqual(Default.attributes)
-			expect(Player.database[DummyData.outdatedPlayerData_2.name].equipment).toStrictEqual(Default.equipments)
-			expect(Player.database[DummyData.outdatedPlayerData_2.name].inventory).toStrictEqual(Default.inventory)
+			expect(Player.getPlayerData(name_2).name).toEqual(name_2)
+			expect(Player.getPlayerData(name_2).souls).toEqual(0)
+			expect(Player.getPlayerData(name_2).attributes).toStrictEqual(Default.attributes)
+			expect(Player.getPlayerData(name_2).equipment).toStrictEqual(Default.equipments)
+			expect(Player.getPlayerData(name_2).inventory).toStrictEqual(Default.inventory)
 			
 			//3
-			const dummyPlayer_3 = new Player(DummyData.outdatedPlayerData_3.name)
-			Player.sendToDataBase = DummyData.outdatedPlayerData_3
-			Player.updateDataBaseMissingInfo(dummyPlayer_3)
-			expect(Player.database[DummyData.outdatedPlayerData_3.name].name).toEqual(DummyData.outdatedPlayerData_3.name)
-			expect(Player.database[DummyData.outdatedPlayerData_3.name].souls).toEqual(0)
-			expect(Player.database[DummyData.outdatedPlayerData_3.name].attributes).toStrictEqual(Default.attributes)
-			expect(Player.database[DummyData.outdatedPlayerData_3.name].equipment).toStrictEqual(Default.equipments)
-			expect(Player.database[DummyData.outdatedPlayerData_3.name].inventory).toStrictEqual(Default.inventory)
+			expect(Player.getPlayerData(name_3).name).toEqual(name_3)
+			expect(Player.getPlayerData(name_3).souls).toEqual(0)
+			expect(Player.getPlayerData(name_3).attributes).toStrictEqual(Default.attributes)
+			expect(Player.getPlayerData(name_3).equipment).toStrictEqual(Default.equipments)
+			expect(Player.getPlayerData(name_3).inventory).toStrictEqual(Default.inventory)
 
 			//Sanitizer
-			delete Player.database[DummyData.outdatedPlayerData_1.name]
-			delete Player.database[DummyData.outdatedPlayerData_2.name]
-			delete Player.database[DummyData.outdatedPlayerData_3.name]
+			Player.deletePlayer(name_1, true)
+			Player.deletePlayer(name_2, true)
+			Player.deletePlayer(name_3, true)
 			Player.forceSaveDataBase()
 		})
 	})
@@ -353,11 +382,11 @@ function classMethods() {
 			
 			//1
 			const dummyPlayer = new Player("Dummy Player: isLogged()")
-			Player.onlinePlayers.push(dummyPlayer)
+			Player.getOnlinePlayers().push(dummyPlayer)
 			expect(Player.isLogged("Dummy Player: isLogged()")).toBe(true)
 			
 			//2
-			Player.onlinePlayers = []
+			Player.setOnlinePlayers([]) 
 			expect(Player.isLogged("Dummy Player: isLogged()")).toBe(false)
 		})
 	})
@@ -368,13 +397,18 @@ function classMethods() {
 			1. login when player is not online
 		`, () => {
 
-			//1
-			const playerInstance = new Player("Dummy Player: loginPlayerInstance()")
+			//Instantiation
+			const name = "Dummy Player: loginPlayerInstance()"
+			const playerInstance = new Player(name)
+
+			//Run
 			Player.loginPlayerInstance(playerInstance)
-			expect(Player.onlinePlayers[0].getName()).toBe("Dummy Player: loginPlayerInstance()")
+
+			//Test
+			expect(Player.getOnlinePlayers()[0].getName()).toBe(name)
 
 			//Sanitizer
-			Player.onlinePlayers = []
+			Player.setOnlinePlayers([])
 		})
 
 		it(`Throw Error: 
@@ -385,7 +419,7 @@ function classMethods() {
 			const dummyInstance = new Player("Dummy Player: loginPlayerInstance()")
 
 			//Setup
-			Player.onlinePlayers.push(dummyInstance)
+			Player.getOnlinePlayers().push(dummyInstance)
 
 			//Test
 			expect(() => Player.loginPlayerInstance(dummyInstance)).toThrow(
@@ -393,7 +427,7 @@ function classMethods() {
 			)
 
 			//Sanitizer
-			Player.onlinePlayers = []
+			Player.setOnlinePlayers([])
 		})
 	})
 
@@ -405,9 +439,9 @@ function classMethods() {
 			
 			//1
 			const dummyPlayer = new Player("Dummy Player: logoutPlayerInstance()")
-			Player.onlinePlayers.push(dummyPlayer)
+			Player.getOnlinePlayers().push(dummyPlayer)
 			Player.logoutPlayerInstance(dummyPlayer)
-			expect(Player.onlinePlayers.length).toBe(0)
+			expect(Player.getOnlinePlayers().length).toBe(0)
 		})
 
 		it(`Throws Error:
@@ -429,11 +463,11 @@ function classMethods() {
 			
 			//1
 			const dummyPlayer = new Player("Dummy Player: getPlayerInstanceByName()")
-			Player.onlinePlayers.push(dummyPlayer)
+			Player.getOnlinePlayers().push(dummyPlayer)
 			expect(Player.getPlayerInstanceByName(dummyPlayer.getName()).getName()).toEqual("Dummy Player: getPlayerInstanceByName()")
 			
 			//Sanitizer
-			Player.onlinePlayers = []
+			Player.setOnlinePlayers([])
 		})
 
 		it(`Throws Error:
@@ -472,15 +506,21 @@ function instanceMethods() {
 		it(`Should:
 			1. save information on player database
 		`, () => {
-			
-			//1
+
+			//Instantiation
 			const dinamicDummy = new Player("Dummy Player: save()")
+
+			//Setup
 			dinamicDummy.setSouls(RandomData.souls())
 			dinamicDummy.setlevel(RandomData.level())
 			dinamicDummy.setAttributes(RandomData.attributes())
 			dinamicDummy.setCurrentEquipment(RandomData.equipment())
 			dinamicDummy.setInventory(RandomData.inventory())
+
+			//Run
 			dinamicDummy.save()
+
+			//Tests
 			const newDataBase = DbSystem.loadDb(playerDataBasePath)[dinamicDummy.getName()] //pre-requisite, to get new data from database file
 			expect(newDataBase.name).toBe(dinamicDummy.getName())
 			expect(newDataBase.souls).toBe(dinamicDummy.getSouls())
@@ -490,7 +530,7 @@ function instanceMethods() {
 			expect(newDataBase.inventory).toStrictEqual(dinamicDummy.getInventory())
 
 			//Sanitizer
-			delete Player.database[dinamicDummy.getName()]
+			Player.deletePlayer(dinamicDummy.getName(), true)
 			Player.forceSaveDataBase()
 		}) 
 	})
@@ -518,7 +558,8 @@ function instanceMethods() {
 		`, () => {
 
 			//Instantiation
-			const dinamicDummy = new Player("Dummy Player: upgradeAttributeProcessHandler()")
+			const name = "Dummy Player: upgradeAttributeProcessHandler()"
+			const dinamicDummy = new Player(name)
 
 			//Setup
 			const initalAttributes = RandomData.attributes()
@@ -531,7 +572,7 @@ function instanceMethods() {
 			dinamicDummy.upgradeAttributeProcessHandler(attributeTypes.INTELLLIGENCE)
 
 			//Test
-			const newSavedData_DinamicDummy = DbSystem.loadDb(playerDataBasePath)["Dummy Player: upgradeAttributeProcessHandler()"] //pre-requisite, to get new data from database file
+			const newSavedData_DinamicDummy = DbSystem.loadDb(playerDataBasePath)[name] //pre-requisite, to get new data from database file
 			expect(newSavedData_DinamicDummy.attributes).toStrictEqual({
 				vitality: 		initalAttributes.vitality		+ 1,
 				agility: 		initalAttributes.agility		+ 1,
@@ -540,7 +581,7 @@ function instanceMethods() {
 			})
 
 			//Sanitizer
-			delete Player.database[dinamicDummy.getName()]
+			Player.deletePlayer(name, true)
 			Player.forceSaveDataBase()
 		})
 	})
@@ -551,11 +592,16 @@ function instanceMethods() {
 			1. set "can.play" to false, and back to true after timeout
 		`, async () => {
 
+			//Instantiation
 			const asyncGuy = new Player("Async Guy: delayPlayerAction()")
+			
+			//Run
 			asyncGuy.delayPlayerAction(1)
-			expect(asyncGuy.canPlay).toBe(false)
+			
+			//Test
+			expect(asyncGuy.getCanPlay()).toBe(false)
 			await new Promise(resolve => setTimeout(resolve, 10))
-			expect(asyncGuy.canPlay).toBe(true)
+			expect(asyncGuy.getCanPlay()).toBe(true)
 		})
 	})
 }
