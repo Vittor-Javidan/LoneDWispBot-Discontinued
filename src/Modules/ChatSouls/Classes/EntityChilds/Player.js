@@ -27,7 +27,7 @@ export default class Player extends Entity {
     static #onlinePlayers = []
 
     /**
-     * used to define if player can play in some situations
+     * used to define if player can play or not in some situations
      * @type {boolean}
      */
     #canPlay = true
@@ -196,23 +196,23 @@ export default class Player extends Entity {
     // CLASS METHODS ==================================================================================
     //=================================================================================================
 
-    static updateUsersDatabaseStructure() {
+    static forceUpdateDatabase() {
+
+        this.forEachUser(userName => Player.startGame(userName))
+        this.forceSaveDataBase()
+        this.forEachUser(userName => Player.logoutPlayerInstanceByName(userName))
+    }
+
+    /**
+     * @param {function((userName: string) => {}): void} callBack
+     * @returns {void}
+     */
+    static forEachUser(callBack){
 
         const users = Object.keys(Player.getDatabase())
-
-        for(let i = 0; i < users.length; i++) {
-            if(users[i] !== "Authorization") {
-                this.startGame(users[i])
-            }
-        }
-
-        this.forceSaveDataBase()
-
-        for(let i = 0; i < users.length; i++) {
-            if(users[i] !== "Authorization") {
-                this.logoutPlayerInstance(Player.getPlayerInstanceByName(users[i]))
-            }
-        }
+        users.forEach(userName => {if(userName !== "Authorization") {
+            callBack(userName)
+        }})
     }
 
     /**
@@ -344,7 +344,17 @@ export default class Player extends Entity {
     }
 
     /**
-     * Returns the instance of the player
+     * - logout player instance by using just a name.
+     * - If you already have the instance available, use the
+     * method `logoutPlayerInstance(playerInstance)`.
+     * @param {string} playerName 
+     */
+    static logoutPlayerInstanceByName(playerName) {
+        this.logoutPlayerInstance(this.getPlayerInstanceByName(playerName))
+    }
+
+    /**
+     * - Returns the instance of the player
      * @param {string} userName 
      * @returns {Player | undefined} If undefined, that means no player was found
     */

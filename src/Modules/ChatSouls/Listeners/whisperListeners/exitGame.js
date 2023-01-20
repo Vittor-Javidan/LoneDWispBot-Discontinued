@@ -10,9 +10,8 @@ import Player from "../../Classes/EntityChilds/Player"
 export default function exitGame(playerInstance){
 
     const playerName = playerInstance.getName()
-    const battleinstance = Battle.getBattle(playerName)
 
-    if(battleinstance) {
+    if(Battle.doesBattleExist(playerName)) {
         playerInstance.setSouls(0)
         playerInstance.save()
         sendMessage(

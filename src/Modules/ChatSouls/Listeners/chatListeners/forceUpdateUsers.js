@@ -12,6 +12,6 @@ export default function forceUpdateUsers(userName){
     if(userName !== env.TWITCH.BROADCASTER_NAME) {
         return
     }
-    Player.updateUsersDatabaseStructure()
+    Player.forceUpdateDatabase()
     sendMessage(`Usuários atualizados com sucesso`)
 }

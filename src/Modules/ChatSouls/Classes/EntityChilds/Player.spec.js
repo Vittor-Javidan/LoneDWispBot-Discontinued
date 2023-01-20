@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import deepCopy from '../../../../Utils/deepCopy'
 import DbSystem, { playerDataBasePath } from '../../database/DbSystem'
+import { ENTITY_DEFAULT } from '../../Globals/ENTITY_DEFAULT'
+import { PLAYER_DEFAULT } from '../../Globals/PLAYER_DEFAULT'
 import { TYPE_DEFINITIONS_KEYS } from '../../Globals/TYPE_DEFINITIONS_KEYS'
 import Player from './Player'
 
@@ -244,6 +246,101 @@ function settersAndGetters() {
 
 function classMethods() {
 
+	describe(`forceUpdateDataBase`, () => {
+
+		/* INTENTION
+			The intend of this method is to be used when you need to update all users,
+			including the one don't play the game too often. The reasons can be for
+			test purposes, or to really force update the user data structure.
+		*/
+
+		/* FUNCTIONALITY
+			Players auto update by just login into the game. All the methods
+			must achieve is to login all database into the game, and then
+			log then out in sequence.
+		*/
+
+		/**@type {CS_EntityData} */
+		const expectedData = {
+			souls: ENTITY_DEFAULT.SOULS,
+			level: ENTITY_DEFAULT.LEVEL,
+			attributes: PLAYER_DEFAULT.ATTRIBUTES,
+			equipment: PLAYER_DEFAULT.EQUIPMENTS,
+			inventory: ENTITY_DEFAULT.INVENTORY
+		}
+
+		it(`Should force update users info inside database`, () => {
+			
+			/* DETAILS
+				All users must have their structure updated. The many
+				cenarios is treated on updateDataBaseMissingInfo() class
+				method.
+			*/
+
+			//Instantiation
+			const playerData_1 = DummyData.outdatedPlayerData_1
+			const playerData_2 = DummyData.outdatedPlayerData_2
+			const playerData_3 = DummyData.outdatedPlayerData_3
+
+			//Setup
+			Player.setPlayerData(playerData_1)
+			Player.setPlayerData(playerData_2)
+			Player.setPlayerData(playerData_3)
+
+			//Run
+			Player.forceUpdateDatabase()
+
+			//Tests
+			expect(Player.getPlayerData(playerData_1.name)).toStrictEqual({
+				name: playerData_1.name, ...expectedData
+			})
+			expect(Player.getPlayerData(playerData_2.name)).toStrictEqual({
+				name: playerData_2.name, ...expectedData
+			})
+			expect(Player.getPlayerData(playerData_3.name)).toStrictEqual({
+				name: playerData_3.name, ...expectedData
+			})
+
+			//Sanitizers
+			Player.deletePlayer(playerData_1.name, true)
+			Player.deletePlayer(playerData_2.name, true)
+			Player.deletePlayer(playerData_3.name, true)
+			Player.forceSaveDataBase()
+		})
+	})
+
+	describe(`forEachUser`, () => {
+
+		/*INTENTION
+			Loop through all users on local loaded database
+		*/
+
+		/*FUNCTIONALITY
+			It must iterate through all users and ignore the
+			Autorization propertie that allow the data to be saved
+			on DbSystem Class
+		*/
+
+		it(`Should iterate through all users`, () => {
+			
+			//Instantiation
+			const copiedDataBase = deepCopy(Player.getDatabase())
+			delete copiedDataBase["Authorization"]
+			let retrievedNames = []
+
+			//Setup
+			const copiedDataBaseUserNames = Object.keys(copiedDataBase)
+
+			//Run
+			Player.forEachUser(userName => retrievedNames.push(userName))
+
+			//Test
+			retrievedNames.forEach(name => {
+				expect(copiedDataBaseUserNames.includes(name)).toBe(true)
+			})
+		})
+	})
+
 	describe(`forceSaveDataBase`, () => {
 
 		it(`Should
@@ -433,14 +530,24 @@ function classMethods() {
 
 	describe(`logoutPlayerInstance`, () => {
 
-		it(`Should:
-			1. logout player instance
+		/* INTENTION
+			to logout the player, by removing the instance
+			from `online players` list property
+		*/
+
+		it(`Should logout player using the instance
 		`, () => {
-			
-			//1
+
+			//Instantiation
 			const dummyPlayer = new Player("Dummy Player: logoutPlayerInstance()")
+			
+			//Setup
 			Player.getOnlinePlayers().push(dummyPlayer)
+			
+			//Run
 			Player.logoutPlayerInstance(dummyPlayer)
+			
+			//Test
 			expect(Player.getOnlinePlayers().length).toBe(0)
 		})
 
@@ -452,6 +559,30 @@ function classMethods() {
 			expect(() => Player.logoutPlayerInstance(dummyPlayer)).toThrow(
 				Error(`ERROR: Player class, "logoutPlayerInstance" method: player instance is not logged`)
 			)
+		})
+	})
+
+	describe(`logoutPlayerInstanceByName`, () => {
+
+		/*INTENTION
+			to just be an extension of logoutPlayerInstance() class method
+			by passing just a name instead the whole player instance object,
+			to give more flexibility and less code typing in some situations.
+		*/
+
+		it(`Should logout player instance by using the instance name properties`, () => {
+		
+			//Instantiation
+			const dummyPlayer = new Player("Dummy Player: logoutPlayerInstance()")
+
+			//Setup
+			Player.getOnlinePlayers().push(dummyPlayer)
+
+			//Run
+			Player.logoutPlayerInstanceByName(dummyPlayer.getName())
+
+			//Test
+			expect(Player.getOnlinePlayers().length).toBe(0)
 		})
 	})
 
