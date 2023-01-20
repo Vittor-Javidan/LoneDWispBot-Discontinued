@@ -22,13 +22,14 @@ describe(`Enemie class`, () => {
 
 function constructor() {
 
-    it(`Should:
-    1. instantiate with default values
+    it(`Should instantiate with enemie data
     `, () => {
         
+        //Instantiation
         const enemieData = get_DUMMY_ENEMIE()
         const enemieInstance = new Enemie(enemieData)
 
+        //Tests
         expect(enemieInstance.getlevel()).toEqual(enemieData.level)
         expect(enemieInstance.getSouls()).toEqual(enemieData.souls)
         expect(enemieInstance.getAttributes()).toStrictEqual(enemieData.attributes)
@@ -40,23 +41,33 @@ function constructor() {
 function initialize() {
 
     
-    it(`Should: 
-    1. initialize the enemie
-    `, () => {
-        
-        /*
-            No complex thinking here. Init is just a handle.
-        
-            static init(enemieData){
-                const enemie = new Enemie(enemieData)   // constructor was just tested above
-                enemie.calculateStats()                 // tested on Entity.spec.js
-                enemie.recoverHP()                      // tested on Entity.spec.js
-                return enemie
-            }
+    it(`Should initialize the enemie`, () => {
+
+        /* Enemies must:
+            1 - Have all stats calculated
+            2 - Have current HP fully recovered
+            3 - Be alive 
         */
+        
+        //Instatiation
         const enemieData = get_DUMMY_ENEMIE()
+        const expectedTotalStats = {
+            //    Stats     //                         Base Stats                          //      Stats From Equipments       
+            hp:             (statsWeight.HP          * enemieData.attributes.vitality    ) + (statsWeight.HP          * 100 * 6),
+            evasion:        (statsWeight.EVASION     * enemieData.attributes.agility     ) + (statsWeight.EVASION     * 100 * 6),
+            fisicalDamage:  (statsWeight.FISICAL_DMG * enemieData.attributes.strenght    ) + (statsWeight.FISICAL_DMG * 100 * 2), 
+            fisicalDefense: (statsWeight.FISICAL_DEF * enemieData.attributes.strenght    ) + (statsWeight.FISICAL_DEF * 100 * 4),
+            magicalDamage:  (statsWeight.MAGICAL_DMG * enemieData.attributes.intelligence) + (statsWeight.MAGICAL_DMG * 100 * 2),
+            magicalDefense: (statsWeight.MAGICAL_DEF * enemieData.attributes.intelligence) + (statsWeight.MAGICAL_DEF * 100 * 4)
+        }
+        
+        //Run
         const enemieInstance = Enemie.initialize(enemieData)
-        expect(enemieInstance instanceof Enemie).toEqual(true)
+        
+        //Test
+        expect(enemieInstance.getTotalStats()).toStrictEqual(expectedTotalStats) //1
+        expect(enemieInstance.getCurrentHP()).toBe(expectedTotalStats.hp) //2
+        expect(enemieInstance.getIsAlive()).toBe(true) //3
     })
 }
 
@@ -69,9 +80,7 @@ function getPossibleEnemies() {
         theWoodsEnemiesNames.BANDIDO
     ]
     
-    it(`Should:
-        1. get enemies by given level
-    `, () => {
+    it(`Should get possible enemies for the current player level`, () => {
         
         //Instantiation
         const dummyPlayer = new Player("Dummy Player: getPossibleEnemies()")
@@ -82,8 +91,6 @@ function getPossibleEnemies() {
 
         //Run
         const enemiesDataArray_L5 = Enemie.getPossibleEnemies(dummyPlayer)
-
-        //Filtering enemies names
         const enemiesNamesArray = enemiesDataArray_L5.map((entityData) => entityData.name)
 
         //Test
@@ -95,39 +102,26 @@ function getPossibleEnemies() {
 
 function instantiateRandomEnemie() {
 
-    it(`Should:
-        1. retrieve a enemie instance
-        2. retrieve just enemies from player current map area
-        3. retrive a enemie with all stats calculated
-    `, () => {
+    it(`Should retrieve a enemie instance from player current map area `, () => {
 
-        const dummyPlayer = new Player("Dummy Player: instantiateRandomEnemie()")
+        /* Returned enemie must:
+            1 - Be from player current map
+        */
+
+        //Instantiation
+        const name = "Dummy Player: instantiateRandomEnemie()"
+        const dummyPlayer = new Player(name)
+        const enemiesNamesArray = Object.values(ENEMIES_CATALOG.testArea)
         
-        //1
-        dummyPlayer.setCurrentLocation(MAP_AREAS.THE_WOODS)
-        dummyPlayer.setlevel(10)
-        const randomEnemieInstance = Enemie.instantiateRandomEnemie(dummyPlayer)
-        expect(randomEnemieInstance).toBeInstanceOf(Enemie)
-
-        //2
-        const theWoodsEnemiesNamesArray = Object.values(ENEMIES_CATALOG.theWoods)
-        expect(theWoodsEnemiesNamesArray.includes(randomEnemieInstance.getName())).toBe(true)
-
-        //3
-        const enemieData = get_DUMMY_ENEMIE()
-        const expectedTotalStats = {
-            hp:             (statsWeight.HP          * enemieData.attributes.vitality    ) + statsWeight.HP          * 100 * 6,
-            evasion:        (statsWeight.EVASION     * enemieData.attributes.agility     ) + statsWeight.EVASION     * 100 * 6,
-            fisicalDamage:  (statsWeight.FISICAL_DMG * enemieData.attributes.strenght    ) + statsWeight.FISICAL_DMG * 100 * 2, 
-            fisicalDefense: (statsWeight.FISICAL_DEF * enemieData.attributes.strenght    ) + statsWeight.FISICAL_DEF * 100 * 4,
-            magicalDamage:  (statsWeight.MAGICAL_DMG * enemieData.attributes.intelligence) + statsWeight.MAGICAL_DMG * 100 * 2,
-            magicalDefense: (statsWeight.MAGICAL_DEF * enemieData.attributes.intelligence) + statsWeight.MAGICAL_DEF * 100 * 4
-        }
+        //Setup
         dummyPlayer.setCurrentLocation(MAP_AREAS.TEST_AREA)
         dummyPlayer.setlevel(1)
-        const randomEnemieInstance_2 = Enemie.instantiateRandomEnemie(dummyPlayer)
-        expect(randomEnemieInstance_2.getTotalStats()).toStrictEqual(expectedTotalStats)
-        expect(randomEnemieInstance_2.getCurrentHP()).toBe(expectedTotalStats.hp)
+        
+        //Run
+        const randomEnemie = Enemie.instantiateRandomEnemie(dummyPlayer)
+        
+        //Test
+        expect(enemiesNamesArray.includes(randomEnemie.getName())).toBe(true) //1
     })
 }
 
