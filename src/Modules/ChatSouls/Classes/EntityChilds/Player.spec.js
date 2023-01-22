@@ -4,6 +4,7 @@ import DbSystem, { playerDataBasePath } from '../../database/DbSystem'
 import { ENTITY_DEFAULT } from '../../Globals/ENTITY_DEFAULT'
 import { PLAYER_DEFAULT } from '../../Globals/PLAYER_DEFAULT'
 import { TYPE_DEFINITIONS_KEYS } from '../../Globals/TYPE_DEFINITIONS_KEYS'
+import { CS_DevTools } from '../../TestTools/CS_DevTools'
 import Player from './Player'
 
 /** See `Types.js` to understand the types
@@ -18,6 +19,7 @@ import Player from './Player'
  * @typedef {import("../../TypeDefinitions/Types").CS_Equipment_ArmorData} CS_Equipment_ArmorData
  * @typedef {import("../../TypeDefinitions/Types").CS_ResourceData} CS_ResourceData
  * @typedef {import('../../TypeDefinitions/Types').CS_EntityData} CS_EntityData
+ * @typedef {import('../../TypeDefinitions/Types').CS_PlayerState} CS_PlayerState
 */
 
 const attributeTypes = TYPE_DEFINITIONS_KEYS.CS_ATTRIBUTES
@@ -34,85 +36,114 @@ function initialization() {
 
 	describe('constructor', () => {
 
-		it(`Should:
-			1. define default properties correctly
-		`, () => {
+		it(`Should instantiate with default properties`, () => {
 			
-			const dummyPlayer = new Player("Dummy Player: constructor()")
-			expect(dummyPlayer.getName()).toBe("Dummy Player: constructor()")
-			expect(dummyPlayer.getAttributes()).toStrictEqual(deepCopy(Default.attributes))
-			expect(dummyPlayer.getCurrentEquipment()).toStrictEqual(deepCopy(Default.equipments))
+			//Instantiation
+			const name = "Dummy Player: constructor()"
+			
+			//Run
+			const dummyPlayer = new Player(name)
+
+			//Tests
+			expect(dummyPlayer.getName()).toBe(name)
+			expect(dummyPlayer.getAttributes()).toStrictEqual(PLAYER_DEFAULT.ATTRIBUTES)
+			expect(dummyPlayer.getCurrentEquipment()).toStrictEqual(PLAYER_DEFAULT.EQUIPMENTS)
+			expect(dummyPlayer.getCurrentState()).toStrictEqual(PLAYER_DEFAULT.STATES)
+			expect(dummyPlayer.getCurrentLocation()).toBe(PLAYER_DEFAULT.CURRENT_LOCATION)
 		})
 	})
 	
 	describe('startGame', () => {
-		
-		it(`Should: 
-			1. Return a player instance
-			2. handle initialization,
-		`, () => {
-			
-			//1
-			const returnedPlayer = Player.startGame(DummyGuy.name)
-			expect(returnedPlayer).instanceOf(Player)
-			
-			//2
-			const playerInstance = Player.getPlayerInstanceByName(DummyGuy.name)
-			expect(playerInstance).toBeInstanceOf(Player)
-			expect(playerInstance.getSouls()).toBe(DummyGuy.souls)
-			expect(playerInstance.getlevel()).toBe(DummyGuy.level)
-			expect(playerInstance.getAttributes()).toStrictEqual(DummyGuy.attributes)
-			expect(playerInstance.getCurrentEquipment()).toStrictEqual(DummyGuy.equipment)
-			expect(playerInstance.getInventoryEquipments()).toStrictEqual(DummyGuy.inventoryEquipments)
-			expect(playerInstance.getInventoryResources()).toStrictEqual(DummyGuy.inventoryResources)
 
-			// Sanitizer
-			Player.setOnlinePlayers([])
+		/*INTENTION
+			to handle the start game process, until the player
+			instance is ready to be used.
+		*/
+		
+		/*FUNCTIONALITY
+			It returns a player instance that had passed through
+			all needed procedure. 
+		*/
+
+		it(`Should initialize the player instance`, () => {
+
+			const references = CS_DevTools.importantReferences()
+			
+			//Run
+			const newPlayer = Player.startGame("New dummy Player: startGame")
+			const oldPlayer = Player.startGame(DummyGuy.name)
+			
+			//Test
+			expect(oldPlayer).toBeInstanceOf(Player)
+			expect(newPlayer).toBeInstanceOf(Player)
+
+			// Sanitizers
+			Player.logoutPlayerInstance(oldPlayer)
+			Player.logoutPlayerInstance(newPlayer)
+			Player.deletePlayer(newPlayer.getName(), true)
 		})
 	})
 }
 
 function settersAndGetters() {
 
-	describe('database', ()=> {
+	describe('getDatabase / setDatabase', ()=> {
 
-		it(`Should: 
-			1. set normaly
-		`, () => {
+		/* INTENTION
+			to set and get "#database" private propertie
+		*/
+
+		it(`Should set and get "static #database"`, () => {
 			
 			// Instantiation
 			/**@type {CS_Database} */
-			const database = deepCopy(Player.getDatabase()) // To unlink any references from Class database
+			const newDatabase = deepCopy(Player.getDatabase())
+			const playerData = DummyData.herobrineData
 
 			//Setup
-			database[DummyData.herobrineData.name] = DummyData.herobrineData
+			newDatabase[playerData.name] = playerData
 
 			//Run
-			Player.setDatabase(database)
+			Player.setDatabase(newDatabase)
 
 			//Test
 			expect(Player.getPlayerData(DummyData.herobrineData.name)).toBeDefined()
 
-			//Sanitizer
+			//Sanitizers
 			Player.deletePlayer(DummyData.herobrineData.name, true)
 			Player.forceSaveDataBase()
 		})
 		
 		it(`Throws Error: 
-			1. when tring to save wrong data base
+			1. When try to save wrong type data
+			2. When authorizantion key is not defined
 		`, () => {
+
+			//Instantiation
+			const wrongTypes = [0, "Test", true, null, undefined, NaN]
 			
+			//Test 1
+			wrongTypes.forEach(wrongType => {
+				expect(() => Player.setDatabase(wrongType)).toThrow(
+					Error(`ERROR: Player class, "database" setter: Wrong type`)
+				)
+			})
+
+			//Test 2
 			expect(() => Player.setDatabase(DummyData.wrongDataBase)).toThrow(
-				Error(`ERROR: Player class, "database" setter. You probably sending wrong data to replace the actual data base.`)
+				Error(`ERROR: Player class, "database" setter: Authorizantion key not found.`)
 			)
 		})
 	})
 
-	describe("playerData", () => {
+	describe("getPlayerData / setPlayerData", () => {
 
-		it(`Should:
-			1. set normaly
-		`, () => {
+		/* INTENTION
+			to set and get player data.
+			Inside "#database[playerName]" propertie
+		*/
+
+		it(`Should set "static #database[playerName]"`, () => {
 
 			//Instantiation
 			const playerData = DummyData.herobrineData
@@ -123,112 +154,265 @@ function settersAndGetters() {
 			//Test
 			expect(Player.getPlayerData(playerData.name)).toStrictEqual(playerData)
 
-			//Sanitizer
+			//Sanitizers
 			Player.deletePlayer(playerData.name, true)
 			Player.forceSaveDataBase()
 		})
 		
 		it(`Throws Error: 
-			1. when player data has no name
+			1. When data has a wrong type
+			2. When player data has no name
 		`, () => {
-			
+
+			//Instantiation
+			const wrongTypes = [0, "Test", true, null, undefined, NaN]
+
+			//Test 1
+			wrongTypes.forEach(wrongType => {
+				expect(() => Player.setPlayerData(wrongType)).toThrow(
+					Error(`ERROR: Player class, "playerData" setter: Wrong type`)
+				)
+			})
+
+			//Test 2
 			expect(() => Player.setPlayerData(DummyData.playerWithNoName)).toThrow(
 				Error(`ERROR: Player class, "playerData" setter: playerData must have at least a name.`)
 			)
 		})
 	})
 
-	describe(`onlinePlayers`, () => {
+	describe(`getOnlinePlayers / setOnlinePlayers`, () => {
 
-		it(`Should:
-			1. Set normally
-		`, () => {
+		/* INTENTION
+			to set and get "#onlinePlayers" propertie,
+			wich represent all players instances.
+		*/
+
+		it(`Should set "static #onlinePlayers"`, () => {
 			
-			//1
-			const dummyPlayer_1 = new Player("Dummy Player 1: onlinePlayers setter/getter")
-			const dummyPlayer_2 = new Player("Dummy Player 1: onlinePlayers setter/getter")
-			const dummyPlayer_3 = new Player("Dummy Player 1: onlinePlayers setter/getter")
+			//Instantiation
+			const player_1 = new Player("Dummy Player 1: onlinePlayers setter/getter")
+			const player_2 = new Player("Dummy Player 1: onlinePlayers setter/getter")
+			const player_3 = new Player("Dummy Player 1: onlinePlayers setter/getter")
 			const instancesArray = []
-			instancesArray.push(dummyPlayer_1)
-			instancesArray.push(dummyPlayer_2)
-			instancesArray.push(dummyPlayer_3)
+
+			//Setup
+			instancesArray.push(player_1)
+			instancesArray.push(player_2)
+			instancesArray.push(player_3)
+
+			//Run
 			Player.setOnlinePlayers(instancesArray)
-			expect(Player.getOnlinePlayers()[0] instanceof Player).toEqual(true)
-			expect(Player.getOnlinePlayers()[1] instanceof Player).toEqual(true)
-			expect(Player.getOnlinePlayers()[2] instanceof Player).toEqual(true)
+			
+			//Tests
+			Player.getOnlinePlayers().forEach(player => {
+				expect(player).toBeInstanceOf(Player)
+			})
 
 			//Sanitizer
-			Player.setOnlinePlayers([])
+			instancesArray.forEach(player => {
+				Player.logoutPlayerInstance(player)
+			})
 		})
 
 		it(`Throws Error:
-			1. when array is not a array of Players
+			1. When array is not a array of Players
+			2. When type is wrong
 		`, () => {
+
+			//Instantiation
+			const wrongObject_1 = ["We", "will", "we", "will", "rock you!"]
+			const wrongTypes = [0, "Test", true, null, undefined, NaN]
 			
-			expect(() => Player.setOnlinePlayers(["We", "will", "we", "will", "rock you!"])).toThrow(
+			//Test 1 
+			expect(() => Player.setOnlinePlayers(wrongObject_1)).toThrow(
 				Error(`ERROR, Player class, "onlinePlayer" setter: only array of players are allowed`)
+			)
+
+			//Test 2
+			wrongTypes.forEach(wrongType => {
+				expect(() => Player.setOnlinePlayers(wrongType)).toThrow(
+					Error(`ERROR, Player class, "onlinePlayer" setter: wrong type`)
+				)
+			})
+		})
+	})
+
+	describe(`getCurrentState / setCurrentState`, () => {
+
+		/* INTENTION
+			to set and get "#currentState" propertie.
+		*/
+
+		it(`Should set "#currentState"`, () => {
+			
+			//Instantiation
+			const player = new Player("Dummy Player: currentState setter/getter")
+			const fakeState = {
+				primary: "Fake Primary State",
+				secondary: "Fake Secondary State"
+			}
+			
+			//Run
+			player.setCurrentState(fakeState)
+			
+			//Test
+			expect(player.getCurrentState()).toStrictEqual(fakeState)
+		})
+
+		it(`Thows Error:
+			1. When wrong type is set
+			2. When properties are not defined
+		`, () => {
+
+			//Instantiation
+			const player = new Player("Dummy Player: currentState setter/getter")
+			const wrongTypes = [0, "Test", true, null, undefined, NaN]
+
+			//Test 1
+			wrongTypes.forEach(wrongType => {
+				expect(() => player.setCurrentState(wrongType)).toThrow(
+					Error(`ERROR, Player class, "currentState" setter: wrong type`)
+				)
+			})
+
+			//Test 2
+			expect(() => player.setCurrentState({})).toThrow(
+				Error(`ERROR, Player class, "currentState" setter: propertie not defined`)
 			)
 		})
 	})
 
-	describe(`currentState`, () => {
+	describe(`getPrimaryState / setPrimaryState`, () => {
 
-		it(`Should:
-			1. be set normally
-		`, () => {
-			
-			const dummyPlayer = new Player("Dummy Player: currentState setter/getter")
-			dummyPlayer.setCurrentState(DummyData.playerState)
-			expect(dummyPlayer.getCurrentState()).toStrictEqual(DummyData.playerState)
-		})
-	})
-
-	describe(`primaryState`, () => {
+		/* INTENTION
+			to set and get "#currentState.primary" propertie.
+		*/
 		
-		it(`Should:
-			1. be set normally
-		`, () => {
+		it(`Should set "#currentState.primary"`, () => {
 			
-			const dummyPlayer = new Player("Dummy Player: primaryState setter/getter")
-			dummyPlayer.setPrimaryState(DummyData.playerState.primary)
-			expect(dummyPlayer.getPrimaryState()).toEqual(DummyData.playerState.primary)
+			//Instantiation
+			const fakeState = "Fake Primary State"
+			const name = "Dummy Player: primaryState setter/getter"
+			const player = new Player(name)
+			
+			//Run
+			player.setPrimaryState(fakeState)
+			
+			//Test
+			expect(player.getPrimaryState()).toEqual(fakeState)
+		})
+
+		it(`Thows Error:
+			1 - When wrong type is set
+		`, () => {
+
+			//Instantiation
+			const name = "Dummy Player: primaryState setter/getter"
+			const player = new Player(name)
+			const wrongTypes = [0, null, true, undefined, NaN, {}]
+
+			//Test
+			wrongTypes.forEach(wrongType => {
+				expect(() => player.setPrimaryState(wrongType)).toThrow(
+					Error(`ERROR, Player class, "primaryState" setter: wrong type`)
+				)
+			})
 		})
 	})
 
 	describe(`secondaryState`, () => {
 
-		it(`Should:
-			1. be set normally
-		`, () => {
+		/* INTENTION
+			to set and get "#currentState.secondary" propertie.
+		*/
+
+		it(`Should set "#currentState.secondary"`, () => {
 			
-			const dummyPlayer = new Player("Dummy Player: secondaryState setter/getter")
-			dummyPlayer.setSecondaryState(DummyData.playerState.secondary)
-			expect(dummyPlayer.getSecondaryState()).toEqual(DummyData.playerState.secondary)
+			//Instantiation
+			const fakeState = "Fake Secondary State"
+			const name = "Dummy Player: primaryState setter/getter"
+			const player = new Player(name)
+
+			//Run
+			player.setSecondaryState(fakeState)
+			
+			//Test
+			expect(player.getSecondaryState()).toEqual(fakeState)
+		})
+
+		it(`Thows Error:
+			1 - When wrong type is set
+		`, () => {
+
+			//Instantiation
+			const name = "Dummy Player: primaryState setter/getter"
+			const player = new Player(name)
+			const wrongTypes = [0, null, true, undefined, NaN, {}]
+
+			//Test
+			wrongTypes.forEach(wrongType => {
+				expect(() => player.setSecondaryState(wrongType)).toThrow(
+					Error(`ERROR, Player class, "secondaryState" setter: wrong type`)
+				)
+			})
 		})
 	})
 
 	describe(`currentLocation`, () => {
 
-		it(`Should:
-			1. be set normally
-		`, () => {
+		/* INTENTION
+			to set and get "#currentLocation" propertie.
+		*/
+
+		it(`Should set "#currentLocation"`, () => {
 			
+			//Instantiation
 			const name = "Dummy Player: currentLocation setter/getter"
 			const dummyPlayer = new Player(name)
 			const location = "Fake Location"
+
+			//Run
 			dummyPlayer.setCurrentLocation(location)
+
+			//Test
 			expect(dummyPlayer.getCurrentLocation()).toEqual(location)
+		})
+
+		it(`Should:
+			1 - When wrong type is set
+		`, () => {
+
+			//Instantiation
+			const name = "Dummy Player: primaryState setter/getter"
+			const player = new Player(name)
+			const wrongTypes = [0, null, true, undefined, NaN, {}]
+
+			//Test
+			wrongTypes.forEach(wrongType => {
+				expect(() => player.setCurrentLocation(wrongType)).toThrow(
+					Error(`ERROR, Player class, "currentLocation" setter: wrong type`)
+				)
+			})
 		})
 	})
 
 	describe(`canPlay`, () => {
 
-		it(`Should:
-			1. be set normally
-		`, () => {
+		/* INTENTION
+			to set and get "#canPlay" propertie.
+		*/
+
+		it(`Should set "#canPlay"`, () => {
 			
-			const dummyPlayer = new Player("Dummy Player: canPlay setter/getter")
+			//Instantiation
+			const name = "Dummy Player: canPlay setter/getter"
+			const dummyPlayer = new Player(name)
+			
+			//Run
 			dummyPlayer.setCanPlay(true)
+			
+			//Test
 			expect(dummyPlayer.getCanPlay()).toEqual(true)
 		})
 
@@ -236,10 +420,17 @@ function settersAndGetters() {
 			1. when wrond data type
 		`, () => {
 			
-			const dummyPlayer = new Player("Dummy Player: canPlay setter/getter")
-			expect(() => dummyPlayer.setCanPlay(`Wrong Type`)).toThrow(Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`))
-			expect(() => dummyPlayer.setCanPlay(0)).toThrow(Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`))
-			expect(() => dummyPlayer.setCanPlay({})).toThrow(Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`))
+			//Instantiation
+			const name = "Dummy Player: canPlay setter/getter"
+			const player = new Player(name)
+			const wrongTypes = [0, null, "Wrong", undefined, NaN, {}]
+
+			//Test
+			wrongTypes.forEach(wrongType => {
+				expect(() => player.setCanPlay(wrongType)).toThrow(
+					Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`)
+				)
+			})
 		})
 	})
 }
@@ -249,62 +440,52 @@ function classMethods() {
 	describe(`forceUpdateDataBase`, () => {
 
 		/* INTENTION
+		
 			The intend of this method is to be used when you need to update all users,
 			including the one don't play the game too often. The reasons can be for
 			test purposes, or to really force update the user data structure.
 		*/
 
 		/* FUNCTIONALITY
-			Players auto update by just login into the game. All the methods
-			must achieve is to login all database into the game, and then
-			log then out in sequence.
-		*/
 
-		/**@type {CS_EntityData} */
-		const expectedData = {
-			souls: ENTITY_DEFAULT.SOULS,
-			level: ENTITY_DEFAULT.LEVEL,
-			attributes: PLAYER_DEFAULT.ATTRIBUTES,
-			equipment: PLAYER_DEFAULT.EQUIPMENTS,
-			inventory: ENTITY_DEFAULT.INVENTORY
-		}
+			- Players auto update by just login into the game. 
+
+			What the methods must achieve is: login all database users into the game, 
+			and then logout in sequence.
+		*/
 
 		it(`Should force update users info inside database`, () => {
 			
 			/* DETAILS
+			
 				All users must have their structure updated. The many
 				cenarios is treated on updateDataBaseMissingInfo() class
 				method.
 			*/
-
+			
 			//Instantiation
-			const playerData_1 = DummyData.outdatedPlayerData_1
-			const playerData_2 = DummyData.outdatedPlayerData_2
-			const playerData_3 = DummyData.outdatedPlayerData_3
+			const player = DummyData.outdatedPlayerData_1
+			const expectedData = {
+				souls: ENTITY_DEFAULT.SOULS,
+				level: ENTITY_DEFAULT.LEVEL,
+				attributes: PLAYER_DEFAULT.ATTRIBUTES,
+				equipment: PLAYER_DEFAULT.EQUIPMENTS,
+				inventory: ENTITY_DEFAULT.INVENTORY
+			}
 
 			//Setup
-			Player.setPlayerData(playerData_1)
-			Player.setPlayerData(playerData_2)
-			Player.setPlayerData(playerData_3)
+			Player.setPlayerData(player)
 
 			//Run
 			Player.forceUpdateDatabase()
 
 			//Tests
-			expect(Player.getPlayerData(playerData_1.name)).toStrictEqual({
-				name: playerData_1.name, ...expectedData
-			})
-			expect(Player.getPlayerData(playerData_2.name)).toStrictEqual({
-				name: playerData_2.name, ...expectedData
-			})
-			expect(Player.getPlayerData(playerData_3.name)).toStrictEqual({
-				name: playerData_3.name, ...expectedData
+			expect(Player.getPlayerData(player.name)).toStrictEqual({
+				name: player.name, ...expectedData
 			})
 
 			//Sanitizers
-			Player.deletePlayer(playerData_1.name, true)
-			Player.deletePlayer(playerData_2.name, true)
-			Player.deletePlayer(playerData_3.name, true)
+			Player.deletePlayer(player.name, true)
 			Player.forceSaveDataBase()
 		})
 	})
@@ -325,10 +506,10 @@ function classMethods() {
 			
 			//Instantiation
 			const copiedDataBase = deepCopy(Player.getDatabase())
-			delete copiedDataBase["Authorization"]
 			let retrievedNames = []
-
+			
 			//Setup
+			delete copiedDataBase["Authorization"]
 			const copiedDataBaseUserNames = Object.keys(copiedDataBase)
 
 			//Run
@@ -343,9 +524,11 @@ function classMethods() {
 
 	describe(`forceSaveDataBase`, () => {
 
-		it(`Should
-			1. Force save current information on database
-		`, () => {
+		/*INTENTION
+			To force save the current database inside "#database"
+		*/
+
+		it(`Should force save current information on database`, () => {
 
 			//Instantiation
 			const playerData = {
@@ -370,6 +553,10 @@ function classMethods() {
 
 	describe(`deletePlayer`, () => {
 
+		/*INTENTION
+			To delete any playerData and his own propertie inside "#database".
+		*/
+
 		it(`Should:
 			1. Delete Player From Local Database
 		`, () => {
@@ -390,6 +577,10 @@ function classMethods() {
 	})
 
 	describe('register', () => {
+
+		/*INTENTION
+			To add playerData and his own propertie inside "#database".
+		*/
 
 		it(`Should:
 			1. Change isNewPlayer propertie to true when a new player is register.
@@ -417,55 +608,57 @@ function classMethods() {
 
 	describe('updateDataBaseMissingInfo', () => {
 
-		it(`Should:
-			1. Update every information is missing,
-			2. Update when there is inventory information missing,
-			3. Update when there is only inventory equipments information missing
-		`, () => {
+		/*INTENTION
+			To update any missing data structure of the 
+			playersData inside "#database" when players starts the game.
+		*/
+
+		it(`Should Update every data structure that is missing`, () => {
+
+			/*Details:
+				Should be capable to update when:
+				1 - Every information is missing
+				2 - There is opnly "inventory" information missing
+				3 - There is only "inventory equipments" information missing
+				4 - There is only "resources" information missing
+			*/
 
 			//Instantiation
-			const name_1 = DummyData.outdatedPlayerData_1.name
-			const name_2 = DummyData.outdatedPlayerData_2.name
-			const name_3 = DummyData.outdatedPlayerData_3.name
-			const dummyPlayer_1 = new Player(name_1)
-			const dummyPlayer_2 = new Player(name_2)
-			const dummyPlayer_3 = new Player(name_3)
-
+			const playerArray = []
+			const playerDataArray = [
+				DummyData.outdatedPlayerData_1, //1
+				DummyData.outdatedPlayerData_2, //2
+				DummyData.outdatedPlayerData_3, //3
+				DummyData.outdatedPlayerData_4	//4
+			]
+			
 			//Setup
-			Player.setPlayerData(DummyData.outdatedPlayerData_1)
-			Player.setPlayerData(DummyData.outdatedPlayerData_2)
-			Player.setPlayerData(DummyData.outdatedPlayerData_3)
+			playerDataArray.forEach(playerData => {
+				//Setting outdated data on "#database"
+				Player.setPlayerData(playerData)
+			})
+			playerDataArray.forEach(playerData => {
+				playerArray.push(new Player(playerData.name))
+			})
 
 			//Run
-			Player.updateDataBaseMissingInfo(dummyPlayer_1)
-			Player.updateDataBaseMissingInfo(dummyPlayer_2)
-			Player.updateDataBaseMissingInfo(dummyPlayer_3)
+			playerArray.forEach(player => {
+				Player.updateDataBaseMissingInfo(player)
+			})
 			
-			//1
-			expect(Player.getPlayerData(name_1).name).toEqual(name_1)
-			expect(Player.getPlayerData(name_1).souls).toEqual(0)
-			expect(Player.getPlayerData(name_1).attributes).toStrictEqual(Default.attributes)
-			expect(Player.getPlayerData(name_1).equipment).toStrictEqual(Default.equipments)
-			expect(Player.getPlayerData(name_1).inventory).toStrictEqual(Default.inventory)
-			
-			//2
-			expect(Player.getPlayerData(name_2).name).toEqual(name_2)
-			expect(Player.getPlayerData(name_2).souls).toEqual(0)
-			expect(Player.getPlayerData(name_2).attributes).toStrictEqual(Default.attributes)
-			expect(Player.getPlayerData(name_2).equipment).toStrictEqual(Default.equipments)
-			expect(Player.getPlayerData(name_2).inventory).toStrictEqual(Default.inventory)
-			
-			//3
-			expect(Player.getPlayerData(name_3).name).toEqual(name_3)
-			expect(Player.getPlayerData(name_3).souls).toEqual(0)
-			expect(Player.getPlayerData(name_3).attributes).toStrictEqual(Default.attributes)
-			expect(Player.getPlayerData(name_3).equipment).toStrictEqual(Default.equipments)
-			expect(Player.getPlayerData(name_3).inventory).toStrictEqual(Default.inventory)
+			//Tests
+			playerArray.forEach(player => {
+				expect(Player.getPlayerData(player.getName()).name).toEqual(player.getName())
+				expect(Player.getPlayerData(player.getName()).souls).toEqual(0)
+				expect(Player.getPlayerData(player.getName()).attributes).toStrictEqual(Default.attributes)
+				expect(Player.getPlayerData(player.getName()).equipment).toStrictEqual(Default.equipments)
+				expect(Player.getPlayerData(player.getName()).inventory).toStrictEqual(Default.inventory)
+			})
 
 			//Sanitizer
-			Player.deletePlayer(name_1, true)
-			Player.deletePlayer(name_2, true)
-			Player.deletePlayer(name_3, true)
+			playerArray.forEach(player => {
+				Player.deletePlayer(player.getName(), true)
+			})
 			Player.forceSaveDataBase()
 		})
 	})
@@ -880,6 +1073,13 @@ class DummyData {
 		name: "outdated Dummy Guy 3",
 		inventory: {
 			equipments: {}
+		}
+	}
+
+	static outdatedPlayerData_4 = {
+		name: "outdated Dummy Guy 3",
+		inventory: {
+			resources: {}
 		}
 	}
 }

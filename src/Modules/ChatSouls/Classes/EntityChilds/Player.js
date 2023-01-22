@@ -73,9 +73,14 @@ export default class Player extends Entity {
      */
     static setDatabase(data) {
 
-        if(!data.Authorization || !data.Authorization.key) {
-            throw Error(`ERROR: Player class, "database" setter. You probably sending wrong data to replace the actual data base.`)
+        if(typeof data !== "object" || data === null) {
+            throw Error(`ERROR: Player class, "database" setter: Wrong type`)
         }
+
+        if(!data.Authorization || !data.Authorization.key) {
+            throw Error(`ERROR: Player class, "database" setter: Authorizantion key not found.`)
+        }
+        
         this.#database = data
     }
 
@@ -92,6 +97,10 @@ export default class Player extends Entity {
      * @param {CS_EntityData} playerData
      */
     static setPlayerData(playerData) {
+
+        if(typeof playerData !== "object" || playerData === null) {
+            throw Error(`ERROR: Player class, "playerData" setter: Wrong type`)
+        }
 
         if(!playerData.name) {
             throw Error(`ERROR: Player class, "playerData" setter: playerData must have at least a name.`)
@@ -111,11 +120,16 @@ export default class Player extends Entity {
      */
     static setOnlinePlayers(playerArray) {
 
+        if(typeof playerArray !== "object" || playerArray === null) {
+            throw Error(`ERROR, Player class, "onlinePlayer" setter: wrong type`)
+        }
+
         for(let i = 0; i < playerArray.length; i++) {
             if(!(playerArray[i] instanceof Player)) {
                 throw Error(`ERROR, Player class, "onlinePlayer" setter: only array of players are allowed`)
             }
         }
+        
         this.#onlinePlayers = playerArray
     }
 
@@ -130,6 +144,15 @@ export default class Player extends Entity {
      * @param {CS_playerState} stateObject
      */
     setCurrentState(stateObject) {
+
+        if(typeof stateObject !== "object" || stateObject === null) {
+            throw Error(`ERROR, Player class, "currentState" setter: wrong type`)
+        }
+
+        if(!stateObject.primary || !stateObject.secondary) {
+            throw Error(`ERROR, Player class, "currentState" setter: propertie not defined`)
+        }
+
         this.#currentState = deepCopy(stateObject)
     }
 
@@ -144,6 +167,11 @@ export default class Player extends Entity {
      * @param {string} state 
      */
     setPrimaryState(state) {
+
+        if(typeof state !== "string") {
+            throw Error(`ERROR, Player class, "primaryState" setter: wrong type`)
+        }
+
         this.#currentState.primary = state
     }
 
@@ -158,11 +186,16 @@ export default class Player extends Entity {
      * @param {string} state 
      */
     setSecondaryState(state) {
+
+        if(typeof state !== "string") {
+            throw Error(`ERROR, Player class, "secondaryState" setter: wrong type`)
+        }
+
         this.#currentState.secondary = state
     }
 
-    /**
-     * @returns {string} Getter
+    /** Getter
+     * @returns {string} 
      */
     getCurrentLocation() {
         return this.#currentLocation
@@ -172,22 +205,29 @@ export default class Player extends Entity {
      * @param {string} mapName Setter
      */
     setCurrentLocation(mapName) {
+
+        if(typeof mapName !== "string") {
+            throw Error(`ERROR, Player class, "currentLocation" setter: wrong type`)
+        }
+
         this.#currentLocation = mapName
     }
 
-    /**
-     * @returns {boolean} Getter
+    /** Getter
+     * @returns {boolean} 
      */
     getCanPlay() {
         return this.#canPlay
     }
 
-    /**
-     * @param {boolean} boolean Setter
+    /** Setter
+     * @param {boolean} boolean 
      */
     setCanPlay(boolean) {
 
-        if(typeof boolean !== 'boolean') throw Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`)
+        if(typeof boolean !== 'boolean') {
+            throw Error(`ERROR: Player class, "canPlay" setter: you can only set booleans`)
+        }
 
         this.#canPlay = boolean
     }
